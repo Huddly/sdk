@@ -29,18 +29,18 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Huddly/huddly-sdk.git"
+    "url": "git+https://github.com/Huddly/sdk.git"
   },
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-web": "npm run build-ts && npm run tslint && yarn webpack -p",
     "build-ts": "tsc",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "test": "mocha -r ts-node/register --recursive \"test/**/*.spec.ts\"",
+    "test": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
   },
   "bugs": {
-    "url": "https://github.com/Huddly/huddly-sdk/issues"
+    "url": "https://github.com/Huddly/sdk/issues"
   },
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.5",
