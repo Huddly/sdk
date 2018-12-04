@@ -1,0 +1,73 @@
+{
+  "name": "@huddly/sdk",
+  "version": "0.0.1",
+  "description": "Huddly's Software Development Kit (SDK) used to interact with the camra by third-party applications",
+  "keywords": [
+    "SDK",
+    "API",
+    "Huddly",
+    "AI",
+    "People",
+    "Count",
+    "Genius",
+    "Framing"
+  ],
+  "author": "Brikend Rama <brikend@huddly.com>",
+  "homepage": "http://developer.huddly.com",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "directories": {
+    "lib": "lib",
+    "test": "tests"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "registry": "http://registry.npmjs.org/",
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Huddly/huddly-sdk.git"
+  },
+  "scripts": {
+    "build": "npm run build-ts && npm run tslint",
+    "build-web": "npm run build-ts && npm run tslint && yarn webpack -p",
+    "build-ts": "tsc",
+    "tslint": "tslint -c tslint.json -p tsconfig.json",
+    "test": "mocha -r ts-node/register --recursive \"test/**/*.spec.ts\"",
+    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
+  },
+  "bugs": {
+    "url": "https://github.com/Huddly/huddly-sdk/issues"
+  },
+  "devDependencies": {
+    "@compodoc/compodoc": "^1.1.5",
+    "@types/mocha": "^5.2.5",
+    "@types/node": "^10.12.0",
+    "chai": "^3.5.0",
+    "chai-as-promised": "^6.0.0",
+    "chai-things": "^0.2.0",
+    "cross-env": "^5.2",
+    "eslint": "^3.16.1",
+    "eslint-config-airbnb": "^14.1.0",
+    "eslint-plugin-import": "^2.2.0",
+    "eslint-plugin-jsx-a11y": "^4.0.0",
+    "eslint-plugin-react": "^6.10.0",
+    "mocha": "^3.2.0",
+    "sinon": "^2.3.8",
+    "sinon-chai": "^2.12.0",
+    "ts-loader": "^5.2.2",
+    "ts-node": "^7.0.1",
+    "tslint": "^5.11.0",
+    "typescript": "^3.2.1",
+    "webpack": "^4.21.0",
+    "webpack-cli": "^3.1.2"
+  },
+  "dependencies": {
+    "jszip": "^3.1.5",
+    "msgpack-lite": "^0.1.26",
+    "p-queue": "^3.0.0"
+  }
+}

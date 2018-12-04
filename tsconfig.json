@@ -1,0 +1,31 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "outDir": "./lib",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "strictNullChecks": false,
+    "lib": [
+      "es6"
+    ],
+    "baseUrl": ".",
+    "paths": {
+      "*": [
+        "node_modules/*",
+        "src/types/*"
+      ]
+    },
+    "typeRoots": [
+      "node_modules/@types"
+    ],
+    "types": [
+      "mocha",
+      "node"
+    ]
+  },
+  "include": [
+    "./src",
+    "tests/**/*"
+  ]
+}
