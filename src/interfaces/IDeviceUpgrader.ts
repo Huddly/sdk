@@ -1,7 +1,9 @@
+import UpgradeOpts from './IUpgradeOpts';
+
 /**
- * Class used to perform software upgrades.
+ * Interface used to perform software upgrades.
  *
- * @export
+ * @ignore
  * @interface IDeviceUpgrader
  */
 export default interface IDeviceUpgrader {
@@ -13,7 +15,7 @@ export default interface IDeviceUpgrader {
    * @param {*} opts Upgrade options
    * @memberof IDeviceUpgrader
    */
-  init(opts: any): void;
+  init(opts: UpgradeOpts): void;
 
   /**
    * Initiate the upgrade process on the target device.

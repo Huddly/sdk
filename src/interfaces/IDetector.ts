@@ -1,5 +1,5 @@
 /**
- * Class used to configure, load and get detections from the camera.
+ * Interface used to configure, load and get detections from the camera.
  *
  * @export
  * @interface IDetector

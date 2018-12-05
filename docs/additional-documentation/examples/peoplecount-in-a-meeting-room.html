@@ -1,0 +1,209 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
+	      <link rel="stylesheet" href="../../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content additional-page">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="huddly-analytics-google-analytics">Huddly analytics + Google analytics</h1>
+<p>This example illustrates how you can use a tracking tool like google analytics to track how many people is in a meeting room.</p>
+<p>Our objective is to find out how many people are using our meeting room on average during the day, we accomplish this by using our huddly sdk and push the tally of people detected to google analytics.</p>
+<p>Using google analytics we can create a report that shows the average number of people in the room per hour.</p>
+<h2 id="getting-the-detections">Getting the detections</h2>
+<p>We split up the code in two parts first getting the detections from the camera, secondly we will push the number of detected people to GA.</p>
+<div><pre class="line-numbers"><code class="language-javascript">const SDK = require(&#39;huddly-sdk&#39;).default;
+
+const meetingRoomName = process.env.HUDDLY_MEETING_ROOM || &#39;TEST_ROOM&#39;;
+
+const sdk = new SDK();  
+
+
+async function init() {
+  const camera = await sdk.getCamera()
+  const detector = await camera.initDetector();
+
+  detector.on(&#39;detection&#39;, detections =&gt; {
+    console.log(&#39;Number of people detected&#39;, detections.length);
+  });
+
+  detector.start();
+}
+
+init();
+</code></pre></div><p>First we need to setup the sdk, it will automatically connect to the camera, then we initialize the detector so we get a detection object.</p>
+<div><pre class="line-numbers"><code class="language-none">const camera = await sdk.getCamera()
+const detector = await camera.initDetector();</code></pre></div><p>We then start listening to incoming detections and count them, and finally we start the detector.</p>
+<div><pre class="line-numbers"><code class="language-javascript">detector.on(&#39;detection&#39;, detections =&gt; {
+  console.log(&#39;Number of people detected&#39;, detections.length);
+});
+
+detector.start();</code></pre></div><p>The meeting room name is declared with an environment variable, so this can be configured from machine to machine.</p>
+<div><pre class="line-numbers"><code class="language-none">  export HUDDLY_MEETING_ROOM=&quot;my_meeting_room&quot;</code></pre></div><p>Now that we set up how to track events to google analytics.</p>
+<h2 id="tracking">Tracking</h2>
+<p>In order to track with GA we first need to create an account.</p>
+<p><a href="https://support.google.com/analytics/answer/1042508">Create a GA account and get the tracking ID </a>.</p>
+<p>You then need to set the tracking-ui as an environment variables.</p>
+<div><pre class="line-numbers"><code class="language-none">    export GA_TRACKING_ID=YOUR-TRACKING-ID</code></pre></div><p>And then some utility code that pushed the people count event to google analytics.</p>
+<div><pre class="line-numbers"><code class="language-javascript">const got = require(&#39;got&#39;);
+
+const GA_TRACKING_ID = process.env.GA_TRACKING_ID;
+
+async function trackEvent (category, action, label, value) {
+  const data = {
+    v: &#39;1&#39;,
+    tid: GA_TRACKING_ID,
+    uid: &#39;555&#39;,
+    t: &#39;event&#39;,
+    ec: category,
+    ea: action,
+    el: label,
+    ev: value
+  };
+
+  try {
+    await got.post(&#39;http://www.google-analytics.com/collect&#39;, {
+      form: true,
+      body: data,
+    });
+  } catch (e) {
+    console.log(&#39;tracking failed&#39;);
+  }
+}
+
+
+function trackPeopleCount(meetingRoom, numberOfPeople) {
+  trackEvent(&#39;huddly-analytics&#39;, &#39;people-count&#39;, meetingRoom, numberOfPeople);
+}
+
+module.exports = trackPeopleCount;</code></pre></div><p>You can find more information on google analytics integration <a href="https://cloud.google.com/appengine/docs/flexible/nodejs/integrating-with-analytics">here</a></p>
+<h2 id="putting-it-together">Putting it together</h2>
+<div><pre class="line-numbers"><code class="language-javascript">const trackPeopleCount = require(&#39;./tracker&#39;);
+const SDK = require(&#39;huddly-sdk&#39;).default;
+
+const meetingRoomName = process.env.HUDDLY_MEETING_ROOM || &#39;TEST_ROOM&#39;;
+
+const sdk = new SDK();
+
+
+async function init() {
+  const camera = await sdk.getCamera()
+  const detector = await camera.initDetector();
+
+  detector.on(&#39;detection&#39;, detections =&gt; {
+    trackPeopleCount(meetingRoomName, detections.length);
+  });
+
+  detector.start();
+}
+
+init();</code></pre></div><p>Next up we want to create our analytics report</p>
+<h2 id="setup-a-google-analytics-report">Setup a google analytics report</h2>
+<p>We want to create a report that calculates the average number of people in our meeting room per hour.</p>
+<ol>
+<li>Create new custom report Customization &gt; Custom report</li>
+<li>Click + New Custom report</li>
+<li><p>Setup report</p>
+<ul>
+<li>Give it a name &quot;average number of people in my_meeting_room&quot;</li>
+<li>Tab: name average number in hours</li>
+<li>Type: Explorer</li>
+<li>Click add metric<ul>
+<li>Select <code>Avg. Value</code></li>
+</ul>
+</li>
+<li>Click add dimension select <code>Hour</code></li>
+<li>Click add filter only show <code>Event Label</code> Exact <code>my_meeting_room</code> (fill the name you set as environment variable)</li>
+</ul>
+<p><img src="/assets/imgs/report.png" alt="Average number people in meeting room moon" class="img-responsive"></p>
+</li>
+</ol>
+<h2 id="check-out-your-dashboard">Check out your Dashboard</h2>
+<p>You should now have tracking data coming in, and you can select different date ranges for your report.</p>
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 2;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
+            var COMPODOC_CURRENT_PAGE_URL = 'peoplecount-in-a-meeting-room.html';
+       </script>
+
+       <script src="../../js/libs/custom-elements.min.js"></script>
+       <script src="../../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../../js/menu-wc.js" defer></script>
+
+       <script src="../../js/libs/bootstrap-native.js"></script>
+
+       <script src="../../js/libs/es6-shim.min.js"></script>
+       <script src="../../js/libs/EventDispatcher.js"></script>
+       <script src="../../js/libs/promise.min.js"></script>
+       <script src="../../js/libs/zepto.min.js"></script>
+
+       <script src="../../js/compodoc.js"></script>
+
+       <script src="../../js/tabs.js"></script>
+       <script src="../../js/menu.js"></script>
+       <script src="../../js/libs/clipboard.min.js"></script>
+       <script src="../../js/libs/prism.js"></script>
+       <script src="../../js/sourceCode.js"></script>
+       <script src="../../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

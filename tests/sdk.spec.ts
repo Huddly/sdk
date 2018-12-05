@@ -9,7 +9,7 @@ import IHuddlyDeviceAPI from '../src/interfaces/iHuddlyDeviceAPI';
 import IUVCControlAPI from '../src/interfaces/iUVCControlApi';
 import ITransport from '../src/interfaces/iTransport';
 import IDeviceDiscovery from '../src/interfaces/iDeviceDiscovery';
-
+import DeviceFactory from '../src/components/device/factory';
 
 chai.should();
 chai.use(sinonChai);
@@ -42,28 +42,29 @@ describe('HuddlySDK', () => {
 
   describe('#constructor', () => {
     it('should set the first deviceapi from list as the main device api', () => {
-      const sdk = new HuddlySdk(opts, nodeusbDeviceApi, [nodeusbDeviceApi]);
+      const sdk = new HuddlySdk(nodeusbDeviceApi);
       expect(sdk.deviceDiscoveryApi).to.deep.equals(nodeusbDeviceApi);
       expect(sdk.mainDeviceApi).to.deep.equals(nodeusbDeviceApi);
     });
 
     it('it should initialize the list of device apis', () => {
-      const sdk = new HuddlySdk(opts, nodeusbDeviceApi, [nodeusbDeviceApi]);
+      const sdk = new HuddlySdk(nodeusbDeviceApi);
       expect(sdk.deviceApis.length).to.equals(1);
     });
 
     it('should setup hotplug events for the device discovery api', () => {
       nodeusbDeviceApi.registerForHotplugEvents.returns({});
-      const sdk = new HuddlySdk(opts, nodeusbDeviceApi, [nodeusbDeviceApi]);
+      const sdk = new HuddlySdk(nodeusbDeviceApi);
       expect(nodeusbDeviceApi.registerForHotplugEvents.callCount).to.equals(1);
       expect(nodeusbDeviceApi.registerForHotplugEvents.firstCall.args[0]).to.be.instanceof(EventEmitter);
     });
+
     it('should throw error if no device apis are provided', () => {
       try {
-        const sdk = new HuddlySdk(opts, nodeusbDeviceApi, []);
+        new HuddlySdk(undefined);
         expect(true).to.equals(false);
       } catch (e) {
-        expect(e.message).to.equals('At least one Huddly Device API implementation must be provided!');
+        expect(e.message).to.equals('A default device api should be provided to the sdk!');
       }
     });
   });
@@ -79,16 +80,19 @@ describe('HuddlySDK', () => {
     let boxfishInitStub;
     let discoveryEmitter;
     let otherEmitter;
+    let hidInterfaceStub;
     beforeEach(() => {
-      huddlygoInitStub = sinon.stub(HuddlyGo.prototype, 'initialize').returns(Promise.resolve());
-      boxfishInitStub = sinon.stub(Boxfish.prototype, 'initialize').returns(Promise.resolve());
+      huddlygoInitStub = sinon.stub(HuddlyGo.prototype, 'initialize').resolves();
+      boxfishInitStub = sinon.stub(Boxfish.prototype, 'initialize').resolves();
+      hidInterfaceStub = sinon.stub(DeviceFactory, 'getHIDInterface').resolves();
       discoveryEmitter = new EventEmitter();
       otherEmitter = new EventEmitter();
-      new HuddlySdk({ eventEmitter: otherEmitter }, nodeusbDeviceApi, [nodeusbDeviceApi], discoveryEmitter);
+      new HuddlySdk(nodeusbDeviceApi, [nodeusbDeviceApi], { emitter: otherEmitter, apiDiscoveryEmitter: discoveryEmitter });
     });
     afterEach(() => {
       huddlygoInitStub.restore();
       boxfishInitStub.restore();
+      hidInterfaceStub.restore();
     });
 
     it('should emit ATTACH event with Boxfish instance when attached device is boxfish', (done) => {
@@ -128,8 +132,9 @@ describe('HuddlySDK', () => {
 
   describe('#initialize', () => {
     it('should call initialize on the device discovery api', async () => {
-      nodeusbDeviceApi.initialize.returns(Promise.resolve());
-      const sdk = new HuddlySdk({ eventEmitter: {} }, nodeusbDeviceApi, [nodeusbDeviceApi]);
+      nodeusbDeviceApi.initialize.resolves();
+
+      const sdk = new HuddlySdk(nodeusbDeviceApi, [nodeusbDeviceApi], {});
       await sdk.initialize();
       expect(nodeusbDeviceApi.initialize.callCount).to.equals(1);
     });

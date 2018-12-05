@@ -3,46 +3,141 @@ import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
 import DefaultLogger from './utilitis/logger';
 import DeviceFactory from './components/device/factory';
 import CameraEvents from './utilitis/events';
-import IDeviceManager from './interfaces/iDeviceManager';
-import IDeviceUpgrader from './interfaces/IDeviceUpgrader';
-import IDetector from './interfaces/IDetector';
-import Detector from './components/detector';
 
 /**
- * @ignore
+ * The SDK initialization options.
+ *
+ * @interface SDKOpts
+ */
+interface SDKOpts {
+  /**
+   * Logger instance used to log messages from the SDK.
+   *
+   * @type {*}
+   * @memberof SDKOpts
+   */
+  logger?: any;
+  /**
+   * Optional event emitter instance used to catch
+   * SDK events!
+   * See `utilitis/events` class for all possible events.
+   *
+   * @type {EventEmitter}
+   * @memberof SDKOpts
+   */
+  emitter?: EventEmitter;
+
+  /**
+   * @ignore
+   *
+   * @type {EventEmitter}
+   * @memberof SDKOpts
+   */
+  apiDiscoveryEmitter?: EventEmitter;
+}
+
+/**
+ * @export
  *
  * @class HuddlySdk
  * @implements {SDK}
  */
 class HuddlySdk extends EventEmitter {
+  /**
+   * Event Emitter instance used to fire SDK events such as
+   * ATTACH and DETACH camera events. For a full list of events
+   * please see `events` class.
+   *
+   * @type {EventEmitter}
+   * @memberof HuddlySdk
+   */
   emitter: EventEmitter;
-  deviceDiscovery: EventEmitter;
-  _mainDeviceApi: IHuddlyDeviceAPI;
-  _deviceApis: Array<IHuddlyDeviceAPI>;
-  _deviceDiscoveryApi: IHuddlyDeviceAPI;
+
+  /**
+   * Logger instance used to log messages from the SDK.
+   *
+   * @type {DefaultLogger}
+   * @memberof HuddlySdk
+   */
   logger: DefaultLogger;
 
-  constructor(opts: any, deviceDiscoveryApi: IHuddlyDeviceAPI, deviceApis: Array<IHuddlyDeviceAPI>, discoveryEmitter?: EventEmitter) {
+  /**
+   * @ignore
+   *
+   * @type {EventEmitter}
+   * @memberof HuddlySdk
+   */
+  deviceDiscovery: EventEmitter;
+  /**
+   * @ignore
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
+  _mainDeviceApi: IHuddlyDeviceAPI;
+
+  /**
+   * @ignore
+   *
+   * @type {Array<IHuddlyDeviceAPI>}
+   * @memberof HuddlySdk
+   */
+  _deviceApis: Array<IHuddlyDeviceAPI>;
+
+  /**
+   * @ignore
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
+  _deviceDiscoveryApi: IHuddlyDeviceAPI;
+
+  /**
+   * Creates an instance of HuddlySdk.
+   * @param {IHuddlyDeviceAPI} deviceDiscoveryApi The Huddly device-api used for discovering the device.
+   * @param {Array<IHuddlyDeviceAPI>} [deviceApis] Optional list of device-apis used for communicating with the device.
+   * By default it uses the `deviceDiscoveryApi` parameter as the device-api used for communication.
+   * @param {SDKOpts} [opts] Options used for initializing the sdk. See `SDKOpts` interface.
+   * @memberof HuddlySdk
+   */
+  constructor(deviceDiscoveryApi: IHuddlyDeviceAPI, deviceApis?: Array<IHuddlyDeviceAPI>, opts?: SDKOpts) {
     super();
-    if (deviceApis.length === 0) {
-      throw new Error('At least one Huddly Device API implementation must be provided!');
+    if (!deviceDiscoveryApi) {
+      throw new Error('A default device api should be provided to the sdk!');
     }
-    this.deviceDiscovery = discoveryEmitter ? discoveryEmitter : new EventEmitter();
-    this.emitter = opts.eventEmitter || this;
+
+    if (!deviceApis || deviceApis.length === 0) {
+      this.mainDeviceApi = deviceDiscoveryApi;
+      this._deviceApis = new Array<IHuddlyDeviceAPI>();
+      this._deviceApis.push(deviceDiscoveryApi);
+    } else {
+      this._mainDeviceApi = deviceApis[0];
+      this._deviceApis = deviceApis;
+    }
+
+    const options = opts ? opts : {};
+
+    this.deviceDiscovery = options.apiDiscoveryEmitter ? options.apiDiscoveryEmitter : new EventEmitter();
+    this.emitter = options.emitter || this;
     this._deviceDiscoveryApi = deviceDiscoveryApi;
-    this.logger = opts.logger || new DefaultLogger(true);
-    this._mainDeviceApi = deviceApis[0];
-    this._deviceApis = deviceApis;
+    this.logger = options.logger || new DefaultLogger(true);
 
     this.setupDeviceDiscoveryListeners();
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
   }
 
+  /**
+   * Sets up listeners for ATTACH and DETACH camera events on the
+   * device discovery api. Will emit instances of `IDeviceManager`
+   * when an ATTACH event occurs.
+   *
+   * @memberof HuddlySdk
+   */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) => {
       if (d) {
         const cameraManager = await DeviceFactory.getDevice(d.productId,
-          this.logger, this.mainDeviceApi, this.deviceApis, d);
+          this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
         this.emitter.emit(CameraEvents.ATTACH, cameraManager);
       }
     });
@@ -54,80 +149,93 @@ class HuddlySdk extends EventEmitter {
     });
   }
 
+  /**
+   * Convenience function for setting the main device api
+   * used for communicating with the camera.
+   *
+   * @memberof HuddlySdk
+   */
   set mainDeviceApi(mainApi: IHuddlyDeviceAPI) {
     this._mainDeviceApi = mainApi;
   }
 
+  /**
+   * Convenience function for getting the main device api
+   * used for communicating with the camera.
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
   get mainDeviceApi(): IHuddlyDeviceAPI {
     return this._mainDeviceApi;
   }
 
+  /**
+   * Convenience function for setting the list of
+   * device apis which the SDK uses to establish
+   * communication channels with the camera.
+   *
+   * @memberof HuddlySdk
+   */
   set deviceApis(deviceApis: Array<IHuddlyDeviceAPI>) {
     this._deviceApis = deviceApis;
   }
 
+  /**
+   * Convenience function for getting the list of
+   * device apis used to establish communication with
+   * the camera.
+   *
+   * @type {Array<IHuddlyDeviceAPI>}
+   * @memberof HuddlySdk
+   */
   get deviceApis(): Array<IHuddlyDeviceAPI> {
     return this._deviceApis;
   }
 
+  /**
+   * Convenience function for setting the device api
+   * instance used for camera discovery.
+   *
+   * @memberof HuddlySdk
+   */
   set deviceDiscoveryApi(api: IHuddlyDeviceAPI) {
     this._deviceDiscoveryApi = api;
     this.deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
   }
 
+  /**
+   * Convenience function for getting the device api
+   * instance used for camera discovery.
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
   get deviceDiscoveryApi(): IHuddlyDeviceAPI {
     return this._deviceDiscoveryApi;
   }
 
+  /**
+   * Initializes the device discovery api which in turn will fire
+   * ATTACH events for all cameras attached to the system.
+   *
+   * @returns {Promise<any>} Returns a promise which resolves for
+   * successful initialization or rejects otherwise.
+   * @memberof HuddlySdk
+   */
   async initialize(): Promise<any> {
     await this.deviceDiscoveryApi.initialize();
   }
 
+  /**
+   * Closes the communication channels with the camera in use.
+   *
+   * @returns {Promise<any>} Returns a promise which resolves for
+   * successful connnection close or rejects otherwise.
+   * @memberof HuddlySdk
+   */
   async closeConnection(): Promise<any> {
     throw new Error('Not implemented!');
-  }
-
-  /**
-   * Get an `IDeviceUpgrader` object for the given device manager which can
-   * be used to perform camera upgrades on target.
-   *
-   * @param {IDeviceManager} cameraManager A concrete implementation of `IDeviceManager` initialized
-   * and ready to communicate with the device.
-   * @returns {Promise<IDeviceUpgrader>} Returns an `IDeviceUpgrader` object used for upgrading the camera device.
-   * @memberof HuddlySdk
-   */
-  async getUpgrader(cameraManager: IDeviceManager): Promise<IDeviceUpgrader> {
-    const upgrader = await DeviceFactory.getDeviceUpgrader(cameraManager,
-      this.emitter, this._mainDeviceApi, this._deviceApis, this.logger);
-    return upgrader;
-  }
-
-  /**
-   * Helper function for performing upgrade on device
-   *
-   * @param {IDeviceManager} cameraManager Instance of the device manager (Boxfish or HuddlyGo)
-   * @param {*} opts Upgrade options (upgrade file path etc)
-   * @memberof HuddlySdk
-   */
-  async upgrade(cameraManager: IDeviceManager, opts: any) {
-    const upgrader = await this.getUpgrader(cameraManager);
-    upgrader.init(opts);
-    upgrader.start();
-    return new Promise((resolve, reject) => {
-      upgrader.once(CameraEvents.UPGRADE_COMPLETE, () => {
-        resolve();
-      });
-      upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
-        reject(reason);
-      });
-      upgrader.once(CameraEvents.TIMEOUT, (reason) => {
-        reject(reason);
-      });
-    });
-  }
-
-  getDetector(cameraManager: IDeviceManager): IDetector {
-    return new Detector(cameraManager, this.logger);
   }
 }
 

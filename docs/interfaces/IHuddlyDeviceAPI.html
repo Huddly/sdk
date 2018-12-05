@@ -1,0 +1,925 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Interfaces</li>
+  <li>IHuddlyDeviceAPI</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/interfaces/iHuddlyDeviceAPI.ts</code>
+        </p>
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Class used to manage, operate and communicate with a Huddly device.</p>
+
+            </p>
+
+
+        <section>
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Methods</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#getDeviceDiscoveryAPI">getDeviceDiscoveryAPI</a>
+                                </li>
+                                <li>
+                                    <a href="#getHIDAPIForDevice">getHIDAPIForDevice</a>
+                                </li>
+                                <li>
+                                    <a href="#getTransport">getTransport</a>
+                                </li>
+                                <li>
+                                    <a href="#getUVCControlAPIForDevice">getUVCControlAPIForDevice</a>
+                                </li>
+                                <li>
+                                    <a href="#getValidatedTransport">getValidatedTransport</a>
+                                </li>
+                                <li>
+                                    <a href="#initialize">initialize</a>
+                                </li>
+                                <li>
+                                    <a href="#isHIDSupported">isHIDSupported</a>
+                                </li>
+                                <li>
+                                    <a href="#isUVCControlsSupported">isUVCControlsSupported</a>
+                                </li>
+                                <li>
+                                    <a href="#registerForHotplugEvents">registerForHotplugEvents</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+            <section>
+    
+        <h3 id="methods">
+            Methods
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getDeviceDiscoveryAPI"></a>
+                        <span class="name">
+                            <b>
+                            getDeviceDiscoveryAPI
+                            </b>
+                            <a href="#getDeviceDiscoveryAPI"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getDeviceDiscoveryAPI()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="38" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:38</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Returns the concrete implementation of the <code>IDeviceDiscovery</code> interface.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="../interfaces/IDeviceDiscovery.html" target="_self" >Promise&lt;IDeviceDiscovery&gt;</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>An instance of <code>IDeviceDiscovery</code></p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getHIDAPIForDevice"></a>
+                        <span class="name">
+                            <b>
+                            getHIDAPIForDevice
+                            </b>
+                            <a href="#getHIDAPIForDevice"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getHIDAPIForDevice(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="101" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:101</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Returns an class instance that is able to communicate, send and receive
+commands on a HID device.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>device</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>An object representing the discovered physical device.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>A HuddlyHID class instance.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getTransport"></a>
+                        <span class="name">
+                            <b>
+                            getTransport
+                            </b>
+                            <a href="#getTransport"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getTransport(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:59</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Returns the concrete implementation of the <code>ITransportable</code> interface used
+to send and receive messages/commands to the device.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>device</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>An object representing the discovered physical device.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="../interfaces/ITransport.html" target="_self" >Promise&lt;ITransport&gt;</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>An instance of <code>ITransportable</code></p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getUVCControlAPIForDevice"></a>
+                        <span class="name">
+                            <b>
+                            getUVCControlAPIForDevice
+                            </b>
+                            <a href="#getUVCControlAPIForDevice"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getUVCControlAPIForDevice(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:80</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Returns a concrete implementation of <code>IUVCControlApi</code> interface which is used
+to perform standard UVC-XU controls on the device.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>device</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>An object representing the discovered physical device.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;IUVCControlAPI&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>An instance of <code>IUVCControlAPI</code></p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getValidatedTransport"></a>
+                        <span class="name">
+                            <b>
+                            getValidatedTransport
+                            </b>
+                            <a href="#getValidatedTransport"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getValidatedTransport(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:49</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Performs a check whether the <code>Device-API</code> is able to communicate with
+the Huddly physical device. If the check goes through, the instance of
+the transport interface is returned back.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>device</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>An object representing the discovered physical device.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="../interfaces/ITransport.html" target="_self" >Promise&lt;ITransport&gt;</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>An instance of <code>ITransportable</code></p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="initialize"></a>
+                        <span class="name">
+                            <b>
+                            initialize
+                            </b>
+                            <a href="#initialize"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>initialize()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="20" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:20</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Sets up the device discovery manager so that ATTACH and DETACH events are
+fired immediately for the corresponding Huddly devices attached on (or being
+detached from) the host machine.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isHIDSupported"></a>
+                        <span class="name">
+                            <b>
+                            isHIDSupported
+                            </b>
+                            <a href="#isHIDSupported"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>isHIDSupported(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:91</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Performs a check whether the <code>Device-API</code> is able to communicate with
+an HID device.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>device</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>An object representing the discovered physical device.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns true if the <code>Device-Api</code> is able
+to communcate with an HID device, false otherwise.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isUVCControlsSupported"></a>
+                        <span class="name">
+                            <b>
+                            isUVCControlsSupported
+                            </b>
+                            <a href="#isUVCControlsSupported"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>isUVCControlsSupported(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:70</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Performs a check whether the <code>Device-API</code> is able to do standard
+UVC-XU controls on the device.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>device</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>An object representing the discovered physical device.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns true if the <code>Device-Api</code> can perform
+standed UVC-XU controls on the physical device, false otherwise.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="registerForHotplugEvents"></a>
+                        <span class="name">
+                            <b>
+                            registerForHotplugEvents
+                            </b>
+                            <a href="#registerForHotplugEvents"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>registerForHotplugEvents(eventEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/interfaces/iHuddlyDeviceAPI.ts:30</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Sets up the event listeners for ATTACH and DETACH on the <code>DeviceDiscovery</code>
+class.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>eventEmitter</td>
+                                                        <td>
+                                                                    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>The emitter that is used to delegate
+the ATTACH/DETACH events.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import EventEmitter from &#x27;events&#x27;;
+import IUVCControlAPI from &#x27;./iUVCControlApi&#x27;;
+import IDeviceDiscovery from &#x27;./iDeviceDiscovery&#x27;;
+import ITransport from &#x27;./iTransport&#x27;;
+
+/**
+ * Class used to manage, operate and communicate with a Huddly device.
+ *
+ * @export
+ * @interface IHuddlyDeviceAPI
+ */
+export default interface IHuddlyDeviceAPI {
+  /**
+   * Sets up the device discovery manager so that ATTACH and DETACH events are
+   * fired immediately for the corresponding Huddly devices attached on (or being
+   * detached from) the host machine.
+   *
+   * @memberof IHuddlyDeviceAPI
+   */
+  initialize(): void;
+
+  /**
+   * Sets up the event listeners for ATTACH and DETACH on the &#x60;DeviceDiscovery&#x60;
+   * class.
+   *
+   * @param {EventEmitter} eventEmitter The emitter that is used to delegate
+   * the ATTACH/DETACH events.
+   * @memberof IHuddlyDeviceAPI
+   */
+  registerForHotplugEvents(eventEmitter: EventEmitter): void;
+
+  /**
+   * Returns the concrete implementation of the &#x60;IDeviceDiscovery&#x60; interface.
+   *
+   * @returns {Promise&lt;IDeviceDiscovery&gt;} An instance of &#x60;IDeviceDiscovery&#x60;
+   * @memberof IHuddlyDeviceAPI
+   */
+  getDeviceDiscoveryAPI(): Promise&lt;IDeviceDiscovery&gt;;
+
+  /**
+   * Performs a check whether the &#x60;Device-API&#x60; is able to communicate with
+   * the Huddly physical device. If the check goes through, the instance of
+   * the transport interface is returned back.
+   *
+   * @param {*} device An object representing the discovered physical device.
+   * @returns {Promise&lt;ITransport&gt;} An instance of &#x60;ITransportable&#x60;
+   * @memberof IHuddlyDeviceAPI
+   */
+  getValidatedTransport(device: any): Promise&lt;ITransport&gt;;
+
+  /**
+   * Returns the concrete implementation of the &#x60;ITransportable&#x60; interface used
+   * to send and receive messages/commands to the device.
+   *
+   * @param {*} device An object representing the discovered physical device.
+   * @returns {Promise&lt;ITransport&gt;} An instance of &#x60;ITransportable&#x60;
+   * @memberof IHuddlyDeviceAPI
+   */
+  getTransport(device: any): Promise&lt;ITransport&gt;;
+
+  /**
+   * Performs a check whether the &#x60;Device-API&#x60; is able to do standard
+   * UVC-XU controls on the device.
+   *
+   * @param {*} device An object representing the discovered physical device.
+   * @returns {Promise&lt;Boolean&gt;} Returns true if the &#x60;Device-Api&#x60; can perform
+   * standed UVC-XU controls on the physical device, false otherwise.
+   * @memberof IHuddlyDeviceAPI
+   */
+  isUVCControlsSupported(device: any): Promise&lt;Boolean&gt;;
+
+  /**
+   * Returns a concrete implementation of &#x60;IUVCControlApi&#x60; interface which is used
+   * to perform standard UVC-XU controls on the device.
+   *
+   * @param {*} device An object representing the discovered physical device.
+   * @returns {Promise&lt;IUVCControlAPI&gt;} An instance of &#x60;IUVCControlAPI&#x60;
+   * @memberof IHuddlyDeviceAPI
+   */
+  getUVCControlAPIForDevice(device: any): Promise&lt;IUVCControlAPI&gt;;
+
+  /**
+   * Performs a check whether the &#x60;Device-API&#x60; is able to communicate with
+   * an HID device.
+   *
+   * @param {*} device  An object representing the discovered physical device.
+   * @returns {Promise&lt;Boolean&gt;} Returns true if the &#x60;Device-Api&#x60; is able
+   * to communcate with an HID device, false otherwise.
+   * @memberof IHuddlyDeviceAPI
+   */
+  isHIDSupported(device: any): Promise&lt;Boolean&gt;;
+
+  /**
+   * Returns an class instance that is able to communicate, send and receive
+   * commands on a HID device.
+   *
+   * @param {*} device An object representing the discovered physical device.
+   * @returns {Promise&lt;any&gt;} A HuddlyHID class instance.
+   * @memberof IHuddlyDeviceAPI
+   */
+  getHIDAPIForDevice(device: any): Promise&lt;any&gt;;
+}</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'IHuddlyDeviceAPI.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

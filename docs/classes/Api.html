@@ -1,0 +1,1717 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li>Api</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/components/api.ts</code>
+        </p>
+
+
+
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#locksmith">locksmith</a>
+                            </li>
+                            <li>
+                                <a href="#logger">logger</a>
+                            </li>
+                            <li>
+                                <a href="#transport">transport</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#asyncFileTransfer">asyncFileTransfer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#decode">decode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                <a href="#encode">encode</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#eraseErrorLog">eraseErrorLog</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#fileTransfer">fileTransfer</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getCameraInfo">getCameraInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getErrorLog">getErrorLog</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getProductInfo">getProductInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getUptime">getUptime</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendAndReceive">sendAndReceive</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendAndReceiveMessagePack">sendAndReceiveMessagePack</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#sendAndReceiveWithoutLock">sendAndReceiveWithoutLock</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setProductInfo">setProductInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#withSubscribe">withSubscribe</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(transport: <a href="../interfaces/ITransport.html">ITransport</a>, logger: <a href="../classes/Logger.html">DefaultLogger</a>, locksmith: <a href="../classes/Locksmith.html">Locksmith</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/components/api.ts:10</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>transport</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../interfaces/ITransport.html" target="_self" >ITransport</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>logger</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../classes/Logger.html" target="_self" >DefaultLogger</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>locksmith</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../classes/Locksmith.html" target="_self" >Locksmith</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="locksmith"></a>
+                        <span class="name">
+                            <b>
+                            locksmith
+                            </b>
+                            <a href="#locksmith"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>locksmith:     <code><a href="../classes/Locksmith.html" target="_self" >Locksmith</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../classes/Locksmith.html" target="_self" >Locksmith</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="10" class="link-to-prism">src/components/api.ts:10</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="logger"></a>
+                        <span class="name">
+                            <b>
+                            logger
+                            </b>
+                            <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>logger:     <code><a href="../classes/Logger.html" target="_self" >DefaultLogger</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../classes/Logger.html" target="_self" >DefaultLogger</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/components/api.ts:9</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="transport"></a>
+                        <span class="name">
+                            <b>
+                            transport
+                            </b>
+                            <a href="#transport"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>transport:     <code><a href="../interfaces/ITransport.html" target="_self" >ITransport</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="../interfaces/ITransport.html" target="_self" >ITransport</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/components/api.ts:8</a></div>
+                            </td>
+                        </tr>
+
+
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+        <h3 id="methods">
+            Methods
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="asyncFileTransfer"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            asyncFileTransfer
+                            </b>
+                            <a href="#asyncFileTransfer"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>asyncFileTransfer(command: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, data: Buffer, timeout: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/components/api.ts:139</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Default value</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>command</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>data</td>
+                                                        <td>
+                                                                    <code>Buffer</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code>Buffer.alloc(0)</code>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>timeout</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code>5000</code>
+                                                        </td>
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="decode"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Static</span>
+                            decode
+                            </b>
+                            <a href="#decode"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>decode(payload: Buffer, type: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="212" class="link-to-prism">src/components/api.ts:212</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Default value</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>payload</td>
+                                                        <td>
+                                                                    <code>Buffer</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>type</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code>&#x27;string&#x27;</code>
+                                                        </td>
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="encode"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Static</span>
+                            encode
+                            </b>
+                            <a href="#encode"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>encode(payload: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="205" class="link-to-prism">src/components/api.ts:205</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>payload</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Buffer</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="eraseErrorLog"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            eraseErrorLog
+                            </b>
+                            <a href="#eraseErrorLog"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>eraseErrorLog()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="279" class="link-to-prism">src/components/api.ts:279</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="fileTransfer"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            fileTransfer
+                            </b>
+                            <a href="#fileTransfer"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>fileTransfer(data: Buffer, subscribedMessages: Array<string>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="91" class="link-to-prism">src/components/api.ts:91</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>data</td>
+                                                        <td>
+                                                                    <code>Buffer</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                                <tr>
+                                                        <td>subscribedMessages</td>
+                                                        <td>
+                                                                    <code>Array&lt;string&gt;</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getCameraInfo"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            getCameraInfo
+                            </b>
+                            <a href="#getCameraInfo"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>getCameraInfo()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="250" class="link-to-prism">src/components/api.ts:250</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getErrorLog"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            getErrorLog
+                            </b>
+                            <a href="#getErrorLog"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>getErrorLog()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="261" class="link-to-prism">src/components/api.ts:261</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getProductInfo"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            getProductInfo
+                            </b>
+                            <a href="#getProductInfo"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>getProductInfo()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="161" class="link-to-prism">src/components/api.ts:161</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getUptime"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            getUptime
+                            </b>
+                            <a href="#getUptime"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>getUptime()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="232" class="link-to-prism">src/components/api.ts:232</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sendAndReceive"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            sendAndReceive
+                            </b>
+                            <a href="#sendAndReceive"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>sendAndReceive(payload: Buffer, commands: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, timeout: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/components/api.ts:50</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Default value</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>payload</td>
+                                                        <td>
+                                                                    <code>Buffer</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>commands</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>timeout</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code>500</code>
+                                                        </td>
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sendAndReceiveMessagePack"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            sendAndReceiveMessagePack
+                            </b>
+                            <a href="#sendAndReceiveMessagePack"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>sendAndReceiveMessagePack(message: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, commands: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, receiveTimeout: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/components/api.ts:19</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Default value</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>message</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>commands</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>receiveTimeout</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code>3000</code>
+                                                        </td>
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="sendAndReceiveWithoutLock"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            sendAndReceiveWithoutLock
+                            </b>
+                            <a href="#sendAndReceiveWithoutLock"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>sendAndReceiveWithoutLock(cmd: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, options: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/components/api.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Default value</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>cmd</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+
+                                                </tr>
+                                                <tr>
+                                                        <td>options</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code>{}</code>
+                                                        </td>
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>{}</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="setProductInfo"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            setProductInfo
+                            </b>
+                            <a href="#setProductInfo"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>setProductInfo(newProdInfoData: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="171" class="link-to-prism">src/components/api.ts:171</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>newProdInfoData</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="withSubscribe"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            withSubscribe
+                            </b>
+                            <a href="#withSubscribe"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>withSubscribe(subscribeMessages: Array<string>, fn: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/components/api.ts:73</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>subscribeMessages</td>
+                                                        <td>
+                                                                    <code>Array&lt;string&gt;</code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                                <tr>
+                                                        <td>fn</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ITransport from &#x27;./../interfaces/iTransport&#x27;;
+import DefaultLogger from &#x27;./../utilitis/logger&#x27;;
+import * as msgpack from &#x27;msgpack-lite&#x27;;
+import Locksmith from &#x27;./locksmith&#x27;;
+
+
+export default class Api {
+  transport: ITransport;
+  logger: DefaultLogger;
+  locksmith: Locksmith;
+
+  constructor(transport: ITransport, logger: DefaultLogger, locksmith: Locksmith) {
+    this.transport &#x3D; transport;
+    this.transport.initEventLoop();
+    this.logger &#x3D; logger;
+    this.locksmith &#x3D; locksmith;
+  }
+
+  async sendAndReceiveMessagePack(message: any, commands: any, receiveTimeout: number &#x3D; 3000): Promise&lt;any&gt; {
+    const buffer &#x3D; Api.encode(message);
+    const res &#x3D; await this.locksmith.executeAsyncFunction(async () &#x3D;&gt; {
+      const reply &#x3D; await this.sendAndReceive(
+        buffer, commands, receiveTimeout);
+      return reply;
+    });
+    return Api.decode(res.payload, &#x27;messagepack&#x27;);
+  }
+
+  async sendAndReceiveWithoutLock(cmd: string, options: any &#x3D; {}) {
+    const opts &#x3D; {
+      args: options.args || Buffer.alloc(0),
+      timeout: options.timeout || 500,
+      receiveEncoding: options.receiveEncoding || &#x27;string&#x27;,
+    };
+    const payload &#x3D; opts.args.length &#x3D;&#x3D;&#x3D; 0 ?
+      opts.args : Api.encode(opts.args);
+    const commands &#x3D; {
+      send: cmd,
+      receive: &#x60;${cmd}_reply&#x60;,
+    };
+
+    const reply &#x3D; await this.sendAndReceive(payload, commands, opts.timeout);
+    const resp &#x3D; Api.decode(reply.payload, opts.receiveEncoding);
+    if (!resp.error || resp.error &#x3D;&#x3D;&#x3D; 0) {
+      return resp;
+    }
+    throw new Error(&#x60;Upgrade failed. Cmd: ${cmd}, Error: ${resp.error}, Msg: ${resp.string}&#x60;);
+  }
+
+  async sendAndReceive(payload: Buffer, commands: any, timeout: number &#x3D; 500): Promise&lt;any&gt; {
+    await this.transport.clear();
+    const result &#x3D; await this.withSubscribe(
+      [commands.receive], () &#x3D;&gt; new Promise(async (resolve, reject) &#x3D;&gt; {
+        this.transport.setEventLoopReadSpeed(1);
+        this.transport.receiveMessage(commands.receive, timeout)
+          .then((reply) &#x3D;&gt; {
+            this.transport.setEventLoopReadSpeed();
+            resolve(reply);
+          })
+          .catch((e) &#x3D;&gt; {
+            this.transport.setEventLoopReadSpeed();
+            reject(e);
+          });
+        try {
+          await this.transport.write(commands.send, payload);
+        } catch (e) {
+          reject(e);
+        }
+      }));
+    return result;
+  }
+
+  async withSubscribe(subscribeMessages: Array&lt;string&gt;, fn: any): Promise&lt;any&gt; {
+    await this.transport.clear();
+    for (let i &#x3D; 0; i &lt; subscribeMessages.length; i +&#x3D; 1) {
+      // eslint-disable-next-line no-await-in-loop
+      await this.transport.subscribe(subscribeMessages[i]);
+    }
+    try {
+      const result &#x3D; await fn();
+      return result;
+    } finally {
+      for (let i &#x3D; 0; i &lt; subscribeMessages.length; i +&#x3D; 1) {
+        // eslint-disable-next-line no-await-in-loop
+        await this.transport.unsubscribe(subscribeMessages[i]);
+        await this.transport.removeAllListeners(subscribeMessages[i]);
+      }
+    }
+  }
+
+  async fileTransfer(data: Buffer, subscribedMessages: Array&lt;string&gt;): Promise&lt;any&gt; {
+    const clearListeners &#x3D; () &#x3D;&gt; {
+      subscribedMessages.forEach((msg) &#x3D;&gt; {
+        this.transport.removeAllListeners(msg);
+        this.transport.setEventLoopReadSpeed();
+      });
+    };
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      if (subscribedMessages.indexOf(&#x27;async_file_transfer/data&#x27;) &gt;&#x3D; 0) {
+        this.transport.on(&#x27;async_file_transfer/data&#x27;, async (msgPacket) &#x3D;&gt; {
+          this.transport.setEventLoopReadSpeed(1);
+          await this.transport.write(&#x27;async_file_transfer/data_reply&#x27;);
+          const bufferComposition &#x3D; Buffer.concat([data, msgPacket.payload]);
+          data &#x3D; bufferComposition;
+        });
+      }
+
+      if (subscribedMessages.indexOf(&#x27;async_file_transfer/receive&#x27;) &gt;&#x3D; 0) {
+        this.transport.on(&#x27;async_file_transfer/receive&#x27;, async (msgPacket) &#x3D;&gt; {
+          this.transport.setEventLoopReadSpeed(1);
+          if (msgPacket.payload.length !&#x3D;&#x3D; 4) {
+            clearListeners();
+            reject(&#x27;Data lenght is not 4, unable to proceed!&#x27;);
+          } else {
+            const length &#x3D; Api.decode(msgPacket.payload, &#x27;int&#x27;);
+            const slice &#x3D; data.slice(0, length);
+            await this.transport.write(&#x27;async_file_transfer/receive_reply&#x27;, slice);
+            data &#x3D; data.slice(length);
+          }
+        });
+      }
+
+      if (subscribedMessages.indexOf(&#x27;async_file_transfer/done&#x27;) &gt;&#x3D; 0) {
+        this.transport.on(&#x27;async_file_transfer/done&#x27;, async (buffer) &#x3D;&gt; {
+          clearListeners();
+          resolve(data);
+        });
+      }
+
+      if (subscribedMessages.indexOf(&#x27;async_file_transfer/timeout&#x27;) &gt;&#x3D; 0) {
+        this.transport.on(&#x27;async_file_transfer/timeout&#x27;, async (buffer) &#x3D;&gt; {
+          clearListeners();
+          reject(&#x27;Error log transfer timed out&#x27;);
+        });
+      }
+    });
+  }
+
+  async asyncFileTransfer(command: any, data: Buffer &#x3D; Buffer.alloc(0), timeout: number &#x3D; 5000): Promise&lt;any&gt; {
+    const res &#x3D; await this.locksmith.executeAsyncFunction(async () &#x3D;&gt; {
+      const subscribeMsgs &#x3D; [&#x27;async_file_transfer/data&#x27;, &#x27;async_file_transfer/receive&#x27;, &#x27;async_file_transfer/done&#x27;, &#x27;async_file_transfer/timeout&#x27;];
+      const transferRes &#x3D; await this.withSubscribe(subscribeMsgs, async () &#x3D;&gt; {
+        return new Promise(async (resolve, reject) &#x3D;&gt; {
+          this.fileTransfer(data, subscribeMsgs).then((result) &#x3D;&gt; {
+            resolve(result);
+          }).catch((reason) &#x3D;&gt; reject(reason));
+          const status &#x3D; await this.sendAndReceive(
+            (command.send_data ? command.send_data : Buffer.alloc(0)),
+            command,
+            timeout);
+          if (!status || !status[&#x27;payload&#x27;]) {
+            throw Error(&#x60;Failed to get status. Status: ${JSON.stringify(status)} ${command[&#x27;send&#x27;]}&#x60;);
+          }
+        });
+      });
+      return transferRes;
+    });
+    return res;
+  }
+
+  async getProductInfo(): Promise&lt;any&gt; {
+    const command &#x3D; {
+      send: &#x27;prodinfo/get&#x27;,
+      receive: &#x27;prodinfo/get_status&#x27;,
+    };
+    const res &#x3D; await this.asyncFileTransfer(command);
+    const prodInfo &#x3D; Api.decode(res, &#x27;messagepack&#x27;);
+    return prodInfo;
+  }
+
+  async setProductInfo(newProdInfoData: any): Promise&lt;void&gt; {
+    await this.locksmith.executeAsyncFunction(async () &#x3D;&gt; {
+      const asyncFileTransferMessages &#x3D; [&#x27;async_file_transfer/data&#x27;, &#x27;async_file_transfer/receive&#x27;, &#x27;async_file_transfer/done&#x27;, &#x27;async_file_transfer/timeout&#x27;];
+      const data &#x3D; Api.encode(newProdInfoData);
+      const length &#x3D; Api.encode({ size: data.length });
+      const command &#x3D; {
+        send: &#x27;prodinfo/set&#x27;,
+        send_data: length,
+        receive: &#x27;prodinfo/set_done&#x27;,
+      };
+      await this.transport.clear();
+      try {
+        await this.transport.subscribe(command.receive);
+        await this.withSubscribe(asyncFileTransferMessages,
+          async () &#x3D;&gt; new Promise(async (resolve, reject) &#x3D;&gt; {
+            this.fileTransfer(data, asyncFileTransferMessages);
+            const res &#x3D; await this.sendAndReceive(command.send_data ? command.send_data : Buffer.alloc(0), command);
+            if (res &amp;&amp; res.payload) {
+              const errorCode &#x3D; Api.decode(res.payload, &#x27;messagepack&#x27;);
+              if (errorCode &#x3D;&#x3D;&#x3D; 0) {
+                resolve(true);
+              } else {
+                reject(&#x60;Set Product Info command failed with error code ${errorCode}&#x60;);
+              }
+            } else {
+              reject(&#x27;No response received from camera during Set Product Info command&#x27;);
+            }
+          }));
+      } finally {
+        await this.transport.unsubscribe(command.receive);
+      }
+    });
+  }
+
+  static encode(payload: any): Buffer {
+    if (payload instanceof Buffer) {
+      return payload;
+    }
+    return msgpack.encode(payload);
+  }
+
+  static decode(payload: Buffer, type &#x3D; &#x27;string&#x27;): any {
+    const assignedType &#x3D; type &#x3D;&#x3D;&#x3D; undefined ? &#x27;string&#x27; : type;
+    if (payload.length &#x3D;&#x3D;&#x3D; 0) return undefined;
+    if (payload instanceof Buffer) {
+      switch (assignedType) {
+        case &#x27;string&#x27;:
+          return payload.toString(&#x27;utf8&#x27;);
+        case &#x27;messagepack&#x27;:
+          return msgpack.decode(payload);
+        case &#x27;int&#x27;:
+          return payload.readUInt32LE(0);
+        case &#x27;double&#x27;:
+          return payload.readDoubleLE(0);
+        default:
+          throw new Error(&#x60;Cannot decode buffer for type: ${type}&#x60;);
+      }
+    }
+    return payload;
+  }
+
+  async getUptime(): Promise&lt;any&gt; {
+    const res &#x3D; await this.locksmith.executeAsyncFunction(async () &#x3D;&gt; {
+      await this.transport.clear();
+      const result &#x3D; await this.withSubscribe([&#x27;camctrl/uptime_reply&#x27;],
+        async () &#x3D;&gt; new Promise(async (resolve, reject) &#x3D;&gt; {
+          this.transport.receiveMessage(&#x27;camctrl/uptime_reply&#x27;)
+            .then((reply) &#x3D;&gt; {
+              const uptimeSeconds &#x3D; Api.decode(reply.payload, &#x27;double&#x27;);
+              resolve(uptimeSeconds);
+            })
+            .catch((e) &#x3D;&gt; reject(e));
+          this.transport.write(&#x27;camctrl/uptime&#x27;);
+        }));
+      return result;
+    });
+    return res;
+  }
+
+  async getCameraInfo(): Promise&lt;any&gt; {
+    const prodInfo &#x3D; await this.getProductInfo();
+    const uptime &#x3D; await this.getUptime();
+
+    const info &#x3D; {
+      softwareVersion: prodInfo.app_version,
+      uptime: Math.round(uptime * 100) / 100, // 2 floating point decimals
+    };
+    return info;
+  }
+
+  async getErrorLog(): Promise&lt;any&gt; {
+    const res &#x3D; await this.locksmith.executeAsyncFunction(async () &#x3D;&gt; {
+      await this.transport.clear();
+      const subscribeMsgs &#x3D; [&#x27;async_file_transfer/data&#x27;, &#x27;async_file_transfer/done&#x27;, &#x27;async_file_transfer/timeout&#x27;];
+
+      const result &#x3D; await this.withSubscribe(subscribeMsgs, async () &#x3D;&gt; {
+        return new Promise((resolve, reject) &#x3D;&gt; {
+          this.fileTransfer(Buffer.alloc(0), subscribeMsgs).then((result) &#x3D;&gt; {
+            resolve(result.toString(&#x27;ascii&#x27;));
+          }).catch((reason) &#x3D;&gt; reject(reason));
+          this.transport.write(&#x27;error_logger/read&#x27;);
+        });
+      });
+      return result;
+    });
+    return res;
+  }
+
+  async eraseErrorLog(): Promise&lt;void&gt; {
+    this.logger.info(&#x27;Reading error log before erasing..&#x27;);
+    await this.getErrorLog();
+    this.logger.info(&#x27;Start erasing log&#x27;);
+    await this.locksmith.executeAsyncFunction(async () &#x3D;&gt; {
+      await this.transport.clear();
+      const timeoutMs &#x3D; 60000;
+      await this.withSubscribe([&#x27;error_logger/erase_done&#x27;],
+        async () &#x3D;&gt; new Promise(async (resolve, reject) &#x3D;&gt; {
+          this.transport.receiveMessage(&#x27;error_logger/erase_done&#x27;, timeoutMs)
+            .then((reply) &#x3D;&gt; {
+              this.logger.info(&#x27;Done erasing error log&#x27;);
+              resolve();
+            })
+            .catch((e) &#x3D;&gt; reject(e));
+          this.transport.write(&#x27;error_logger/erase&#x27;);
+        }));
+    });
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'Api.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

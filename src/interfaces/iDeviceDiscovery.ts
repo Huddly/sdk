@@ -1,8 +1,9 @@
 import EventEmitter from 'events';
 
 /**
- * Class used for discovering attached devices on the system.
+ * Interface used for discovering attached devices on the system.
  *
+ * @ignore
  * @export
  * @interface IDeviceDiscovery
  */

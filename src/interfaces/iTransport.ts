@@ -1,7 +1,7 @@
 /**
- * Class used to communicate with the physical device.
+ * Interface used to communicate with the physical device.
  *
- * @export
+ * @ignore
  * @interface ITransport
  */
 export default interface ITransport {

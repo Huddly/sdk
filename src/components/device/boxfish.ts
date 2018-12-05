@@ -3,7 +3,14 @@ import DefaultLogger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
 import ITransport from './../../interfaces/iTransport';
 import IDeviceManager from './../../interfaces/iDeviceManager';
+import IDetector from './../../interfaces/IDetector';
+import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
+import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import Locksmith from './../locksmith';
+import CameraEvents from './../../utilitis/events';
+import Detector from './../detector';
+import { EventEmitter } from 'events';
+import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   transport: ITransport;
@@ -11,14 +18,21 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   uvcControlInterface: any;
   logger: DefaultLogger;
   locksmith: Locksmith;
+  discoveryEmitter: EventEmitter;
 
-  constructor(uvcCameraInstance: any, transport: ITransport, uvcControlInterface: any, logger: DefaultLogger) {
+  constructor(
+    uvcCameraInstance: any,
+    transport: ITransport,
+    uvcControlInterface: any,
+    logger: DefaultLogger,
+    cameraDiscoveryEmitter: EventEmitter) {
     super(uvcCameraInstance, uvcControlInterface);
 
     this.transport = transport;
     this.uvcControlInterface = uvcControlInterface;
     this.logger = logger;
     this.locksmith = new Locksmith();
+    this.discoveryEmitter = cameraDiscoveryEmitter;
   }
 
   get api(): Api {
@@ -76,5 +90,30 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   async uptime() {
     return this.api.getUptime();
+  }
+
+  async getUpgrader(): Promise<IDeviceUpgrader> {
+    return new BoxfishUpgrader(this, this.discoveryEmitter, this.logger);
+  }
+
+  async upgrade(opts: UpgradeOpts): Promise<any> {
+    const upgrader = await this.getUpgrader();
+    upgrader.init(opts);
+    upgrader.start();
+    return new Promise((resolve, reject) => {
+      upgrader.once(CameraEvents.UPGRADE_COMPLETE, () => {
+        resolve();
+      });
+      upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
+        reject(reason);
+      });
+      upgrader.once(CameraEvents.TIMEOUT, (reason) => {
+        reject(reason);
+      });
+    });
+  }
+
+  getDetector(): IDetector {
+    return new Detector(this, this.logger);
   }
 }

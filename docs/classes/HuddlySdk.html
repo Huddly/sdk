@@ -1,0 +1,1038 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	      <link rel="stylesheet" href="../styles/style.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li>HuddlySdk</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/index.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+            </p>
+
+
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#emitter">emitter</a>
+                            </li>
+                            <li>
+                                <a href="#logger">logger</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#closeConnection">closeConnection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#initialize">initialize</a>
+                            </li>
+                            <li>
+                                <a href="#setupDeviceDiscoveryListeners">setupDeviceDiscoveryListeners</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#mainDeviceApi">mainDeviceApi</a>
+                                </li>
+                                <li>
+                                    <a href="#deviceApis">deviceApis</a>
+                                </li>
+                                <li>
+                                    <a href="#deviceDiscoveryApi">deviceDiscoveryApi</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(deviceDiscoveryApi: IHuddlyDeviceAPI, deviceApis?: Array<IHuddlyDeviceAPI>, opts?: <a href="../interfaces/SDKOpts.html">SDKOpts</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="93" class="link-to-prism">src/index.ts:93</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of HuddlySdk.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>deviceDiscoveryApi</td>
+                                                  
+                                                        <td>
+                                                                    <code>IHuddlyDeviceAPI</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code><p>The Huddly device-api used for discovering the device.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>deviceApis</td>
+                                                  
+                                                        <td>
+                                                                    <code>Array&lt;IHuddlyDeviceAPI&gt;</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code><p>Optional list of device-apis used for communicating with the device.
+By default it uses the <code>deviceDiscoveryApi</code> parameter as the device-api used for communication.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>opts</td>
+                                                  
+                                                        <td>
+                                                                    <code><a href="../interfaces/SDKOpts.html" target="_self" >SDKOpts</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <code><p>Options used for initializing the sdk. See <code>SDKOpts</code> interface.</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="emitter"></a>
+                        <span class="name">
+                            <b>
+                            emitter
+                            </b>
+                            <a href="#emitter"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>emitter:     <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/index.ts:54</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Event Emitter instance used to fire SDK events such as
+ATTACH and DETACH camera events. For a full list of events
+please see <code>events</code> class.</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="logger"></a>
+                        <span class="name">
+                            <b>
+                            logger
+                            </b>
+                            <a href="#logger"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <code>logger:     <code>DefaultLogger</code>
+</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Type : </i>    <code>DefaultLogger</code>
+
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="62" class="link-to-prism">src/index.ts:62</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Logger instance used to log messages from the SDK.</p>
+</div>
+                    </td>
+                </tr>
+
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+        <h3 id="methods">
+            Methods
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="closeConnection"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            closeConnection
+                            </b>
+                            <a href="#closeConnection"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>closeConnection()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="237" class="link-to-prism">src/index.ts:237</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Closes the communication channels with the camera in use.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns a promise which resolves for
+successful connnection close or rejects otherwise.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="initialize"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Async</span>
+                            initialize
+                            </b>
+                            <a href="#initialize"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                            <span class="modifier-icon icon ion-ios-reset"></span>
+                        <code>initialize()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="226" class="link-to-prism">src/index.ts:226</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Initializes the device discovery api which in turn will fire
+ATTACH events for all cameras attached to the system.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns a promise which resolves for
+successful initialization or rejects otherwise.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="setupDeviceDiscoveryListeners"></a>
+                        <span class="name">
+                            <b>
+                            setupDeviceDiscoveryListeners
+                            </b>
+                            <a href="#setupDeviceDiscoveryListeners"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>setupDeviceDiscoveryListeners()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">src/index.ts:136</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Sets up listeners for ATTACH and DETACH camera events on the
+device discovery api. Will emit instances of <code>IDeviceManager</code>
+when an ATTACH event occurs.</p>
+</div>
+
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+
+
+
+
+            <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="mainDeviceApi"></a>
+                        <span class="name"><b>mainDeviceApi</b><a href="#mainDeviceApi"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>mainDeviceApi()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="169" class="link-to-prism">src/index.ts:169</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Convenience function for getting the main device api
+used for communicating with the camera.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>IHuddlyDeviceAPI</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>mainDeviceApi(mainApi)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="158" class="link-to-prism">src/index.ts:158</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Convenience function for setting the main device api
+used for communicating with the camera.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>mainApi</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="deviceApis"></a>
+                        <span class="name"><b>deviceApis</b><a href="#deviceApis"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>deviceApis()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="192" class="link-to-prism">src/index.ts:192</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Convenience function for getting the list of
+device apis used to establish communication with
+the camera.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>Array&lt;IHuddlyDeviceAPI&gt;</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>deviceApis(deviceApis)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="180" class="link-to-prism">src/index.ts:180</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Convenience function for setting the list of
+device apis which the SDK uses to establish
+communication channels with the camera.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>deviceApis</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="deviceDiscoveryApi"></a>
+                        <span class="name"><b>deviceDiscoveryApi</b><a href="#deviceDiscoveryApi"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>deviceDiscoveryApi()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="214" class="link-to-prism">src/index.ts:214</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Convenience function for getting the device api
+instance used for camera discovery.</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code>IHuddlyDeviceAPI</code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>deviceDiscoveryApi(api)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="202" class="link-to-prism">src/index.ts:202</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Convenience function for setting the device api
+instance used for camera discovery.</p>
+</div>
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>api</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
+import IHuddlyDeviceAPI from &#x27;./interfaces/iHuddlyDeviceAPI&#x27;;
+import DefaultLogger from &#x27;./utilitis/logger&#x27;;
+import DeviceFactory from &#x27;./components/device/factory&#x27;;
+import CameraEvents from &#x27;./utilitis/events&#x27;;
+
+/**
+ * The SDK initialization options.
+ *
+ * @interface SDKOpts
+ */
+interface SDKOpts {
+  /**
+   * Logger instance used to log messages from the SDK.
+   *
+   * @type {*}
+   * @memberof SDKOpts
+   */
+  logger?: any;
+  /**
+   * Optional event emitter instance used to catch
+   * SDK events!
+   * See &#x60;utilitis/events&#x60; class for all possible events.
+   *
+   * @type {EventEmitter}
+   * @memberof SDKOpts
+   */
+  emitter?: EventEmitter;
+
+  /**
+   * @ignore
+   *
+   * @type {EventEmitter}
+   * @memberof SDKOpts
+   */
+  apiDiscoveryEmitter?: EventEmitter;
+}
+
+/**
+ * @export
+ *
+ * @class HuddlySdk
+ * @implements {SDK}
+ */
+class HuddlySdk extends EventEmitter {
+  /**
+   * Event Emitter instance used to fire SDK events such as
+   * ATTACH and DETACH camera events. For a full list of events
+   * please see &#x60;events&#x60; class.
+   *
+   * @type {EventEmitter}
+   * @memberof HuddlySdk
+   */
+  emitter: EventEmitter;
+
+  /**
+   * Logger instance used to log messages from the SDK.
+   *
+   * @type {DefaultLogger}
+   * @memberof HuddlySdk
+   */
+  logger: DefaultLogger;
+
+  /**
+   * @ignore
+   *
+   * @type {EventEmitter}
+   * @memberof HuddlySdk
+   */
+  deviceDiscovery: EventEmitter;
+  /**
+   * @ignore
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
+  _mainDeviceApi: IHuddlyDeviceAPI;
+
+  /**
+   * @ignore
+   *
+   * @type {Array&lt;IHuddlyDeviceAPI&gt;}
+   * @memberof HuddlySdk
+   */
+  _deviceApis: Array&lt;IHuddlyDeviceAPI&gt;;
+
+  /**
+   * @ignore
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
+  _deviceDiscoveryApi: IHuddlyDeviceAPI;
+
+  /**
+   * Creates an instance of HuddlySdk.
+   * @param {IHuddlyDeviceAPI} deviceDiscoveryApi The Huddly device-api used for discovering the device.
+   * @param {Array&lt;IHuddlyDeviceAPI&gt;} [deviceApis] Optional list of device-apis used for communicating with the device.
+   * By default it uses the &#x60;deviceDiscoveryApi&#x60; parameter as the device-api used for communication.
+   * @param {SDKOpts} [opts] Options used for initializing the sdk. See &#x60;SDKOpts&#x60; interface.
+   * @memberof HuddlySdk
+   */
+  constructor(deviceDiscoveryApi: IHuddlyDeviceAPI, deviceApis?: Array&lt;IHuddlyDeviceAPI&gt;, opts?: SDKOpts) {
+    super();
+    if (!deviceDiscoveryApi) {
+      throw new Error(&#x27;A default device api should be provided to the sdk!&#x27;);
+    }
+
+    if (!deviceApis || deviceApis.length &#x3D;&#x3D;&#x3D; 0) {
+      this.mainDeviceApi &#x3D; deviceDiscoveryApi;
+      this._deviceApis &#x3D; new Array&lt;IHuddlyDeviceAPI&gt;();
+      this._deviceApis.push(deviceDiscoveryApi);
+    } else {
+      this._mainDeviceApi &#x3D; deviceApis[0];
+      this._deviceApis &#x3D; deviceApis;
+    }
+
+    const options &#x3D; opts ? opts : {};
+
+    this.deviceDiscovery &#x3D; options.apiDiscoveryEmitter ? options.apiDiscoveryEmitter : new EventEmitter();
+    this.emitter &#x3D; options.emitter || this;
+    this._deviceDiscoveryApi &#x3D; deviceDiscoveryApi;
+    this.logger &#x3D; options.logger || new DefaultLogger(true);
+
+    this.setupDeviceDiscoveryListeners();
+    this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
+  }
+
+  /**
+   * Sets up listeners for ATTACH and DETACH camera events on the
+   * device discovery api. Will emit instances of &#x60;IDeviceManager&#x60;
+   * when an ATTACH event occurs.
+   *
+   * @memberof HuddlySdk
+   */
+  setupDeviceDiscoveryListeners(): void {
+    this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) &#x3D;&gt; {
+      if (d) {
+        const cameraManager &#x3D; await DeviceFactory.getDevice(d.productId,
+          this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
+        this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+      }
+    });
+
+    this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
+      if (d) {
+        this.emitter.emit(CameraEvents.DETACH, d);
+      }
+    });
+  }
+
+  /**
+   * Convenience function for setting the main device api
+   * used for communicating with the camera.
+   *
+   * @memberof HuddlySdk
+   */
+  set mainDeviceApi(mainApi: IHuddlyDeviceAPI) {
+    this._mainDeviceApi &#x3D; mainApi;
+  }
+
+  /**
+   * Convenience function for getting the main device api
+   * used for communicating with the camera.
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
+  get mainDeviceApi(): IHuddlyDeviceAPI {
+    return this._mainDeviceApi;
+  }
+
+  /**
+   * Convenience function for setting the list of
+   * device apis which the SDK uses to establish
+   * communication channels with the camera.
+   *
+   * @memberof HuddlySdk
+   */
+  set deviceApis(deviceApis: Array&lt;IHuddlyDeviceAPI&gt;) {
+    this._deviceApis &#x3D; deviceApis;
+  }
+
+  /**
+   * Convenience function for getting the list of
+   * device apis used to establish communication with
+   * the camera.
+   *
+   * @type {Array&lt;IHuddlyDeviceAPI&gt;}
+   * @memberof HuddlySdk
+   */
+  get deviceApis(): Array&lt;IHuddlyDeviceAPI&gt; {
+    return this._deviceApis;
+  }
+
+  /**
+   * Convenience function for setting the device api
+   * instance used for camera discovery.
+   *
+   * @memberof HuddlySdk
+   */
+  set deviceDiscoveryApi(api: IHuddlyDeviceAPI) {
+    this._deviceDiscoveryApi &#x3D; api;
+    this.deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
+  }
+
+  /**
+   * Convenience function for getting the device api
+   * instance used for camera discovery.
+   *
+   * @type {IHuddlyDeviceAPI}
+   * @memberof HuddlySdk
+   */
+  get deviceDiscoveryApi(): IHuddlyDeviceAPI {
+    return this._deviceDiscoveryApi;
+  }
+
+  /**
+   * Initializes the device discovery api which in turn will fire
+   * ATTACH events for all cameras attached to the system.
+   *
+   * @returns {Promise&lt;any&gt;} Returns a promise which resolves for
+   * successful initialization or rejects otherwise.
+   * @memberof HuddlySdk
+   */
+  async initialize(): Promise&lt;any&gt; {
+    await this.deviceDiscoveryApi.initialize();
+  }
+
+  /**
+   * Closes the communication channels with the camera in use.
+   *
+   * @returns {Promise&lt;any&gt;} Returns a promise which resolves for
+   * successful connnection close or rejects otherwise.
+   * @memberof HuddlySdk
+   */
+  async closeConnection(): Promise&lt;any&gt; {
+    throw new Error(&#x27;Not implemented!&#x27;);
+  }
+}
+
+export default HuddlySdk;
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'upgrade-status.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+       <script src="../js/menu-wc.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
