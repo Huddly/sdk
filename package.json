@@ -15,7 +15,8 @@
   "author": "Brikend Rama <brikend@huddly.com>",
   "homepage": "http://developer.huddly.com",
   "license": "MIT",
-  "main": "lib/index.js",
+  "main": "./lib/index.js",
+  "types": "./lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "tests"
@@ -34,7 +35,7 @@
   "scripts": {
     "build": "npm run build-ts && npm run tslint",
     "build-web": "npm run build-ts && npm run tslint && yarn webpack -p",
-    "build-ts": "tsc",
+    "build-ts": "tsc --declaration",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
     "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
@@ -45,7 +46,6 @@
   "devDependencies": {
     "@compodoc/compodoc": "^1.1.5",
     "@types/mocha": "^5.2.5",
-    "@types/node": "^10.12.0",
     "chai": "^3.5.0",
     "chai-as-promised": "^6.0.0",
     "chai-things": "^0.2.0",
@@ -61,13 +61,14 @@
     "ts-loader": "^5.2.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",
-    "typescript": "^3.2.1",
     "webpack": "^4.21.0",
     "webpack-cli": "^3.1.2"
   },
   "dependencies": {
+    "@types/node": "^10.12.12",
     "jszip": "^3.1.5",
     "msgpack-lite": "^0.1.26",
-    "p-queue": "^3.0.0"
+    "p-queue": "^3.0.0",
+    "typescript": "^3.2.1"
   }
 }
