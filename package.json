@@ -15,18 +15,19 @@
   "author": "Brikend Rama <brikend@huddly.com>",
   "homepage": "http://developer.huddly.com",
   "license": "MIT",
-  "main": "./lib/index.js",
-  "types": "./lib/index.d.ts",
+  "main": "./lib/src/index.js",
+  "types": "./lib/src/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "tests"
   },
   "files": [
-    "lib"
+    "lib",
+    "README.md"
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
-    "access": "private"
+    "access": "restricted"
   },
   "repository": {
     "type": "git",
