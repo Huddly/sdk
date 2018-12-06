@@ -26,7 +26,7 @@
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
-    "access": "public"
+    "access": "private"
   },
   "repository": {
     "type": "git",
@@ -38,7 +38,7 @@
     "build-ts": "tsc --declaration",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
-    "compodoc": "./node_modules/.bin/compodoc -p tsconfig.json -w -s"
+    "compodoc": "compodoc -p tsconfig.json -w -s"
   },
   "bugs": {
     "url": "https://github.com/Huddly/sdk/issues"
