@@ -1,6 +1,7 @@
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import { EventEmitter } from 'events';
 import IDeviceManager from './../../interfaces/iDeviceManager';
+import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import { BoxfishPackage, IMAGE_TYPES } from './boxfishpkg';
 import semver from 'semver';
 import Locksmith from './../locksmith';
@@ -27,7 +28,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     this.locksmith = new Locksmith();
   }
 
-  init(opts: any): void {
+  init(opts: UpgradeOpts): void {
     this._boxfishPackage = new BoxfishPackage(opts.file);
     this.options.flash_fsbl = opts.flash_fsbl;
     this.options.file = opts.file;

@@ -25,7 +25,8 @@
     ]
   },
   "include": [
-    "./src",
-    "./tests/**/*"
+    "./src/interfaces/*",
+    "./src/*",
+    "tests/**/*"
   ]
 }

@@ -3,7 +3,13 @@ import DefaultLogger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
 import ITransport from './../../interfaces/iTransport';
 import IDeviceManager from './../../interfaces/iDeviceManager';
+import IDetector from './../../interfaces/IDetector';
+import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
+import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import Locksmith from './../locksmith';
+import CameraEvents from './../../utilitis/events';
+import { EventEmitter } from 'events';
+import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;
 
@@ -26,17 +32,27 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   transport: ITransport;
   api: Api;
   uvcControlInterface: any;
+  hidApi: any;
   logger: DefaultLogger;
   locksmith: Locksmith;
   softwareVersion: any;
+  discoveryEmitter: EventEmitter;
 
-  constructor(uvcCameraInstance: any, transport: ITransport, uvcControlInterface: any, logger: DefaultLogger) {
+  constructor(
+    uvcCameraInstance: any,
+    transport: ITransport,
+    uvcControlInterface: any,
+    hidAPI: any,
+    logger: DefaultLogger,
+    cameraDiscoveryEmitter: EventEmitter) {
     super(uvcCameraInstance, uvcControlInterface);
 
     this.transport = transport;
     this.uvcControlInterface = uvcControlInterface;
+    this.hidApi = hidAPI;
     this.logger = logger;
     this.locksmith = new Locksmith();
+    this.discoveryEmitter = cameraDiscoveryEmitter;
   }
 
   async initialize(): Promise<void> {
@@ -205,5 +221,30 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
 
   async uptime() {
     return this.api.getUptime();
+  }
+
+  async getUpgrader(): Promise<IDeviceUpgrader> {
+    return new HuddlyGoUpgrader(this, this.discoveryEmitter, this.hidApi, this.logger);
+  }
+
+  async upgrade(opts: UpgradeOpts): Promise<any> {
+    const upgrader = await this.getUpgrader();
+    upgrader.init(opts);
+    upgrader.start();
+    return new Promise((resolve, reject) => {
+      upgrader.once(CameraEvents.UPGRADE_COMPLETE, () => {
+        resolve();
+      });
+      upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
+        reject(reason);
+      });
+      upgrader.once(CameraEvents.TIMEOUT, (reason) => {
+        reject(reason);
+      });
+    });
+  }
+
+  getDetector(): IDetector {
+    throw new Error('Detections are not supported on Huddly GO camera!');
   }
 }

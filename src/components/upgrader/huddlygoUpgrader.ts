@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
+import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import CameraEvents from './../../utilitis/events';
 import JSZip from 'jszip';
 
@@ -37,7 +38,7 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     this.logger = logger;
   }
 
-  init(opts: any): void {
+  init(opts: UpgradeOpts): void {
     this.options.file = opts.file;
     if (opts.bootTimeout) {
       this.bootTimeout = opts.bootTimeout * 1000;

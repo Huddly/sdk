@@ -1,0 +1,87 @@
+@import "./reset.css";
+@import "./bootstrap.min.css";
+@import "./bootstrap-card.css";
+@import "./font-awesome.min.css";
+@import "./compodoc.css";
+@import "./prism.css";
+@import "./tablesort.css";
+
+@font-face {
+	font-family: 'messina';
+	src: url('/assets/font/MessinaSansWeb-Regular.eot'); // IE9
+	src: url('/assets/font/MessinaSansWeb-Regular.eot?#iefix') format('embedded-opentype'), // IE6-8
+		 url('/assets/font/MessinaSansWeb-Regular.woff'), // Modern
+		 url('/assets/font/MessinaSansWeb-Regular.ttf'); // Safari, Android, iOS
+	font-weight: $regular;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'messina';
+	src: url('/assets/font/MessinaSansWeb-Bold.eot'); // IE9
+	src: url('/assets/font/MessinaSansWeb-Bold.eot?#iefix') format('embedded-opentype'), // IE6-8
+	url('/assets/font/MessinaSansWeb-Bold.woff'), // Modern
+	url('/assets/font/MessinaSansWeb-Bold.ttf'); // Safari, Android, iOS
+	font-weight: $bold;
+	font-style: normal;
+}
+
+@font-face {
+	font-family: 'messina';
+	src: url('/assets/font/MessinaSansWeb-RegularItalic.eot'); // IE9
+	src: url('/assets/font/MessinaSansWeb-RegularItalic.eot?#iefix') format('embedded-opentype'), // IE6-8
+	url('/assets/font/MessinaSansWeb-RegularItalic.woff'), // Modern
+	url('/assets/font/MessinaSansWeb-RegularItalic.ttf'); // Safari, Android, iOS
+	font-weight: $regular;
+	font-style: italic;
+}
+
+@font-face {
+	font-family: 'messina';
+	src: url('/assets/font/MessinaSans-BoldItalic.otf') format('opentype');
+	font-weight: $bold;
+	font-style: italic;
+}
+
+body {
+	font-family: messina, arial;
+	font-size: 16px;
+	font-weight: regular;
+}
+
+h1, h2.main-title-size {
+	font-weight: bold;
+  font-size: 32px;
+}
+
+strong, .bol {
+	font-weight: bold;
+}
+
+.reg {
+	font-weight: regular;
+}
+
+em {
+	font-style: italic;
+}
+
+.huddly-logo {
+	margin: auto;
+	width: 200px;
+}
+
+
+.menu {
+	background-color: black;
+	color: white;
+}
+
+.menu ul.list .link a, .menu ul.list .chapter a, .menu ul.list .title a {
+	color: white;
+}
+
+.menu ul.list li a.active {
+	color: white;
+	text-decoration: underline;
+}

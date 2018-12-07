@@ -137,13 +137,18 @@ describe('DeviceFactory', () => {
   describe('#getDevice', () => {
     let getTransportImpl;
     let getUvcCtrl;
+    let getHidInterface;
+    let discoveryEmitter;
     beforeEach(() => {
       getTransportImpl = sinon.stub(DeviceFactory, 'getTransportImplementation');
       getUvcCtrl = sinon.stub(DeviceFactory, 'getUVCControlInterface');
+      getHidInterface = sinon.stub(DeviceFactory, 'getHIDInterface').resolves();
+      discoveryEmitter = sinon.createStubInstance(EventEmitter);
     });
     afterEach(() => {
       getTransportImpl.restore();
       getUvcCtrl.restore();
+      getHidInterface.restore();
     });
 
     it('should throw error for unknown product ids', async () => {
@@ -155,7 +160,13 @@ describe('DeviceFactory', () => {
       try {
         getTransportImpl.returns(Promise.resolve());
         getUvcCtrl.returns(Promise.resolve());
-        await DeviceFactory.getDevice(1231232, undefined, dummyDeviceApis[0], dummyDeviceApis, dummyNonHuddlyDevice);
+        await DeviceFactory.getDevice(
+          1231232,
+          undefined,
+          dummyDeviceApis[0],
+          dummyDeviceApis,
+          dummyNonHuddlyDevice,
+          discoveryEmitter);
       } catch (e) {
         expect(e.message).to.equal('Unsupported Device. USB ProductId: 1231232');
       }
@@ -174,6 +185,7 @@ describe('DeviceFactory', () => {
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyIQDevice,
+          discoveryEmitter,
           false);
         expect(deviceManager).to.be.instanceof(Boxfish);
       });
@@ -192,6 +204,7 @@ describe('DeviceFactory', () => {
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyGODevice,
+          discoveryEmitter,
           false);
         expect(deviceManager).to.be.instanceof(HuddlyGo);
       });

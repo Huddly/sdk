@@ -1,8 +1,11 @@
 import ITransport from './iTransport';
 import Api from './../components/api';
+import IDeviceUpgrader from './IDeviceUpgrader';
+import IDetector from './IDetector';
+import UpgradeOpts from './IUpgradeOpts';
 
 /**
- * Class used to interact with specific Huddly Devices.
+ * Interface used for performing actions on the camera.
  *
  * @export
  * @interface IDeviceManager
@@ -83,4 +86,31 @@ export default interface IDeviceManager {
    * @memberof IDeviceManager
    */
   reboot(mode?: string): Promise<void>;
+
+  /**
+   * Get an `IDeviceUpgrader` object for the given device manager which can
+   * be used to perform camera upgrades.
+   *
+   * @returns {Promise<IDeviceUpgrader>} Returns a promise with an instance of `IDeviceUpgrader` interface used for upgrading the camera.
+   * @memberof HuddlySdk
+   */
+  getUpgrader(): Promise<IDeviceUpgrader>;
+
+  /**
+   * Convenience function for performing camera upgrade.
+   *
+   * @param {UpgradeOpts} opts Camera upgrade options
+   * @returns {Promise <any>} Returns a promise which resolves for a
+   * successful upgrade or rejects otherwise.
+   * @memberof IDeviceManager
+   */
+  upgrade(opts: UpgradeOpts): Promise <any>;
+
+  /**
+   * Returns a new instance of the Detector class.
+   *
+   * @returns {IDetector} Returns a new instance of the Detector class.
+   * @memberof HuddlySdk
+   */
+  getDetector(): IDetector;
 }

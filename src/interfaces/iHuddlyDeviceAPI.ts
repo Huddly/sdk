@@ -4,9 +4,9 @@ import IDeviceDiscovery from './iDeviceDiscovery';
 import ITransport from './iTransport';
 
 /**
- * Class used to manage, operate and communicate with a Huddly device.
+ * Interface used to manage, operate and communicate with a Huddly device.
  *
- * @export
+ * @ignore
  * @interface IHuddlyDeviceAPI
  */
 export default interface IHuddlyDeviceAPI {

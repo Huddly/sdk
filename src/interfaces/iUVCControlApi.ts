@@ -1,7 +1,7 @@
 /**
- * Class that performs standard UVC-XU control commands on the device.
+ * Interface used to perform standard UVC-XU control commands on the device.
  *
- * @export
+ * @ignore
  * @interface IUVCControls
  */
 export default interface IUVCControls {
