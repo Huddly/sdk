@@ -7,19 +7,21 @@ const meetingRoomName = process.env.HUDDLY_MEETING_ROOM || 'TEST_ROOM';
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(opts, usbApi, [usbApi]);
+const sdk = new HuddlySdk(usbApi, [usbApi]);
 
 async function init() {
-  await sdk.initialize();
+  await sdk.init();
 
-  const detector = await sdk.getDetector(cameraManager);
-  await detector.initialize();
-
-  detector.on('detection', detections => {
-    trackPeopleCount(meetingRoomName, detections.length);
+  sdk.on('ATTACH', (cameraManager) => {
+    const detector = await cameraManager.getDetector();
+    await detector.init();
+  
+    detector.on('detection', detections => {
+      trackPeopleCount(meetingRoomName, detections.length);
+    });
+  
+    detector.start();
   });
-
-  detector.start();
 }
 
 init();

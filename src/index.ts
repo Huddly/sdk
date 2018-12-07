@@ -223,7 +223,7 @@ class HuddlySdk extends EventEmitter {
    * successful initialization or rejects otherwise.
    * @memberof HuddlySdk
    */
-  async initialize(): Promise<any> {
+  async init(): Promise<any> {
     await this.deviceDiscoveryApi.initialize();
   }
 

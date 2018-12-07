@@ -1,5 +1,5 @@
 
-<img class="huddly-logo" src="/assets/imgs/huddly.ico" />
+<img class="huddly-logo" width="200px" height="200px" src="https://developer.huddly.io/assets/imgs/huddly.ico" />
 
 # Huddly Software Development Kit (SDK)
 
@@ -35,7 +35,7 @@ sdk.on('ATTACH', (d) => {
 then initialize it
 
 ```javascript
-sdk.initialize();
+sdk.init();
 ```
 
 Then you should be good to go, try it should print the camera information for the attached camera.
@@ -47,6 +47,6 @@ Then you should be good to go, try it should print the camera information for th
 ## Documentation
 For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager interface.
 
- - [SDK](classes/HuddlySdk.html)
- - [CameraManager](interfaces/IDeviceManager.html)
- - [Detector](interfaces/IDetector.html)
+ - [SDK](https://developer.huddly.io/classes/HuddlySdk.html)
+ - [CameraManager](https://developer.huddly.io/interfaces/IDeviceManager.html)
+ - [Detector](https://developer.huddly.io/interfaces/IDetector.html)

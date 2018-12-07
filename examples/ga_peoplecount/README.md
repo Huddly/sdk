@@ -18,35 +18,38 @@ const meetingRoomName = process.env.HUDDLY_MEETING_ROOM || 'TEST_ROOM';
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(opts, usbApi, [usbApi]);
+const sdk = new HuddlySdk(usbApi, [usbApi]);
 
 async function init() {
-  await sdk.initialize();
+  await sdk.init();
 
-  const detector = await sdk.getDetector(cameraManager);
-  await detector.initialize();
-
-  detector.on('detection', detections => {
-    console.log('Number of people detected', detections.length);
+  sdk.on('ATTACH', (cameraManager) => {
+    const detector = await cameraManager.getDetector();
+    await detector.init();
+  
+    detector.on('detection', detections => {
+      console.log('Number of people detected', detections.length);
+    });
+  
+    detector.start();
   });
-
-  detector.start();
 }
 
 init();
 ```
-
-First we need to setup the sdk, it will automatically connect to the camera, then we initialize the detector so we get a detection object.
+First we need to setup the sdk and when the camera is attached, then we initialize the detector so we get a detection object.
 
 ```javascript
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(opts, usbApi, [usbApi]);
-await sdk.initialize();
+const sdk = new HuddlySdk(usbApi, [usbApi]);
+await sdk.init();
 
-const detector = await sdk.getDetector(cameraManager);
-await detector.initialize();
+sdk.on('ATTACH', (cameraManager) => {
+  const detector = await cameraManager.getDetector();
+  await detector.init();
+});
 ```
 
 We then start listening to incoming detections and count them, and finally we start the detector.
@@ -121,6 +124,7 @@ You can find more information on google analytics integration [here](https://clo
 ## Putting it together
 
 ```javascript
+const trackPeopleCount = require('./tracker');
 const HuddlyDeviceAPIUSB = require('@huddly/device-api-usb').default;
 const HuddlySdk = require('@huddly/sdk').default;
 
@@ -129,19 +133,21 @@ const meetingRoomName = process.env.HUDDLY_MEETING_ROOM || 'TEST_ROOM';
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(opts, usbApi, [usbApi]);
+const sdk = new HuddlySdk(usbApi, [usbApi]);
 
 async function init() {
-  await sdk.initialize();
+  await sdk.init();
 
-  const detector = await sdk.getDetector(cameraManager);
-  await detector.initialize();
-
-  detector.on('detection', detections => {
-    trackPeopleCount(meetingRoomName, detections.length);
+  sdk.on('ATTACH', (cameraManager) => {
+    const detector = await cameraManager.getDetector();
+    await detector.init();
+  
+    detector.on('detection', detections => {
+      trackPeopleCount(meetingRoomName, detections.length);
+    });
+  
+    detector.start();
   });
-
-  detector.start();
 }
 
 init();

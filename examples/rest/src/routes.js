@@ -26,7 +26,6 @@ router.get('/info', async (ctx) => {
 
 router.put('/detector/start', async (ctx) => {
   try {
-    await camera.prepareAutozoom();
     ctx.body = await camera.startAutozoom();
   } catch (e) {
     if (e instanceof camera.SDK.CameraNotFoundError) {

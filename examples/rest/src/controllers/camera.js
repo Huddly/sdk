@@ -2,12 +2,11 @@ import HuddlyDeviceAPIUSB from '@huddly/device-api-usb';
 import HuddlySdk from '@huddly/sdk';
 
 // Initialize the SDK
-const opts = {};
 // Create instances of device-apis you want to use
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(opts, usbApi, [usbApi]);
+const sdk = new HuddlySdk(usbApi, [usbApi]);
 
 let cameraManager;
 // Setup Attach/Detach Events
@@ -22,7 +21,7 @@ sdk.on('DETACH', () => {
 init();
 
 async function init() {
-  await sdk.initialize();
+  await sdk.init();
 }
 
 async function getInfo() {
@@ -51,7 +50,8 @@ function setupFramerListener() {
 
 async function startAutozoom() {
   if (!detector) {
-    detector = await sdk.getDetector(cameraManager);
+    detector = await cameraManager.getDetector();
+    await detector.init();
   }
 
   if (detector) {
@@ -65,20 +65,6 @@ async function startAutozoom() {
     }
   } else {
     return { "error": 'Detector not initialized!' };
-  }
-}
-
-async function prepareAutozoom() {
-  if (cameraManager) {
-    try {
-      detector = await sdk.getDetector(cameraManager);
-      await sdk.initialize();
-      return { "status": "blob uploaded and autozoom started" };
-    } catch (e) {
-      return { "error": e };
-    }
-  } else {
-    return { "error": 'Camera manager not initialized! Cannot initialize detector!' };
   }
 }
 
@@ -107,7 +93,7 @@ let upgradeState;
 async function upgrade({ file }) {
   if (cameraManager) {
     try {
-      const upgradePromise = sdk.upgrade(cameraManager, {
+      const upgradePromise = cameraManager.upgrade({
         file,
       });
       upgradeState = 'in progress';
@@ -133,7 +119,6 @@ function getUpgradeStatus() {
 
 module.exports = {
   getInfo,
-  prepareAutozoom,
   startAutozoom,
   stopAutozoom,
   detect,

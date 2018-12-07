@@ -130,12 +130,12 @@ describe('HuddlySDK', () => {
     });
   });
 
-  describe('#initialize', () => {
+  describe('#init', () => {
     it('should call initialize on the device discovery api', async () => {
       nodeusbDeviceApi.initialize.resolves();
 
       const sdk = new HuddlySdk(nodeusbDeviceApi, [nodeusbDeviceApi], {});
-      await sdk.initialize();
+      await sdk.init();
       expect(nodeusbDeviceApi.initialize.callCount).to.equals(1);
     });
   });

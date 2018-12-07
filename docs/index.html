@@ -30,7 +30,7 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<img class="huddly-logo" src="/assets/imgs/huddly.ico" />
+<img class="huddly-logo" width="200px" height="200px" src="https://developer.huddly.io/assets/imgs/huddly.ico" />
 
 <h1 id="huddly-software-development-kit-sdk-">Huddly Software Development Kit (SDK)</h1>
 <h2 id="get-started">Get started</h2>
@@ -49,13 +49,13 @@ let cameraManager;
 sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
   cameraManager = d;
 });</code></pre></div><p>then initialize it</p>
-<div><pre class="line-numbers"><code class="language-javascript">sdk.initialize();</code></pre></div><p>Then you should be good to go, try it should print the camera information for the attached camera.</p>
+<div><pre class="line-numbers"><code class="language-javascript">sdk.init();</code></pre></div><p>Then you should be good to go, try it should print the camera information for the attached camera.</p>
 <div><pre class="line-numbers"><code class="language-javascript">  cameraManager.getInfo().then(console.log);</code></pre></div><h2 id="documentation">Documentation</h2>
 <p>For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager interface.</p>
 <ul>
-<li><a href="classes/HuddlySdk.html">SDK</a></li>
-<li><a href="interfaces/IDeviceManager.html">CameraManager</a></li>
-<li><a href="interfaces/IDetector.html">Detector</a></li>
+<li><a href="https://developer.huddly.io/classes/HuddlySdk.html">SDK</a></li>
+<li><a href="https://developer.huddly.io/interfaces/IDeviceManager.html">CameraManager</a></li>
+<li><a href="https://developer.huddly.io/interfaces/IDetector.html">Detector</a></li>
 </ul>
 
 

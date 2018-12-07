@@ -114,7 +114,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#initialize">initialize</a>
+                                <a href="#init">init</a>
                             </li>
                             <li>
                                 <a href="#setupDeviceDiscoveryListeners">setupDeviceDiscoveryListeners</a>
@@ -387,20 +387,20 @@ successful connnection close or rejects otherwise.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="initialize"></a>
+                        <a name="init"></a>
                         <span class="name">
                             <b>
                                 <span class="modifier">Async</span>
-                            initialize
+                            init
                             </b>
-                            <a href="#initialize"><span class="icon ion-ios-link"></span></a>
+                            <a href="#init"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
                             <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>initialize()</code>
+                        <code>init()</code>
                     </td>
                 </tr>
 
@@ -964,7 +964,7 @@ class HuddlySdk extends EventEmitter {
    * successful initialization or rejects otherwise.
    * @memberof HuddlySdk
    */
-  async initialize(): Promise&lt;any&gt; {
+  async init(): Promise&lt;any&gt; {
     await this.deviceDiscoveryApi.initialize();
   }
 
