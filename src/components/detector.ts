@@ -3,13 +3,32 @@ import IDetector from './../interfaces/IDetector';
 import IDeviceManager from './../interfaces/iDeviceManager';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
+import fetch from 'node-fetch';
 
+/**
+ * Detector class used to configure genius framing on the camera.
+ *
+ * @export
+ * @class Detector
+ * @extends {EventEmitter}
+ * @implements {IDetector}
+ */
 export default class Detector extends EventEmitter implements IDetector {
   _deviceManager: IDeviceManager;
   _logger: any;
   _predictionHandler: any;
   _framingHandler: any;
+  _defaultBlobURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/huddly_az_v8_ncsdk_02_08.blob';
+  _defaultConfigURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/config.json';
 
+
+  /**
+   * Creates an instance of Detector.
+   * @param {IDeviceManager} manager An instance of the IDeviceManager (for example
+   * the Boxfish implementation of IDeviceManager) for communicating with the device.
+   * @param {*} logger Logger class for logging messages produced from the detector.
+   * @memberof Detector
+   */
   constructor(manager: IDeviceManager, logger: any) {
     super();
     this._deviceManager = manager;
@@ -27,7 +46,45 @@ export default class Detector extends EventEmitter implements IDetector {
     };
   }
 
+  /**
+   * Convenience function for setting up the camera
+   * for starting/stopping genius framing. Should be
+   * called before any other methods.
+   *
+   * @returns {Promise<any>} Returns a promise which
+   * resolves in case the detector init is completed
+   * otherwise it rejects with a rejection message!
+   * @memberof Detector
+   */
+  async init(): Promise<any> {
+    const status = await this.autozoomStatus();
+    if (!status['network-configured']) {
+      return new Promise((resolve, reject) => {
+        fetch(this._defaultBlobURL)
+          .then(res => res.buffer())
+          .then(buffer => this.uploadBlob(buffer)
+            .then(() => fetch(this._defaultConfigURL)
+              .then(configRes => configRes.json())
+              .then(configJson => this.setDetectorConfig(configJson)
+                .then(() => resolve())
+                .catch(setConfigErr => reject(setConfigErr)))
+              .catch(fetchConfigErr => reject(fetchConfigErr)))
+            .catch(uploadBlobErr => reject(uploadBlobErr)))
+          .catch(fetchBlobErr => reject(fetchBlobErr));
+      });
+    }
 
+    return Promise.resolve();
+  }
+
+  /**
+   * Starts genius framing on the camera and sets up
+   * detection and framing events that can be used to
+   * listen to.
+   *
+   * @returns {Promise<void>} Void Promise.
+   * @memberof Detector
+   */
   async start(): Promise<void> {
     this._logger.warn('Start cnn');
     const status = await this.autozoomStatus();
@@ -48,6 +105,13 @@ export default class Detector extends EventEmitter implements IDetector {
     }
   }
 
+  /**
+   * Stops genius framing on the camera and unregisters
+   * the listeners for detection and framing information
+   *
+   * @returns {Promise<void>} Void Promise.
+   * @memberof Detector
+   */
   async stop(): Promise<void> {
     this._logger.warn('Stop cnn');
     const status = await this.autozoomStatus();
@@ -60,6 +124,14 @@ export default class Detector extends EventEmitter implements IDetector {
     this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
   }
 
+  /**
+   * @ignore
+   * Uploads the detector blob to the camera.
+   *
+   * @param {Buffer} blobBuffer The blob buffer to be uploaded to the camera.
+   * @returns {Promise<void>} Void Promise.
+   * @memberof Detector
+   */
   async uploadBlob(blobBuffer: Buffer): Promise<void> {
     try {
       const status = await this.autozoomStatus();
@@ -81,6 +153,14 @@ export default class Detector extends EventEmitter implements IDetector {
     }
   }
 
+  /**
+   * @ignore
+   * Uploads the configuration file for the detector.
+   *
+   * @param {JSON} config JSON file representing the detector configuration.
+   * @returns {Promise<void>} Void Promise.
+   * @memberof Detector
+   */
   async setDetectorConfig(config: JSON): Promise<void> {
     try {
       this._logger.warn('sending detector config.');
@@ -97,6 +177,15 @@ export default class Detector extends EventEmitter implements IDetector {
     }
   }
 
+  /**
+   * @ignore
+   * Uploads the framing configuration file on the camera for using
+   * new framing ruleset.
+   *
+   * @param {JSON} config JSON file representing the framing configuration.
+   * @returns {Promise<void>} Void Promise.
+   * @memberof Detector
+   */
   async uploadFramingConfig(config: JSON): Promise<void> {
     try {
       await this._deviceManager.api.sendAndReceive(Api.encode(config),
@@ -111,6 +200,16 @@ export default class Detector extends EventEmitter implements IDetector {
     }
   }
 
+  /**
+   * Convenience function that is used to fetch the status of
+   * genius framing on the camera. Includes information such as
+   * whether genius framing is running, the time passed since it
+   * is enabled and so on.
+   *
+   * @returns {Promise<any>} Returns an object with the status properties
+   * and values.
+   * @memberof Detector
+   */
   async autozoomStatus(): Promise<any> {
     try {
       const statusReply = await this._deviceManager.api.sendAndReceive(Buffer.alloc(0),
@@ -124,8 +223,4 @@ export default class Detector extends EventEmitter implements IDetector {
       throw e;
     }
   }
-
-  // async getFraming() {
-  //   return this.api.receive('autozoom/framing');
-  // }
 }

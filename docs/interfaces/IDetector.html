@@ -89,25 +89,19 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                    <a href="#init">init</a>
+                                </li>
+                                <li>
                                     <a href="#on">on</a>
                                 </li>
                                 <li>
                                     <a href="#once">once</a>
                                 </li>
                                 <li>
-                                    <a href="#setDetectorConfig">setDetectorConfig</a>
-                                </li>
-                                <li>
                                     <a href="#start">start</a>
                                 </li>
                                 <li>
                                     <a href="#stop">stop</a>
-                                </li>
-                                <li>
-                                    <a href="#uploadBlob">uploadBlob</a>
-                                </li>
-                                <li>
-                                    <a href="#uploadFramingConfig">uploadFramingConfig</a>
                                 </li>
                             </ul>
                         </td>
@@ -121,6 +115,56 @@
         <h3 id="methods">
             Methods
         </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="init"></a>
+                        <span class="name">
+                            <b>
+                            init
+                            </b>
+                            <a href="#init"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>init()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/interfaces/IDetector.ts:19</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Convenience function for setting up the camera
+for starting/stopping genius framing. Should be
+called before any other methods.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns a promise which
+resolves in case the detector init is completed
+otherwise it rejects with a rejection message!</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -143,7 +187,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/interfaces/IDetector.ts:61</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="77" class="link-to-prism">src/interfaces/IDetector.ts:77</a></div>
                             </td>
                         </tr>
 
@@ -237,7 +281,7 @@ detector events together with all the other camera events can be found in the <c
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/interfaces/IDetector.ts:72</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/interfaces/IDetector.ts:88</a></div>
                             </td>
                         </tr>
 
@@ -313,82 +357,6 @@ the first time the message is emitted from the <code>Detector</code> implementat
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="setDetectorConfig"></a>
-                        <span class="name">
-                            <b>
-                            setDetectorConfig
-                            </b>
-                            <a href="#setDetectorConfig"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>setDetectorConfig(config: JSON)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/interfaces/IDetector.ts:41</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Uploads the detector configuration.</p>
-</div>
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>config</td>
-                                                        <td>
-                                                                    <code>JSON</code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                        <td>
-                                                                <code><p>JSON representation of the detector configuration file.</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
-
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
                         <a name="start"></a>
                         <span class="name">
                             <b>
@@ -407,7 +375,7 @@ the first time the message is emitted from the <code>Detector</code> implementat
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/interfaces/IDetector.ts:14</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/interfaces/IDetector.ts:27</a></div>
                             </td>
                         </tr>
 
@@ -448,7 +416,7 @@ on the camera and register for detection events.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/interfaces/IDetector.ts:22</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="35" class="link-to-prism">src/interfaces/IDetector.ts:35</a></div>
                             </td>
                         </tr>
 
@@ -467,180 +435,58 @@ and unregister from getting detection events.</p>
                 </tr>
             </tbody>
         </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="uploadBlob"></a>
-                        <span class="name">
-                            <b>
-                            uploadBlob
-                            </b>
-                            <a href="#uploadBlob"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>uploadBlob(blobBuffer: Buffer)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="32" class="link-to-prism">src/interfaces/IDetector.ts:32</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Uploads the CNN blob used for detecting people and other
-objects in the field of view on to the camera.</p>
-</div>
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>blobBuffer</td>
-                                                        <td>
-                                                                    <code>Buffer</code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                        <td>
-                                                                <code><p>The Cnn blob as a Buffer</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
-
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="uploadFramingConfig"></a>
-                        <span class="name">
-                            <b>
-                            uploadFramingConfig
-                            </b>
-                            <a href="#uploadFramingConfig"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>uploadFramingConfig(config: JSON)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/interfaces/IDetector.ts:50</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Uploads the framing configuration file on to the camera.</p>
-</div>
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>config</td>
-                                                        <td>
-                                                                    <code>JSON</code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                        <td>
-                                                                <code><p>JSON representation of the framing configuration file.</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
-
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
 </section>
 
 
     </div>
 
     <div class="tab-pane fade " id="c-readme">
-        <p><h2 id="this-is-the-detector-usage">This is the detector usage</h2>
-<div><pre class="line-numbers"><code class="language-none"># For creating a new detector do the following
-detector = await sdk.getDetector(cameraManagerInstance);
-await detector.uploadBlob(blobAsBuffer);
-await detector.setDetectorConfig(detectorConfigFileAsJson);
-await detector.start();</code></pre></div><p>To subscribe for detections you can do the following:</p>
-<div><pre class="line-numbers"><code class="language-none">detector.on(&#39;DETECTIONS`, (detections) =&gt; {
-  // proccess the detection objects
+        <p><h2 id="how-to-use-the-detector-interface-">How to use the detector interface!</h2>
+<p>Below you can find an example on how to get started with Genius Framing on IQ. Follow the steps below for configuring Genius Framing on the camera
+and subscribing for detection and framing information!</p>
+<div><pre class="line-numbers"><code class="language-javascript">/* 
+We suppose that the SDK has been initialized previously
+and the camera is attached and an instance of IDeviceManager
+is created!
+*/
+const HuddlyDetector = await cameraManager.getDetector();
+await detector.init();
+await detector.start();
+
+/*
+In order to subscribe for detection and framing information
+proceed with the following code snippet
+*/
+
+detector.on(&#39;DETECTIONS&#39;, (detectionList) =&gt; {
+  // Process the array
 });
-</code></pre></div><p>To stop autozoom you do the following:</p>
-<div><pre class="line-numbers"><code class="language-none">await detector.stop();</code></pre></div></p>
+
+detector.on(&#39;FRAMING&#39;, (framingInfo) =&gt; {
+  // Process framing info
+});
+
+
+/* To stop Genius Framing on IQ, use the #stop method */
+await detector.stop();
+</code></pre></div></p>
     </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface IDetector {
+
+  /**
+   * Convenience function for setting up the camera
+   * for starting/stopping genius framing. Should be
+   * called before any other methods.
+   *
+   * @returns {Promise&lt;any&gt;} Returns a promise which
+   * resolves in case the detector init is completed
+   * otherwise it rejects with a rejection message!
+   * @memberof IDetector
+   */
+  init(): Promise&lt;any&gt;;
+
   /**
    * Sends a sequence of commands to the camera to start autozoom
    * on the camera and register for detection events.
@@ -658,6 +504,7 @@ await detector.start();</code></pre></div><p>To subscribe for detections you can
   stop(): Promise&lt;void&gt;;
 
   /**
+   * @ignore
    * Uploads the CNN blob used for detecting people and other
    * objects in the field of view on to the camera.
    *
@@ -668,6 +515,7 @@ await detector.start();</code></pre></div><p>To subscribe for detections you can
   uploadBlob(blobBuffer: Buffer): Promise&lt;void&gt;;
 
   /**
+   * @ignore
    * Uploads the detector configuration.
    *
    * @param {JSON} config JSON representation of the detector configuration file.
@@ -677,6 +525,7 @@ await detector.start();</code></pre></div><p>To subscribe for detections you can
   setDetectorConfig(config: JSON): Promise&lt;void&gt;;
 
   /**
+   * @ignore
    * Uploads the framing configuration file on to the camera.
    *
    * @param {JSON} config JSON representation of the framing configuration file.
@@ -732,7 +581,7 @@ await detector.start();</code></pre></div><p>To subscribe for detections you can
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'upgrade-status.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IDetector.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

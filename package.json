@@ -14,7 +14,7 @@
   ],
   "author": "Brikend Rama <brikend@huddly.com>",
   "homepage": "http://developer.huddly.com",
-  "license": "MIT",
+  "license": "UNLICENSED",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
   "directories": {
@@ -39,6 +39,7 @@
     "build-ts": "tsc --declaration",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
+    "publish-package": "npm run build && npm publish",
     "compodoc": "./node_modules/.bin/compodoc -w -p tsconfig.json -s -n 'huddly-sdk' -d 'docs' --minimal --customFavicon 'docs_style/assets/imgs/favicon.ico' --disableGraph --disableInternal --hideGenerator --includesName 'Examples' --includes examples -a docs_style/assets -y docs_style"
   },
   "bugs": {
@@ -69,6 +70,7 @@
     "@types/node": "^10.12.12",
     "jszip": "^3.1.5",
     "msgpack-lite": "^0.1.26",
+    "node-fetch": "^2.3.0",
     "p-queue": "^3.0.0",
     "typescript": "^3.2.1"
   }

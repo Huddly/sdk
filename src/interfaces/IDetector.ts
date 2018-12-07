@@ -5,6 +5,19 @@
  * @interface IDetector
  */
 export default interface IDetector {
+
+  /**
+   * Convenience function for setting up the camera
+   * for starting/stopping genius framing. Should be
+   * called before any other methods.
+   *
+   * @returns {Promise<any>} Returns a promise which
+   * resolves in case the detector init is completed
+   * otherwise it rejects with a rejection message!
+   * @memberof IDetector
+   */
+  init(): Promise<any>;
+
   /**
    * Sends a sequence of commands to the camera to start autozoom
    * on the camera and register for detection events.
@@ -22,6 +35,7 @@ export default interface IDetector {
   stop(): Promise<void>;
 
   /**
+   * @ignore
    * Uploads the CNN blob used for detecting people and other
    * objects in the field of view on to the camera.
    *
@@ -32,6 +46,7 @@ export default interface IDetector {
   uploadBlob(blobBuffer: Buffer): Promise<void>;
 
   /**
+   * @ignore
    * Uploads the detector configuration.
    *
    * @param {JSON} config JSON representation of the detector configuration file.
@@ -41,6 +56,7 @@ export default interface IDetector {
   setDetectorConfig(config: JSON): Promise<void>;
 
   /**
+   * @ignore
    * Uploads the framing configuration file on to the camera.
    *
    * @param {JSON} config JSON representation of the framing configuration file.
