@@ -56,7 +56,7 @@ describe('API', () => {
       const res = await api.sendAndReceiveMessagePack('hello', { receive: 'hi', send: 'hi/send' });
       expect(res).to.equal('Hello World');
       expect(spy.callCount).to.equals(1);
-      expect(spy.firstCall.args[0].indexOf(msgpack.encode('hello'))).to.equal(0);
+      expect(spy.firstCall.args[0].compare(msgpack.encode('hello'))).to.equal(0);
       expect(spy.firstCall.args[1]).to.deep.equals({ receive: 'hi', send: 'hi/send' });
     });
   });
@@ -74,7 +74,7 @@ describe('API', () => {
       expect(transport.clear.callCount).to.equal(2);
       expect(transport.subscribe.firstCall.args[0]).to.equal(commands.receive);
       expect(transport.write.firstCall.args[0]).to.equal(commands.send);
-      expect(transport.write.firstCall.args[1].indexOf(payload)).to.equal(0);
+      expect(transport.write.firstCall.args[1].compare(payload)).to.equal(0);
       expect(reply).to.deep.equals(expectedReply);
       expect(transport.unsubscribe.firstCall.args[0]).to.equal(commands.receive);
     });
@@ -213,8 +213,8 @@ describe('API', () => {
       const msg = { send: 'hello/send', receive: 'hello/reply' };
       sendReceiveStub.returns(Promise.resolve({ message: '', payload: Buffer.alloc(1, 0xa0) }));
       const reply = await api.asyncFileTransfer(msg);
-      expect(reply.indexOf(Buffer.alloc(1, 0xa0))).to.equals(0);
-      expect(sendReceiveStub.firstCall.args[0].indexOf(Buffer.alloc(0))).to.equals(0);
+      expect(reply.compare(Buffer.alloc(1, 0xa0))).to.equals(0);
+      expect(sendReceiveStub.firstCall.args[0].compare(Buffer.alloc(0))).to.equals(0);
       expect(sendReceiveStub.firstCall.args[1]).to.deep.equals(msg);
       expect(sendReceiveStub.firstCall.args[2]).to.deep.equals(5000); // Default timeout on #asyncFileTransfer
     });
@@ -238,13 +238,13 @@ describe('API', () => {
     it('should encode payload argument', () => {
       const encoded = Api.encode('Hello');
       expect(encoded).to.be.instanceof(Buffer);
-      expect(encoded.indexOf(msgpack.encode('Hello'))).to.equals(0);
+      expect(encoded.compare(msgpack.encode('Hello'))).to.equals(0);
     });
 
     it('should return argument when given a buffer', () => {
       const buffer = Buffer.from('test');
       const encoded = Api.encode(buffer);
-      expect(buffer.indexOf(encoded)).to.equals(0);
+      expect(buffer.compare(encoded)).to.equals(0);
     });
   });
 
