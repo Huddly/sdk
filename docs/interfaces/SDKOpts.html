@@ -310,7 +310,7 @@ class HuddlySdk extends EventEmitter {
 
     const options &#x3D; opts ? opts : {};
 
-    this.deviceDiscovery &#x3D; options.apiDiscoveryEmitter ? options.apiDiscoveryEmitter : new EventEmitter();
+    this.deviceDiscovery &#x3D; options.apiDiscoveryEmitter || new EventEmitter();
     this.emitter &#x3D; options.emitter || this;
     this._deviceDiscoveryApi &#x3D; deviceDiscoveryApi;
     this.logger &#x3D; options.logger || new DefaultLogger(true);
