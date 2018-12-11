@@ -23,7 +23,6 @@ router.get('/info', async (ctx) => {
   }
 });
 
-
 router.put('/detector/start', async (ctx) => {
   try {
     ctx.body = await camera.startAutozoom();
@@ -59,38 +58,6 @@ router.get('/detector/detections', async (ctx) => {
   } catch (e) {
     if (e instanceof camera.SDK.CameraNotFoundError) {
       ctx.throw(404, {
-        error_message: e.message
-      });
-    } else {
-      throw e;
-    }
-  }
-});
-
-router.get('/ptz', async (ctx) => {
-  try {
-    ctx.body = await camera.getPtz();
-  } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else {
-      throw e;
-    }
-  }
-});
-
-router.post('/ptz', async (ctx) => {
-  try {
-    ctx.body = await camera.setPtz(ctx.request.body);
-  } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else if (e instanceof RangeError){
-      ctx.throw(400, {
         error_message: e.message
       });
     } else {

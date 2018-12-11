@@ -34,8 +34,8 @@
   },
   "devDependencies": {
     "@babel/register": "^7.0.0",
-    "@huddly/sdk": "^0.1",
-    "@huddly/device-api-usb": "^0.1",
+    "@huddly/sdk": "^0.0.4",
+    "@huddly/device-api-usb": "^0.0.6",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
     "babel-jest": "^23.6.0",

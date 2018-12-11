@@ -6,7 +6,7 @@ import HuddlySdk from '@huddly/sdk';
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(usbApi, [usbApi]);
+const sdk = new HuddlySdk(usbApi);
 
 let cameraManager;
 // Setup Attach/Detach Events
@@ -19,6 +19,15 @@ sdk.on('DETACH', () => {
 });
 
 init();
+
+async function isConnected() {
+  if (cameraManager) {
+    return Promise.resolve();
+  }
+  return new Promise(resolve => {
+    sdk.on('ATTACH', resolve);
+  });
+}
 
 async function init() {
   await sdk.init();
@@ -118,6 +127,7 @@ function getUpgradeStatus() {
 }
 
 module.exports = {
+  isConnected,
   getInfo,
   startAutozoom,
   stopAutozoom,
