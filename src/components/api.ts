@@ -277,8 +277,6 @@ export default class Api {
   }
 
   async eraseErrorLog(): Promise<void> {
-    this.logger.info('Reading error log before erasing..');
-    await this.getErrorLog();
     this.logger.info('Start erasing log');
     await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
