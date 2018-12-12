@@ -17,6 +17,9 @@
   "license": "UNLICENSED",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
+  "engines": {
+    "node": "8.9.4"
+  },
   "directories": {
     "lib": "lib",
     "test": "tests"
