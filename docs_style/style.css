@@ -68,7 +68,9 @@ em {
 
 .huddly-logo {
 	margin: auto;
-	width: 200px;
+	width: 280px;
+	height: auto;
+	margin: 50px auto;
 }
 
 

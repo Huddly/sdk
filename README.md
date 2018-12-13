@@ -1,5 +1,5 @@
 
-<img class="huddly-logo" width="200px" height="200px" src="https://developer.huddly.io/assets/imgs/huddly.ico" />
+<img class="huddly-logo" width="200px" height="auto" src="https://developer.huddly.io/assets/imgs/huddly.png" />
 
 # Huddly Software Development Kit (SDK)
 

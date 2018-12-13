@@ -61,7 +61,7 @@ const meetingRoomName = process.env.HUDDLY_MEETING_ROOM || &#39;TEST_ROOM&#39;;
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(usbApi, [usbApi]);
+const sdk = new HuddlySdk(usbApi);
 
 async function init() {
   await sdk.init();
