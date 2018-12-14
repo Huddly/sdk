@@ -8,6 +8,7 @@ export default class Api {
   transport: ITransport;
   logger: DefaultLogger;
   locksmith: Locksmith;
+  setProdInfoMsgPackSupport: boolean = true;
 
   constructor(transport: ITransport, logger: DefaultLogger, locksmith: Locksmith) {
     this.transport = transport;
@@ -158,7 +159,7 @@ export default class Api {
     return res;
   }
 
-  async getProductInfo(): Promise<any> {
+  async getProductInfoLegacy(): Promise<any> {
     const command = {
       send: 'prodinfo/get',
       receive: 'prodinfo/get_status',
@@ -168,7 +169,27 @@ export default class Api {
     return prodInfo;
   }
 
-  async setProductInfo(newProdInfoData: any): Promise<void> {
+  async getProductInfo(): Promise<any> {
+    if (!this.setProdInfoMsgPackSupport) {
+      return this.getProductInfoLegacy();
+    }
+
+    try {
+      const info = await this.sendAndReceiveMessagePack(Buffer.from(''), {
+        send: 'prodinfo/get_msgpack', receive: 'prodinfo/get_msgpack_reply'
+      }, 1000);
+      this.setProdInfoMsgPackSupport = true;
+      if (!info && info === {}) {
+        return this.getProductInfoLegacy();
+      }
+      return info;
+    } catch (e) {
+      this.logger.warn('Prodinfo MessagePack not supported on this device. Using legacy procedure!');
+      return this.getProductInfoLegacy();
+    }
+  }
+
+  async setProductInfoLegacy(newProdInfoData: any): Promise<void> {
     await this.locksmith.executeAsyncFunction(async () => {
       const asyncFileTransferMessages = ['async_file_transfer/data', 'async_file_transfer/receive', 'async_file_transfer/done', 'async_file_transfer/timeout'];
       const data = Api.encode(newProdInfoData);
@@ -200,6 +221,24 @@ export default class Api {
         await this.transport.unsubscribe(command.receive);
       }
     });
+  }
+
+  async setProductInfo(newProdInfoData: any): Promise<void> {
+    if (!this.setProdInfoMsgPackSupport) {
+      return this.setProductInfoLegacy(newProdInfoData);
+    }
+
+    try {
+      await this.transport.clear();
+      await this.sendAndReceive(Api.encode(newProdInfoData), {
+        send: 'prodinfo/set_msgpack',
+        receive: 'prodinfo/set_msgpack_reply'
+      }, 10000);
+      return Promise.resolve();
+    } catch (e) {
+      this.logger.warn('SetProdinfo MessagePack not supported on this device. Using legacy procedure!');
+      return this.setProductInfoLegacy(newProdInfoData);
+    }
   }
 
   static encode(payload: any): Buffer {
