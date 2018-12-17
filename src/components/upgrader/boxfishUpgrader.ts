@@ -19,6 +19,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   options: any = {};
   bootTimeout: number = (30 * 1000); // 30 seconds
   writeBufSupport: boolean = undefined;
+  verboseStatusLog: boolean = true;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter, logger: any) {
     super();
@@ -34,6 +35,9 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     this.options.file = opts.file;
     if (opts.bootTimeout) {
       this.bootTimeout = opts.bootTimeout * 1000;
+    }
+    if (opts.verboseStatusLog !== undefined) {
+      this.verboseStatusLog = opts.verboseStatusLog;
     }
     this.registerHotPlugEvents();
   }
@@ -208,24 +212,31 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       done: `${cmd}_done`,
       status: `${cmd}_status`,
     };
+    const subscribeMessages = this.verboseStatusLog ? [cmds.done, cmds.status] : [cmds.done];
     return this.locksmith.executeAsyncFunction(async () => {
       await this._cameraManager.api.withSubscribe(
-        [cmds.done, cmds.status], () => new Promise(async (resolve, reject) => {
+        subscribeMessages, () => new Promise(async (resolve, reject) => {
           this._cameraManager.transport.on(cmds.done, (data) => {
             const args = Api.decode(data.payload, 'messagepack');
             if (args.error_count === 0) {
-              statusFn(size, size);
               this._cameraManager.transport.removeAllListeners(cmds.done);
-              this._cameraManager.transport.removeAllListeners(cmds.status);
+              if (this.verboseStatusLog) {
+                statusFn(size, size);
+                this._cameraManager.transport.removeAllListeners(cmds.status);
+              } else {
+                this._logger.info('Stage Completed!');
+              }
               resolve();
             } else {
               reject(`Flash command ${cmd} failed with ${args.error_count} errors`);
             }
           });
-          this._cameraManager.transport.on(cmds.status, (data) => {
-            const args = Api.decode(data.payload, 'messagepack');
-            statusFn(args.offset, size);
-          });
+          if (this.verboseStatusLog) {
+            this._cameraManager.transport.on(cmds.status, (data) => {
+              const args = Api.decode(data.payload, 'messagepack');
+              statusFn(args.offset, size);
+            });
+          }
           await this._cameraManager.api.sendAndReceiveWithoutLock(cmds.cmd, { args: cmdData });
         }));
     });
