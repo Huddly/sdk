@@ -1,6 +1,6 @@
 {
   "name": "@huddly/sdk",
-  "version": "0.0.6",
+  "version": "0.0.7",
   "description": "Huddly's Software Development Kit (SDK) used to interact with the camera by third-party applications",
   "keywords": [
     "SDK",
@@ -12,7 +12,7 @@
     "Genius",
     "Framing"
   ],
-  "author": "Brikend Rama <brikend@huddly.com>",
+  "author": "Huddly AS",
   "homepage": "http://developer.huddly.com",
   "license": "MIT",
   "main": "./lib/src/index.js",
@@ -30,7 +30,7 @@
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
-    "access": "restricted"
+    "access": "public"
   },
   "repository": {
     "type": "git",
