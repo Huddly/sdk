@@ -12,7 +12,7 @@
     "Genius",
     "Framing"
   ],
-  "author": "Brikend Rama <brikend@huddly.com>",
+  "author": "Huddly AS",
   "homepage": "http://developer.huddly.com",
   "license": "MIT",
   "main": "./lib/src/index.js",
@@ -30,7 +30,7 @@
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
-    "access": "restricted"
+    "access": "public"
   },
   "repository": {
     "type": "git",
