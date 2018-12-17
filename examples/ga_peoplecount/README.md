@@ -174,3 +174,7 @@ We want to create a report that calculates the average number of people in our m
 
 ## Check out your Dashboard
 You should now have tracking data coming in, and you can select different date ranges for your report.
+
+## NB!
+### I'm not getting any detections:
+  Make sure that you're streaming from the camera, pick any video application and select HUDDLY IQ, you should start getting in detections.

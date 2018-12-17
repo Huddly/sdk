@@ -64,3 +64,14 @@ For more details on the rest of the functionality to the sdk check out the docum
  - [SDK](https://developer.huddly.io/classes/HuddlySdk.html)
  - [IDeviceManager](https://developer.huddly.io/interfaces/IDeviceManager.html)
  - [Detector](https://developer.huddly.io/interfaces/IDetector.html)
+
+
+## FAQ
+### I'm not getting any detections:
+  Make sure that you're streaming from the camera, pick any video application and select HUDDLY IQ, you should start getting in detections.
+
+### My detections are not matching what I see in the stream:
+  Internally the camera always sees full field of view, the coordinates are relative to full field of view. While what you see in the main stream is the selected frame from genius framing. We're working on making this convertible.
+
+### The camera is never attached, or throwing an Error
+  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.
