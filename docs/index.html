@@ -30,11 +30,14 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<img class="huddly-logo" width="200px" height="200px" src="https://developer.huddly.io/assets/imgs/huddly.ico" />
+<img class="huddly-logo" width="200px" height="auto" src="https://developer.huddly.io/assets/imgs/huddly.png" />
 
 <h1 id="huddly-software-development-kit-sdk-">Huddly Software Development Kit (SDK)</h1>
-<h2 id="get-started">Get started</h2>
-<p>To install and start using the huddly sdk you need first install it and the transport</p>
+<h2 id="prerequisites">Prerequisites</h2>
+<p>You have to use node version <code>8.9.4</code>, we recommend using nvm for this (<a href="https://github.com/creationix/nvm)">https://github.com/creationix/nvm)</a>.</p>
+<p>After you&#39;ve setup nvm run</p>
+<div><pre class="line-numbers"><code class="language-none">  nvm use 8.9.4</code></pre></div><h2 id="get-started">Get started</h2>
+<p>Then you can install and start using the huddly sdk you need first install it and the transport</p>
 <div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/sdk &#64;huddly/device-api-usb</code></pre></div><p>Start by creating the sdk and the transport</p>
 <div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceAPIUSB = require(&#39;&#64;huddly/device-api-usb&#39;).default;
 const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
@@ -43,18 +46,23 @@ const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(usbApi);</code></pre></div><p>setup camera attached subscriber, this will give you a camera than has been attached.</p>
+const sdk = new HuddlySdk(usbApi);</code></pre></div><p>setup <code>camera attached</code> subscriber, this will give you a camera than has been attached.</p>
 <div><pre class="line-numbers"><code class="language-javascript">// Create a instance that will represent the `IDeviceManager` interface
 let cameraManager;
 sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
   cameraManager = d;
 });</code></pre></div><p>then initialize it</p>
-<div><pre class="line-numbers"><code class="language-javascript">sdk.init();</code></pre></div><p>Then you should be good to go, try it should print the camera information for the attached camera.</p>
-<div><pre class="line-numbers"><code class="language-javascript">  cameraManager.getInfo().then(console.log);</code></pre></div><h2 id="documentation">Documentation</h2>
-<p>For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager interface.</p>
+<div><pre class="line-numbers"><code class="language-javascript">sdk.init();</code></pre></div><p>Then you should be good to go. All the actions on the cameraManager are done after the attach event. For example, to get the camera information, call <code>getInfo</code> when the camera is attached.</p>
+<div><pre class="line-numbers"><code class="language-javascript">sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
+  cameraManager = d;
+  cameraManager.getInfo().then(console.log);
+});</code></pre></div><h2 id="issues">Issues</h2>
+<p>If you have a question or found a bug please open an issue. Thank you</p>
+<h2 id="documentation">Documentation</h2>
+<p>For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager (IDeviceManager) interface.</p>
 <ul>
 <li><a href="https://developer.huddly.io/classes/HuddlySdk.html">SDK</a></li>
-<li><a href="https://developer.huddly.io/interfaces/IDeviceManager.html">CameraManager</a></li>
+<li><a href="https://developer.huddly.io/interfaces/IDeviceManager.html">IDeviceManager</a></li>
 <li><a href="https://developer.huddly.io/interfaces/IDetector.html">Detector</a></li>
 </ul>
 

@@ -110,10 +110,6 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#closeConnection">closeConnection</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
                                 <a href="#init">init</a>
                             </li>
                             <li>
@@ -334,55 +330,6 @@ please see <code>events</code> class.</p>
         <h3 id="methods">
             Methods
         </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="closeConnection"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Async</span>
-                            closeConnection
-                            </b>
-                            <a href="#closeConnection"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>closeConnection()</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="237" class="link-to-prism">src/index.ts:237</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Closes the communication channels with the camera in use.</p>
-</div>
-
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                            </div>
-                                <div class="io-description">
-                                    <p>Returns a promise which resolves for
-successful connnection close or rejects otherwise.</p>
-
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -966,17 +913,6 @@ class HuddlySdk extends EventEmitter {
    */
   async init(): Promise&lt;any&gt; {
     await this.deviceDiscoveryApi.initialize();
-  }
-
-  /**
-   * Closes the communication channels with the camera in use.
-   *
-   * @returns {Promise&lt;any&gt;} Returns a promise which resolves for
-   * successful connnection close or rejects otherwise.
-   * @memberof HuddlySdk
-   */
-  async closeConnection(): Promise&lt;any&gt; {
-    throw new Error(&#x27;Not implemented!&#x27;);
   }
 }
 
