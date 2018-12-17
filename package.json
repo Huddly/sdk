@@ -14,7 +14,7 @@
   ],
   "author": "Brikend Rama <brikend@huddly.com>",
   "homepage": "http://developer.huddly.com",
-  "license": "UNLICENSED",
+  "license": "MIT",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
   "engines": {
