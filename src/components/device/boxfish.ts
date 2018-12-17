@@ -43,6 +43,10 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     this._api = new Api(this.transport, this.logger, this.locksmith);
   }
 
+  async closeConnection(): Promise<any> {
+    return this.transport.close();
+  }
+
   async getInfo(): Promise<any> {
     const info = await this.api.getCameraInfo();
     const status = {

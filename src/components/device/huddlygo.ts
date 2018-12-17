@@ -60,6 +60,10 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     this.softwareVersion = await this.getSoftwareVersion();
   }
 
+  async closeConnection(): Promise<any> {
+    return this.transport.close();
+  }
+
   async getSoftwareVersion(retryAttempts = FETCH_UX_CONTROLS_ATTEMPTS) {
     let fetchAttemts = 0;
     let err;
