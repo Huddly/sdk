@@ -59,7 +59,7 @@ function setupFramerListener() {
 
 async function startAutozoom() {
   if (!detector) {
-    detector = await cameraManager.getDetector();
+    detector = cameraManager.getDetector();
     await detector.init();
   }
 

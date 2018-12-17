@@ -5,6 +5,7 @@ import Api from './api';
 import CameraEvents from './../utilitis/events';
 import fetch from 'node-fetch';
 
+const PREVIEW_IMAGE_SIZE = { width: 544, height: 306 };
 /**
  * Detector class used to configure genius framing on the camera.
  *
@@ -36,8 +37,9 @@ export default class Detector extends EventEmitter implements IDetector {
     this.setMaxListeners(50);
     this._predictionHandler = (detectionBuffer) => {
       const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
-      this._logger.warn(`predictions: ${predictions}`);
-      this.emit(CameraEvents.DETECTIONS, predictions);
+      const convertedPredictions = this.convertPredictions(predictions);
+      this._logger.warn(`predictions: ${convertedPredictions}`);
+      this.emit(CameraEvents.DETECTIONS, convertedPredictions);
     };
     this._framingHandler = (frameBuffer) => {
       const frame = Api.decode(frameBuffer.payload, 'messagepack');
@@ -122,6 +124,30 @@ export default class Detector extends EventEmitter implements IDetector {
     await this._deviceManager.transport.unsubscribe('autozoom/framing');
     this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
     this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
+  }
+
+  /**
+   * @ignore
+   * Normalizes and filters predictions so they are relative to image size
+   *
+   * @param {predictions} Array of predictions
+   * @returns {predictions} Converted predictions
+   * @memberof Detector
+   */
+  convertPredictions(predictions: Array<any>): Array<any> {
+    const personPredictions = predictions.filter(({ label }) => label === 'person');
+
+    return personPredictions.map(({ label, bbox }) => {
+      return {
+        label: label,
+        bbox: {
+          x: bbox.x / PREVIEW_IMAGE_SIZE.width,
+          y: bbox.y / PREVIEW_IMAGE_SIZE.height,
+          width: bbox.width / PREVIEW_IMAGE_SIZE.width,
+          height: bbox.height / PREVIEW_IMAGE_SIZE.height,
+        }
+      };
+    });
   }
 
   /**

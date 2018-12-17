@@ -24,10 +24,10 @@ async function init() {
   await sdk.init();
 
   sdk.on('ATTACH', (cameraManager) => {
-    const detector = await cameraManager.getDetector();
+    const detector = cameraManager.getDetector();
     await detector.init();
 
-    detector.on('detection', detections => {
+    detector.on('DETECTIONS', detections => {
       console.log('Number of people detected', detections.length);
     });
 
@@ -47,7 +47,7 @@ const sdk = new HuddlySdk(usbApi, [usbApi]);
 await sdk.init();
 
 sdk.on('ATTACH', (cameraManager) => {
-  const detector = await cameraManager.getDetector();
+  const detector = cameraManager.getDetector();
   await detector.init();
 });
 ```
@@ -55,7 +55,7 @@ sdk.on('ATTACH', (cameraManager) => {
 We then start listening to incoming detections and count them, and finally we start the detector.
 
 ```javascript
-detector.on('detection', detections => {
+detector.on('DETECTIONS', detections => {
   console.log('Number of people detected', detections.length);
 });
 
@@ -139,10 +139,10 @@ async function init() {
   await sdk.init();
 
   sdk.on('ATTACH', (cameraManager) => {
-    const detector = await cameraManager.getDetector();
+    const detector = cameraManager.getDetector();
     await detector.init();
 
-    detector.on('detection', detections => {
+    detector.on('DETECTIONS', detections => {
       trackPeopleCount(meetingRoomName, detections.length);
     });
 
