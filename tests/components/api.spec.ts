@@ -220,17 +220,98 @@ describe('API', () => {
     });
   });
 
-  describe('#getProductionInfo', () => {
+  describe('#getProductInfoLegacy', () => {
     let asyncFileTransferStub;
     beforeEach(() => { asyncFileTransferStub = sinon.stub(api, 'asyncFileTransfer'); });
     afterEach(() => { asyncFileTransferStub.restore(); });
 
     it('should call #asyncFileTransfer with prodinfo commands and decode result', async () => {
       asyncFileTransferStub.returns(Promise.resolve(msgpack.encode('Production Info: Test')));
-      const prodinfo = await api.getProductInfo();
+      const prodinfo = await api.getProductInfoLegacy();
       expect(asyncFileTransferStub.callCount).to.equals(1);
       expect(asyncFileTransferStub.firstCall.args[0]).to.deep.equals({ send: 'prodinfo/get', receive: 'prodinfo/get_status' });
       expect(prodinfo).to.equals('Production Info: Test');
+    });
+  });
+
+  describe('#getProductionInfo', () => {
+    let getProdLegacy;
+    let sendAndReceiveMsgPackStub;
+    beforeEach(() => {
+      getProdLegacy = sinon.stub(api, 'getProductInfoLegacy');
+      sendAndReceiveMsgPackStub = sinon.stub(api, 'sendAndReceiveMessagePack');
+    });
+    afterEach(() => {
+      getProdLegacy.restore();
+      sendAndReceiveMsgPackStub.restore();
+    });
+
+    it('should fallback to legacy when msgpack not supported', async () => {
+      sendAndReceiveMsgPackStub.rejects('MessagePack not supported for GetProdInfo!');
+      await api.getProductInfo();
+      expect(getProdLegacy.called).to.equals(true);
+      expect(getProdLegacy.callCount).to.equals(1);
+      expect(api.setProdInfoMsgPackSupport).to.equals(false);
+    });
+
+    it('should fallback to legacy when msgpack result is empty', async () => {
+      sendAndReceiveMsgPackStub.resolves(undefined);
+      await api.getProductInfo();
+      expect(getProdLegacy.called).to.equals(true);
+      expect(getProdLegacy.callCount).to.equals(1);
+      expect(api.setProdInfoMsgPackSupport).to.equals(false);
+    });
+
+    it('should retrieve prodinfo with one messagepack call to target', async () => {
+      const prodInfoDummy = {
+        appVersion: '1.1.1',
+        product: 'Huddly IQ'
+      };
+      sendAndReceiveMsgPackStub.resolves(prodInfoDummy);
+      const prodInfoResult = await api.getProductInfo();
+      expect(prodInfoDummy).to.deep.equals(prodInfoResult);
+      expect(getProdLegacy.called).equals(false);
+      expect(sendAndReceiveMsgPackStub.firstCall.args[0].compare(Buffer.from(''))).to.equals(0);
+      expect(sendAndReceiveMsgPackStub.firstCall.args[1]).to.deep.equals({
+        send: 'prodinfo/get_msgpack', receive: 'prodinfo/get_msgpack_reply'
+      });
+      expect(sendAndReceiveMsgPackStub.firstCall.args[2]).to.equals(1000);
+      expect(api.setProdInfoMsgPackSupport).to.equals(true);
+    });
+  });
+
+  describe('#setProductInfo', () => {
+    let setProdLegacy;
+    let sendAndReceiveStub;
+    beforeEach(() => {
+      setProdLegacy = sinon.stub(api, 'setProductInfoLegacy');
+      sendAndReceiveStub = sinon.stub(api, 'sendAndReceive');
+    });
+    afterEach(() => {
+      setProdLegacy.restore();
+      sendAndReceiveStub.restore();
+    });
+
+    it('should fallback to legacy when msgpack not supported', async () => {
+      sendAndReceiveStub.rejects('MessagePack not supported for setProdInfo!');
+      const prodinfoSet = { newValue: 'Hello' };
+      await api.setProductInfo(prodinfoSet);
+      expect(setProdLegacy.called).to.equals(true);
+      expect(setProdLegacy.callCount).to.equals(1);
+      expect(setProdLegacy.firstCall.args[0]).to.deep.equals(prodinfoSet);
+      expect(api.setProdInfoMsgPackSupport).to.equals(false);
+    });
+
+    it('should set prodinfo using messagepack command', async () => {
+      sendAndReceiveStub.resolves();
+      const prodinfoSet = { newValue: 'Hello' };
+      await api.setProductInfo(prodinfoSet);
+      expect(sendAndReceiveStub.firstCall.args[0].compare(msgpack.encode(prodinfoSet))).to.equals(0);
+      expect(sendAndReceiveStub.firstCall.args[1]).to.deep.equals({
+        send: 'prodinfo/set_msgpack',
+        receive: 'prodinfo/set_msgpack_reply'
+      });
+      expect(sendAndReceiveStub.firstCall.args[2]).to.equals(10000);
     });
   });
 
@@ -339,13 +420,11 @@ describe('API', () => {
     });
     describe('#eraseErrorLog', () => {
       it('should call #fileTransfer with commands to erase error log', async () => {
-        const getErrorLogSpy = sinon.spy(api, 'getErrorLog');
         fileTransferStub.returns(Promise.resolve(Buffer.alloc(0)));
         transport.receiveMessage.resolves();
         await api.eraseErrorLog();
         expect(transport.receiveMessage.lastCall.args[0]).to.equals('error_logger/erase_done');
         expect(transport.write.lastCall.args[0]).to.equals('error_logger/erase');
-        expect(getErrorLogSpy.callCount).to.equals(1);
       });
     });
   });

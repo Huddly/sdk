@@ -179,11 +179,13 @@ export default class Api {
         send: 'prodinfo/get_msgpack', receive: 'prodinfo/get_msgpack_reply'
       }, 1000);
       this.setProdInfoMsgPackSupport = true;
-      if (!info && info === {}) {
+      if (!info) {
+        this.setProdInfoMsgPackSupport = false;
         return this.getProductInfoLegacy();
       }
       return info;
     } catch (e) {
+      this.setProdInfoMsgPackSupport = false;
       this.logger.warn('Prodinfo MessagePack not supported on this device. Using legacy procedure!');
       return this.getProductInfoLegacy();
     }
@@ -236,6 +238,7 @@ export default class Api {
       }, 10000);
       return Promise.resolve();
     } catch (e) {
+      this.setProdInfoMsgPackSupport = false;
       this.logger.warn('SetProdinfo MessagePack not supported on this device. Using legacy procedure!');
       return this.setProductInfoLegacy(newProdInfoData);
     }
