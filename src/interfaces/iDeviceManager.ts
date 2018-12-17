@@ -55,6 +55,15 @@ export default interface IDeviceManager {
   initialize(): Promise<void>;
 
   /**
+   * Closes the communication channels with the camera in use.
+   *
+   * @returns {Promise<any>} Returns a promise which resolves for
+   * successful connnection close or rejects otherwise.
+   * @memberof IDeviceManager
+   */
+  closeConnection(): Promise<any>;
+
+  /**
    * Retrieves camera information such as name, serial number, software version etc.
    *
    * @returns {Promise<any>} A JSON representation of the camera information.
