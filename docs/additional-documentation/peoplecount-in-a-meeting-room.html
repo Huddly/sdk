@@ -67,10 +67,10 @@ async function init() {
   await sdk.init();
 
   sdk.on(&#39;ATTACH&#39;, (cameraManager) =&gt; {
-    const detector = await cameraManager.getDetector();
+    const detector = cameraManager.getDetector();
     await detector.init();
 
-    detector.on(&#39;detection&#39;, detections =&gt; {
+    detector.on(&#39;DETECTIONS&#39;, detections =&gt; {
       console.log(&#39;Number of people detected&#39;, detections.length);
     });
 
@@ -86,10 +86,10 @@ const sdk = new HuddlySdk(usbApi, [usbApi]);
 await sdk.init();
 
 sdk.on(&#39;ATTACH&#39;, (cameraManager) =&gt; {
-  const detector = await cameraManager.getDetector();
+  const detector = cameraManager.getDetector();
   await detector.init();
 });</code></pre></div><p>We then start listening to incoming detections and count them, and finally we start the detector.</p>
-<div><pre class="line-numbers"><code class="language-javascript">detector.on(&#39;detection&#39;, detections =&gt; {
+<div><pre class="line-numbers"><code class="language-javascript">detector.on(&#39;DETECTIONS&#39;, detections =&gt; {
   console.log(&#39;Number of people detected&#39;, detections.length);
 });
 
@@ -148,10 +148,10 @@ async function init() {
   await sdk.init();
 
   sdk.on(&#39;ATTACH&#39;, (cameraManager) =&gt; {
-    const detector = await cameraManager.getDetector();
+    const detector = cameraManager.getDetector();
     await detector.init();
 
-    detector.on(&#39;detection&#39;, detections =&gt; {
+    detector.on(&#39;DETECTIONS&#39;, detections =&gt; {
       trackPeopleCount(meetingRoomName, detections.length);
     });
 
@@ -182,6 +182,9 @@ init();</code></pre></div><p>Next up we want to create our analytics report</p>
 </ol>
 <h2 id="check-out-your-dashboard">Check out your Dashboard</h2>
 <p>You should now have tracking data coming in, and you can select different date ranges for your report.</p>
+<h2 id="nb-">NB!</h2>
+<h3 id="i-m-not-getting-any-detections-">I&#39;m not getting any detections:</h3>
+<p>  Make sure that you&#39;re streaming from the camera, pick any video application and select HUDDLY IQ, you should start getting in detections.</p>
 
                    </div><div class="search-results">
     <div class="has-results">

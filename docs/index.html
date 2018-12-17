@@ -65,6 +65,13 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <li><a href="https://developer.huddly.io/interfaces/IDeviceManager.html">IDeviceManager</a></li>
 <li><a href="https://developer.huddly.io/interfaces/IDetector.html">Detector</a></li>
 </ul>
+<h2 id="faq">FAQ</h2>
+<h3 id="i-m-not-getting-any-detections-">I&#39;m not getting any detections:</h3>
+<p>  Make sure that you&#39;re streaming from the camera, pick any video application and select HUDDLY IQ, you should start getting in detections.</p>
+<h3 id="my-detections-are-not-matching-what-i-see-in-the-stream-">My detections are not matching what I see in the stream:</h3>
+<p>  Internally the camera always sees full field of view, the coordinates are relative to full field of view. While what you see in the main stream is the selected frame from genius framing. We&#39;re working on making this convertible.</p>
+<h3 id="the-camera-is-never-attached-or-throwing-an-error">The camera is never attached, or throwing an Error</h3>
+<p>  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.</p>
 
 
 
