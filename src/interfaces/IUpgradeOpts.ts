@@ -18,7 +18,7 @@ export default interface UpgradeOpts {
    * up after being rebooted during the upgrade process.
    * The number is specified in seconds!
    *
-   * @type {number} Timeout number in seconds
+   * @type {number}
    * @memberof UpgradeOpts
    */
   bootTimeout?: number;
@@ -30,4 +30,14 @@ export default interface UpgradeOpts {
    * @memberof UpgradeOpts
    */
   flash_fsbl?: Buffer;
+
+  /**
+   * A boolean option which is used to printout the upgrade progress
+   * status for all the individual steps included in performing the whole
+   * upgrade process.
+   *
+   * @type {boolean}
+   * @memberof UpgradeOpts
+   */
+  verboseStatusLog?: boolean;
 }
