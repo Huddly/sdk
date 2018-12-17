@@ -15,11 +15,11 @@ async function init() {
   sdk.on('ATTACH', (cameraManager) => {
     const detector = await cameraManager.getDetector();
     await detector.init();
-  
-    detector.on('detection', detections => {
+
+    detector.on('DETECTIONS', detections => {
       trackPeopleCount(meetingRoomName, detections.length);
     });
-  
+
     detector.start();
   });
 }
