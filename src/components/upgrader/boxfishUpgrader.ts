@@ -206,13 +206,13 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     return result;
   }
 
-  async executeFlashCmdWaitForDoneWithStatus(cmd: string, cmdData: any, addr: number, size: number, statusFn: any): Promise<any> {
+  async executeFlashCmdWaitForDoneWithStatus(cmd: string, cmdData: any, addr: number, size: number, statusFn?: any): Promise<any> {
     const cmds = {
       cmd,
       done: `${cmd}_done`,
       status: `${cmd}_status`,
     };
-    const subscribeMessages = this.verboseStatusLog ? [cmds.done, cmds.status] : [cmds.done];
+    const subscribeMessages = statusFn ? [cmds.done, cmds.status] : [cmds.done];
     return this.locksmith.executeAsyncFunction(async () => {
       await this._cameraManager.api.withSubscribe(
         subscribeMessages, () => new Promise(async (resolve, reject) => {
@@ -220,7 +220,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
             const args = Api.decode(data.payload, 'messagepack');
             if (args.error_count === 0) {
               this._cameraManager.transport.removeAllListeners(cmds.done);
-              if (this.verboseStatusLog) {
+              if (statusFn) {
                 statusFn(size, size);
                 this._cameraManager.transport.removeAllListeners(cmds.status);
               } else {
@@ -231,7 +231,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
               reject(`Flash command ${cmd} failed with ${args.error_count} errors`);
             }
           });
-          if (this.verboseStatusLog) {
+          if (statusFn) {
             this._cameraManager.transport.on(cmds.status, (data) => {
               const args = Api.decode(data.payload, 'messagepack');
               statusFn(args.offset, size);
@@ -260,17 +260,21 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   async doFlash(buffer: Buffer, address: string): Promise<any> {
     let lastTime = 0;
     let lastProgress = Number.POSITIVE_INFINITY;
-    const status = (progress, total) => {
-      const now = Date.now();
-      if (progress < lastProgress || progress === total || now > lastTime + 1) {
-        this._logger.info(`Status: ${Math.ceil(100 * (progress / total))}%\r`);
-        lastTime = now;
-        lastProgress = progress;
-        if (progress === total) {
-          this._logger.info('');
+    let status = undefined;
+    if (this.verboseStatusLog) {
+      status = (progress, total) => {
+        const now = Date.now();
+        if (progress < lastProgress || progress === total || now > lastTime + 1) {
+          this._logger.info(`Status: ${Math.ceil(100 * (progress / total))}%\r`);
+          lastTime = now;
+          lastProgress = progress;
+          if (progress === total) {
+            this._logger.info('');
+          }
         }
-      }
-    };
+      };
+    }
+
     const addr = parseInt(address, 16);
     this._logger.info(`Allocating buf.. ${buffer.length}`);
     await this.allocateBuf(buffer.length);
