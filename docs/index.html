@@ -30,7 +30,7 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<img class="huddly-logo" width="200px" height="200px" src="http://localhost:8080/assets/imgs/huddly.png" />
+<img class="huddly-logo" width="200px" height="auto" src="https://developer.huddly.io/assets/imgs/huddly.png" />
 
 <h1 id="huddly-software-development-kit-sdk-">Huddly Software Development Kit (SDK)</h1>
 <h2 id="prerequisites">Prerequisites</h2>
@@ -52,17 +52,17 @@ let cameraManager;
 sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
   cameraManager = d;
 });</code></pre></div><p>then initialize it</p>
-<div><pre class="line-numbers"><code class="language-javascript">sdk.init();</code></pre></div><p>Then you should be good to go, try it should print the camera information when the camera is attached.</p>
+<div><pre class="line-numbers"><code class="language-javascript">sdk.init();</code></pre></div><p>Then you should be good to go. All the actions on the cameraManager are done after the attach event. For example, to get the camera information, call <code>getInfo</code> when the camera is attached.</p>
 <div><pre class="line-numbers"><code class="language-javascript">sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
   cameraManager = d;
   cameraManager.getInfo().then(console.log);
 });</code></pre></div><h2 id="issues">Issues</h2>
 <p>If you have a question or found a bug please open an issue. Thank you</p>
 <h2 id="documentation">Documentation</h2>
-<p>For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager interface.</p>
+<p>For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager (IDeviceManager) interface.</p>
 <ul>
 <li><a href="https://developer.huddly.io/classes/HuddlySdk.html">SDK</a></li>
-<li><a href="https://developer.huddly.io/interfaces/IDeviceManager.html">CameraManager</a></li>
+<li><a href="https://developer.huddly.io/interfaces/IDeviceManager.html">IDeviceManager</a></li>
 <li><a href="https://developer.huddly.io/interfaces/IDetector.html">Detector</a></li>
 </ul>
 

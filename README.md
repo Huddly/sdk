@@ -59,8 +59,8 @@ If you have a question or found a bug please open an issue. Thank you
 
 
 ## Documentation
-For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager interface.
+For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager (IDeviceManager) interface.
 
  - [SDK](https://developer.huddly.io/classes/HuddlySdk.html)
- - [CameraManager](https://developer.huddly.io/interfaces/IDeviceManager.html)
+ - [IDeviceManager](https://developer.huddly.io/interfaces/IDeviceManager.html)
  - [Detector](https://developer.huddly.io/interfaces/IDetector.html)

@@ -109,6 +109,9 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                    <a href="#closeConnection">closeConnection</a>
+                                </li>
+                                <li>
                                     <a href="#eraseErrorLog">eraseErrorLog</a>
                                 </li>
                                 <li>
@@ -148,6 +151,53 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="closeConnection"></a>
+                        <span class="name">
+                            <b>
+                            closeConnection
+                            </b>
+                            <a href="#closeConnection"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>closeConnection()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/interfaces/iDeviceManager.ts:64</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Closes the communication channels with the camera in use.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns a promise which resolves for
+successful connnection close or rejects otherwise.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="eraseErrorLog"></a>
                         <span class="name">
                             <b>
@@ -166,7 +216,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/interfaces/iDeviceManager.ts:79</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/interfaces/iDeviceManager.ts:88</a></div>
                             </td>
                         </tr>
 
@@ -211,7 +261,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="115" class="link-to-prism">src/interfaces/iDeviceManager.ts:115</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/interfaces/iDeviceManager.ts:124</a></div>
                             </td>
                         </tr>
 
@@ -257,7 +307,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/interfaces/iDeviceManager.ts:71</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="80" class="link-to-prism">src/interfaces/iDeviceManager.ts:80</a></div>
                             </td>
                         </tr>
 
@@ -303,7 +353,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/interfaces/iDeviceManager.ts:63</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/interfaces/iDeviceManager.ts:72</a></div>
                             </td>
                         </tr>
 
@@ -349,7 +399,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/interfaces/iDeviceManager.ts:97</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/interfaces/iDeviceManager.ts:106</a></div>
                             </td>
                         </tr>
 
@@ -441,7 +491,7 @@ be used to perform camera upgrades.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="88" class="link-to-prism">src/interfaces/iDeviceManager.ts:88</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/interfaces/iDeviceManager.ts:97</a></div>
                             </td>
                         </tr>
 
@@ -517,7 +567,7 @@ be used to perform camera upgrades.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="107" class="link-to-prism">src/interfaces/iDeviceManager.ts:107</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="116" class="link-to-prism">src/interfaces/iDeviceManager.ts:116</a></div>
                             </td>
                         </tr>
 
@@ -781,6 +831,15 @@ export default interface IDeviceManager {
    * @memberof IDeviceManager
    */
   initialize(): Promise&lt;void&gt;;
+
+  /**
+   * Closes the communication channels with the camera in use.
+   *
+   * @returns {Promise&lt;any&gt;} Returns a promise which resolves for
+   * successful connnection close or rejects otherwise.
+   * @memberof IDeviceManager
+   */
+  closeConnection(): Promise&lt;any&gt;;
 
   /**
    * Retrieves camera information such as name, serial number, software version etc.

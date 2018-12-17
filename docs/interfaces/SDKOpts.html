@@ -419,17 +419,6 @@ class HuddlySdk extends EventEmitter {
   async init(): Promise&lt;any&gt; {
     await this.deviceDiscoveryApi.initialize();
   }
-
-  /**
-   * Closes the communication channels with the camera in use.
-   *
-   * @returns {Promise&lt;any&gt;} Returns a promise which resolves for
-   * successful connnection close or rejects otherwise.
-   * @memberof HuddlySdk
-   */
-  async closeConnection(): Promise&lt;any&gt; {
-    throw new Error(&#x27;Not implemented!&#x27;);
-  }
 }
 
 export default HuddlySdk;
