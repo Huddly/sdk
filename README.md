@@ -46,7 +46,7 @@ then initialize it
 sdk.init();
 ```
 
-Then you should be good to go, try it should print the camera information when the camera is attached.
+Then you should be good to go. All the actions on the cameraManager are done after the attach event. For example, to get the camera information, call `getInfo` when the camera is attached.
 
 ```javascript
 sdk.on('ATTACH', (d) => {
