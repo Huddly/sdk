@@ -41,8 +41,8 @@
     "build-web": "npm run build-ts && npm run tslint && yarn webpack -p",
     "build-ts": "tsc --declaration",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "test": "mocha -r ts-node/register --recursive \"lib/tests/**/*.spec.js\"",
-    "test-ts": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
+    "test": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
+    "test-js": "mocha -r ts-node/register --recursive \"lib/tests/**/*.spec.js\"",
     "publish-package": "npm run build && npm publish",
     "compodoc": "./node_modules/.bin/compodoc -w -p tsconfig.json -s -n 'huddly-sdk' -d 'docs' --minimal --customFavicon 'docs_style/assets/imgs/favicon.ico' --disableGraph --disableInternal --hideGenerator --includesName 'Examples' --includes examples -a docs_style/assets -y docs_style"
   },
