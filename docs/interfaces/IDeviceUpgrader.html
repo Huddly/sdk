@@ -51,6 +51,9 @@
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
         </li>
         <li >
+            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        </li>
+        <li >
             <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
@@ -68,7 +71,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Class used to perform software upgrades.</p>
+                <p>Interface used to perform software upgrades.</p>
 
             </p>
 
@@ -134,7 +137,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="54" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:54</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:55</a></div>
                             </td>
                         </tr>
 
@@ -177,14 +180,14 @@ when uprade fails.</p>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-<code>init(opts: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>init(opts: <a href="../interfaces/UpgradeOpts.html">UpgradeOpts</a>)</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:16</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:17</a></div>
                             </td>
                         </tr>
 
@@ -210,7 +213,7 @@ verbose level etc.</p>
                                                 <tr>
                                                         <td>opts</td>
                                                         <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                                    <code><a href="../interfaces/UpgradeOpts.html" target="_self" >UpgradeOpts</a></code>
                                                         </td>
                                                     
                                                     <td>
@@ -261,7 +264,7 @@ verbose level etc.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:33</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:34</a></div>
                             </td>
                         </tr>
 
@@ -353,7 +356,7 @@ verbose level etc.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:42</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:43</a></div>
                             </td>
                         </tr>
 
@@ -445,7 +448,7 @@ verbose level etc.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:24</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:25</a></div>
                             </td>
                         </tr>
 
@@ -469,9 +472,81 @@ Use event handlers to track the upgrade progress.</p>
 
     </div>
 
+    <div class="tab-pane fade " id="c-readme">
+        <p><h2 id="upgrader-usage">Upgrader Usage</h2>
+<p>In order to perform a software upgarde on the camera, this interface should be used. Please note that there is a convenience function in the <code>IDeviceManager</code> for performing the upgrade, but if you want to implement your own handler then this documentation needs to be reviewed.</p>
+<p>Each upgrader class (BoxfishUpgrader or HuddlyGoUpgrader) requires some options that should be provided when initializing it:</p>
+<div><pre class="line-numbers"><code class="language-javascript">const upgrader = cameraManager.getUpgrader();
+const upgradeOptions = {
+  file: fs.readSync(&#39;/path/to/upgrader/pkg/file&#39;),
+  bootTimeout: 60 // Default is 60 seconds
+  verboseStatusLog: true // Default is true
+}; // See the `IUpgraderOpts` for explanation of each option
+
+// Initialize upgrader
+upgrader.init(upgraderOptions);</code></pre></div><p>After you have initialized the upgrader, then you can proceed with starting the upgrade process.</p>
+<div><pre class="line-numbers"><code class="language-javascript">// Start the upgrade process
+upgrader.start();</code></pre></div><p>During the upgrade process, the upgrader class will emit the following events:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th>Event</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>UPGRADE_START</td>
+<td align="left">Fired when upgrade is initiated.</td>
+</tr>
+<tr>
+<td>UPGRADE_COMPLETE</td>
+<td align="left">Fired when upgrade is completed successfully.</td>
+</tr>
+<tr>
+<td>UPGRADE_FAILED</td>
+<td align="left">Fired when something fails during upgrade. The handler contains the error trace of the upgrade failure.</td>
+</tr>
+<tr>
+<td>TIMEOUT</td>
+<td align="left">Fired when the camera does not come back up after reboot (reboot is necessary to complete the upgrade sequence.</td>
+</tr>
+</tbody>
+</table>
+<p>The events above can be used as shown below:</p>
+<div><pre class="line-numbers"><code class="language-javascript">
+upgrader.on(&#39;UPGRADE_START&#39;, () =&gt; {
+  // Do something.... Inform your system that upgrade has started
+});
+
+upgrader.on(&#39;UPGRADE_FAILED&#39;, (e) =&gt; {
+  // Upgrade has failed. Print error log to debug the reason
+  console.log(e);
+});
+
+upgrader.on(&#39;UPGRADE_COMPLETE&#39;, () =&gt; {
+  // Hurrayyy! Sucessfully upgraded your Huddly camera
+});
+
+upgrader.on(&#39;TIMEOUT&#39;, () =&gt; {
+  // Ups! Looks like the camera did not come back up after rebooting during upgrade.
+  // This also means that the new software that was loaded into the camera will be discarded.
+  // Try to initiate upgrade again.
+});
+
+// Finally start the upgrade after having setup all the listeners
+upgrader.start();</code></pre></div></p>
+    </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface IDeviceUpgrader {
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import UpgradeOpts from &#x27;./IUpgradeOpts&#x27;;
+
+/**
+ * Interface used to perform software upgrades.
+ *
+ * @interface IDeviceUpgrader
+ */
+export default interface IDeviceUpgrader {
 
   /**
    * Initializes the upgrader with all the necessary upgrade options such as filepath,
@@ -480,7 +555,7 @@ Use event handlers to track the upgrade progress.</p>
    * @param {*} opts Upgrade options
    * @memberof IDeviceUpgrader
    */
-  init(opts: any): void;
+  init(opts: UpgradeOpts): void;
 
   /**
    * Initiate the upgrade process on the target device.
