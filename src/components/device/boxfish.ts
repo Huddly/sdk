@@ -11,7 +11,7 @@ import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
 import { EventEmitter } from 'events';
-import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
+import createBoxfishUpgraderFactory from './../upgrader/boxfishUpgraderFactory';
 
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   transport: ITransport;
@@ -98,7 +98,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async getUpgrader(): Promise<IDeviceUpgrader> {
-    return new BoxfishUpgrader(this, this.discoveryEmitter, this.logger);
+    return createBoxfishUpgraderFactory(this, this.discoveryEmitter, this.logger);
   }
 
   async upgrade(opts: UpgradeOpts): Promise<any> {
@@ -110,6 +110,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         resolve();
       });
       upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
+        this.logger.error(`UPGRADE FAILED ${reason}`);
         reject(reason);
       });
       upgrader.once(CameraEvents.TIMEOUT, (reason) => {
