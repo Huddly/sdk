@@ -3,7 +3,6 @@ import UpgradeOpts from './IUpgradeOpts';
 /**
  * Interface used to perform software upgrades.
  *
- * @ignore
  * @interface IDeviceUpgrader
  */
 export default interface IDeviceUpgrader {

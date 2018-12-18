@@ -1,4 +1,11 @@
-[![Build Status](https://travis-ci.com/Huddly/sdk.svg?branch=master)](https://travis-ci.com/Huddly/sdk)
+<p>
+  <a href="https://travis-ci.com/Huddly/sdk"><img src="https://travis-ci.com/Huddly/sdk.svg?branch=master" alt="Build Status"></a>
+  <a href="https://www.npmjs.com/package/@huddly/sdk"><img src="https://badge.fury.io/js/%40huddly%2Fsdk.svg" alt="npm badge"></a>
+  <a href="https://img.shields.io/david/Huddly/sdk"><img src="https://img.shields.io/david/Huddly/sdk.svg" alt="npm dependencies"></a>
+  <!-- <a href="https://img.shields.io/david/dev/Huddly/sdk"><img src="https://img.shields.io/david/dev/Huddly/sdk.svg" alt="npm devDependencies"></a> -->
+  <a href="https://npmcharts.com/compare/@huddly/sdk?minimal=true"><img src="https://img.shields.io/npm/dm/@huddly/sdk.svg?style=flat" alt="NPM Downloads"></a>
+  <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT badge"></a>
+</p>
 
 <img class="huddly-logo" width="200px" height="auto" src="http://developer.huddly.com/assets/imgs/huddly.png" />
 
