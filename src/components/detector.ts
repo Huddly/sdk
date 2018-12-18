@@ -1,6 +1,7 @@
 import { EventEmitter } from 'events';
 import IDetector from './../interfaces/IDetector';
 import IDeviceManager from './../interfaces/iDeviceManager';
+import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 import fetch from 'node-fetch';
@@ -21,6 +22,8 @@ export default class Detector extends EventEmitter implements IDetector {
   _framingHandler: any;
   _defaultBlobURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/huddly_az_v8_ncsdk_02_08.blob';
   _defaultConfigURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/config.json';
+  _frame: any;
+  _options: iDetectorOpts;
 
 
   /**
@@ -28,16 +31,18 @@ export default class Detector extends EventEmitter implements IDetector {
    * @param {IDeviceManager} manager An instance of the IDeviceManager (for example
    * the Boxfish implementation of IDeviceManager) for communicating with the device.
    * @param {*} logger Logger class for logging messages produced from the detector.
+   * @param options options detector.
    * @memberof Detector
    */
-  constructor(manager: IDeviceManager, logger: any) {
+   constructor(manager: IDeviceManager, logger: any, options?: iDetectorOpts) {
     super();
     this._deviceManager = manager;
     this._logger = logger;
+    this._options = options || { convertDetections: DetectionConvertion.RELATIVE };
     this.setMaxListeners(50);
     this._predictionHandler = (detectionBuffer) => {
       const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
-      const convertedPredictions = this.convertPredictions(predictions);
+      const convertedPredictions = this.convertPredictions(predictions, this._options);
       this._logger.warn(`predictions: ${convertedPredictions}`);
       this.emit(CameraEvents.DETECTIONS, convertedPredictions);
     };
@@ -45,6 +50,7 @@ export default class Detector extends EventEmitter implements IDetector {
       const frame = Api.decode(frameBuffer.payload, 'messagepack');
       this._logger.warn('Framing Info', frame);
       this.emit(CameraEvents.FRAMING, frame);
+      this._frame = frame;
     };
   }
 
@@ -134,20 +140,44 @@ export default class Detector extends EventEmitter implements IDetector {
    * @returns {predictions} Converted predictions
    * @memberof Detector
    */
-  convertPredictions(predictions: Array<any>): Array<any> {
+   convertPredictions(predictions: Array<any>, opts?: iDetectorOpts): Array<any> {
     const personPredictions = predictions.filter(({ label }) => label === 'person');
 
-    return personPredictions.map(({ label, bbox }) => {
-      return {
-        label: label,
-        bbox: {
-          x: bbox.x / PREVIEW_IMAGE_SIZE.width,
-          y: bbox.y / PREVIEW_IMAGE_SIZE.height,
-          width: bbox.width / PREVIEW_IMAGE_SIZE.width,
-          height: bbox.height / PREVIEW_IMAGE_SIZE.height,
-        }
+    if (
+      opts
+      && opts.convertDetections === DetectionConvertion.FRAMING
+      && this._frame
+    ) {
+      const { bbox: framingBBox } = this._frame;
+      const relativeSize = {
+        height: PREVIEW_IMAGE_SIZE.height / framingBBox.height,
+        width: PREVIEW_IMAGE_SIZE.width / framingBBox.width
       };
-    });
+      return personPredictions.map(({ label, bbox }) => {
+        return {
+          label: label,
+          bbox: {
+            x: (bbox.x - framingBBox.x) * relativeSize.width,
+            y: (bbox.y - framingBBox.y) * relativeSize.height,
+            width: (bbox.width) * relativeSize.width,
+            height: (bbox.height) * relativeSize.height,
+          }
+        };
+      });
+    } else {
+      return personPredictions.map(({ label, bbox }) => {
+        return {
+          label: label,
+          bbox: {
+            x: bbox.x / PREVIEW_IMAGE_SIZE.width,
+            y: bbox.y / PREVIEW_IMAGE_SIZE.height,
+            width: bbox.width / PREVIEW_IMAGE_SIZE.width,
+            height: bbox.height / PREVIEW_IMAGE_SIZE.height,
+          }
+        };
+      });
+    }
+
   }
 
   /**
