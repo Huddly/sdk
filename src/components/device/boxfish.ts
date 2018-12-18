@@ -6,6 +6,7 @@ import IDeviceManager from './../../interfaces/iDeviceManager';
 import IDetector from './../../interfaces/IDetector';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
+import DetectorOpts from './../../interfaces/IDetectorOpts';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
@@ -117,7 +118,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     });
   }
 
-  getDetector(): IDetector {
-    return new Detector(this, this.logger);
+   getDetector(opts?: DetectorOpts): IDetector {
+    return new Detector(this, this.logger, opts);
   }
 }

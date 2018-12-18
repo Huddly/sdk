@@ -14,7 +14,6 @@ async function trackEvent (category, action, label, value) {
     ev: value
   };
 
-  console.log('---', label, value);
   try {
     await got.post('http://www.google-analytics.com/collect', {
       form: true,

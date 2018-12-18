@@ -3,6 +3,7 @@ import Api from './../components/api';
 import IDeviceUpgrader from './IDeviceUpgrader';
 import IDetector from './IDetector';
 import UpgradeOpts from './IUpgradeOpts';
+import DetectorOpts from './IDetectorOpts';
 
 /**
  * Interface used for performing actions on the camera.
@@ -117,9 +118,9 @@ export default interface IDeviceManager {
 
   /**
    * Returns a new instance of the Detector class.
-   *
+   * @param {DetectorOpts} opts Detector options
    * @returns {IDetector} Returns a new instance of the Detector class.
    * @memberof HuddlySdk
    */
-  getDetector(): IDetector;
+  getDetector(opts: DetectorOpts): IDetector;
 }
