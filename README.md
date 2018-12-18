@@ -55,7 +55,7 @@ sdk.on('ATTACH', (d) => {
 });
 ```
 ## Issues
-If you have a question or found a bug please open an issue. Thank you
+If you have a question or found a bug please [open an issue](https://github.com/Huddly/sdk/issues). Thank you
 
 
 ## Documentation
@@ -65,6 +65,8 @@ For more details on the rest of the functionality to the sdk check out the docum
  - [IDeviceManager](https://developer.huddly.io/interfaces/IDeviceManager.html)
  - [Detector](https://developer.huddly.io/interfaces/IDetector.html)
 
+## Repo
+Check out the sdk code on github (https://github.com/Huddly/sdk) 
 
 ## FAQ
 ### I'm not getting any detections:
