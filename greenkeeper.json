@@ -1,0 +1,11 @@
+{
+  "groups": {
+    "default": {
+      "packages": [
+        "examples/ga_peoplecount/package.json",
+        "examples/rest/package.json",
+        "package.json"
+      ]
+    }
+  }
+}
