@@ -22,11 +22,13 @@
   },
   "directories": {
     "lib": "lib",
-    "test": "tests"
+    "test": "tests",
+    "bundle": "bundle"
   },
   "files": [
     "lib",
-    "README.md"
+    "README.md",
+    "bundle"
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
@@ -43,7 +45,7 @@
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
     "test-js": "mocha -r ts-node/register --recursive \"lib/tests/**/*.spec.js\"",
-    "publish-package": "npm run build && npm publish",
+    "publish-package": "npm run build && npm run build-web && npm publish",
     "compodoc": "./node_modules/.bin/compodoc -w -p tsconfig.json -s -n 'huddly-sdk' -d 'docs' --minimal --customFavicon 'docs_style/assets/imgs/favicon.ico' --disableGraph --disableInternal --hideGenerator --includesName 'Examples' --includes examples -a docs_style/assets -y docs_style"
   },
   "bugs": {
