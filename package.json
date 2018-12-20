@@ -45,25 +45,6 @@
     "publish-package": "npm run build && npm run build-web && npm publish",
     "compodoc": "./node_modules/.bin/compodoc -w -p tsconfig.json -s -n 'huddly-sdk' -d 'docs' --minimal --customFavicon 'docs_style/assets/imgs/favicon.ico' --disableGraph --disableInternal --hideGenerator --includesName 'Examples' --includes examples -a docs_style/assets -y docs_style"
   },
-  "nyc": {
-    "include": [
-      "src/**/*.ts",
-      "src/**/*.tsx"
-    ],
-    "extension": [
-      ".ts",
-      ".tsx"
-    ],
-    "require": [
-      "ts-node/register"
-    ],
-    "reporter": [
-      "text-summary",
-      "html"
-    ],
-    "sourceMap": true,
-    "instrument": true
-  },
   "bugs": {
     "url": "https://github.com/Huddly/sdk/issues"
   },
