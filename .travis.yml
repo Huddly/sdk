@@ -1,17 +1,12 @@
 language: node_js
 
 node_js:
-  - "8"
-  - "10"
-
-cache: yarn
+  - "8.9.4"
 
 script:
-  - yarn build
+  - npm run build
 
 os:
   - linux
   - osx
   - windows
-
-after_success: if [[ "$TRAVIS_OS_NAME" != 'windows' ]]; then echo "All Done" && exit 0; fi
