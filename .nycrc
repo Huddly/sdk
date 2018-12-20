@@ -1,0 +1,19 @@
+{
+  "include": [
+    "src/**/*.ts",
+    "src/**/*.tsx"
+  ],
+  "extension": [
+    ".ts",
+    ".tsx"
+  ],
+  "require": [
+    "ts-node/register"
+  ],
+  "reporter": [
+    "text-summary",
+    "html"
+  ],
+  "sourceMap": true,
+  "instrument": true
+}
