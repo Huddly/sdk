@@ -17,9 +17,6 @@
   "license": "MIT",
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
-  "engines": {
-    "node": "8.9.4"
-  },
   "directories": {
     "lib": "lib",
     "test": "tests",
@@ -43,10 +40,29 @@
     "build-web": "npm run build-ts && npm run tslint && yarn webpack -p",
     "build-ts": "tsc --declaration",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
-    "test": "mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\"",
+    "test": "nyc mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\" --check-leaks",
     "test-js": "mocha -r ts-node/register --recursive \"lib/tests/**/*.spec.js\"",
     "publish-package": "npm run build && npm run build-web && npm publish",
     "compodoc": "./node_modules/.bin/compodoc -w -p tsconfig.json -s -n 'huddly-sdk' -d 'docs' --minimal --customFavicon 'docs_style/assets/imgs/favicon.ico' --disableGraph --disableInternal --hideGenerator --includesName 'Examples' --includes examples -a docs_style/assets -y docs_style"
+  },
+  "nyc": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx"
+    ],
+    "extension": [
+      ".ts",
+      ".tsx"
+    ],
+    "require": [
+      "ts-node/register"
+    ],
+    "reporter": [
+      "text-summary",
+      "html"
+    ],
+    "sourceMap": true,
+    "instrument": true
   },
   "bugs": {
     "url": "https://github.com/Huddly/sdk/issues"
@@ -64,8 +80,10 @@
     "eslint-plugin-jsx-a11y": "^4.0.0",
     "eslint-plugin-react": "^6.10.0",
     "mocha": "^3.2.0",
+    "nyc": "^13.1.0",
     "sinon": "^2.3.8",
     "sinon-chai": "^2.12.0",
+    "source-map-support": "^0.5.9",
     "ts-loader": "^5.2.2",
     "ts-node": "^7.0.1",
     "tslint": "^5.11.0",

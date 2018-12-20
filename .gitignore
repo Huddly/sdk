@@ -5,3 +5,5 @@ packages
 .idea
 .DS_Store
 bundle/
+coverage
+.nyc_output
