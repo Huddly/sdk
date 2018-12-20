@@ -28,5 +28,9 @@
     "./src/interfaces/*",
     "./src/*",
     "tests/**/*"
+  ],
+  "exclude": [
+    "node_modules",
+    "coverage"
   ]
 }
