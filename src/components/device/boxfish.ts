@@ -13,6 +13,7 @@ import Detector from './../detector';
 import { EventEmitter } from 'events';
 import createBoxfishUpgraderFactory from './../upgrader/boxfishUpgraderFactory';
 
+const MAX_UPGRADE_ATTEMT = 3;
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   transport: ITransport;
   _api: Api;
@@ -102,12 +103,20 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async upgrade(opts: UpgradeOpts): Promise<any> {
+    let upgradeAttempt = 0;
     const upgrader = await this.getUpgrader();
     upgrader.init(opts);
     upgrader.start();
     return new Promise((resolve, reject) => {
-      upgrader.once(CameraEvents.UPGRADE_COMPLETE, () => {
-        resolve();
+      upgrader.once(CameraEvents.UPGRADE_COMPLETE, async () => {
+        const upgradeIsOk = await upgrader.upgradeIsValid();
+        if (upgradeIsOk) {
+          resolve();
+        } else if (MAX_UPGRADE_ATTEMT <= upgradeAttempt) {
+          upgradeAttempt += 1;
+          await this.upgrade(opts);
+          resolve();
+        }
       });
       upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
         this.logger.error(`UPGRADE FAILED ${reason}`);

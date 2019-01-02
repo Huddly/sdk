@@ -53,4 +53,12 @@ export default interface IDeviceUpgrader {
    * @memberof IDeviceUpgrader
    */
   doUpgrade(): Promise<any>;
+
+  /**
+   * Verifies if camera performed a valid upgrade
+   *
+   * @returns {Promise<booleean>} A `Promise` that resolves when upgrade is valid
+   * @memberof IDeviceUpgrader
+   */
+  upgradeIsValid(): Promise<boolean>;
 }

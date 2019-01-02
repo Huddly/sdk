@@ -207,4 +207,39 @@ describe('HPKUpgrader', () => {
 
     });
   });
+
+  describe('#upgradeIsValid', () => {
+    beforeEach(() => {
+      sinon.stub(dummyCameraManager.api, 'sendAndReceiveMessagePack');
+    });
+
+    afterEach(() => {
+      dummyCameraManager.api.sendAndReceiveMessagePack.restore();
+    });
+
+    it('should be be true upgrade_status if status is 0', async () => {
+      dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
+        status: 0
+      });
+
+      const isValid = await hpkUpgrader.upgradeIsValid();
+      expect(isValid).to.equal(true);
+    });
+
+    it('should be be true upgrade_status if status is not 0', async () => {
+      dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
+        status: 12
+      });
+
+      const isValid = await hpkUpgrader.upgradeIsValid();
+      expect(isValid).to.equal(false);
+    });
+
+    it('should be be false if upgrade_status throws ', async () => {
+      dummyCameraManager.api.sendAndReceiveMessagePack.rejects({});
+
+      const isValid = await hpkUpgrader.upgradeIsValid();
+      expect(isValid).to.equal(false);
+    });
+  });
 });
