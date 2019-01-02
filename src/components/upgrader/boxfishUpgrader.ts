@@ -399,4 +399,9 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       throw e;
     }
   }
+
+  async upgradeIsValid(): Promise<boolean> {
+    // Huddly boxfish, old does valid check works!
+    return Promise.resolve(true);
+  }
 }

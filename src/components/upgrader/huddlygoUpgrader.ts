@@ -102,4 +102,9 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     // Huddly Go does not require any post upgrade checks!
     return Promise.resolve();
   }
+
+  async upgradeIsValid(): Promise<boolean> {
+    // Huddly Go does valid check works!
+    return Promise.resolve(true);
+  }
 }

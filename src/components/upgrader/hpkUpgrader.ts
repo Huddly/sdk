@@ -139,4 +139,20 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     await completedPromise;
     return;
   }
+
+  async upgradeIsValid(): Promise<boolean> {
+    try {
+      const response = await this._cameraManager.api.sendAndReceiveMessagePack('',
+        {
+          send: 'camera/upgrade_status',
+          receive: 'camera/upgrade_status_reply'
+        }
+      );
+
+      this._logger.info(`Upgrade status ${response}`);
+      return response.status === 0;
+    } catch (e) {
+      return false;
+    }
+  }
 }
