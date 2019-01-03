@@ -4,7 +4,7 @@ import IDeviceManager from './../interfaces/iDeviceManager';
 import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
-import fetch from 'node-fetch';
+import axios from 'axios';
 
 const PREVIEW_IMAGE_SIZE = { width: 544, height: 306 };
 /**
@@ -43,12 +43,10 @@ export default class Detector extends EventEmitter implements IDetector {
     this._predictionHandler = (detectionBuffer) => {
       const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
       const convertedPredictions = this.convertPredictions(predictions, this._options);
-      this._logger.warn(`predictions: ${convertedPredictions}`);
       this.emit(CameraEvents.DETECTIONS, convertedPredictions);
     };
     this._framingHandler = (frameBuffer) => {
       const frame = Api.decode(frameBuffer.payload, 'messagepack');
-      this._logger.warn('Framing Info', frame);
       this.emit(CameraEvents.FRAMING, frame);
       this._frame = frame;
     };
@@ -68,11 +66,11 @@ export default class Detector extends EventEmitter implements IDetector {
     const status = await this.autozoomStatus();
     if (!status['network-configured']) {
       return new Promise((resolve, reject) => {
-        fetch(this._defaultBlobURL)
-          .then(res => res.buffer())
+        axios.get(this._defaultBlobURL, { responseType: 'arraybuffer' })
+          .then(res => res.data)
           .then(buffer => this.uploadBlob(buffer)
-            .then(() => fetch(this._defaultConfigURL)
-              .then(configRes => configRes.json())
+            .then(() => axios.get(this._defaultConfigURL, { responseType: 'json'})
+              .then(configRes => configRes.data)
               .then(configJson => this.setDetectorConfig(configJson)
                 .then(() => resolve())
                 .catch(setConfigErr => reject(setConfigErr)))
@@ -159,8 +157,10 @@ export default class Detector extends EventEmitter implements IDetector {
           bbox: {
             x: (bbox.x - framingBBox.x) * relativeSize.width,
             y: (bbox.y - framingBBox.y) * relativeSize.height,
-            width: (bbox.width) * relativeSize.width,
-            height: (bbox.height) * relativeSize.height,
+            width: bbox.width * relativeSize.width,
+            height: bbox.height * relativeSize.height,
+            frameWidth: framingBBox.width * relativeSize.width,
+            frameHeight: framingBBox.height * relativeSize.height
           }
         };
       });
