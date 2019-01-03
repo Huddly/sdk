@@ -11,7 +11,7 @@ import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
 import { EventEmitter } from 'events';
-import createBoxfishUpgraderFactory from './../upgrader/boxfishUpgraderFactory';
+import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 
 const MAX_UPGRADE_ATTEMT = 3;
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
@@ -99,23 +99,24 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async getUpgrader(): Promise<IDeviceUpgrader> {
-    return createBoxfishUpgraderFactory(this, this.discoveryEmitter, this.logger);
+    return createBoxfishUpgrader(this, this.discoveryEmitter, this.logger);
   }
 
-  async upgrade(opts: UpgradeOpts): Promise<any> {
-    let upgradeAttempt = 0;
-    const upgrader = await this.getUpgrader();
+  async createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager) {
+    const upgrader = await createBoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
     upgrader.init(opts);
     upgrader.start();
     return new Promise((resolve, reject) => {
-      upgrader.once(CameraEvents.UPGRADE_COMPLETE, async () => {
+      upgrader.once(CameraEvents.UPGRADE_COMPLETE, async deviceManager => {
         const upgradeIsOk = await upgrader.upgradeIsValid();
         if (upgradeIsOk) {
           resolve();
-        } else if (MAX_UPGRADE_ATTEMT <= upgradeAttempt) {
-          upgradeAttempt += 1;
-          await this.upgrade(opts);
-          resolve();
+        } else {
+          reject({
+            message: 'Upgrade status is not ok, run again',
+            runAgain: true,
+            deviceManager
+          });
         }
       });
       upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
@@ -125,6 +126,26 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       upgrader.once(CameraEvents.TIMEOUT, (reason) => {
         reject(reason);
       });
+    });
+  }
+
+  async upgrade(opts: UpgradeOpts): Promise<any> {
+    let upgradeAttepmts = 0;
+    return new Promise((resolve, reject) => {
+      const tryRunAgainOnFailure = async (deviceManager: IDeviceManager) => {
+        try {
+          await this.createAndRunUpgrade(opts, deviceManager);
+          resolve();
+        } catch (e) {
+          if (e.runAgain && upgradeAttepmts < MAX_UPGRADE_ATTEMT) {
+            upgradeAttepmts += 1;
+            tryRunAgainOnFailure(e.deviceManager);
+          } else {
+            reject(e);
+          }
+        }
+      };
+      tryRunAgainOnFailure(this);
     });
   }
 

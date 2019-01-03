@@ -5,6 +5,7 @@ import { EventEmitter } from 'events';
 import CameraEvents from './../../utilitis/events';
 import Api from '../api';
 import Boxfish from './../device/boxfish';
+import BoxfishHpk from './boxfishhpk';
 
 export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
   verboseStatusLog: boolean;
@@ -133,6 +134,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   async doUpgrade(): Promise<any> {
     this._logger.info('Upgrading HPK \n');
     const hpkBuffer = this._fileBuffer;
+    if (!BoxfishHpk.isHpk(this._fileBuffer)) {
+      throw new Error('HPK upgrader file is not a valid hpk file');
+    }
     await this.upload(hpkBuffer);
     const completedPromise = this.awaitHPKCompletion();
     await this.runHPKScript();
@@ -149,7 +153,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         }
       );
 
-      this._logger.info(`Upgrade status ${response}`);
+      this._logger.info(`Upgrade status ${response.string}`);
       return response.status === 0;
     } catch (e) {
       return false;

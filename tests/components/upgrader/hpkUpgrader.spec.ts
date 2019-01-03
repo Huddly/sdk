@@ -3,6 +3,9 @@ import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 import chaiAsPromised from 'chai-as-promised';
 import { EventEmitter } from 'events';
+import fs from 'fs';
+import path from 'path';
+
 import HPKUpgrader from './../../../src/components/upgrader/hpkUpgrader';
 import DefaultLogger from './../../../src/utilitis/logger';
 import Boxfish from './../../../src/components/device/boxfish';
@@ -18,6 +21,8 @@ dummyCameraManager._api = {
   sendAndReceiveMessagePack: () => {},
   withSubscribe: () => {},
 };
+
+const validHpkBuffer = fs.readFileSync(path.resolve(__dirname, '../../testData/dummy.pkg'));
 
 describe('HPKUpgrader', () => {
   let hpkUpgrader;
@@ -120,6 +125,9 @@ describe('HPKUpgrader', () => {
     describe('when uploaded run hpk', () => {
       it('should wait for run completion if return success', () => {
         mockSucessMessages();
+        hpkUpgrader.init({
+          file: validHpkBuffer,
+        });
         return hpkUpgrader.start();
       });
 
@@ -197,6 +205,10 @@ describe('HPKUpgrader', () => {
               resolve(message);
             }
           });
+        });
+
+        hpkUpgrader.init({
+          file: validHpkBuffer,
         });
 
         hpkUpgrader.start();
