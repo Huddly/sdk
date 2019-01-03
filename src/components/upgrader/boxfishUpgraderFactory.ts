@@ -5,10 +5,14 @@ import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import HPKUpgrader from './../upgrader/hpkUpgrader';
 
+import BoxfishPkg from './boxfishpkg';
+import BoxfishHpk from './boxfishhpk';
+
 import { EventEmitter } from 'events';
 
-const HPK_SUPPORT_VERSION = '1.1.0-0';
-export default async function createBoxfishUpgrader(
+export const HPK_SUPPORT_VERSION = '1.1.0-0';
+
+export async function createBoxfishUpgrader(
   manager: IDeviceManager,
   sdkDeviceDiscoveryEmitter: EventEmitter,
   logger: any
@@ -18,4 +22,11 @@ export default async function createBoxfishUpgrader(
     return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
   }
   return new BoxfishUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
+}
+
+export function createBoxfishUpgraderFile(file: Buffer) {
+  if (BoxfishHpk.isHpk(file)) {
+    return new BoxfishHpk(file);
+  }
+  return new BoxfishPkg(file);
 }

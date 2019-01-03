@@ -43,6 +43,15 @@ export default interface IDeviceUpgrader {
   once(message: string, callback: any);
 
   /**
+   * EventEmitter `removeListener`
+   *
+   * @param {string} message The message use to remove  the listener for
+   * @param {*} callback
+   * @memberof Transportable
+   */
+  removeListener(message: string, callback: any);
+
+  /**
    * Perform camera upgrade without event handlers. This is a
    * function which you call and await for completion. You can either
    * use `Promise await` style or `Promise then/catch` for handling

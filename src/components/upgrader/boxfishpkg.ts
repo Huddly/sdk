@@ -1,46 +1,10 @@
 import JSZip from 'jszip';
 import crypto from 'crypto';
+import IBoxfishUpgraderFile, { IMAGE_TYPES, FLASH_ADDR_LOCATION } from './../../interfaces/IBoxfishUpgraderFile';
 
-export const IMAGE_TYPES = Object.freeze({
-  FSBL: 'bf_fsbl_mvcmd',
-  SSBL: 'bf_ssbl_mvcmd',
-  SSBL_HEADER: 'bf_ssbl_header',
-  APP: 'bf_app_elf_zlib',
-  APP_HEADER: 'bf_app_header',
-
-  FSBL_SIGNED: 'bf_fsbl_mvcmd_signed',
-  SSBL_SIGNED: 'bf_ssbl_mvcmd_signed',
-  SSBL_HEADER_SIGNED: 'bf_ssbl_header_signed',
-  APP_SIGNED: 'bf_app_elf_zlib_signed',
-  APP_HEADER_SIGNED: 'bf_app_header_signed',
-});
-
-const FLASH_ADDR_LOCATION = Object.freeze({
-  bf_fsbl_mvcmd: '0x000000',
-  bf_app_elf_zlib: {
-    A: '0x662000',
-    B: '0xB72000',
-    C: '0x145000',
-  },
-  bf_app_header: {
-    A: '0x661000',
-    B: '0xB71000',
-    C: '0x144000',
-  },
-  bf_ssbl_mvcmd: {
-    A: '0x561000',
-    B: '0xA71000',
-    C: '0x044000',
-  },
-  bf_ssbl_header: {
-    A: '0x560000',
-    B: '0xA70000',
-    C: '0x043000',
-  },
-});
 const SUPPORTED_MANIFEST_VERSIONS = Object.freeze([4, 5]);
 
-export class BoxfishPackage {
+class BoxfishPackage implements IBoxfishUpgraderFile {
   zipFileBuffer: Buffer;
   files: any = {};
   readonly supportedImageTypes: Array<string> = Object.keys(IMAGE_TYPES).map(key => IMAGE_TYPES[key]);
@@ -94,39 +58,29 @@ export class BoxfishPackage {
     }
   }
 
-  validateImageType(imageType): void {
+  validateImageType(imageType: IMAGE_TYPES): void {
     if (this.supportedImageTypes.indexOf(imageType) === -1) {
       throw new Error(`Image type ${imageType} not supported`);
     }
   }
 
-  getImage(imageType): any {
+  getImage(imageType: IMAGE_TYPES): any {
     this.validateImageType(imageType);
     const signed = `${imageType}_signed`;
     if (this.files[signed] !== undefined) {
-      this.validateImageType(signed);
+      this.validateImageType(IMAGE_TYPES[signed]);
       return this.files[signed];
     }
     return this.files[imageType];
   }
 
-  getData(imageType): any {
+  getData(imageType: IMAGE_TYPES): any {
     return this.getImage(imageType).data;
   }
 
-  getVersion(imageType): any {
-    return this.getImage(imageType).version;
-  }
-
-  getAppVersion(): any {
-    return this.getVersion(IMAGE_TYPES.APP);
-  }
-
-  static makeFromFile(path): BoxfishPackage {
-    return new BoxfishPackage(path);
-  }
-
-  static getFlashAddress(imageType, location): string {
+  getFlashAddress(imageType: IMAGE_TYPES, location: string): string {
     return FLASH_ADDR_LOCATION[imageType][location];
   }
 }
+
+export default BoxfishPackage;

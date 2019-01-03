@@ -1,8 +1,8 @@
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import { EventEmitter } from 'events';
 import IDeviceManager from './../../interfaces/iDeviceManager';
+import IBoxfishUpgraderFile, { IMAGE_TYPES } from './../../interfaces/IBoxfishUpgraderFile';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
-import { BoxfishPackage, IMAGE_TYPES } from './boxfishpkg';
 import semver from 'semver';
 import Locksmith from './../locksmith';
 import Api from '../api';
@@ -10,11 +10,15 @@ import { calculate } from './../../utilitis/crc32c';
 import CameraEvents from './../../utilitis/events';
 import Boxfish from './../device/boxfish';
 
+import { createBoxfishUpgraderFile } from './../upgrader/boxfishUpgraderFactory';
+
+import { HPK_SUPPORT_VERSION } from './../upgrader/boxfishUpgraderFactory';
+
 export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgrader {
   _cameraManager: IDeviceManager;
   _sdkDeviceDisoveryEmitter: EventEmitter;
   _logger: any;
-  _boxfishPackage: BoxfishPackage;
+  _boxfishPackage: IBoxfishUpgraderFile;
   locksmith: Locksmith;
   options: any = {};
   bootTimeout: number = (30 * 1000); // 30 seconds
@@ -30,7 +34,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   init(opts: UpgradeOpts): void {
-    this._boxfishPackage = new BoxfishPackage(opts.file);
+    this._boxfishPackage = createBoxfishUpgraderFile(opts.file);
     this.options.flash_fsbl = opts.flash_fsbl;
     this.options.file = opts.file;
     if (opts.bootTimeout) {
@@ -73,7 +77,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       try {
         await this.postUpgrade(state);
         clearTimeout(bootTimeout);
-        this.emit(CameraEvents.UPGRADE_COMPLETE);
+        this.emit(CameraEvents.UPGRADE_COMPLETE, this._cameraManager);
       } catch (e) {
         clearTimeout(bootTimeout);
         this.emit(CameraEvents.UPGRADE_FAILED, e);
@@ -310,24 +314,25 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     return this._cameraManager.api.setProductInfo({ flash_boot_state: state });
   }
 
-  async initFlash(fsblMvcmd: Buffer, boxfishPkg: BoxfishPackage): Promise<any> {
+  async initFlash(fsblMvcmd: Buffer, boxfishUpgraderFile: IBoxfishUpgraderFile): Promise<any> {
     this._logger.warn('Initializing flash');
     await this.flashFsbl(fsblMvcmd);
     /* eslint-disable max-len */
-    await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishPkg.getData(IMAGE_TYPES.SSBL_HEADER), 'C');
-    await this.flashImage(IMAGE_TYPES.SSBL, boxfishPkg.getData(IMAGE_TYPES.SSBL), 'C');
-    await this.flashImage(IMAGE_TYPES.APP_HEADER, boxfishPkg.getData(IMAGE_TYPES.APP_HEADER), 'C');
-    await this.flashImage(IMAGE_TYPES.APP, boxfishPkg.getData(IMAGE_TYPES.APP), 'C');
+    await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishUpgraderFile, 'C');
+    await this.flashImage(IMAGE_TYPES.SSBL, boxfishUpgraderFile, 'C');
+    await this.flashImage(IMAGE_TYPES.APP_HEADER, boxfishUpgraderFile, 'C');
+    await this.flashImage(IMAGE_TYPES.APP, boxfishUpgraderFile, 'C');
     /* eslint-enable max-len */
     await this.setFlashBootState('C');
     await this.setRamBootSelector('C');
   }
 
-  async flashImage(imageType: string, data: Buffer, location: string): Promise<any> {
+  async flashImage(imageType: IMAGE_TYPES, upgraderFile: IBoxfishUpgraderFile, location: string): Promise<any> {
+    const data = upgraderFile.getData(imageType);
     if (data.length === 0) {
       throw new Error(`Error starting flashing of image ${IMAGE_TYPES} - could not get data from package`);
     }
-    const address = BoxfishPackage.getFlashAddress(imageType, location);
+    const address = upgraderFile.getFlashAddress(imageType, location);
     return this.doFlash(data, address);
   }
 
@@ -347,8 +352,8 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     try {
       const startTime = new Date().getTime();
       const prodInfo = await this._cameraManager.api.getProductInfo();
-      const boxfishPkg = BoxfishPackage.makeFromFile(this.options.file);
-      await boxfishPkg.init();
+      const boxfishUpgraderFile = createBoxfishUpgraderFile(this.options.file);
+      await boxfishUpgraderFile.init();
       this.emit(CameraEvents.UPGRADE_PROGRESS);
       const currentSwVersion = this.extractSofwareVersionFromProdInfo(prodInfo);
       if (semver.gt(currentSwVersion, '0.0.7')) {
@@ -362,8 +367,8 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
         throw new Error('Unable to upgrade without first stage bootloader.\n' +
           'No first stage bootloader provided');
       } else if (prodInfo.bac_fsbl === false && this.options.flash_fsbl) {
-        const fsblBuffer = boxfishPkg.getImage(IMAGE_TYPES.FSBL);
-        await this.initFlash(fsblBuffer, boxfishPkg);
+        const fsblBuffer = boxfishUpgraderFile.getImage(IMAGE_TYPES.FSBL);
+        await this.initFlash(fsblBuffer, boxfishUpgraderFile);
         await this._cameraManager.reboot();
         return 'C';
       }
@@ -372,10 +377,10 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       const upgradeSelection = bootDecision === 'A' ? 'B' : 'A';
 
       /* eslint-disable max-len */
-      await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishPkg.getData(IMAGE_TYPES.SSBL_HEADER), upgradeSelection);
-      await this.flashImage(IMAGE_TYPES.SSBL, boxfishPkg.getData(IMAGE_TYPES.SSBL), upgradeSelection);
-      await this.flashImage(IMAGE_TYPES.APP_HEADER, boxfishPkg.getData(IMAGE_TYPES.APP_HEADER), upgradeSelection);
-      await this.flashImage(IMAGE_TYPES.APP, boxfishPkg.getData(IMAGE_TYPES.APP), upgradeSelection);
+      await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishUpgraderFile, upgradeSelection);
+      await this.flashImage(IMAGE_TYPES.SSBL, boxfishUpgraderFile, upgradeSelection);
+      await this.flashImage(IMAGE_TYPES.APP_HEADER, boxfishUpgraderFile, upgradeSelection);
+      await this.flashImage(IMAGE_TYPES.APP, boxfishUpgraderFile, upgradeSelection);
       /* eslint-enable max-len */
       if (semver.gt(currentSwVersion, '0.0.7')) {
         await this.locksmith.executeAsyncFunction(async () => {
@@ -401,7 +406,24 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async upgradeIsValid(): Promise<boolean> {
-    // Huddly boxfish, old does valid check works!
-    return Promise.resolve(true);
+    const prodInfo = await this._cameraManager.api.getProductInfo();
+    const currentSwVersion = this.extractSofwareVersionFromProdInfo(prodInfo);
+    if (semver.lt(currentSwVersion, HPK_SUPPORT_VERSION)) {
+      return true;
+    }
+
+    try {
+      const response = await this._cameraManager.api.sendAndReceiveMessagePack('',
+        {
+          send: 'camera/upgrade_status',
+          receive: 'camera/upgrade_status_reply'
+        }
+      );
+
+      this._logger.info(`Upgrade status ${JSON.stringify(response)}`);
+      return response.status === 0;
+    } catch (e) {
+      return false;
+    }
   }
 }
