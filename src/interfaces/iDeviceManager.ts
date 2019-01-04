@@ -123,4 +123,12 @@ export default interface IDeviceManager {
    * @memberof HuddlySdk
    */
   getDetector(opts: DetectorOpts): IDetector;
+
+  /**
+   * Retrieves camera information such as name, serial number, software version etc.
+   *
+   * @returns {Promise<any>} A JSON representation of the camera state such as is genius framing enabled.
+   * @memberof IDeviceManager
+   */
+  getState(): Promise<any>;
 }

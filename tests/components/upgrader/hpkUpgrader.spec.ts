@@ -221,16 +221,8 @@ describe('HPKUpgrader', () => {
   });
 
   describe('#upgradeIsValid', () => {
-    beforeEach(() => {
-      sinon.stub(dummyCameraManager.api, 'sendAndReceiveMessagePack');
-    });
-
-    afterEach(() => {
-      dummyCameraManager.api.sendAndReceiveMessagePack.restore();
-    });
-
     it('should be be true upgrade_status if status is 0', async () => {
-      dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
+      dummyCameraManager.getState.resolves({
         status: 0
       });
 
@@ -239,7 +231,7 @@ describe('HPKUpgrader', () => {
     });
 
     it('should be be true upgrade_status if status is not 0', async () => {
-      dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
+      dummyCameraManager.getState.resolves({
         status: 12
       });
 
@@ -248,7 +240,7 @@ describe('HPKUpgrader', () => {
     });
 
     it('should be be false if upgrade_status throws ', async () => {
-      dummyCameraManager.api.sendAndReceiveMessagePack.rejects({});
+      dummyCameraManager.getState.rejects({});
 
       const isValid = await hpkUpgrader.upgradeIsValid();
       expect(isValid).to.equal(false);
