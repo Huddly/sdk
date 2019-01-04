@@ -152,4 +152,14 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
    getDetector(opts?: DetectorOpts): IDetector {
     return new Detector(this, this.logger, opts);
   }
+
+  async getState(): Promise<any> {
+    const response = await this.api.sendAndReceiveMessagePack('',
+      {
+        send: 'camera/get_state',
+        receive: 'camera/get_state_reply'
+      }
+    );
+    return response;
+  }
 }

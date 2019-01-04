@@ -413,12 +413,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     }
 
     try {
-      const response = await this._cameraManager.api.sendAndReceiveMessagePack('',
-        {
-          send: 'camera/upgrade_status',
-          receive: 'camera/upgrade_status_reply'
-        }
-      );
+      const response = await this._cameraManager.getState();
 
       this._logger.info(`Upgrade status ${JSON.stringify(response)}`);
       return response.status === 0;

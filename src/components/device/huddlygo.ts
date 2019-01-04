@@ -251,4 +251,8 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   getDetector(): IDetector {
     throw new Error('Detections are not supported on Huddly GO camera!');
   }
+
+  getState(): Promise<any> {
+    throw new Error('State is not supported on Huddly GO camera');
+  }
 }
