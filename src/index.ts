@@ -3,6 +3,7 @@ import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
 import DefaultLogger from './utilitis/logger';
 import DeviceFactory from './components/device/factory';
 import CameraEvents from './utilitis/events';
+import { queue } from './utilitis/taskqueue';
 
 /**
  * The SDK initialization options.
@@ -92,6 +93,8 @@ class HuddlySdk extends EventEmitter {
    */
   _deviceDiscoveryApi: IHuddlyDeviceAPI;
 
+  private taskRunner: any;
+
   /**
    * Creates an instance of HuddlySdk.
    * @param {IHuddlyDeviceAPI} deviceDiscoveryApi The Huddly device-api used for discovering the device.
@@ -115,6 +118,8 @@ class HuddlySdk extends EventEmitter {
       this._deviceApis = deviceApis;
     }
 
+    this.taskRunner = queue(1);
+
     const options = opts ? opts : {};
 
     this.deviceDiscovery = options.apiDiscoveryEmitter || new EventEmitter();
@@ -136,15 +141,24 @@ class HuddlySdk extends EventEmitter {
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) => {
       if (d) {
-        const cameraManager = await DeviceFactory.getDevice(d.productId,
-          this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
-        this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+        const attachTask = async done => {
+          const cameraManager = await DeviceFactory.getDevice(d.productId,
+            this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
+          this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+          done();
+        };
+        this.taskRunner.push(attachTask);
       }
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
       if (d) {
-        this.emitter.emit(CameraEvents.DETACH, d);
+        const detachTask = async done => {
+          this.emitter.emit(CameraEvents.DETACH, d);
+          done();
+        };
+
+        this.taskRunner.push(detachTask);
       }
     });
   }
