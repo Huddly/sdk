@@ -3,7 +3,7 @@ import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
 import DefaultLogger from './utilitis/logger';
 import DeviceFactory from './components/device/factory';
 import CameraEvents from './utilitis/events';
-import { queue } from './utilitis/taskqueue';
+import Locksmith from './components/locksmith';
 
 /**
  * The SDK initialization options.
@@ -93,7 +93,7 @@ class HuddlySdk extends EventEmitter {
    */
   _deviceDiscoveryApi: IHuddlyDeviceAPI;
 
-  private taskRunner: any;
+  private locksmith: Locksmith;
 
   /**
    * Creates an instance of HuddlySdk.
@@ -118,7 +118,7 @@ class HuddlySdk extends EventEmitter {
       this._deviceApis = deviceApis;
     }
 
-    this.taskRunner = queue(1);
+    this.locksmith = new Locksmith();
 
     const options = opts ? opts : {};
 
@@ -141,24 +141,21 @@ class HuddlySdk extends EventEmitter {
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) => {
       if (d) {
-        const attachTask = async done => {
+        await this.locksmith.executeAsyncFunction(() => new Promise(async (resolve) => {
           const cameraManager = await DeviceFactory.getDevice(d.productId,
             this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
           this.emitter.emit(CameraEvents.ATTACH, cameraManager);
-          done();
-        };
-        this.taskRunner.push(attachTask);
+          resolve();
+        }));
       }
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
       if (d) {
-        const detachTask = async done => {
+        await this.locksmith.executeAsyncFunction(() => new Promise((resolve) => {
           this.emitter.emit(CameraEvents.DETACH, d);
-          done();
-        };
-
-        this.taskRunner.push(detachTask);
+          resolve();
+        }));
       }
     });
   }
