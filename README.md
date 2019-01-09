@@ -12,7 +12,13 @@
 # Huddly Software Development Kit (SDK)
 
 ## Prerequisites
-You have to use node version ```8.9.4```, we recommend using nvm for this (https://github.com/creationix/nvm).
+Huddly SDK supportes the following node versions:
+
+- 8.9.4
+- 10.12.0
+- 11.5.0
+
+We recommend using nvm as your node version manager (https://github.com/creationix/nvm).
 
 After you've setup nvm run
 ```
