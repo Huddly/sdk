@@ -63,6 +63,7 @@ export default class Api {
             reject(e);
           });
         for (let attempt = 0; attempt < MAX_WRITE_ATTEMPT; attempt++) {
+          console.log(`-------------Attempting to write ${commands.send} ${attempt} ---------`);
           try {
             await this.transport.write(commands.send, payload);
             return;
@@ -71,6 +72,7 @@ export default class Api {
               reject(e);
               return;
             }
+            console.log(`-------------Failed to write LIBUSB_ERROR_NOT_SUPPORTED $L{commands.send} ${attempt} ${e}---------`);
           }
         }
       }));

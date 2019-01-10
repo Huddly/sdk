@@ -94,11 +94,8 @@ export default class Detector extends EventEmitter implements IDetector {
   async start(): Promise<void> {
     this._logger.warn('Start cnn');
     const status = await this.autozoomStatus();
-    if (!status['autozoom-enabled']) {
-      await this._deviceManager.transport.write('autozoom/start');
-    } else {
-      this._logger.info('Autozoom already started!');
-    }
+    await this._deviceManager.transport.write('autozoom/enable');
+
     try {
       await this._deviceManager.transport.subscribe('autozoom/predictions');
       this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
@@ -119,11 +116,9 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async stop(): Promise<void> {
-    this._logger.warn('Stop cnn');
+    this._logger.warn('Stop cnn autozoom/disable');
     const status = await this.autozoomStatus();
-    if (status['autozoom-enabled']) {
-      await this._deviceManager.transport.write('autozoom/stop');
-    }
+    await this._deviceManager.transport.write('autozoom/disable');
     await this._deviceManager.transport.unsubscribe('autozoom/predictions');
     await this._deviceManager.transport.unsubscribe('autozoom/framing');
     this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
