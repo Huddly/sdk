@@ -1,0 +1,35 @@
+import IUVCControls from './../../interfaces/iUVCControlApi';
+export default class UvcBaseDevice implements IUVCControls {
+    uvcControlInterface: any;
+    uvcCamera: any;
+    constructor(uvcCamera: any, uvcControlInterface: any);
+    getSoftwareVersion(): void;
+    supportsSoftwareUpgrades(): void;
+    getBinaries(): void;
+    getPowerUsage(): void;
+    getTemperature(): void;
+    getWhitePointAdjust(): void;
+    setWhitePointAdjust(): void;
+    getCameraMode(): void;
+    setCameraMode(mode: any): void;
+    setFramingConfig(config: any): Promise<any>;
+    getErrorLog(): void;
+    eraseErrorLog(): void;
+    factoryReset(): void;
+    uptime(): void;
+    getUpdateUrl(): void;
+    getStatus(): void;
+    getXUControl(controlNumber: any): Promise<any>;
+    setXUControl(controlNumber: any, value: any): Promise<any>;
+    getSupportedSettings(): any;
+    getSetting(key: any, forceRefresh?: boolean): any;
+    setSettingValue(key: any, value: any): any;
+    getSettings(forceRefresh?: boolean): any;
+    resetSettings(excludeList?: any[]): any;
+    getPanTilt(): any;
+    setPanTilt(panTilt: any): Promise<any>;
+    setUVCParam(param: any, value: any): any;
+    getUVCParam(param: any): any;
+    usbReEnumerate(): any;
+    isAlive(): boolean;
+}
