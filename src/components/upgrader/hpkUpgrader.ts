@@ -31,7 +31,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   registerHotPlugEvents() {
-    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, (devManager) => {
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, async (devManager) => {
+      await new Promise(resolve => setTimeout(resolve, 1000));
       if (devManager && devManager instanceof Boxfish
         && this._cameraManager['serialNumber'] === devManager['serialNumber']) {
         this._cameraManager = devManager;

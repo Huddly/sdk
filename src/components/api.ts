@@ -3,7 +3,7 @@ import DefaultLogger from './../utilitis/logger';
 import * as msgpack from 'msgpack-lite';
 import Locksmith from './locksmith';
 
-
+const MAX_WRITE_ATTEMPT = 3;
 export default class Api {
   transport: ITransport;
   logger: DefaultLogger;
@@ -62,10 +62,16 @@ export default class Api {
             this.transport.setEventLoopReadSpeed();
             reject(e);
           });
-        try {
-          await this.transport.write(commands.send, payload);
-        } catch (e) {
-          reject(e);
+        for (let attempt = 0; attempt < MAX_WRITE_ATTEMPT; attempt++) {
+          try {
+            await this.transport.write(commands.send, payload);
+            return;
+          } catch (e) {
+            if (e.message !== 'LIBUSB_ERROR_NOT_SUPPORTED') {
+              reject(e);
+              return;
+            }
+          }
         }
       }));
     return result;
