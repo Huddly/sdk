@@ -1,11 +1,15 @@
 # REST server
 
-To get started do
+To get started do install the project dependencies using npm as below:
 ```
 npm install
 ```
+Yarn can also be used to install dependencies.
+```
+yarn install
+```
 
-To start the server
+Start the server by running the command below:
 ```
 npm run start
 ```
