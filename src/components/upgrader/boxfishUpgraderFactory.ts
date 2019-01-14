@@ -10,7 +10,7 @@ import BoxfishHpk from './boxfishhpk';
 
 import { EventEmitter } from 'events';
 
-export const HPK_SUPPORT_VERSION = '1.2.0-0';
+export const HPK_SUPPORT_VERSION = '1.2.1-0';
 
 export async function createBoxfishUpgrader(
   manager: IDeviceManager,
