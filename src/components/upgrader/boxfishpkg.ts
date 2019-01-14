@@ -68,7 +68,7 @@ class BoxfishPackage implements IBoxfishUpgraderFile {
     this.validateImageType(imageType);
     const signed = `${imageType}_signed`;
     if (this.files[signed] !== undefined) {
-      this.validateImageType(IMAGE_TYPES[signed]);
+      this.validateImageType(this.files[signed].imageType);
       return this.files[signed];
     }
     return this.files[imageType];
