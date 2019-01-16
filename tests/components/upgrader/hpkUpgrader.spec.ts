@@ -147,6 +147,19 @@ describe('HPKUpgrader', () => {
 
         return hpkUpgrader.start().should.be.rejectedWith(Error);
       });
+
+      it('should try again until MAX_UPLOAD_ATTEMPTS have been reached', async () => {
+        dummyCameraManager.api.sendAndReceiveMessagePack.throws(new Error('upload failed'));
+        hpkUpgrader.init({
+          file: validHpkBuffer,
+        });
+        try {
+          await hpkUpgrader.start();
+        } catch (e) {
+          // will fail
+        }
+        expect(dummyCameraManager.api.sendAndReceiveMessagePack).to.have.callCount(6);
+      });
     });
 
     describe('running hpk', () => {

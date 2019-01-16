@@ -7,6 +7,8 @@ import Api from '../api';
 import Boxfish from './../device/boxfish';
 import BoxfishHpk from './boxfishhpk';
 
+const MAX_UPLOAD_ATTEMPTS = 5;
+
 export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
   verboseStatusLog: boolean;
   _cameraManager: IDeviceManager;
@@ -46,21 +48,26 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   async upload(hpkBuffer: Buffer) {
-    try {
-      const m = await this._cameraManager.api.sendAndReceiveMessagePack(
-        { name: 'upgrade.hpk', file_data: hpkBuffer },
-        {
-          send: 'hcp/write',
-          receive: 'hcp/write_reply'
-        }, 10000
-      );
-      const { status } = m;
-      if (status !== 0) {
-        throw new Error(`Upload hpk failed with status ${status}`);
+    let tryAgain = true;
+    let attempt = 0;
+    while (tryAgain && attempt < MAX_UPLOAD_ATTEMPTS) {
+      try {
+        const m = await this._cameraManager.api.sendAndReceiveMessagePack(
+          { name: 'upgrade.hpk', file_data: hpkBuffer },
+          {
+            send: 'hcp/write',
+            receive: 'hcp/write_reply'
+          }, 10000
+        );
+        const { status } = m;
+        if (status !== 0) {
+          throw new Error(`Upload hpk failed with status ${status}`);
+        }
+        tryAgain = false;
+      } catch (e) {
+        this._logger.error(`Failed uploading hpk file ${e} attemt ${attempt}`);
+        attempt += 1;
       }
-    } catch (e) {
-      this._logger.error(`Failed uploading hpk file ${e}`);
-      throw new Error(`Failed uploading hpk file ${e}`);
     }
   }
 
@@ -126,7 +133,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       this._logger.debug('RUN hpk complete');
       return;
     } else {
-      this._logger.error(`HPK run failed ${runMessage}`);
+      this._logger.error(`HPK run failed ${JSON.stringify(runMessage)}`);
       throw new Error(`HPK run failed ${runMessage}`);
     }
   }

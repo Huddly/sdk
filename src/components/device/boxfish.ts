@@ -45,7 +45,11 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     this._api = new Api(this.transport, this.logger, this.locksmith);
     this.transport.on('TRANSPORT_RESET', () => {
       this.transport.init();
-      this.transport.initEventLoop();
+      try {
+        this.transport.initEventLoop();
+      } catch (e) {
+        this.logger.warn('Failed to init event loop when transport reset');
+      }
     });
   }
 
