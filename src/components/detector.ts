@@ -94,6 +94,7 @@ export default class Detector extends EventEmitter implements IDetector {
   async start(): Promise<void> {
     this._logger.warn('Start cnn enable');
     await this._deviceManager.transport.write('autozoom/enable');
+    await this._deviceManager.transport.write('autozoom/start');
     try {
       await this._deviceManager.transport.subscribe('autozoom/predictions');
       this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
