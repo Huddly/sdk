@@ -12,7 +12,7 @@ const sdk = new HuddlySdk(usbApi, [usbApi]);
 async function init() {
   await sdk.init();
 
-  sdk.on('ATTACH', (cameraManager) => {
+  sdk.on('ATTACH', async (cameraManager) => {
     const detector = await cameraManager.getDetector();
     await detector.init();
 
