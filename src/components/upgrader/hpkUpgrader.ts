@@ -32,19 +32,28 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this.registerHotPlugEvents();
   }
 
-  registerHotPlugEvents() {
-    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, (devManager) => {
-      if (devManager && devManager instanceof Boxfish
-        && this._cameraManager['serialNumber'] === devManager['serialNumber']) {
-        this._cameraManager = devManager;
-        this.emit('UPGRADE_REBOOT_COMPLETE');
-      }
-    });
+  onAttach = (devManager) => {
+    if (devManager && devManager instanceof Boxfish
+      && this._cameraManager['serialNumber'] === devManager['serialNumber']) {
+      this._cameraManager = devManager;
+      this.emit('UPGRADE_REBOOT_COMPLETE');
+    }
+  }
 
-    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.DETACH, () => {
-      this._cameraManager.transport.close();
-      this.emit('UPGRADE_REBOOT');
-    });
+  onDetach = () => {
+    this._cameraManager.transport.close();
+    this.emit('UPGRADE_REBOOT');
+  }
+
+  registerHotPlugEvents() {
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, this.onAttach);
+
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.DETACH, this.onDetach);
+  }
+
+  deRegisterHotPlugEvents() {
+    this._sdkDeviceDiscoveryEmitter.removeListener(CameraEvents.ATTACH, this.onAttach);
+    this._sdkDeviceDiscoveryEmitter.removeListener(CameraEvents.DETACH, this.onDetach);
   }
 
   async upload(hpkBuffer: Buffer) {
@@ -84,8 +93,10 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       this.once('UPGRADE_REBOOT_COMPLETE', async () => {
         try {
           await this.doUpgrade();
+          await this.deRegisterHotPlugEvents();
           this.emit(CameraEvents.UPGRADE_COMPLETE);
         } catch (e) {
+          await this.deRegisterHotPlugEvents();
           this.emit(CameraEvents.UPGRADE_FAILED, e);
           throw e;
         }
@@ -93,16 +104,15 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   async awaitHPKCompletion(): Promise<any> {
-    return this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
+    const shouldReboot = await this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
         let totalProgressPoints = 1;
         this._cameraManager.transport.on('upgrader/status', async message => {
           const statusMessage =  Api.decode(message.payload, 'messagepack');
           totalProgressPoints = statusMessage.total_points || totalProgressPoints;
-          if (statusMessage.operation === 'done') {
-            if (statusMessage.reboot) {
-              await this._cameraManager.reboot();
-            }
-            resolve();
+          if (statusMessage.operation === 'done' && statusMessage.reboot) {
+            resolve(true);
+          } else if (statusMessage.operation === 'done') {
+            resolve(false);
           }
           if (statusMessage.error_count > 0) {
             return reject(statusMessage);
@@ -117,6 +127,12 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         });
       })
     );
+
+    if (shouldReboot) {
+      await this._cameraManager.transport.stopEventLoop();
+      await this._cameraManager.reboot();
+      await this._cameraManager.transport.close();
+    }
   }
 
   async runHPKScript(): Promise<void> {
