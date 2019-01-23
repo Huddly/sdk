@@ -38,7 +38,7 @@ export default class Detector extends EventEmitter implements IDetector {
     super();
     this._deviceManager = manager;
     this._logger = logger;
-    this._options = options || { convertDetections: DetectionConvertion.RELATIVE };
+    this._options = options || { convertDetections: DetectionConvertion.RELATIVE, shouldAutoFrame: true };
     this.setMaxListeners(50);
     this._predictionHandler = (detectionBuffer) => {
       const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
@@ -72,7 +72,13 @@ export default class Detector extends EventEmitter implements IDetector {
             .then(() => axios.get(this._defaultConfigURL, { responseType: 'json'})
               .then(configRes => configRes.data)
               .then(configJson => this.setDetectorConfig(configJson)
-                .then(() => resolve())
+                .then(() => {
+                    if (!this._options.shouldAutoFrame) {
+                      return this.uploadFramingConfig(JSON.parse('{"AUTO_PTZ":false}'));
+                    }
+                    return Promise.resolve();
+                  }).then(() => resolve())
+                  .catch(framingConfigErr => reject(framingConfigErr))
                 .catch(setConfigErr => reject(setConfigErr)))
               .catch(fetchConfigErr => reject(fetchConfigErr)))
             .catch(uploadBlobErr => reject(uploadBlobErr)))
@@ -212,7 +218,7 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async setDetectorConfig(config: JSON): Promise<void> {
     try {
-      this._logger.warn('sending detector config.');
+      this._logger.warn('Sending detector config!');
       await this._deviceManager.api.sendAndReceive(Api.encode(config),
         {
           send: 'detector/config',
@@ -236,6 +242,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async uploadFramingConfig(config: JSON): Promise<void> {
+    this._logger.warn('Uploading new framing config!');
     try {
       await this._deviceManager.api.sendAndReceive(Api.encode(config),
         {
