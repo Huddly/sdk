@@ -93,5 +93,13 @@ Check out the sdk code on github (https://github.com/Huddly/sdk)
   ```
   This makes it easy to draw these bbox directly on top of the main stream.
 
+### How can i disable autoframing and still get detection information from camera?
+  Another available detector configuration is the `shouldAutoFrame` option which when set to false, it allows you to configure Genius Framing to send detection data without autoframing.
+
+  ```
+    cameraManager.getDetector({ shouldAutoFrame: false });
+  ```
+  By default, the detector is configured to run autoframing and generate detection information.
+
 ### The camera is never attached, or throwing an Error
   Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.
