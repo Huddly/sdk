@@ -38,7 +38,7 @@ export default class Detector extends EventEmitter implements IDetector {
     super();
     this._deviceManager = manager;
     this._logger = logger;
-    this._options = options || { convertDetections: DetectionConvertion.RELATIVE };
+    this._options = options || { convertDetections: DetectionConvertion.RELATIVE, shouldAutoFrame: true };
     this.setMaxListeners(50);
     this._predictionHandler = (detectionBuffer) => {
       const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
@@ -63,6 +63,11 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async init(): Promise<any> {
+    if (!this._options.shouldAutoFrame) {
+      this._logger.warn('Configuring Genius Framing with disabled autoframing!');
+      await this.uploadFramingConfig(JSON.parse('{"AUTO_PTZ":false}'));
+    }
+
     const status = await this.autozoomStatus();
     if (!status['network-configured']) {
       return new Promise((resolve, reject) => {
@@ -212,7 +217,7 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async setDetectorConfig(config: JSON): Promise<void> {
     try {
-      this._logger.warn('sending detector config.');
+      this._logger.warn('Sending detector config!');
       await this._deviceManager.api.sendAndReceive(Api.encode(config),
         {
           send: 'detector/config',
@@ -236,6 +241,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async uploadFramingConfig(config: JSON): Promise<void> {
+    this._logger.warn('Uploading new framing config!');
     try {
       await this._deviceManager.api.sendAndReceive(Api.encode(config),
         {
