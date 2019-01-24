@@ -63,6 +63,11 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async init(): Promise<any> {
+    if (!this._options.shouldAutoFrame) {
+      this._logger.warn('Configuring Genius Framing with disabled autoframing!');
+      await this.uploadFramingConfig(JSON.parse('{"AUTO_PTZ":false}'));
+    }
+
     const status = await this.autozoomStatus();
     if (!status['network-configured']) {
       return new Promise((resolve, reject) => {
@@ -72,13 +77,7 @@ export default class Detector extends EventEmitter implements IDetector {
             .then(() => axios.get(this._defaultConfigURL, { responseType: 'json'})
               .then(configRes => configRes.data)
               .then(configJson => this.setDetectorConfig(configJson)
-                .then(() => {
-                    if (!this._options.shouldAutoFrame) {
-                      return this.uploadFramingConfig(JSON.parse('{"AUTO_PTZ":false}'));
-                    }
-                    return Promise.resolve();
-                  }).then(() => resolve())
-                  .catch(framingConfigErr => reject(framingConfigErr))
+                .then(() => resolve())
                 .catch(setConfigErr => reject(setConfigErr)))
               .catch(fetchConfigErr => reject(fetchConfigErr)))
             .catch(uploadBlobErr => reject(uploadBlobErr)))
