@@ -27,7 +27,7 @@ export default interface DetectorOpts {
     * @type {Boolean}
     * @memberof DetectorOpts
     */
-   shouldAutoFrame: Boolean;
+   shouldAutoFrame: boolean;
 }
 
 export { DetectionConvertion };
