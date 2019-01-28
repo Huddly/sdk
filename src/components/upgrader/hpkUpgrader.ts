@@ -143,7 +143,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         send: 'hpk/run',
         receive: 'hpk/run_reply'
       },
-      5000
+      15000
     );
     if (runMessage.string === 'Success') {
       this._logger.debug('RUN hpk complete');
