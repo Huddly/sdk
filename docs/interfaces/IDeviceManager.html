@@ -124,6 +124,9 @@
                                     <a href="#getInfo">getInfo</a>
                                 </li>
                                 <li>
+                                    <a href="#getState">getState</a>
+                                </li>
+                                <li>
                                     <a href="#getUpgrader">getUpgrader</a>
                                 </li>
                                 <li>
@@ -402,6 +405,52 @@ successful connnection close or rejects otherwise.</p>
                             </div>
                                 <div class="io-description">
                                     <p>A JSON representation of the camera information.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getState"></a>
+                        <span class="name">
+                            <b>
+                            getState
+                            </b>
+                            <a href="#getState"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getState()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/interfaces/iDeviceManager.ts:133</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Retrieves camera information such as name, serial number, software version etc.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>A JSON representation of the camera state such as is genius framing enabled.</p>
 
                                 </div>
                     </td>
@@ -932,6 +981,14 @@ export default interface IDeviceManager {
    * @memberof HuddlySdk
    */
   getDetector(opts: DetectorOpts): IDetector;
+
+  /**
+   * Retrieves camera information such as name, serial number, software version etc.
+   *
+   * @returns {Promise&lt;any&gt;} A JSON representation of the camera state such as is genius framing enabled.
+   * @memberof IDeviceManager
+   */
+  getState(): Promise&lt;any&gt;;
 }
 </code></pre>
     </div>

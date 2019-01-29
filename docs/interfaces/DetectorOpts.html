@@ -88,6 +88,9 @@
                                 <li>
                                         <a href="#convertDetections">convertDetections</a>
                                 </li>
+                                <li>
+                                        <a href="#shouldAutoFrame">shouldAutoFrame</a>
+                                </li>
                             </ul>
                         </td>
                     </tr>
@@ -138,6 +141,42 @@ frame in the main stream</p>
                             </tr>
                         </tbody>
                     </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="shouldAutoFrame"></a>
+                                        <span class="name"><b>shouldAutoFrame</b><a href="#shouldAutoFrame"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>shouldAutoFrame:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank" >Boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Boolean" target="_blank" >Boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Set to false in case you want to get detections without
+enabling genius framing</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
             </section>
     </div>
 
@@ -164,6 +203,15 @@ export default interface DetectorOpts {
    * @memberof DetectorOpts
    */
    convertDetections: DetectionConvertion;
+
+   /**
+    * Set to false in case you want to get detections without
+    * enabling genius framing
+    *
+    * @type {Boolean}
+    * @memberof DetectorOpts
+    */
+   shouldAutoFrame: Boolean;
 }
 
 export { DetectionConvertion };

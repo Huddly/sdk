@@ -250,6 +250,7 @@ import IHuddlyDeviceAPI from &#x27;./interfaces/iHuddlyDeviceAPI&#x27;;
 import DefaultLogger from &#x27;./utilitis/logger&#x27;;
 import DeviceFactory from &#x27;./components/device/factory&#x27;;
 import CameraEvents from &#x27;./utilitis/events&#x27;;
+import Locksmith from &#x27;./components/locksmith&#x27;;
 
 /**
  * The SDK initialization options.
@@ -339,6 +340,8 @@ class HuddlySdk extends EventEmitter {
    */
   _deviceDiscoveryApi: IHuddlyDeviceAPI;
 
+  private locksmith: Locksmith;
+
   /**
    * Creates an instance of HuddlySdk.
    * @param {IHuddlyDeviceAPI} deviceDiscoveryApi The Huddly device-api used for discovering the device.
@@ -362,6 +365,8 @@ class HuddlySdk extends EventEmitter {
       this._deviceApis &#x3D; deviceApis;
     }
 
+    this.locksmith &#x3D; new Locksmith();
+
     const options &#x3D; opts ? opts : {};
 
     this.deviceDiscovery &#x3D; options.apiDiscoveryEmitter || new EventEmitter();
@@ -383,15 +388,21 @@ class HuddlySdk extends EventEmitter {
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) &#x3D;&gt; {
       if (d) {
-        const cameraManager &#x3D; await DeviceFactory.getDevice(d.productId,
-          this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
-        this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+        await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise(async (resolve) &#x3D;&gt; {
+          const cameraManager &#x3D; await DeviceFactory.getDevice(d.productId,
+            this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
+          this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+          resolve();
+        }));
       }
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
       if (d) {
-        this.emitter.emit(CameraEvents.DETACH, d);
+        await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise((resolve) &#x3D;&gt; {
+          this.emitter.emit(CameraEvents.DETACH, d);
+          resolve();
+        }));
       }
     });
   }
