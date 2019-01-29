@@ -43,7 +43,13 @@
 
 <h1 id="huddly-software-development-kit-sdk-">Huddly Software Development Kit (SDK)</h1>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>You have to use node version <code>8.9.4</code>, we recommend using nvm for this (<a href="https://github.com/creationix/nvm)">https://github.com/creationix/nvm)</a>.</p>
+<p>Huddly SDK supportes the following node versions:</p>
+<ul>
+<li>8.9.4</li>
+<li>10.12.0</li>
+<li>11.5.0</li>
+</ul>
+<p>We recommend using nvm as your node version manager (<a href="https://github.com/creationix/nvm)">https://github.com/creationix/nvm)</a>.</p>
 <p>After you&#39;ve setup nvm run</p>
 <div><pre class="line-numbers"><code class="language-none">  nvm use 8.9.4</code></pre></div><h2 id="get-started">Get started</h2>
 <p>Then you can install and start using the huddly sdk you need first install it and the transport</p>
@@ -82,6 +88,9 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <h3 id="my-detections-are-not-matching-what-i-see-in-the-stream-">My detections are not matching what I see in the stream:</h3>
 <p>  Internally the camera always sees full field of view, the coordinates are relative to full field of view by deafault. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ convertDetections: &#39;FRAMING&#39; });</code></pre></div><p>  This makes it easy to draw these bbox directly on top of the main stream.</p>
+<h3 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera-">How can i disable autoframing and still get detection information from camera?</h3>
+<p>  Another available detector configuration is the <code>shouldAutoFrame</code> option which when set to false, it allows you to configure Genius Framing to send detection data without autoframing.</p>
+<div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ shouldAutoFrame: false });</code></pre></div><p>  By default, the detector is configured to run autoframing and generate detection information.</p>
 <h3 id="the-camera-is-never-attached-or-throwing-an-error">The camera is never attached, or throwing an Error</h3>
 <p>  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.</p>
 

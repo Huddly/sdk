@@ -101,7 +101,13 @@
                                     <a href="#once">once</a>
                                 </li>
                                 <li>
+                                    <a href="#removeListener">removeListener</a>
+                                </li>
+                                <li>
                                     <a href="#start">start</a>
+                                </li>
+                                <li>
+                                    <a href="#upgradeIsValid">upgradeIsValid</a>
                                 </li>
                             </ul>
                         </td>
@@ -137,7 +143,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="55" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:55</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:64</a></div>
                             </td>
                         </tr>
 
@@ -430,6 +436,96 @@ verbose level etc.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="removeListener"></a>
+                        <span class="name">
+                            <b>
+                            removeListener
+                            </b>
+                            <a href="#removeListener"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>removeListener(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, callback: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:52</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>EventEmitter <code>removeListener</code></p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>message</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <code><p>The message use to remove  the listener for</p>
+</code>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>callback</td>
+                                                        <td>
+                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="start"></a>
                         <span class="name">
                             <b>
@@ -463,6 +559,52 @@ Use event handlers to track the upgrade progress.</p>
                                 <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                             </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="upgradeIsValid"></a>
+                        <span class="name">
+                            <b>
+                            upgradeIsValid
+                            </b>
+                            <a href="#upgradeIsValid"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>upgradeIsValid()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:72</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Verifies if camera performed a valid upgrade</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>A <code>Promise</code> that resolves when upgrade is valid</p>
+
+                                </div>
                     </td>
                 </tr>
             </tbody>
@@ -584,6 +726,15 @@ export default interface IDeviceUpgrader {
   once(message: string, callback: any);
 
   /**
+   * EventEmitter &#x60;removeListener&#x60;
+   *
+   * @param {string} message The message use to remove  the listener for
+   * @param {*} callback
+   * @memberof Transportable
+   */
+  removeListener(message: string, callback: any);
+
+  /**
    * Perform camera upgrade without event handlers. This is a
    * function which you call and await for completion. You can either
    * use &#x60;Promise await&#x60; style or &#x60;Promise then/catch&#x60; for handling
@@ -594,6 +745,14 @@ export default interface IDeviceUpgrader {
    * @memberof IDeviceUpgrader
    */
   doUpgrade(): Promise&lt;any&gt;;
+
+  /**
+   * Verifies if camera performed a valid upgrade
+   *
+   * @returns {Promise&lt;booleean&gt;} A &#x60;Promise&#x60; that resolves when upgrade is valid
+   * @memberof IDeviceUpgrader
+   */
+  upgradeIsValid(): Promise&lt;boolean&gt;;
 }
 </code></pre>
     </div>
