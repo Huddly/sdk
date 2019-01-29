@@ -169,7 +169,7 @@ We want to create a report that calculates the average number of people in our m
   * Click add dimension select ```Hour```
   * Click add filter only show ```Event Label``` Exact ```my_meeting_room``` (fill the name you set as environment variable)
 
-  ![Average number people in meeting room moon](/assets/imgs/report.png)
+  ![Average number people in meeting room moon](https://developer.huddly.com/assets/imgs/report.png)
 
 
 ## Check out your Dashboard
