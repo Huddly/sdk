@@ -12,7 +12,7 @@ POST upgrade camera with provided file
 
 ```
 curl \
-  -F "file=@/path/iq-sw-1.x.pkg" \
+  -F "file=@/path/iq-sw-1.x.hpk" \
   localhost:8080/upgrade
 ```
 
