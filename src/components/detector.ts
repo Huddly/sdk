@@ -21,7 +21,7 @@ export default class Detector extends EventEmitter implements IDetector {
   _logger: any;
   _predictionHandler: any;
   _framingHandler: any;
-  _defaultBlobURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/huddly_az_v8_ncsdk_02_10.blob';
+  _defaultBlobURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/huddly_az_v8_ncsdk_02_08.blob';
   _defaultConfigURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/config.json';
   _frame: any;
   _options: iDetectorOpts;
