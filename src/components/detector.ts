@@ -67,9 +67,9 @@ export default class Detector extends EventEmitter implements IDetector {
     const configData = getFramingConfig();
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
       configData.AUTO_PTZ = this._options.shouldAutoFrame;
-      await this.uploadFramingConfig(JSON.parse(JSON.stringify(configData)));
+      await this.uploadFramingConfig(configData);
     } else {
-      await this.uploadFramingConfig(JSON.parse(JSON.stringify(configData)));
+      await this.uploadFramingConfig(configData);
     }
 
     const status = await this.autozoomStatus();
@@ -244,7 +244,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @returns {Promise<void>} Void Promise.
    * @memberof Detector
    */
-  async uploadFramingConfig(config: JSON): Promise<void> {
+  async uploadFramingConfig(config: any): Promise<void> {
     this._logger.warn('Uploading new framing config!');
     try {
       await this._deviceManager.api.sendAndReceive(Api.encode(config),
