@@ -1,6 +1,14 @@
 # REST server
+In order to run this examples you first need to clone the repo
+```
+git clone git@github.com:Huddly/sdk.git
+```
 
-To get started do install the project dependencies using npm as below:
+then go to the example folder
+```
+cd examples/rest
+```
+After that install the project dependencies using npm as below:
 ```
 npm install
 ```
