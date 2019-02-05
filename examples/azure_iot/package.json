@@ -1,0 +1,14 @@
+{
+  "name": "huddly_azure_iot",
+  "version": "1.0.0",
+  "description": "Example demonstrating events from IQ to Azure IoT Hub ",
+  "main": "index.js",
+  "author": "Huddly",
+  "license": "MIT",
+  "dependencies": {
+    "@huddly/device-api-usb": "^0.1.5",
+    "@huddly/sdk": "^0.1.11",
+    "azure-iot-device": "^1.9.2",
+    "azure-iot-device-amqp": "^1.9.2"
+  }
+}
