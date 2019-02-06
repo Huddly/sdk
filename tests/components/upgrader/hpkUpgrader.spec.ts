@@ -31,6 +31,7 @@ describe('HPKUpgrader', () => {
     dummyEmitter = new EventEmitter();
     dummyCameraManager.transport = new EventEmitter();
     dummyCameraManager.transport.close = () => {};
+    dummyCameraManager.transport.stopEventLoop = () => {};
     hpkUpgrader = new HPKUpgrader(dummyCameraManager, dummyEmitter, new DefaultLogger(false));
   });
 
@@ -71,7 +72,7 @@ describe('HPKUpgrader', () => {
   });
 
   describe('#start', () => {
-    function mockSucessMessages() {
+    function mockSucessMessages(donePayload = {}) {
       dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
         status: 0
       });
@@ -84,9 +85,11 @@ describe('HPKUpgrader', () => {
       dummyCameraManager.api.sendAndReceiveMessagePack.onCall(3).resolves({
         string: 'Success'
       });
-      dummyCameraManager.api.withSubscribe.callsArg(1);
+      dummyCameraManager.api.withSubscribe.callsFake((topic, cb) => {
+        return cb();
+      });
       dummyCameraManager.transport.on.withArgs('upgrader/status').callsArgWith(1, {
-        payload: Api.encode({ operation: 'done' })
+        payload: Api.encode({ operation: 'done', ...donePayload })
       });
     }
     beforeEach(() => {
@@ -163,6 +166,12 @@ describe('HPKUpgrader', () => {
     });
 
     describe('running hpk', () => {
+      beforeEach(() => {
+        sinon.stub(dummyCameraManager.transport, 'close');
+      });
+      afterEach(() => {
+        dummyCameraManager.transport.close.restore;
+      });
       it('should throw if run fails', () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
           status: 0
@@ -230,6 +239,14 @@ describe('HPKUpgrader', () => {
         expect(progress).to.equal(91.7931151465113);
       });
 
+      it('should not throw an error if transport close fails', () => {
+        mockSucessMessages({reboot: true});
+        dummyCameraManager.transport.close.throws(new Error('transport close failed'));
+        hpkUpgrader.init({
+          file: validHpkBuffer,
+        });
+        return hpkUpgrader.start();
+      });
     });
   });
 
