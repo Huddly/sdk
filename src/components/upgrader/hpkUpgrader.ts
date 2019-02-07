@@ -92,6 +92,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
       this.once('UPGRADE_REBOOT_COMPLETE', async () => {
         try {
+          // Wait two seconds to allow drivers to attach properly to the USB endpoint
+          await new Promise(resolve => setTimeout(resolve, 2000));
           await this.doUpgrade();
           await this.deRegisterHotPlugEvents();
           this.emit(CameraEvents.UPGRADE_COMPLETE);
@@ -105,28 +107,40 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
   async awaitHPKCompletion(): Promise<any> {
     const shouldReboot = await this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
-        let totalProgressPoints = 1;
-        this._cameraManager.transport.on('upgrader/status', async message => {
-          const statusMessage =  Api.decode(message.payload, 'messagepack');
-          totalProgressPoints = statusMessage.total_points || totalProgressPoints;
-          if (statusMessage.operation === 'done' && statusMessage.reboot) {
-            resolve(true);
-          } else if (statusMessage.operation === 'done') {
-            resolve(false);
-          }
-          if (statusMessage.error_count > 0) {
-            return reject(statusMessage);
-          }
-          const elapsedPoints = statusMessage.elapsed_points || 0;
-          const progressPercentage = (elapsedPoints / totalProgressPoints) * 100;
-          this._logger.info(`Upgrading HPK: Status: ${Math.ceil(progressPercentage)}% step ${statusMessage.operation}\r`);
-          this.emit(CameraEvents.UPGRADE_PROGRESS, {
-            operation: statusMessage.operation,
-            progress: progressPercentage
-          });
+      const statusMessageTimoutTime = 10000;
+      function startTimout() {
+        return setTimeout(() => {
+          reject(`Upgrading HPK: no status message within ${statusMessageTimoutTime}`);
+        }, statusMessageTimoutTime);
+      }
+
+      let totalProgressPoints = 1;
+      let messageTimoutIt = startTimout();
+      this._cameraManager.transport.on('upgrader/status', async message => {
+        clearTimeout(messageTimoutIt);
+        const statusMessage =  Api.decode(message.payload, 'messagepack');
+        totalProgressPoints = statusMessage.total_points || totalProgressPoints;
+        if (statusMessage.operation === 'done' && statusMessage.reboot) {
+          resolve(true);
+          return;
+        } else if (statusMessage.operation === 'done') {
+          resolve(false);
+          return;
+        }
+        if (statusMessage.error_count > 0) {
+          return reject(statusMessage);
+        }
+        const elapsedPoints = statusMessage.elapsed_points || 0;
+        const progressPercentage = (elapsedPoints / totalProgressPoints) * 100;
+        this._logger.info(`Upgrading HPK: Status: ${Math.ceil(progressPercentage)}% step ${statusMessage.operation}\r`);
+        this.emit(CameraEvents.UPGRADE_PROGRESS, {
+          operation: statusMessage.operation,
+          progress: progressPercentage
         });
-      })
-    );
+
+        messageTimoutIt = startTimout();
+      });
+    }));
 
     if (shouldReboot) {
       await this._cameraManager.transport.stopEventLoop();

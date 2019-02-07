@@ -239,6 +239,32 @@ describe('HPKUpgrader', () => {
         expect(progress).to.equal(91.7931151465113);
       });
 
+
+      describe('watchdog', () => {
+        it('should timeout if there no status message within 10s', async () => {
+          dummyCameraManager.api.withSubscribe.callsFake((topics, cb) => cb());
+          dummyCameraManager.transport.on.withArgs('upgrader/status').callsFake(() => {});
+          dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
+            status: 0,
+            string: 'Success'
+          });
+
+          hpkUpgrader.init({
+            file: validHpkBuffer,
+          });
+
+          const startPromise = hpkUpgrader.start();
+          await new Promise(resolve => setImmediate(resolve));
+
+          try {
+            await startPromise;
+            expect(true).to.be.equal(false);
+          } catch (e) {
+            expect(e).to.be.equal('Upgrading HPK: no status message within 10000');
+          }
+        }).timeout(11000);
+      });
+
       it('should not throw an error if transport close fails', () => {
         mockSucessMessages({reboot: true});
         dummyCameraManager.transport.close.throws(new Error('transport close failed'));
