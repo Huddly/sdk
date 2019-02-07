@@ -83,12 +83,17 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   async start(): Promise<void> {
       this.emit(CameraEvents.UPGRADE_START);
       try {
-        await this.doUpgrade();
+        const rebooted = await this.doUpgrade();
+
+        if (!rebooted) {
+          this.emit(CameraEvents.UPGRADE_COMPLETE);
+        }
       } catch (e) {
         this._logger.error('Upgrade failed', e);
         this.emit(CameraEvents.UPGRADE_FAILED, e);
         throw e;
       }
+
 
       this.once('UPGRADE_REBOOT_COMPLETE', async () => {
         try {
@@ -106,7 +111,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   async awaitHPKCompletion(): Promise<any> {
-    const shouldReboot = await this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
+    const reboot = await this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
       const statusMessageTimoutTime = 10000;
       function startTimout() {
         return setTimeout(() => {
@@ -142,7 +147,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       });
     }));
 
-    if (shouldReboot) {
+    if (reboot) {
       await this._cameraManager.transport.stopEventLoop();
       await this._cameraManager.reboot();
       try {
@@ -151,6 +156,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         this._logger.info(`\nUpgrading HPK: failed closing device on reboot: ${e}\n`);
       }
     }
+
+    return reboot;
   }
 
   async runHPKScript(): Promise<void> {
@@ -172,7 +179,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
-  async doUpgrade(): Promise<any> {
+  async doUpgrade(): Promise<boolean> {
     this._logger.info('Upgrading HPK \n');
     const hpkBuffer = this._fileBuffer;
     if (!BoxfishHpk.isHpk(this._fileBuffer)) {
@@ -181,8 +188,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     await this.upload(hpkBuffer);
     const completedPromise = this.awaitHPKCompletion();
     await this.runHPKScript();
-    await completedPromise;
-    return;
+    return await completedPromise;
   }
 
   async upgradeIsValid(): Promise<boolean> {
