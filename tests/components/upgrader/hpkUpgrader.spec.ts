@@ -273,6 +273,18 @@ describe('HPKUpgrader', () => {
         });
         return hpkUpgrader.start();
       });
+
+      it('should complete if it gets done without reboot initally', () => {
+        mockSucessMessages({reboot: false});
+        hpkUpgrader.init({
+          file: validHpkBuffer,
+        });
+        const completedPromise = new Promise(resolve => {
+          hpkUpgrader.on('UPGRADE_COMPLETE', resolve);
+        });
+        hpkUpgrader.start();
+        return completedPromise;
+      });
     });
   });
 
