@@ -41,7 +41,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   onDetach = () => {
-    this._cameraManager.transport.close();
+    if (this._cameraManager) {
+      this._cameraManager.transport.close();
+    }
     this.emit('UPGRADE_REBOOT');
   }
 
