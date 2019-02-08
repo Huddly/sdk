@@ -1,0 +1,45 @@
+/// <reference types="node" />
+import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
+import { EventEmitter } from 'events';
+import IDeviceManager from './../../interfaces/iDeviceManager';
+import IBoxfishUpgraderFile, { IMAGE_TYPES } from './../../interfaces/IBoxfishUpgraderFile';
+import UpgradeOpts from './../../interfaces/IUpgradeOpts';
+import Locksmith from './../locksmith';
+export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgrader {
+    _cameraManager: IDeviceManager;
+    _sdkDeviceDisoveryEmitter: EventEmitter;
+    _logger: any;
+    _boxfishPackage: IBoxfishUpgraderFile;
+    locksmith: Locksmith;
+    options: any;
+    bootTimeout: number;
+    writeBufSupport: boolean;
+    verboseStatusLog: boolean;
+    constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter, logger: any);
+    init(opts: UpgradeOpts): void;
+    registerHotPlugEvents(): void;
+    start(): Promise<void>;
+    doUpgrade(): Promise<any>;
+    extractSofwareVersionFromProdInfo(prodInfo: any): string;
+    getBootDecision(prodInfo: any): string;
+    allocateBuf(size: any): Promise<any>;
+    legacyWriteBuf(buf: Buffer, offset?: number): Promise<any>;
+    writeBuffProbe(): Promise<boolean>;
+    writeBuf(buf: Buffer, offset?: number): Promise<any>;
+    sendReceive(cmd: string, options?: any): Promise<any>;
+    postUpgrade(upgradeSelection: string): Promise<boolean>;
+    checksumBuf(size: number, offset?: number, algorithm?: string): Promise<any>;
+    executeFlashCmdWaitForDoneWithStatus(cmd: string, cmdData: any, addr: number, size: number, statusFn?: any): Promise<any>;
+    eraseFlash(addr: number, size: number, statusFn: any): Promise<any>;
+    writeFlash(addr: number, size: number, statusFn: any): Promise<any>;
+    readFlashIntoBuf(addr: number, size: number, statusFn: any): Promise<any>;
+    doFlash(buffer: Buffer, address: string): Promise<any>;
+    flashFsbl(fsblMvcmd: Buffer): Promise<any>;
+    setFlashBootState(state: string): Promise<any>;
+    initFlash(fsblMvcmd: Buffer, boxfishUpgraderFile: IBoxfishUpgraderFile): Promise<any>;
+    flashImage(imageType: IMAGE_TYPES, upgraderFile: IBoxfishUpgraderFile, location: string): Promise<any>;
+    setRamBootSelector(selector: string): Promise<any>;
+    printBootInfo(): Promise<void>;
+    upgrade(): Promise<string>;
+    upgradeIsValid(): Promise<boolean>;
+}
