@@ -157,8 +157,6 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       } catch (e) {
         this._logger.info(`\nUpgrading HPK: failed closing device on reboot: ${e}\n`);
       }
-
-      this._cameraManager = undefined;
     }
 
     return reboot;
