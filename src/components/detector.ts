@@ -4,7 +4,6 @@ import IDeviceManager from './../interfaces/iDeviceManager';
 import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
-import axios from 'axios';
 import { getFramingConfig } from './../utilitis/framingconfig';
 
 const PREVIEW_IMAGE_SIZE = { width: 544, height: 306 };
