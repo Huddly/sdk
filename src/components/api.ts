@@ -2,6 +2,7 @@ import ITransport from './../interfaces/iTransport';
 import DefaultLogger from './../utilitis/logger';
 import * as msgpack from 'msgpack-lite';
 import Locksmith from './locksmith';
+import InterpolationParams from './../interfaces/InterpolationParams';
 
 
 export default class Api {
@@ -334,5 +335,15 @@ export default class Api {
           this.transport.write('error_logger/erase');
         }));
     });
+  }
+
+  setInterpolationParameters(params: InterpolationParams): void {
+    const paramsFloatArr: Float32Array = new Float32Array(4);
+    paramsFloatArr[0] = params.x1;
+    paramsFloatArr[1] = params.y1;
+    paramsFloatArr[1] = params.x2;
+    paramsFloatArr[2] = params.y2;
+    const payloadBuffer = Buffer.from(paramsFloatArr.buffer);
+    this.transport.write('interpolator/set_params', payloadBuffer);
   }
 }
