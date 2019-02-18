@@ -67,29 +67,9 @@ export default class Detector extends EventEmitter implements IDetector {
     const configData = getFramingConfig();
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
       configData.AUTO_PTZ = this._options.shouldAutoFrame;
-      await this.uploadFramingConfig(configData);
-    } else {
-      await this.uploadFramingConfig(configData);
     }
 
-    const status = await this.autozoomStatus();
-    if (!status['network-configured']) {
-      return new Promise((resolve, reject) => {
-        axios.get(this._defaultBlobURL, { responseType: 'arraybuffer' })
-          .then(res => res.data)
-          .then(buffer => this.uploadBlob(buffer)
-            .then(() => axios.get(this._defaultConfigURL, { responseType: 'json'})
-              .then(configRes => configRes.data)
-              .then(configJson => this.setDetectorConfig(configJson)
-                .then(() => resolve())
-                .catch(setConfigErr => reject(setConfigErr)))
-              .catch(fetchConfigErr => reject(fetchConfigErr)))
-            .catch(uploadBlobErr => reject(uploadBlobErr)))
-          .catch(fetchBlobErr => reject(fetchBlobErr));
-      });
-    }
-
-    return Promise.resolve();
+    return this.uploadFramingConfig(configData);
   }
 
   /**
