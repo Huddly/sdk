@@ -428,4 +428,16 @@ describe('API', () => {
       });
     });
   });
+
+  describe('#setInterpolationParameters', () => {
+    it('should transfer a message with all interpolation parameters encoded in float32array', () => {
+      const arr: Float32Array = new Float32Array(4);
+      arr[0] = 0.1; arr[1] = 0.2; arr[2] = 0.3; arr[3] = 0.4;
+      const expectedWritePayload = Buffer.from(arr.buffer);
+      const expectedCommand = 'interpolator/set_params';
+      api.setInterpolationParameters({x1: 0.1, y1: 0.2, x2: 0.3, y2: 0.4});
+      expect(transport.write.firstCall.args[0]).to.equal(expectedCommand);
+      expect(transport.write.firstCall.args[1].compare(expectedWritePayload)).to.equals(0);
+    });
+  });
 });
