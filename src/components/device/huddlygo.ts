@@ -6,6 +6,7 @@ import IDeviceManager from './../../interfaces/iDeviceManager';
 import IDetector from './../../interfaces/IDetector';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
+import InterpolationParams from './../../interfaces/InterpolationParams';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import { EventEmitter } from 'events';
@@ -254,5 +255,9 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
 
   getState(): Promise<any> {
     throw new Error('State is not supported on Huddly GO camera');
+  }
+
+  async setInterpolationParams(params: InterpolationParams): Promise<any> {
+    throw new Error('Interpolation parameters are not supported on Huddly GO camera');
   }
 }

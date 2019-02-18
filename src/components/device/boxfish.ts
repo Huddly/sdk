@@ -12,6 +12,7 @@ import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
 import { EventEmitter } from 'events';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
+import InterpolationParams from './../../interfaces/InterpolationParams';
 
 const MAX_UPGRADE_ATTEMT = 3;
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
@@ -169,5 +170,9 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       }
     );
     return response;
+  }
+
+  async setInterpolationParams(params: InterpolationParams): Promise<any> {
+    this.api.setInterpolationParameters(params);
   }
 }
