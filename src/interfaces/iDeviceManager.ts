@@ -72,6 +72,15 @@ export default interface IDeviceManager {
    */
   getInfo(): Promise<any>;
 
+
+  /**
+   * Checks if camera software is compatible with this version of the sdk
+   *
+   * @returns {Promise<boolean>} True if compatible if this version of the sdk
+   * @memberof IDeviceManager
+   */
+  isCompatible(): Promise<boolean>;
+
   /**
    * Retrieves the camera log.
    *

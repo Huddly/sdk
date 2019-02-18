@@ -12,8 +12,11 @@ import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
 import { EventEmitter } from 'events';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
+import semver from 'semver';
 
 const MAX_UPGRADE_ATTEMT = 3;
+const LAST_COMPATIBLE_VERSION = '1.2.5';
+
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   transport: ITransport;
   _api: Api;
@@ -43,18 +46,32 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   async initialize(): Promise<void> {
     this._api = new Api(this.transport, this.logger, this.locksmith);
-    this.transport.on('TRANSPORT_RESET', () => {
-      this.transport.init();
-      try {
-        this.transport.initEventLoop();
-      } catch (e) {
-        this.logger.warn('Failed to init event loop when transport reset');
-      }
+    return new Promise((resolve, reject) => {
+      this.transport.on('TRANSPORT_RESET', async () => {
+        this.transport.init();
+        try {
+          this.transport.initEventLoop();
+        } catch (e) {
+          this.logger.warn('Failed to init event loop when transport reset');
+        }
+
+        const sdkIsCompatible = await this.isCompatible();
+        if (!sdkIsCompatible) {
+          reject('Unsupported Device SW, the sw on this camera needs to be upated');
+        }
+
+        resolve();
+      });
     });
   }
 
   async closeConnection(): Promise<any> {
     return this.transport.close();
+  }
+
+  async isCompatible(): Promise<boolean> {
+    const info = await this.getInfo();
+    return semver.gte(info.version, LAST_COMPATIBLE_VERSION);
   }
 
   async getInfo(): Promise<any> {

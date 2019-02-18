@@ -19,6 +19,7 @@ const dummyDevice = {
 };
 
 class DummyDeviceApi implements IHuddlyDeviceAPI {
+  getCameraInfo(): Promise<any> { return Promise.resolve({ softwareVersion: 'HuddlyIQ-1.2.5' }); }
   isUVCControlsSupported(device: any): Promise<Boolean> { return Promise.resolve(false); }
   getUVCControlAPIForDevice(device: any): Promise<IUVCControlAPI> { return Promise.resolve(device); }
   getValidatedTransport(device: any): Promise<ITransport> { return Promise.resolve(device); }

@@ -152,7 +152,11 @@ export default class DeviceFactory {
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${devInstance.deviceDescriptor.idProduct}`);
     }
-    if (doInitialize) await device.initialize();
+
+    if (doInitialize) {
+      await device.initialize();
+    }
+
     return device;
   }
 }

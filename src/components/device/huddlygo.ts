@@ -10,8 +10,10 @@ import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import { EventEmitter } from 'events';
 import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
+import semver from 'semver';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;
+const LAST_COMPATIBLE_VERSION = '1.3.7';
 
 const round = (number, decimals) => {
   const factor = 10 ** decimals;
@@ -58,6 +60,11 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   async initialize(): Promise<void> {
     this.api = new Api(this.transport, this.logger, this.locksmith);
     this.softwareVersion = await this.getSoftwareVersion();
+
+    const sdkIsCompatible = await this.isCompatible();
+    if (!sdkIsCompatible) {
+      throw new Error('Unsupported Device SW, the sw on this camera needs to be upated ');
+    }
   }
 
   async closeConnection(): Promise<any> {
@@ -81,6 +88,11 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     } while (fetchAttemts < retryAttempts);
     this.logger.error(err);
     throw new Error('Failed to retrieve software version from camera');
+  }
+
+  async isCompatible(): Promise<boolean> {
+    const version = this.softwareVersion.mv2_app;
+    return semver.gte(version, LAST_COMPATIBLE_VERSION);
   }
 
   async getInfo(): Promise<any> {
