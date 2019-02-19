@@ -4,7 +4,6 @@ import IDeviceManager from './../interfaces/iDeviceManager';
 import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
-import axios from 'axios';
 import { getFramingConfig } from './../utilitis/framingconfig';
 
 const PREVIEW_IMAGE_SIZE = { width: 544, height: 306 };
@@ -21,8 +20,6 @@ export default class Detector extends EventEmitter implements IDetector {
   _logger: any;
   _predictionHandler: any;
   _framingHandler: any;
-  _defaultBlobURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/huddly_az_v8_ncsdk_02_08.blob';
-  _defaultConfigURL: string = 'https://autozoom.blob.core.windows.net/detectors-public/config.json';
   _frame: any;
   _options: iDetectorOpts;
 
@@ -67,29 +64,9 @@ export default class Detector extends EventEmitter implements IDetector {
     const configData = getFramingConfig();
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
       configData.AUTO_PTZ = this._options.shouldAutoFrame;
-      await this.uploadFramingConfig(configData);
-    } else {
-      await this.uploadFramingConfig(configData);
     }
 
-    const status = await this.autozoomStatus();
-    if (!status['network-configured']) {
-      return new Promise((resolve, reject) => {
-        axios.get(this._defaultBlobURL, { responseType: 'arraybuffer' })
-          .then(res => res.data)
-          .then(buffer => this.uploadBlob(buffer)
-            .then(() => axios.get(this._defaultConfigURL, { responseType: 'json'})
-              .then(configRes => configRes.data)
-              .then(configJson => this.setDetectorConfig(configJson)
-                .then(() => resolve())
-                .catch(setConfigErr => reject(setConfigErr)))
-              .catch(fetchConfigErr => reject(fetchConfigErr)))
-            .catch(uploadBlobErr => reject(uploadBlobErr)))
-          .catch(fetchBlobErr => reject(fetchBlobErr));
-      });
-    }
-
-    return Promise.resolve();
+    return this.uploadFramingConfig(configData);
   }
 
   /**
