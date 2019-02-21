@@ -449,7 +449,7 @@ describe('API', () => {
       sendAndReceiveMsgPackStub.restore();
     });
     it('should receive interpolation parameters as messagepack encoded map/object', async () => {
-      const expectedParams = { x1: 0.1, y1: 0.7, x2: 0.43, y2: 0.23 }
+      const expectedParams = { x1: 0.1, y1: 0.7, x2: 0.43, y2: 0.23 };
       sendAndReceiveMsgPackStub.resolves(expectedParams);
       const params = await api.getInterpolationParameters();
       expect(params).to.deep.equals(expectedParams);
