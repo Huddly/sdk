@@ -175,4 +175,8 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   async setInterpolationParams(params: InterpolationParams): Promise<any> {
     this.api.setInterpolationParameters(params);
   }
+
+  async getInterpolationParams(): Promise<InterpolationParams> {
+    return this.api.getInterpolationParameters();
+  }
 }

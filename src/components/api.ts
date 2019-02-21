@@ -346,4 +346,9 @@ export default class Api {
     const payloadBuffer = Buffer.from(paramsFloatArr.buffer);
     this.transport.write('interpolator/set_params', payloadBuffer);
   }
+
+  async getInterpolationParameters(): Promise<InterpolationParams> {
+    const res = await this.sendAndReceiveMessagePack('', { send: 'interpolator/get_params', receive: 'interpolator/get_params_reply' });
+    return res;
+  }
 }

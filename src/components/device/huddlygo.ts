@@ -260,4 +260,8 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   async setInterpolationParams(params: InterpolationParams): Promise<any> {
     throw new Error('Interpolation parameters are not supported on Huddly GO camera');
   }
+
+  async getInterpolationParams(): Promise<InterpolationParams> {
+    throw new Error('Interpolation parameters are not supported on Huddly GO camera');
+  }
 }

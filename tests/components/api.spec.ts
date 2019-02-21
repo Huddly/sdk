@@ -440,4 +440,23 @@ describe('API', () => {
       expect(transport.write.firstCall.args[1].compare(expectedWritePayload)).to.equals(0);
     });
   });
+  describe('#getInterpolationParameters', () => {
+    let sendAndReceiveMsgPackStub;
+    beforeEach(() => {
+      sendAndReceiveMsgPackStub = sinon.stub(api, 'sendAndReceiveMessagePack');
+    });
+    afterEach(() => {
+      sendAndReceiveMsgPackStub.restore();
+    });
+    it('should receive interpolation parameters as messagepack encoded map/object', async () => {
+      const expectedParams = { x1: 0.1, y1: 0.7, x2: 0.43, y2: 0.23 }
+      sendAndReceiveMsgPackStub.resolves(expectedParams);
+      const params = await api.getInterpolationParameters();
+      expect(params).to.deep.equals(expectedParams);
+      expect(sendAndReceiveMsgPackStub.firstCall.args[1]).to.deep.equals({
+        send: 'interpolator/get_params',
+        receive: 'interpolator/get_params_reply'
+      });
+    });
+  });
 });
