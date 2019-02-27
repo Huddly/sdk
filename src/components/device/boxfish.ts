@@ -92,6 +92,26 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     await this.api.eraseErrorLog();
   }
 
+  async getPowerUsage(): Promise<any> {
+    const response = await this.api.sendAndReceiveMessagePack('',
+      {
+        send: 'get_power',
+        receive: 'get_power_reply'
+      }
+    );
+    return response;
+  }
+
+  async getTemperature(): Promise<any> {
+    const response = await this.api.sendAndReceiveMessagePack('',
+      {
+        send: 'get_temperature',
+        receive: 'get_temperature_reply'
+      }
+    );
+    return response;
+  }
+
   async reboot(mode: string = 'app'): Promise<void> {
     await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
