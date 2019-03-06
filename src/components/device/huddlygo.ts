@@ -10,6 +10,7 @@ import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import { EventEmitter } from 'events';
 import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
+import { DiagnosticsMessage, MinMaxDiagnosticsMessage } from '../diagnosticsMessage';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;
 
@@ -151,6 +152,24 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
       };
     }
     return ret;
+  }
+
+  getPowerMonitorDiagnostics(powerUsage: any): Array<DiagnosticsMessage> {
+    const minVoltage = 4.6;
+    const maxVoltage = 5.25;
+
+    const voltage = new MinMaxDiagnosticsMessage('Voltage',
+      minVoltage, maxVoltage, powerUsage.voltage.min,
+      powerUsage.voltage.max, powerUsage.voltage.curr);
+    return [voltage];
+  }
+
+  async getDiagnostics(): Promise<Array<DiagnosticsMessage>> {
+    const powerUsage = await this.getPowerUsage();
+
+    const powerDiagnostics = this.getPowerMonitorDiagnostics(powerUsage);
+
+    return powerDiagnostics;
   }
 
   async getWhitePointAdjust() {

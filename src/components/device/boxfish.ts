@@ -10,6 +10,7 @@ import DetectorOpts from './../../interfaces/IDetectorOpts';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
+import { MinMaxDiagnosticsMessage, DiagnosticsMessage  } from '../diagnosticsMessage';
 import { EventEmitter } from 'events';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 
@@ -110,6 +111,24 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       }
     );
     return response;
+  }
+
+  getPowerMonitorDiagnostics(powerUsage: any): Array<DiagnosticsMessage> {
+    const minVoltage = 4.6;
+    const maxVoltage = 5.25;
+
+    const voltage = new MinMaxDiagnosticsMessage('Voltage',
+      minVoltage, maxVoltage, powerUsage.voltage.min,
+      powerUsage.voltage.max, powerUsage.voltage.curr);
+    return [voltage];
+  }
+
+  async getDiagnostics(): Promise<Array<DiagnosticsMessage>> {
+    const powerUsage = await this.getPowerUsage();
+
+    const powerDiagnostics = this.getPowerMonitorDiagnostics(powerUsage);
+
+    return powerDiagnostics;
   }
 
   async reboot(mode: string = 'app'): Promise<void> {

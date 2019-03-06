@@ -4,6 +4,7 @@ import IDeviceUpgrader from './IDeviceUpgrader';
 import IDetector from './IDetector';
 import UpgradeOpts from './IUpgradeOpts';
 import DetectorOpts from './IDetectorOpts';
+import { DiagnosticsMessage } from '../components/diagnosticsMessage';
 
 /**
  * Interface used for performing actions on the camera.
@@ -123,6 +124,14 @@ export default interface IDeviceManager {
    * @memberof HuddlySdk
    */
   getDetector(opts: DetectorOpts): IDetector;
+
+
+  /**
+   * Reads data from camera and returns diagnostics information
+   *
+   * @returns an array of DiagnosticsMessages
+   */
+  getDiagnostics(): Promise<Array<DiagnosticsMessage>>;
 
   /**
    * Retrieves camera information such as name, serial number, software version etc.
