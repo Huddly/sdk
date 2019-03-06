@@ -3,7 +3,7 @@ import IBoxfishUpgraderFile, { IMAGE_TYPES, FLASH_ADDR_LOCATION } from './../../
 
 import { promisify } from 'util';
 
-const MARKER = new Buffer('\0\n--97da1ea4-803a-4979-8e5d-f2aaa0799f4d--\n');
+const MARKER = Buffer.from('\0\n--97da1ea4-803a-4979-8e5d-f2aaa0799f4d--\n');
 
 class BoxfishHpk implements IBoxfishUpgraderFile {
   _buf: Buffer;

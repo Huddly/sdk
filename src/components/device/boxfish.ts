@@ -43,14 +43,12 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   async initialize(): Promise<void> {
     this._api = new Api(this.transport, this.logger, this.locksmith);
-    this.transport.on('TRANSPORT_RESET', () => {
-      this.transport.init();
-      try {
-        this.transport.initEventLoop();
-      } catch (e) {
-        this.logger.warn('Failed to init event loop when transport reset');
-      }
-    });
+    this.transport.init();
+    try {
+      this.transport.initEventLoop();
+    } catch (e) {
+      this.logger.warn('Failed to init event loop when transport reset');
+    }
   }
 
   async closeConnection(): Promise<any> {
@@ -94,11 +92,15 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   async reboot(mode: string = 'app'): Promise<void> {
     await this.locksmith.executeAsyncFunction(async () => {
-      await this.transport.clear();
-      if (mode === 'mvusb') {
-        await this.api.sendAndReceiveWithoutLock('upgrader/mv_usb', { args: {} });
+      try {
+        await this.transport.clear();
+        if (mode === 'mvusb') {
+          await this.api.sendAndReceiveWithoutLock('upgrader/mv_usb', { args: {} });
+        }
+        await this.transport.write('camctrl/reboot');
+      } catch (e) {
+        throw e;
       }
-      await this.transport.write('camctrl/reboot');
     });
   }
 
