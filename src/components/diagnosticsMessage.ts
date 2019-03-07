@@ -4,34 +4,52 @@ export enum DiagnosticsLevel {
   ERROR = 'ERROR'
 }
 
-export class DiagnosticsMessage {
-  type: string;
-  level: DiagnosticsLevel = DiagnosticsLevel.INFO;
-  message: string = '';
-  data: any;
+export abstract class DiagnosticsMessage {
+  protected _type: string;
+  protected _level: DiagnosticsLevel = DiagnosticsLevel.INFO;
+  protected _message: string = '';
+  protected _tip: string = 'No tip available';
   constructor(type: string) {
-    this.type = type;
+    this._type = type;
+  }
+
+  get message(): string {
+    return this._message;
+  }
+
+  get type(): string {
+    return this._type;
+  }
+
+  get level(): DiagnosticsLevel {
+    return this._level;
+  }
+
+  get tip(): string {
+    return this._tip;
   }
 }
 
 export class MinMaxDiagnosticsMessage extends DiagnosticsMessage {
   constructor(type: string, minTreshold: Number, maxTreshold: Number,
-      min: Number, max: Number, curr: Number) {
+      min: Number, max: Number, curr: Number, minTip?: string, maxTip?: string) {
     super(type);
 
     if (min <= minTreshold) {
-      this.level = DiagnosticsLevel.ERROR;
-      this.message = `${type} low.
+      this._level = DiagnosticsLevel.ERROR;
+      this._message = `${type} low.
         Measured ${min}. Current: ${curr}
         Minimum ${type} is ${minTreshold}`;
+      this._tip = minTip;
     } else if (max >= maxTreshold) {
-      this.level = DiagnosticsLevel.ERROR;
-      this.message = `${type} high.
+      this._level = DiagnosticsLevel.ERROR;
+      this._message = `${type} high.
         Measured ${max}. Current: ${curr}
         Maximum ${type} is ${maxTreshold}`;
+      this._tip = maxTip;
     } else {
-      this.level = DiagnosticsLevel.INFO;
-      this.message = `${type} Ok`;
+      this._level = DiagnosticsLevel.INFO;
+      this._message = `${type} Ok`;
     }
   }
 
