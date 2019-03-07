@@ -7,7 +7,7 @@ import { DiagnosticsMessage, MinMaxDiagnosticsMessage, DiagnosticsLevel } from '
 chai.should();
 chai.use(sinonChai);
 
-describe.only('DiagnosticsMessage', () => {
+describe('DiagnosticsMessage', () => {
   describe('base class', () => {
     it('should expose type as getter', () => {
       class Foo extends DiagnosticsMessage { }
