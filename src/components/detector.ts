@@ -4,7 +4,6 @@ import IDeviceManager from './../interfaces/iDeviceManager';
 import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
-import { getFramingConfig } from './../utilitis/framingconfig';
 
 const PREVIEW_IMAGE_SIZE = { width: 544, height: 306 };
 /**
@@ -61,12 +60,9 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async init(): Promise<any> {
-    const configData = getFramingConfig();
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
-      configData.AUTO_PTZ = this._options.shouldAutoFrame;
+      return this.uploadFramingConfig({ AUTO_PTZ: false });
     }
-
-    return this.uploadFramingConfig(configData);
   }
 
   /**
