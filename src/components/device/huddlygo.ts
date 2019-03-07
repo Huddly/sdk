@@ -157,10 +157,11 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   getPowerMonitorDiagnostics(powerUsage: any): Array<DiagnosticsMessage> {
     const minVoltage = 4.6;
     const maxVoltage = 5.25;
+    const voltageTip = 'Check your cables';
 
     const voltage = new MinMaxDiagnosticsMessage('Voltage',
       minVoltage, maxVoltage, powerUsage.voltage.min,
-      powerUsage.voltage.max, powerUsage.voltage.curr);
+      powerUsage.voltage.max, powerUsage.voltage.curr, voltageTip, voltageTip);
     return [voltage];
   }
 
