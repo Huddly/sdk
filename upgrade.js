@@ -1,3 +1,4 @@
+require('source-map-support').install();
 const fs = require('fs');
 
 const HuddlyDeviceAPIUSB = require('@huddly/device-api-usb').default;
