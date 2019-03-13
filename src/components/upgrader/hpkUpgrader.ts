@@ -117,10 +117,10 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
   }
 
-  async awaitHPKCompletion(): Promise<any> {
+  async awaitHPKCompletion(): Promise<boolean> {
     const reboot = await this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
       const statusMessageTimoutTime = 10000;
-      function startTimout() {
+      function startTimeout() {
         return setTimeout(() => {
           reject(`Upgrading HPK: no status message within ${statusMessageTimoutTime}`);
         }, statusMessageTimoutTime);
@@ -128,7 +128,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
       let totalProgressPoints = 1;
       let elapsedPoints = 0;
-      let messageTimoutIt = startTimout();
+      let messageTimoutIt = startTimeout();
+      let lastTime = Date.now();
+      let lastOperation: undefined | string = undefined;
       this._cameraManager.transport.on('upgrader/status', async message => {
         clearTimeout(messageTimoutIt);
         const statusMessage =  Api.decode(message.payload, 'messagepack');
@@ -143,15 +145,21 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         if (statusMessage.error_count > 0) {
           return reject(statusMessage);
         }
+        const now = Date.now();
+        const deltaT = now - lastTime;
+        lastTime = now;
         elapsedPoints = statusMessage.elapsed_points || elapsedPoints;
         const progressPercentage = (elapsedPoints / totalProgressPoints) * 100;
-        this._logger.info(`Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${statusMessage.operation}\r`);
+        if (statusMessage.operation !== lastOperation || deltaT >= 1000) {
+          this._logger.info(`Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${statusMessage.operation}\r`);
+        }
+        lastOperation = statusMessage.operation;
         this.emit(CameraEvents.UPGRADE_PROGRESS, {
           operation: statusMessage.operation,
-          progress: progressPercentage
+          progress: progressPercentage,
         });
 
-        messageTimoutIt = startTimout();
+        messageTimoutIt = startTimeout();
       });
     }));
 
