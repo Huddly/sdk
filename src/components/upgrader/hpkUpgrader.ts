@@ -127,6 +127,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       }
 
       let totalProgressPoints = 1;
+      let elapsedPoints = 0;
       let messageTimoutIt = startTimout();
       this._cameraManager.transport.on('upgrader/status', async message => {
         clearTimeout(messageTimoutIt);
@@ -142,9 +143,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         if (statusMessage.error_count > 0) {
           return reject(statusMessage);
         }
-        const elapsedPoints = statusMessage.elapsed_points || 0;
+        elapsedPoints = statusMessage.elapsed_points || elapsedPoints;
         const progressPercentage = (elapsedPoints / totalProgressPoints) * 100;
-        this._logger.info(`Upgrading HPK: Status: ${Math.ceil(progressPercentage)}% step ${statusMessage.operation}\r`);
+        this._logger.info(`Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${statusMessage.operation}\r`);
         this.emit(CameraEvents.UPGRADE_PROGRESS, {
           operation: statusMessage.operation,
           progress: progressPercentage
