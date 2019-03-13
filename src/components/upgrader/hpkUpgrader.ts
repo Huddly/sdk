@@ -112,19 +112,22 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       });
   }
 
-  async awaitHPKCompletion(): Promise<any> {
+  async awaitHPKCompletion(): Promise<boolean> {
     const reboot = await this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
       const statusMessageTimoutTime = 10000;
-      function startTimout() {
+      function startTimeout() {
         return setTimeout(() => {
           reject(`Upgrading HPK: no status message within ${statusMessageTimoutTime}`);
         }, statusMessageTimoutTime);
       }
 
       let totalProgressPoints = 1;
-      let messageTimoutIt = startTimout();
+      let elapsedPoints = 0;
+      let messageTimeoutIt = startTimeout();
+      let lastTime = Date.now();
+      let lastOperation: undefined | string = undefined;
       this._cameraManager.transport.on('upgrader/status', async message => {
-        clearTimeout(messageTimoutIt);
+        clearTimeout(messageTimeoutIt);
         const statusMessage =  Api.decode(message.payload, 'messagepack');
         totalProgressPoints = statusMessage.total_points || totalProgressPoints;
         if (statusMessage.operation === 'done' && statusMessage.reboot) {
@@ -137,15 +140,21 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         if (statusMessage.error_count > 0) {
           return reject(statusMessage);
         }
-        const elapsedPoints = statusMessage.elapsed_points || 0;
+        const now = Date.now();
+        const deltaT = now - lastTime;
+        lastTime = now;
+        elapsedPoints = statusMessage.elapsed_points || elapsedPoints;
         const progressPercentage = (elapsedPoints / totalProgressPoints) * 100;
-        this._logger.info(`Upgrading HPK: Status: ${Math.ceil(progressPercentage)}% step ${statusMessage.operation}\r`);
+        if (statusMessage.operation !== lastOperation || deltaT >= 1000) {
+          this._logger.info(`Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${statusMessage.operation}\r`);
+        }
+        lastOperation = statusMessage.operation;
         this.emit(CameraEvents.UPGRADE_PROGRESS, {
           operation: statusMessage.operation,
-          progress: progressPercentage
+          progress: progressPercentage,
         });
 
-        messageTimoutIt = startTimout();
+        messageTimeoutIt = startTimeout();
       });
     }));
 
