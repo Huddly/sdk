@@ -1,7 +1,9 @@
 import { EventEmitter } from 'events';
 import IDetector from './../interfaces/IDetector';
 import IDeviceManager from './../interfaces/iDeviceManager';
-import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
+import iDetectorOpts, {
+  DetectionConvertion,
+} from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 
@@ -22,7 +24,6 @@ export default class Detector extends EventEmitter implements IDetector {
   _frame: any;
   _options: iDetectorOpts;
 
-
   /**
    * Creates an instance of Detector.
    * @param {IDeviceManager} manager An instance of the IDeviceManager (for example
@@ -31,18 +32,27 @@ export default class Detector extends EventEmitter implements IDetector {
    * @param options options detector.
    * @memberof Detector
    */
-   constructor(manager: IDeviceManager, logger: any, options?: iDetectorOpts) {
+  constructor(manager: IDeviceManager, logger: any, options?: iDetectorOpts) {
     super();
     this._deviceManager = manager;
     this._logger = logger;
-    this._options = options || { convertDetections: DetectionConvertion.RELATIVE, shouldAutoFrame: true };
+    this._options = options || {
+      convertDetections: DetectionConvertion.RELATIVE,
+      shouldAutoFrame: true,
+    };
     this.setMaxListeners(50);
-    this._predictionHandler = (detectionBuffer) => {
-      const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
-      const convertedPredictions = this.convertPredictions(predictions, this._options);
+    this._predictionHandler = detectionBuffer => {
+      const { predictions } = Api.decode(
+        detectionBuffer.payload,
+        'messagepack'
+      );
+      const convertedPredictions = this.convertPredictions(
+        predictions,
+        this._options
+      );
       this.emit(CameraEvents.DETECTIONS, convertedPredictions);
     };
-    this._framingHandler = (frameBuffer) => {
+    this._framingHandler = frameBuffer => {
       const frame = Api.decode(frameBuffer.payload, 'messagepack');
       this.emit(CameraEvents.FRAMING, frame);
       this._frame = frame;
@@ -79,13 +89,21 @@ export default class Detector extends EventEmitter implements IDetector {
     await this._deviceManager.transport.write('autozoom/start');
     try {
       await this._deviceManager.transport.subscribe('autozoom/predictions');
-      this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
+      this._deviceManager.transport.on(
+        'autozoom/predictions',
+        this._predictionHandler
+      );
       await this._deviceManager.transport.subscribe('autozoom/framing');
-      this._deviceManager.transport.on('autozoom/framing', this._framingHandler);
+      this._deviceManager.transport.on(
+        'autozoom/framing',
+        this._framingHandler
+      );
     } catch (e) {
       await this._deviceManager.transport.unsubscribe('autozoom/predictions');
       await this._deviceManager.transport.unsubscribe('autozoom/framing');
-      this._logger.warn(`Something went wrong getting predictions! Error: ${e}`);
+      this._logger.warn(
+        `Something went wrong getting predictions! Error: ${e}`
+      );
     }
   }
 
@@ -101,8 +119,14 @@ export default class Detector extends EventEmitter implements IDetector {
     await this._deviceManager.transport.write('autozoom/disable');
     await this._deviceManager.transport.unsubscribe('autozoom/predictions');
     await this._deviceManager.transport.unsubscribe('autozoom/framing');
-    this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
-    this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
+    this._deviceManager.transport.removeListener(
+      'autozoom/predictions',
+      this._predictionHandler
+    );
+    this._deviceManager.transport.removeListener(
+      'autozoom/framing',
+      this._framingHandler
+    );
   }
 
   /**
@@ -113,18 +137,23 @@ export default class Detector extends EventEmitter implements IDetector {
    * @returns {predictions} Converted predictions
    * @memberof Detector
    */
-   convertPredictions(predictions: Array<any>, opts?: iDetectorOpts): Array<any> {
-    const personPredictions = predictions.filter(({ label }) => label === 'person');
+  convertPredictions(
+    predictions: Array<any>,
+    opts?: iDetectorOpts
+  ): Array<any> {
+    const personPredictions = predictions.filter(
+      ({ label }) => label === 'person'
+    );
 
     if (
-      opts
-      && opts.convertDetections === DetectionConvertion.FRAMING
-      && this._frame
+      opts &&
+      opts.convertDetections === DetectionConvertion.FRAMING &&
+      this._frame
     ) {
       const { bbox: framingBBox } = this._frame;
       const relativeSize = {
         height: PREVIEW_IMAGE_SIZE.height / framingBBox.height,
-        width: PREVIEW_IMAGE_SIZE.width / framingBBox.width
+        width: PREVIEW_IMAGE_SIZE.width / framingBBox.width,
       };
       return personPredictions.map(({ label, bbox }) => {
         return {
@@ -135,8 +164,8 @@ export default class Detector extends EventEmitter implements IDetector {
             width: bbox.width * relativeSize.width,
             height: bbox.height * relativeSize.height,
             frameWidth: framingBBox.width * relativeSize.width,
-            frameHeight: framingBBox.height * relativeSize.height
-          }
+            frameHeight: framingBBox.height * relativeSize.height,
+          },
         };
       });
     } else {
@@ -148,11 +177,10 @@ export default class Detector extends EventEmitter implements IDetector {
             y: bbox.y / PREVIEW_IMAGE_SIZE.height,
             width: bbox.width / PREVIEW_IMAGE_SIZE.width,
             height: bbox.height / PREVIEW_IMAGE_SIZE.height,
-          }
+          },
         };
       });
     }
-
   }
 
   /**

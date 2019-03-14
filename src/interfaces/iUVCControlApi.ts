@@ -5,7 +5,6 @@
  * @interface IUVCControls
  */
 export default interface IUVCControls {
-
   getXUControl(controlNumber: number): Promise<Buffer>;
 
   setXUControl(controlNumber: number, value: any): Promise<any>;

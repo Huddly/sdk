@@ -5,7 +5,6 @@
  * @interface IDetector
  */
 export default interface IDetector {
-
   /**
    * Convenience function for setting up the camera
    * for starting/stopping genius framing. Should be
