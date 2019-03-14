@@ -115,7 +115,7 @@ export default interface IDeviceManager {
    * successful upgrade or rejects otherwise.
    * @memberof IDeviceManager
    */
-  upgrade(opts: UpgradeOpts): Promise <any>;
+  upgrade(opts: UpgradeOpts): Promise<any>;
 
   /**
    * Returns a new instance of the Detector class.

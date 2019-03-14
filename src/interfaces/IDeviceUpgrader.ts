@@ -6,7 +6,6 @@ import UpgradeOpts from './IUpgradeOpts';
  * @interface IDeviceUpgrader
  */
 export default interface IDeviceUpgrader {
-
   /**
    * Initializes the upgrader with all the necessary upgrade options such as filepath,
    * verbose level etc.

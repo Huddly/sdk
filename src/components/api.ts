@@ -4,25 +4,31 @@ import * as msgpack from 'msgpack-lite';
 import Locksmith from './locksmith';
 import InterpolationParams from './../interfaces/InterpolationParams';
 
-
 export default class Api {
   transport: ITransport;
   logger: DefaultLogger;
   locksmith: Locksmith;
   setProdInfoMsgPackSupport: boolean = true;
 
-  constructor(transport: ITransport, logger: DefaultLogger, locksmith: Locksmith) {
+  constructor(
+    transport: ITransport,
+    logger: DefaultLogger,
+    locksmith: Locksmith
+  ) {
     this.transport = transport;
     this.transport.initEventLoop();
     this.logger = logger;
     this.locksmith = locksmith;
   }
 
-  async sendAndReceiveMessagePack(message: any, commands: any, receiveTimeout: number = 3000): Promise<any> {
+  async sendAndReceiveMessagePack(
+    message: any,
+    commands: any,
+    receiveTimeout: number = 3000
+  ): Promise<any> {
     const buffer = Api.encode(message);
     const res = await this.locksmith.executeAsyncFunction(async () => {
-      const reply = await this.sendAndReceive(
-        buffer, commands, receiveTimeout);
+      const reply = await this.sendAndReceive(buffer, commands, receiveTimeout);
       return reply;
     });
     return Api.decode(res.payload, 'messagepack');
@@ -34,8 +40,7 @@ export default class Api {
       timeout: options.timeout || 500,
       receiveEncoding: options.receiveEncoding || 'string',
     };
-    const payload = opts.args.length === 0 ?
-      opts.args : Api.encode(opts.args);
+    const payload = opts.args.length === 0 ? opts.args : Api.encode(opts.args);
     const commands = {
       send: cmd,
       receive: `${cmd}_reply`,
@@ -46,29 +51,39 @@ export default class Api {
     if (!resp.error || resp.error === 0) {
       return resp;
     }
-    throw new Error(`Upgrade failed. Cmd: ${cmd}, Error: ${resp.error}, Msg: ${resp.string}`);
+    throw new Error(
+      `Upgrade failed. Cmd: ${cmd}, Error: ${resp.error}, Msg: ${resp.string}`
+    );
   }
 
-  async sendAndReceive(payload: Buffer, commands: any, timeout: number = 500): Promise<any> {
+  async sendAndReceive(
+    payload: Buffer,
+    commands: any,
+    timeout: number = 500
+  ): Promise<any> {
     await this.transport.clear();
     const result = await this.withSubscribe(
-      [commands.receive], () => new Promise(async (resolve, reject) => {
-        this.transport.setEventLoopReadSpeed(1);
-        this.transport.receiveMessage(commands.receive, timeout)
-          .then((reply) => {
-            this.transport.setEventLoopReadSpeed();
-            resolve(reply);
-          })
-          .catch((e) => {
-            this.transport.setEventLoopReadSpeed();
+      [commands.receive],
+      () =>
+        new Promise(async (resolve, reject) => {
+          this.transport.setEventLoopReadSpeed(1);
+          this.transport
+            .receiveMessage(commands.receive, timeout)
+            .then(reply => {
+              this.transport.setEventLoopReadSpeed();
+              resolve(reply);
+            })
+            .catch(e => {
+              this.transport.setEventLoopReadSpeed();
+              reject(e);
+            });
+          try {
+            await this.transport.write(commands.send, payload);
+          } catch (e) {
             reject(e);
-          });
-        try {
-          await this.transport.write(commands.send, payload);
-        } catch (e) {
-          reject(e);
-        }
-      }));
+          }
+        })
+    );
     return result;
   }
 
@@ -92,16 +107,19 @@ export default class Api {
     }
   }
 
-  async fileTransfer(data: Buffer, subscribedMessages: Array<string>): Promise<any> {
+  async fileTransfer(
+    data: Buffer,
+    subscribedMessages: Array<string>
+  ): Promise<any> {
     const clearListeners = () => {
-      subscribedMessages.forEach((msg) => {
+      subscribedMessages.forEach(msg => {
         this.transport.removeAllListeners(msg);
         this.transport.setEventLoopReadSpeed();
       });
     };
     return new Promise((resolve, reject) => {
       if (subscribedMessages.indexOf('async_file_transfer/data') >= 0) {
-        this.transport.on('async_file_transfer/data', async (msgPacket) => {
+        this.transport.on('async_file_transfer/data', async msgPacket => {
           this.transport.setEventLoopReadSpeed(1);
           await this.transport.write('async_file_transfer/data_reply');
           const bufferComposition = Buffer.concat([data, msgPacket.payload]);
@@ -110,7 +128,7 @@ export default class Api {
       }
 
       if (subscribedMessages.indexOf('async_file_transfer/receive') >= 0) {
-        this.transport.on('async_file_transfer/receive', async (msgPacket) => {
+        this.transport.on('async_file_transfer/receive', async msgPacket => {
           this.transport.setEventLoopReadSpeed(1);
           if (msgPacket.payload.length !== 4) {
             clearListeners();
@@ -118,21 +136,24 @@ export default class Api {
           } else {
             const length = Api.decode(msgPacket.payload, 'int');
             const slice = data.slice(0, length);
-            await this.transport.write('async_file_transfer/receive_reply', slice);
+            await this.transport.write(
+              'async_file_transfer/receive_reply',
+              slice
+            );
             data = data.slice(length);
           }
         });
       }
 
       if (subscribedMessages.indexOf('async_file_transfer/done') >= 0) {
-        this.transport.on('async_file_transfer/done', async (buffer) => {
+        this.transport.on('async_file_transfer/done', async buffer => {
           clearListeners();
           resolve(data);
         });
       }
 
       if (subscribedMessages.indexOf('async_file_transfer/timeout') >= 0) {
-        this.transport.on('async_file_transfer/timeout', async (buffer) => {
+        this.transport.on('async_file_transfer/timeout', async buffer => {
           clearListeners();
           reject('Error log transfer timed out');
         });
@@ -140,20 +161,36 @@ export default class Api {
     });
   }
 
-  async asyncFileTransfer(command: any, data: Buffer = Buffer.alloc(0), timeout: number = 5000): Promise<any> {
+  async asyncFileTransfer(
+    command: any,
+    data: Buffer = Buffer.alloc(0),
+    timeout: number = 5000
+  ): Promise<any> {
     const res = await this.locksmith.executeAsyncFunction(async () => {
-      const subscribeMsgs = ['async_file_transfer/data', 'async_file_transfer/receive', 'async_file_transfer/done', 'async_file_transfer/timeout'];
+      const subscribeMsgs = [
+        'async_file_transfer/data',
+        'async_file_transfer/receive',
+        'async_file_transfer/done',
+        'async_file_transfer/timeout',
+      ];
       const transferRes = await this.withSubscribe(subscribeMsgs, async () => {
         return new Promise(async (resolve, reject) => {
-          this.fileTransfer(data, subscribeMsgs).then((result) => {
-            resolve(result);
-          }).catch((reason) => reject(reason));
+          this.fileTransfer(data, subscribeMsgs)
+            .then(result => {
+              resolve(result);
+            })
+            .catch(reason => reject(reason));
           const status = await this.sendAndReceive(
-            (command.send_data ? command.send_data : Buffer.alloc(0)),
+            command.send_data ? command.send_data : Buffer.alloc(0),
             command,
-            timeout);
+            timeout
+          );
           if (!status || !status['payload']) {
-            throw Error(`Failed to get status. Status: ${JSON.stringify(status)} ${command['send']}`);
+            throw Error(
+              `Failed to get status. Status: ${JSON.stringify(status)} ${
+                command['send']
+              }`
+            );
           }
         });
       });
@@ -178,9 +215,14 @@ export default class Api {
     }
 
     try {
-      const info = await this.sendAndReceiveMessagePack(Buffer.from(''), {
-        send: 'prodinfo/get_msgpack', receive: 'prodinfo/get_msgpack_reply'
-      }, 1000);
+      const info = await this.sendAndReceiveMessagePack(
+        Buffer.from(''),
+        {
+          send: 'prodinfo/get_msgpack',
+          receive: 'prodinfo/get_msgpack_reply',
+        },
+        1000
+      );
       this.setProdInfoMsgPackSupport = true;
       if (!info) {
         this.setProdInfoMsgPackSupport = false;
@@ -189,14 +231,21 @@ export default class Api {
       return info;
     } catch (e) {
       this.setProdInfoMsgPackSupport = false;
-      this.logger.warn('Prodinfo MessagePack not supported on this device. Using legacy procedure!');
+      this.logger.warn(
+        'Prodinfo MessagePack not supported on this device. Using legacy procedure!'
+      );
       return this.getProductInfoLegacy();
     }
   }
 
   async setProductInfoLegacy(newProdInfoData: any): Promise<void> {
     await this.locksmith.executeAsyncFunction(async () => {
-      const asyncFileTransferMessages = ['async_file_transfer/data', 'async_file_transfer/receive', 'async_file_transfer/done', 'async_file_transfer/timeout'];
+      const asyncFileTransferMessages = [
+        'async_file_transfer/data',
+        'async_file_transfer/receive',
+        'async_file_transfer/done',
+        'async_file_transfer/timeout',
+      ];
       const data = Api.encode(newProdInfoData);
       const length = Api.encode({ size: data.length });
       const command = {
@@ -207,21 +256,31 @@ export default class Api {
       await this.transport.clear();
       try {
         await this.transport.subscribe(command.receive);
-        await this.withSubscribe(asyncFileTransferMessages,
-          async () => new Promise(async (resolve, reject) => {
-            this.fileTransfer(data, asyncFileTransferMessages);
-            const res = await this.sendAndReceive(command.send_data ? command.send_data : Buffer.alloc(0), command);
-            if (res && res.payload) {
-              const errorCode = Api.decode(res.payload, 'messagepack');
-              if (errorCode === 0) {
-                resolve(true);
+        await this.withSubscribe(
+          asyncFileTransferMessages,
+          async () =>
+            new Promise(async (resolve, reject) => {
+              this.fileTransfer(data, asyncFileTransferMessages);
+              const res = await this.sendAndReceive(
+                command.send_data ? command.send_data : Buffer.alloc(0),
+                command
+              );
+              if (res && res.payload) {
+                const errorCode = Api.decode(res.payload, 'messagepack');
+                if (errorCode === 0) {
+                  resolve(true);
+                } else {
+                  reject(
+                    `Set Product Info command failed with error code ${errorCode}`
+                  );
+                }
               } else {
-                reject(`Set Product Info command failed with error code ${errorCode}`);
+                reject(
+                  'No response received from camera during Set Product Info command'
+                );
               }
-            } else {
-              reject('No response received from camera during Set Product Info command');
-            }
-          }));
+            })
+        );
       } finally {
         await this.transport.unsubscribe(command.receive);
       }
@@ -235,14 +294,20 @@ export default class Api {
 
     try {
       await this.transport.clear();
-      await this.sendAndReceive(Api.encode(newProdInfoData), {
-        send: 'prodinfo/set_msgpack',
-        receive: 'prodinfo/set_msgpack_reply'
-      }, 10000);
+      await this.sendAndReceive(
+        Api.encode(newProdInfoData),
+        {
+          send: 'prodinfo/set_msgpack',
+          receive: 'prodinfo/set_msgpack_reply',
+        },
+        10000
+      );
       return Promise.resolve();
     } catch (e) {
       this.setProdInfoMsgPackSupport = false;
-      this.logger.warn('SetProdinfo MessagePack not supported on this device. Using legacy procedure!');
+      this.logger.warn(
+        'SetProdinfo MessagePack not supported on this device. Using legacy procedure!'
+      );
       return this.setProductInfoLegacy(newProdInfoData);
     }
   }
@@ -277,16 +342,20 @@ export default class Api {
   async getUptime(): Promise<any> {
     const res = await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
-      const result = await this.withSubscribe(['camctrl/uptime_reply'],
-        async () => new Promise(async (resolve, reject) => {
-          this.transport.receiveMessage('camctrl/uptime_reply')
-            .then((reply) => {
-              const uptimeSeconds = Api.decode(reply.payload, 'double');
-              resolve(uptimeSeconds);
-            })
-            .catch((e) => reject(e));
-          this.transport.write('camctrl/uptime');
-        }));
+      const result = await this.withSubscribe(
+        ['camctrl/uptime_reply'],
+        async () =>
+          new Promise(async (resolve, reject) => {
+            this.transport
+              .receiveMessage('camctrl/uptime_reply')
+              .then(reply => {
+                const uptimeSeconds = Api.decode(reply.payload, 'double');
+                resolve(uptimeSeconds);
+              })
+              .catch(e => reject(e));
+            this.transport.write('camctrl/uptime');
+          })
+      );
       return result;
     });
     return res;
@@ -305,13 +374,19 @@ export default class Api {
   async getErrorLog(): Promise<any> {
     const res = await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
-      const subscribeMsgs = ['async_file_transfer/data', 'async_file_transfer/done', 'async_file_transfer/timeout'];
+      const subscribeMsgs = [
+        'async_file_transfer/data',
+        'async_file_transfer/done',
+        'async_file_transfer/timeout',
+      ];
 
       const result = await this.withSubscribe(subscribeMsgs, async () => {
         return new Promise((resolve, reject) => {
-          this.fileTransfer(Buffer.alloc(0), subscribeMsgs).then((result) => {
-            resolve(result.toString('ascii'));
-          }).catch((reason) => reject(reason));
+          this.fileTransfer(Buffer.alloc(0), subscribeMsgs)
+            .then(result => {
+              resolve(result.toString('ascii'));
+            })
+            .catch(reason => reject(reason));
           this.transport.write('error_logger/read');
         });
       });
@@ -325,16 +400,20 @@ export default class Api {
     await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
       const timeoutMs = 60000;
-      await this.withSubscribe(['error_logger/erase_done'],
-        async () => new Promise(async (resolve, reject) => {
-          this.transport.receiveMessage('error_logger/erase_done', timeoutMs)
-            .then((reply) => {
-              this.logger.info('Done erasing error log');
-              resolve();
-            })
-            .catch((e) => reject(e));
-          this.transport.write('error_logger/erase');
-        }));
+      await this.withSubscribe(
+        ['error_logger/erase_done'],
+        async () =>
+          new Promise(async (resolve, reject) => {
+            this.transport
+              .receiveMessage('error_logger/erase_done', timeoutMs)
+              .then(reply => {
+                this.logger.info('Done erasing error log');
+                resolve();
+              })
+              .catch(e => reject(e));
+            this.transport.write('error_logger/erase');
+          })
+      );
     });
   }
 
