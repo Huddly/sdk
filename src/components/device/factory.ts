@@ -150,7 +150,7 @@ export default class DeviceFactory {
         device = new Boxfish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
       default:
-        throw new Error(`Unsupported Device. USB ProductId: ${devInstance}`);
+        throw new Error(`Unsupported Device. USB ProductId: ${productId}`);
     }
     if (doInitialize) await device.initialize();
     return device;
