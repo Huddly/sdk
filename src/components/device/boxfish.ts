@@ -99,6 +99,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         }
         await this.transport.write('camctrl/reboot');
       } catch (e) {
+        console.log('---------------', e);
         throw e;
       }
     });

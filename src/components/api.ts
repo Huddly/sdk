@@ -83,8 +83,8 @@ export default class Api {
     } finally {
       for (let i = 0; i < subscribeMessages.length; i += 1) {
         // eslint-disable-next-line no-await-in-loop
-        await this.transport.unsubscribe(subscribeMessages[i]);
-        await this.transport.removeAllListeners(subscribeMessages[i]);
+        this.transport.unsubscribe(subscribeMessages[i]);
+        this.transport.removeAllListeners(subscribeMessages[i]);
       }
     }
   }
