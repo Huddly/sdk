@@ -74,6 +74,8 @@ export default class Api {
 
   async withSubscribe(subscribeMessages: Array<string>, fn: any): Promise<any> {
     await this.transport.clear();
+    // Don't do these subscribes in parallel (Promise.all), as order sometimes matter currently.
+    // That's not good, but unfortunatly the way the situation is today.
     for (let i = 0; i < subscribeMessages.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop
       await this.transport.subscribe(subscribeMessages[i]);
@@ -82,11 +84,11 @@ export default class Api {
       const result = await fn();
       return result;
     } finally {
-      for (let i = 0; i < subscribeMessages.length; i += 1) {
-        // eslint-disable-next-line no-await-in-loop
-        await this.transport.unsubscribe(subscribeMessages[i]);
-        await this.transport.removeAllListeners(subscribeMessages[i]);
-      }
+      subscribeMessages.forEach(msg => {
+        // Don't await these unsubscribes, as the transport might be broken.
+        this.transport.unsubscribe(msg);
+        this.transport.removeAllListeners(msg);
+      });
     }
   }
 
