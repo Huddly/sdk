@@ -164,23 +164,19 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async uploadBlob(blobBuffer: Buffer): Promise<void> {
-    try {
-      const status = await this.autozoomStatus();
-      if (!status['network-configured']) {
-        this._logger.warn('uploading cnn blob.');
-        await this._deviceManager.api.sendAndReceive(blobBuffer,
-          {
-            send: 'network-blob',
-            receive: 'network-blob_reply'
-          },
-          60000
-        );
-        this._logger.warn('cnn blob uploaded. unlocking stream');
-      } else {
-        this._logger.info('Cnn blob already configured!');
-      }
-    } catch (e) {
-      throw e;
+    const status = await this.autozoomStatus();
+    if (!status['network-configured']) {
+      this._logger.warn('uploading cnn blob.');
+      await this._deviceManager.api.sendAndReceive(blobBuffer,
+        {
+          send: 'network-blob',
+          receive: 'network-blob_reply'
+        },
+        60000
+      );
+      this._logger.warn('cnn blob uploaded. unlocking stream');
+    } else {
+      this._logger.info('Cnn blob already configured!');
     }
   }
 
@@ -193,19 +189,15 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async setDetectorConfig(config: JSON): Promise<void> {
-    try {
-      this._logger.warn('Sending detector config!');
-      await this._deviceManager.api.sendAndReceive(Api.encode(config),
-        {
-          send: 'detector/config',
-          receive: 'detector/config_reply'
-        },
-        6000
-      );
-      this._logger.warn('detector config sent.');
-    } catch (e) {
-      throw e;
-    }
+    this._logger.warn('Sending detector config!');
+    await this._deviceManager.api.sendAndReceive(Api.encode(config),
+      {
+        send: 'detector/config',
+        receive: 'detector/config_reply'
+      },
+      6000
+    );
+    this._logger.warn('detector config sent.');
   }
 
   /**
@@ -219,17 +211,13 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async uploadFramingConfig(config: any): Promise<void> {
     this._logger.warn('Uploading new framing config!');
-    try {
-      await this._deviceManager.api.sendAndReceive(Api.encode(config),
-        {
-          send: 'autozoom/framer-config',
-          receive: 'autozoom/framer-config_reply',
-        },
-        60000
-      );
-    } catch (e) {
-      throw e;
-    }
+    await this._deviceManager.api.sendAndReceive(Api.encode(config),
+      {
+        send: 'autozoom/framer-config',
+        receive: 'autozoom/framer-config_reply',
+      },
+      60000
+    );
   }
 
   /**
@@ -243,16 +231,12 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async autozoomStatus(): Promise<any> {
-    try {
-      const statusReply = await this._deviceManager.api.sendAndReceive(Buffer.alloc(0),
-        {
-          send: 'autozoom/status',
-          receive: 'autozoom/status_reply'
-        });
-      const decodedStatus = Api.decode(statusReply.payload, 'messagepack');
-      return decodedStatus;
-    } catch (e) {
-      throw e;
-    }
+    const statusReply = await this._deviceManager.api.sendAndReceive(Buffer.alloc(0),
+      {
+        send: 'autozoom/status',
+        receive: 'autozoom/status_reply'
+      });
+    const decodedStatus = Api.decode(statusReply.payload, 'messagepack');
+    return decodedStatus;
   }
 }

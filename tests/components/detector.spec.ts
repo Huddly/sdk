@@ -196,32 +196,45 @@ describe('Detector', () => {
   });
 
   describe('#uploadBlob', () => {
-    let autozoomStatusStub;
+    let decodeStub;
     let sendReceiveStub;
     beforeEach(() => {
-      autozoomStatusStub = sinon.stub(Detector.prototype, 'autozoomStatus').resolves({
-        'network-configure': false
-      });
-      sendReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceive');
+      sendReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceive').resolves({ payload: {}});
     });
     afterEach(() => {
-      autozoomStatusStub.restore();
+      decodeStub.restore();
       sendReceiveStub.restore();
     });
-    describe('on network configured', () => {
+    describe('on network not configured', () => {
+      beforeEach(() => {
+        decodeStub = sinon.stub(Api, 'decode').returns({
+          'network-configured': false
+        });
+      });
       it('should call appropriate api message for blob upload', async () => {
         await detector.uploadBlob(Buffer.from(''));
-        expect(sendReceiveStub.getCall(0).args[0].compare(Buffer.from(''))).to.equals(0);
-        expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
+        expect(sendReceiveStub.getCall(1).args[0].compare(Buffer.from(''))).to.equals(0);
+        expect(sendReceiveStub.getCall(1).args[1]).to.deep.equals({
           send: 'network-blob',
           receive: 'network-blob_reply'
         });
-        expect(sendReceiveStub.getCall(0).args[2]).to.equals(60000);
+        expect(sendReceiveStub.getCall(1).args[2]).to.equals(60000);
+      });
+    });
+    describe('on network configured', () => {
+      beforeEach(() => {
+        decodeStub = sinon.stub(Api, 'decode').returns({
+          'network-configured': true
+        });
+      });
+      it('should do nothing', async () => {
+        await detector.uploadBlob(Buffer.from(''));
+        expect(sendReceiveStub.callCount).to.equals(1); // One call for autozoom-status
       });
     });
   });
 
-  describe('#uploadFramingConfig', () => {
+  describe('set config', () => {
     let sendReceiveStub;
     let encodeStub;
     beforeEach(() => {
@@ -232,16 +245,32 @@ describe('Detector', () => {
       sendReceiveStub.restore();
       encodeStub.restore();
     });
-    it('should call appropriate api message for framing config upload', async () => {
-      const config = { config: 'dummy' };
-      await detector.uploadFramingConfig(config);
-      expect(encodeStub.getCall(0).args[0]).to.deep.equals(config);
-      expect(sendReceiveStub.getCall(0).args[0]).to.equals('Dummy Config');
-      expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
-        send: 'autozoom/framer-config',
-        receive: 'autozoom/framer-config_reply',
+    describe('#setDetectorConfig', () => {
+      it('should call appropriate api message for setting detector config', async () => {
+        const config = { hello: 'world' };
+        await detector.setDetectorConfig(JSON.parse('{"hello": "world"}'));
+        expect(encodeStub.getCall(0).args[0]).to.deep.equals(config);
+        expect(sendReceiveStub.getCall(0).args[0]).to.equals('Dummy Config');
+        expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
+          send: 'detector/config',
+          receive: 'detector/config_reply'
+        });
+        expect(sendReceiveStub.getCall(0).args[2]).to.equals(6000);
       });
-      expect(sendReceiveStub.getCall(0).args[2]).to.equals(60000);
+    });
+
+    describe('#uploadFramingConfig', () => {
+      it('should call appropriate api message for framing config upload', async () => {
+        const config = { config: 'dummy' };
+        await detector.uploadFramingConfig(config);
+        expect(encodeStub.getCall(0).args[0]).to.deep.equals(config);
+        expect(sendReceiveStub.getCall(0).args[0]).to.equals('Dummy Config');
+        expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
+          send: 'autozoom/framer-config',
+          receive: 'autozoom/framer-config_reply',
+        });
+        expect(sendReceiveStub.getCall(0).args[2]).to.equals(60000);
+      });
     });
   });
 
