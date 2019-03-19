@@ -18,16 +18,16 @@ export default interface DetectorOpts {
    * @type {DetectionConvertion}
    * @memberof DetectorOpts
    */
-   convertDetections: DetectionConvertion;
+  convertDetections?: DetectionConvertion;
 
-   /**
-    * Set to false in case you want to get detections without
-    * enabling genius framing
-    *
-    * @type {Boolean}
-    * @memberof DetectorOpts
-    */
-   shouldAutoFrame: boolean;
+  /**
+   * Set to false in case you want to get detections without
+   * enabling genius framing
+   *
+   * @type {Boolean}
+   * @memberof DetectorOpts
+   */
+  shouldAutoFrame?: boolean;
 }
 
 export { DetectionConvertion };
