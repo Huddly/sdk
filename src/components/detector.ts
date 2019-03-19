@@ -61,7 +61,7 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async init(): Promise<any> {
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
-      return this.uploadFramingConfig({ AUTO_PTZ: false });
+      return this.uploadFramingConfig({ AUTO_PTZ: this._options.shouldAutoFrame });
     }
   }
 
