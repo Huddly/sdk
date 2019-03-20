@@ -1,6 +1,6 @@
 {
   "name": "@huddly/sdk",
-  "version": "0.1.15",
+  "version": "0.1.16",
   "description": "Huddly's Software Development Kit (SDK) used to interact with the camera by third-party applications",
   "keywords": [
     "SDK",
