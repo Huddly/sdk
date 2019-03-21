@@ -18,7 +18,7 @@ Huddly SDK supportes the following node versions:
 - 10.12.0
 - 11.5.0
 
-We recommend using nvm as your node version manager (https://github.com/creationix/nvm).
+We recommend using nvm as your node version manager [https://github.com/creationix/nvm](https://github.com/creationix/nvm).
 
 After you've setup nvm run
 ```
