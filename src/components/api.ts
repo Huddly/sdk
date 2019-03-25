@@ -72,7 +72,7 @@ export default class Api {
     return result;
   }
 
-  async withSubscribe(subscribeMessages: Array<string>, fn: any): Promise<any> {
+  async withSubscribe<T>(subscribeMessages: string[], fn: (() => Promise<T>)): Promise<T> {
     await this.transport.clear();
     // Don't do these subscribes in parallel (Promise.all), as order sometimes matter currently.
     // That's not good, but unfortunatly the way the situation is today.
