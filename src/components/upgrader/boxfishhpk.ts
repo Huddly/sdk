@@ -1,16 +1,14 @@
 import crypto from 'crypto';
 import IBoxfishUpgraderFile, { IMAGE_TYPES, FLASH_ADDR_LOCATION } from './../../interfaces/IBoxfishUpgraderFile';
 
-import { promisify } from 'util';
-
-const MARKER = new Buffer('\0\n--97da1ea4-803a-4979-8e5d-f2aaa0799f4d--\n');
+const MARKER = Buffer.from('\0\n--97da1ea4-803a-4979-8e5d-f2aaa0799f4d--\n');
 
 class BoxfishHpk implements IBoxfishUpgraderFile {
   _buf: Buffer;
   _headerLen: number;
   header: any;
 
-  constructor(buf) {
+  constructor(buf: Buffer) {
     this._buf = buf;
   }
 
@@ -36,7 +34,7 @@ class BoxfishHpk implements IBoxfishUpgraderFile {
     return markerPos;
   }
 
-  listFiles(): Array<string> {
+  listFiles(): string[] {
     return Object.keys(this.header.files);
   }
 
@@ -73,7 +71,7 @@ class BoxfishHpk implements IBoxfishUpgraderFile {
     return FLASH_ADDR_LOCATION[imageType][location];
   }
 
-  static isHpk(file: Buffer) {
+  static isHpk(file: Buffer): boolean {
     try {
       return BoxfishHpk.findHPKMarkerPos(file) > 0;
     } catch (e) {
