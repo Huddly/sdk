@@ -72,7 +72,7 @@ export default class Api {
     return result;
   }
 
-  async withSubscribe(subscribeMessages: Array<string>, fn: any): Promise<any> {
+  async withSubscribe<T>(subscribeMessages: string[], fn: (() => Promise<T>)): Promise<T> {
     await this.transport.clear();
     for (let i = 0; i < subscribeMessages.length; i += 1) {
       // eslint-disable-next-line no-await-in-loop

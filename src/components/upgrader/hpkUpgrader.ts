@@ -113,7 +113,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   async awaitHPKCompletion(): Promise<boolean> {
-    const reboot = await this._cameraManager.api.withSubscribe(['upgrader/status'], () => new Promise((resolve, reject) => {
+    const reboot = await this._cameraManager.api.withSubscribe<boolean>(['upgrader/status'], () => new Promise((resolve, reject) => {
       const statusMessageTimoutTime = 10000;
       function startTimeout() {
         return setTimeout(() => {
