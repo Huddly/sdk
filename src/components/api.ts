@@ -297,7 +297,10 @@ export default class Api {
     const info = {
       softwareVersion: prodInfo.app_version,
       uptime: Math.round(uptime * 100) / 100, // 2 floating point decimals
-      autozoom: autozoomStatus,
+      autozoom: {
+        active: autozoomStatus['autozoom-active'],
+        timestamp: autozoomStatus['timestamp']
+      }
     };
     return info;
   }
@@ -353,6 +356,16 @@ export default class Api {
     return res;
   }
 
+  /**
+   * Convenience function that is used to fetch the status of
+   * genius framing on the camera. Includes information such as
+   * whether genius framing is running, the time passed since it
+   * is enabled and so on.
+   *
+   * @returns {Promise<any>} Returns an object with the status properties
+   * and values.
+   * @memberof Api
+   */
   async getAutozoomStatus(): Promise<any> {
     const statusReply = await this.sendAndReceive(Buffer.alloc(0),
       {
