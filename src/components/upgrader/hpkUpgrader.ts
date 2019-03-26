@@ -88,18 +88,6 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
   async start(): Promise<void> {
       this.emit(CameraEvents.UPGRADE_START);
-      try {
-        const rebooted = await this.doUpgrade();
-
-        if (!rebooted) {
-          this.emit(CameraEvents.UPGRADE_COMPLETE);
-        }
-      } catch (e) {
-        this._logger.error('Upgrade failed', e);
-        this.emit(CameraEvents.UPGRADE_FAILED, e);
-        throw e;
-      }
-
 
       this.once('UPGRADE_REBOOT_COMPLETE', async () => {
         try {
@@ -114,6 +102,18 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
           throw e;
         }
       });
+
+      try {
+        const rebooted = await this.doUpgrade();
+
+        if (!rebooted) {
+          this.emit(CameraEvents.UPGRADE_COMPLETE);
+        }
+      } catch (e) {
+        this._logger.error('Upgrade failed', e);
+        this.emit(CameraEvents.UPGRADE_FAILED, e);
+        throw e;
+      }
   }
 
   async awaitHPKCompletion(): Promise<boolean> {
