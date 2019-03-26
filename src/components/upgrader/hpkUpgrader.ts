@@ -163,7 +163,6 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }));
 
     if (reboot) {
-      await this._cameraManager.transport.stopEventLoop();
       await this._cameraManager.reboot();
       try {
         await this._cameraManager.transport.close();
