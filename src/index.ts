@@ -4,6 +4,9 @@ import DefaultLogger from './utilitis/logger';
 import DeviceFactory from './components/device/factory';
 import CameraEvents from './utilitis/events';
 import Locksmith from './components/locksmith';
+import sourceMapSupport from 'source-map-support';
+
+sourceMapSupport.install();
 
 /**
  * The SDK initialization options.
