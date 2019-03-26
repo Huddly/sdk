@@ -140,7 +140,7 @@ export default class DeviceFactory {
       preferredDeviceApi,
       secondaryDeviceApis);
 
-    let device;
+    let device: IDeviceManager;
     switch (productId) {
       case HUDDLY_GO_PID:
         const hidApi = await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis);
@@ -150,7 +150,7 @@ export default class DeviceFactory {
         device = new Boxfish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
       default:
-        throw new Error(`Unsupported Device. USB ProductId: ${devInstance.deviceDescriptor.idProduct}`);
+        throw new Error(`Unsupported Device. USB ProductId: ${productId}`);
     }
     if (doInitialize) await device.initialize();
     return device;
