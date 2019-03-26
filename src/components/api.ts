@@ -293,10 +293,11 @@ export default class Api {
   async getCameraInfo(): Promise<any> {
     const prodInfo = await this.getProductInfo();
     const uptime = await this.getUptime();
-
+    const autozoomStatus = await this.getAutozoomStatus();
     const info = {
       softwareVersion: prodInfo.app_version,
       uptime: Math.round(uptime * 100) / 100, // 2 floating point decimals
+      autozoom: autozoomStatus,
     };
     return info;
   }
@@ -350,5 +351,15 @@ export default class Api {
   async getInterpolationParameters(): Promise<InterpolationParams> {
     const res = await this.sendAndReceiveMessagePack('', { send: 'interpolator/get_params', receive: 'interpolator/get_params_reply' });
     return res;
+  }
+
+  async getAutozoomStatus(): Promise<any> {
+    const statusReply = await this.sendAndReceive(Buffer.alloc(0),
+      {
+        send: 'autozoom/status',
+        receive: 'autozoom/status_reply'
+      });
+    const decodedStatus = Api.decode(statusReply.payload, 'messagepack');
+    return decodedStatus;
   }
 }
