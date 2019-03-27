@@ -20,6 +20,7 @@ class DeviceManager implements IDeviceManager {
   };
   api: any = {
     sendAndReceive: (buffer, commands, timeout) => {},
+    getAutozoomStatus: () => {},
     encode: (msg) => {}
   };
   uvcControlInterface: any;
@@ -196,40 +197,41 @@ describe('Detector', () => {
   });
 
   describe('#uploadBlob', () => {
-    let decodeStub;
     let sendReceiveStub;
+    let autozoomStatusStub;
     beforeEach(() => {
       sendReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceive').resolves({ payload: {}});
+      autozoomStatusStub = sinon.stub(deviceManager.api, 'getAutozoomStatus');
     });
     afterEach(() => {
-      decodeStub.restore();
       sendReceiveStub.restore();
+      autozoomStatusStub.restore();
     });
     describe('on network not configured', () => {
       beforeEach(() => {
-        decodeStub = sinon.stub(Api, 'decode').returns({
+        autozoomStatusStub.resolves({
           'network-configured': false
         });
       });
       it('should call appropriate api message for blob upload', async () => {
         await detector.uploadBlob(Buffer.from(''));
-        expect(sendReceiveStub.getCall(1).args[0].compare(Buffer.from(''))).to.equals(0);
-        expect(sendReceiveStub.getCall(1).args[1]).to.deep.equals({
+        expect(sendReceiveStub.getCall(0).args[0].compare(Buffer.from(''))).to.equals(0);
+        expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
           send: 'network-blob',
           receive: 'network-blob_reply'
         });
-        expect(sendReceiveStub.getCall(1).args[2]).to.equals(60000);
+        expect(sendReceiveStub.getCall(0).args[2]).to.equals(60000);
       });
     });
     describe('on network configured', () => {
       beforeEach(() => {
-        decodeStub = sinon.stub(Api, 'decode').returns({
+        autozoomStatusStub.resolves({
           'network-configured': true
         });
       });
       it('should do nothing', async () => {
         await detector.uploadBlob(Buffer.from(''));
-        expect(sendReceiveStub.callCount).to.equals(1); // One call for autozoom-status
+        expect(sendReceiveStub.callCount).to.equals(0); // One call for autozoom-status
       });
     });
   });
@@ -271,30 +273,6 @@ describe('Detector', () => {
         });
         expect(sendReceiveStub.getCall(0).args[2]).to.equals(60000);
       });
-    });
-  });
-
-  describe('#autozoomStatus', () => {
-    let sendReceiveStub;
-    let decodeStub;
-    beforeEach(() => {
-      sendReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceive').resolves({
-        payload: {}
-      });
-      decodeStub = sinon.stub(Api, 'decode').returns('enabled');
-    });
-    afterEach(() => {
-      sendReceiveStub.restore();
-      decodeStub.restore();
-    });
-    it('should query autozoom status with appropriate api message parameters', async () => {
-      const status = await detector.autozoomStatus();
-      expect(sendReceiveStub.getCall(0).args[0].compare(Buffer.alloc(0))).to.equals(0);
-      expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
-        send: 'autozoom/status',
-        receive: 'autozoom/status_reply'
-      });
-      expect(status).to.equals('enabled');
     });
   });
 });

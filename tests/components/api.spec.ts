@@ -383,23 +383,31 @@ describe('API', () => {
   describe('#getCameraInfo', () => {
     let prodInfoStub;
     let uptimeStub;
+    let autozoomStatusStub;
     beforeEach(() => {
       prodInfoStub = sinon.stub(api, 'getProductInfo');
       uptimeStub = sinon.stub(api, 'getUptime');
+      autozoomStatusStub = sinon.stub(api, 'getAutozoomStatus');
     });
     afterEach(() => {
       prodInfoStub.restore();
       uptimeStub.restore();
+      autozoomStatusStub.restore();
     });
-    it('should call #getProdinfo and #getUptime and merge the result into an object', async () => {
-      prodInfoStub.returns(Promise.resolve({ app_version: 'HuddlyIQ-123' }));
-      uptimeStub.returns(Promise.resolve(123.456789));
+    it('should call #getProdinfo, #getUptime, #GetAutozoomStatus and merge the result together', async () => {
+      prodInfoStub.resolves({ app_version: 'HuddlyIQ-123' });
+      uptimeStub.resolves(123.456789);
+      autozoomStatusStub.resolves({ 'autozoom-active': true, timestamp: 190384573 });
       const cameraInfo = await api.getCameraInfo();
       expect(prodInfoStub.callCount).to.equals(1);
       expect(uptimeStub.callCount).to.equals(1);
       expect(cameraInfo).to.deep.equals({
         softwareVersion: 'HuddlyIQ-123',
-        uptime: 123.46
+        uptime: 123.46,
+        autozoom: {
+          active: true,
+          timestamp: 190384573
+        }
       });
     });
   });
@@ -457,6 +465,30 @@ describe('API', () => {
         send: 'interpolator/get_params',
         receive: 'interpolator/get_params_reply'
       });
+    });
+  });
+
+  describe('#getAutozoomStatus', () => {
+    let sendReceiveStub;
+    let decodeStub;
+    beforeEach(() => {
+      sendReceiveStub = sinon.stub(api, 'sendAndReceive').resolves({
+        payload: {}
+      });
+      decodeStub = sinon.stub(Api, 'decode').returns('enabled');
+    });
+    afterEach(() => {
+      sendReceiveStub.restore();
+      decodeStub.restore();
+    });
+    it('should query autozoom status with appropriate api message parameters', async () => {
+      const status = await api.getAutozoomStatus();
+      expect(sendReceiveStub.getCall(0).args[0].compare(Buffer.alloc(0))).to.equals(0);
+      expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
+        send: 'autozoom/status',
+        receive: 'autozoom/status_reply'
+      });
+      expect(status).to.equals('enabled');
     });
   });
 });

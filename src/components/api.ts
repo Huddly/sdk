@@ -295,10 +295,14 @@ export default class Api {
   async getCameraInfo(): Promise<any> {
     const prodInfo = await this.getProductInfo();
     const uptime = await this.getUptime();
-
+    const autozoomStatus = await this.getAutozoomStatus();
     const info = {
       softwareVersion: prodInfo.app_version,
       uptime: Math.round(uptime * 100) / 100, // 2 floating point decimals
+      autozoom: {
+        active: autozoomStatus['autozoom-active'],
+        timestamp: autozoomStatus['timestamp']
+      }
     };
     return info;
   }
@@ -352,5 +356,25 @@ export default class Api {
   async getInterpolationParameters(): Promise<InterpolationParams> {
     const res = await this.sendAndReceiveMessagePack('', { send: 'interpolator/get_params', receive: 'interpolator/get_params_reply' });
     return res;
+  }
+
+  /**
+   * Convenience function that is used to fetch the status of
+   * genius framing on the camera. Includes information such as
+   * whether genius framing is running, the time passed since it
+   * is enabled and so on.
+   *
+   * @returns {Promise<any>} Returns an object with the status properties
+   * and values.
+   * @memberof Api
+   */
+  async getAutozoomStatus(): Promise<any> {
+    const statusReply = await this.sendAndReceive(Buffer.alloc(0),
+      {
+        send: 'autozoom/status',
+        receive: 'autozoom/status_reply'
+      });
+    const decodedStatus = Api.decode(statusReply.payload, 'messagepack');
+    return decodedStatus;
   }
 }

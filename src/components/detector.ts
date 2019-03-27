@@ -164,7 +164,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async uploadBlob(blobBuffer: Buffer): Promise<void> {
-    const status = await this.autozoomStatus();
+    const status = await this._deviceManager.api.getAutozoomStatus();
     if (!status['network-configured']) {
       this._logger.warn('uploading cnn blob.');
       await this._deviceManager.api.sendAndReceive(blobBuffer,
@@ -218,25 +218,5 @@ export default class Detector extends EventEmitter implements IDetector {
       },
       60000
     );
-  }
-
-  /**
-   * Convenience function that is used to fetch the status of
-   * genius framing on the camera. Includes information such as
-   * whether genius framing is running, the time passed since it
-   * is enabled and so on.
-   *
-   * @returns {Promise<any>} Returns an object with the status properties
-   * and values.
-   * @memberof Detector
-   */
-  async autozoomStatus(): Promise<any> {
-    const statusReply = await this._deviceManager.api.sendAndReceive(Buffer.alloc(0),
-      {
-        send: 'autozoom/status',
-        receive: 'autozoom/status_reply'
-      });
-    const decodedStatus = Api.decode(statusReply.payload, 'messagepack');
-    return decodedStatus;
   }
 }
