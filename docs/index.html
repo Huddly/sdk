@@ -43,15 +43,15 @@
 
 <h1 id="huddly-software-development-kit-sdk-">Huddly Software Development Kit (SDK)</h1>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>Huddly SDK supportes the following node versions:</p>
+<p>Huddly SDK supportes the following node versions: (Needs to support NAPI v3 )</p>
 <ul>
-<li>8.9.4</li>
-<li>10.12.0</li>
+<li>8.11.2</li>
+<li>10.15.2</li>
 <li>11.5.0</li>
 </ul>
 <p>We recommend using nvm as your node version manager <a href="https://github.com/creationix/nvm">https://github.com/creationix/nvm</a>.</p>
 <p>After you&#39;ve setup nvm run</p>
-<div><pre class="line-numbers"><code class="language-none">  nvm use 8.9.4</code></pre></div><h2 id="get-started">Get started</h2>
+<div><pre class="line-numbers"><code class="language-none">  nvm use 8.11.2</code></pre></div><h2 id="get-started">Get started</h2>
 <p>Then you can install and start using the huddly sdk you need first install it and the transport</p>
 <div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/sdk &#64;huddly/device-api-usb</code></pre></div><p>Start by creating the sdk and the transport</p>
 <div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceAPIUSB = require(&#39;&#64;huddly/device-api-usb&#39;).default;

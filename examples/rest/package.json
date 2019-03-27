@@ -4,7 +4,7 @@
   "private": true,
   "main": "dist/index.js",
   "engines": {
-    "node": ">=8.9.4",
+    "node": ">=8.11.2",
     "npm": ">=6.4.1"
   },
   "scripts": {

@@ -12,17 +12,17 @@
 # Huddly Software Development Kit (SDK)
 
 ## Prerequisites
-Huddly SDK supportes the following node versions:
+Huddly SDK supportes the following node versions: (Needs to support NAPI v3 )
 
-- 8.9.4
-- 10.12.0
+- 8.11.2
+- 10.15.2
 - 11.5.0
 
 We recommend using nvm as your node version manager [https://github.com/creationix/nvm](https://github.com/creationix/nvm).
 
 After you've setup nvm run
 ```
-  nvm use 8.9.4
+  nvm use 8.11.2
 ```
 
 ## Get started

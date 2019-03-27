@@ -86,9 +86,11 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                            <span class="modifier">Optional</span>
                                         <a href="#convertDetections">convertDetections</a>
                                 </li>
                                 <li>
+                                            <span class="modifier">Optional</span>
                                         <a href="#shouldAutoFrame">shouldAutoFrame</a>
                                 </li>
                             </ul>
@@ -125,6 +127,11 @@
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -164,6 +171,11 @@ frame in the main stream</p>
                                         </td>
                                     </tr>
 
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
 
 
 
@@ -202,16 +214,16 @@ export default interface DetectorOpts {
    * @type {DetectionConvertion}
    * @memberof DetectorOpts
    */
-   convertDetections: DetectionConvertion;
+  convertDetections?: DetectionConvertion;
 
-   /**
-    * Set to false in case you want to get detections without
-    * enabling genius framing
-    *
-    * @type {Boolean}
-    * @memberof DetectorOpts
-    */
-   shouldAutoFrame: boolean;
+  /**
+   * Set to false in case you want to get detections without
+   * enabling genius framing
+   *
+   * @type {Boolean}
+   * @memberof DetectorOpts
+   */
+  shouldAutoFrame?: boolean;
 }
 
 export { DetectionConvertion };

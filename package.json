@@ -18,7 +18,7 @@
   "main": "./lib/src/index.js",
   "types": "./lib/src/index.d.ts",
   "engines": {
-    "node": ">=8.9.4"
+    "node": ">=8.11.2"
   },
   "directories": {
     "lib": "lib",
