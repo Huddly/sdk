@@ -295,14 +295,9 @@ export default class Api {
   async getCameraInfo(): Promise<any> {
     const prodInfo = await this.getProductInfo();
     const uptime = await this.getUptime();
-    const autozoomStatus = await this.getAutozoomStatus();
     const info = {
       softwareVersion: prodInfo.app_version,
       uptime: Math.round(uptime * 100) / 100, // 2 floating point decimals
-      autozoom: {
-        active: autozoomStatus['autozoom-active'],
-        timestamp: autozoomStatus['timestamp']
-      }
     };
     return info;
   }
@@ -369,12 +364,12 @@ export default class Api {
    * @memberof Api
    */
   async getAutozoomStatus(): Promise<any> {
-    const statusReply = await this.sendAndReceive(Buffer.alloc(0),
+    const msgpackReply = await this.sendAndReceive(Buffer.alloc(0),
       {
         send: 'autozoom/status',
         receive: 'autozoom/status_reply'
       });
-    const decodedStatus = Api.decode(statusReply.payload, 'messagepack');
-    return decodedStatus;
+    const azStatus = Api.decode(msgpackReply.payload, 'messagepack');
+    return azStatus;
   }
 }
