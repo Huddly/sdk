@@ -154,7 +154,7 @@ class HuddlySdk extends EventEmitter {
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
-      if (d) {
+      if (d !== undefined) {
         await this.locksmith.executeAsyncFunction(() => new Promise((resolve) => {
           this.emitter.emit(CameraEvents.DETACH, d);
           resolve();
