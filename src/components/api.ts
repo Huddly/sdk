@@ -10,11 +10,7 @@ export default class Api {
   locksmith: Locksmith;
   setProdInfoMsgPackSupport: boolean = true;
 
-  constructor(
-    transport: ITransport,
-    logger: DefaultLogger,
-    locksmith: Locksmith
-  ) {
+  constructor(transport: ITransport, logger: DefaultLogger, locksmith: Locksmith) {
     this.transport = transport;
     this.transport.initEventLoop();
     this.logger = logger;
@@ -51,16 +47,10 @@ export default class Api {
     if (!resp.error || resp.error === 0) {
       return resp;
     }
-    throw new Error(
-      `Upgrade failed. Cmd: ${cmd}, Error: ${resp.error}, Msg: ${resp.string}`
-    );
+    throw new Error(`Upgrade failed. Cmd: ${cmd}, Error: ${resp.error}, Msg: ${resp.string}`);
   }
 
-  async sendAndReceive(
-    payload: Buffer,
-    commands: any,
-    timeout: number = 500
-  ): Promise<any> {
+  async sendAndReceive(payload: Buffer, commands: any, timeout: number = 500): Promise<any> {
     await this.transport.clear();
     const result = await this.withSubscribe(
       [commands.receive],
@@ -87,7 +77,7 @@ export default class Api {
     return result;
   }
 
-  async withSubscribe<T>(subscribeMessages: string[], fn: (() => Promise<T>)): Promise<T> {
+  async withSubscribe<T>(subscribeMessages: string[], fn: () => Promise<T>): Promise<T> {
     await this.transport.clear();
     // Don't do these subscribes in parallel (Promise.all), as order sometimes matter currently.
     // That's not good, but unfortunatly the way the situation is today.
@@ -107,10 +97,7 @@ export default class Api {
     }
   }
 
-  async fileTransfer(
-    data: Buffer,
-    subscribedMessages: Array<string>
-  ): Promise<any> {
+  async fileTransfer(data: Buffer, subscribedMessages: Array<string>): Promise<any> {
     const clearListeners = () => {
       subscribedMessages.forEach(msg => {
         this.transport.removeAllListeners(msg);
@@ -136,10 +123,7 @@ export default class Api {
           } else {
             const length = Api.decode(msgPacket.payload, 'int');
             const slice = data.slice(0, length);
-            await this.transport.write(
-              'async_file_transfer/receive_reply',
-              slice
-            );
+            await this.transport.write('async_file_transfer/receive_reply', slice);
             data = data.slice(length);
           }
         });
@@ -187,9 +171,7 @@ export default class Api {
           );
           if (!status || !status['payload']) {
             throw Error(
-              `Failed to get status. Status: ${JSON.stringify(status)} ${
-                command['send']
-              }`
+              `Failed to get status. Status: ${JSON.stringify(status)} ${command['send']}`
             );
           }
         });
@@ -270,14 +252,10 @@ export default class Api {
                 if (errorCode === 0) {
                   resolve(true);
                 } else {
-                  reject(
-                    `Set Product Info command failed with error code ${errorCode}`
-                  );
+                  reject(`Set Product Info command failed with error code ${errorCode}`);
                 }
               } else {
-                reject(
-                  'No response received from camera during Set Product Info command'
-                );
+                reject('No response received from camera during Set Product Info command');
               }
             })
         );
@@ -428,7 +406,10 @@ export default class Api {
   }
 
   async getInterpolationParameters(): Promise<InterpolationParams> {
-    const res = await this.sendAndReceiveMessagePack('', { send: 'interpolator/get_params', receive: 'interpolator/get_params_reply' });
+    const res = await this.sendAndReceiveMessagePack('', {
+      send: 'interpolator/get_params',
+      receive: 'interpolator/get_params_reply',
+    });
     return res;
   }
 
@@ -443,11 +424,10 @@ export default class Api {
    * @memberof Api
    */
   async getAutozoomStatus(): Promise<any> {
-    const msgpackReply = await this.sendAndReceive(Buffer.alloc(0),
-      {
-        send: 'autozoom/status',
-        receive: 'autozoom/status_reply'
-      });
+    const msgpackReply = await this.sendAndReceive(Buffer.alloc(0), {
+      send: 'autozoom/status',
+      receive: 'autozoom/status_reply',
+    });
     const azStatus = Api.decode(msgpackReply.payload, 'messagepack');
     return azStatus;
   }

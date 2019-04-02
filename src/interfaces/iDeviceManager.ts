@@ -125,7 +125,6 @@ export default interface IDeviceManager {
    */
   getDetector(opts: DetectorOpts): IDetector;
 
-
   /**
    * Reads data from camera and returns diagnostics information
    *

@@ -1,7 +1,7 @@
 export enum DiagnosticsLevel {
   INFO = 'INFO',
   WARN = 'WARN',
-  ERROR = 'ERROR'
+  ERROR = 'ERROR',
 }
 
 export abstract class DiagnosticsMessage {
@@ -31,8 +31,16 @@ export abstract class DiagnosticsMessage {
 }
 
 export class MinMaxDiagnosticsMessage extends DiagnosticsMessage {
-  constructor(type: string, minTreshold: Number, maxTreshold: Number,
-      min: Number, max: Number, curr: Number, minTip?: string, maxTip?: string) {
+  constructor(
+    type: string,
+    minTreshold: Number,
+    maxTreshold: Number,
+    min: Number,
+    max: Number,
+    curr: Number,
+    minTip?: string,
+    maxTip?: string
+  ) {
     super(type);
 
     if (min <= minTreshold) {
@@ -52,5 +60,4 @@ export class MinMaxDiagnosticsMessage extends DiagnosticsMessage {
       this._message = `${type} Ok`;
     }
   }
-
 }

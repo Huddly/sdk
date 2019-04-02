@@ -1,9 +1,7 @@
 import { EventEmitter } from 'events';
 import IDetector from './../interfaces/IDetector';
 import IDeviceManager from './../interfaces/iDeviceManager';
-import iDetectorOpts, {
-  DetectionConvertion,
-} from './../interfaces/IDetectorOpts';
+import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 
@@ -42,14 +40,8 @@ export default class Detector extends EventEmitter implements IDetector {
     };
     this.setMaxListeners(50);
     this._predictionHandler = detectionBuffer => {
-      const { predictions } = Api.decode(
-        detectionBuffer.payload,
-        'messagepack'
-      );
-      const convertedPredictions = this.convertPredictions(
-        predictions,
-        this._options
-      );
+      const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
+      const convertedPredictions = this.convertPredictions(predictions, this._options);
       this.emit(CameraEvents.DETECTIONS, convertedPredictions);
     };
     this._framingHandler = frameBuffer => {
@@ -71,7 +63,9 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async init(): Promise<any> {
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
-      return this.uploadFramingConfig({ AUTO_PTZ: this._options.shouldAutoFrame });
+      return this.uploadFramingConfig({
+        AUTO_PTZ: this._options.shouldAutoFrame,
+      });
     }
   }
 
@@ -89,21 +83,13 @@ export default class Detector extends EventEmitter implements IDetector {
     await this._deviceManager.transport.write('autozoom/start');
     try {
       await this._deviceManager.transport.subscribe('autozoom/predictions');
-      this._deviceManager.transport.on(
-        'autozoom/predictions',
-        this._predictionHandler
-      );
+      this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
       await this._deviceManager.transport.subscribe('autozoom/framing');
-      this._deviceManager.transport.on(
-        'autozoom/framing',
-        this._framingHandler
-      );
+      this._deviceManager.transport.on('autozoom/framing', this._framingHandler);
     } catch (e) {
       await this._deviceManager.transport.unsubscribe('autozoom/predictions');
       await this._deviceManager.transport.unsubscribe('autozoom/framing');
-      this._logger.warn(
-        `Something went wrong getting predictions! Error: ${e}`
-      );
+      this._logger.warn(`Something went wrong getting predictions! Error: ${e}`);
     }
   }
 
@@ -119,14 +105,8 @@ export default class Detector extends EventEmitter implements IDetector {
     await this._deviceManager.transport.write('autozoom/disable');
     await this._deviceManager.transport.unsubscribe('autozoom/predictions');
     await this._deviceManager.transport.unsubscribe('autozoom/framing');
-    this._deviceManager.transport.removeListener(
-      'autozoom/predictions',
-      this._predictionHandler
-    );
-    this._deviceManager.transport.removeListener(
-      'autozoom/framing',
-      this._framingHandler
-    );
+    this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
+    this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
   }
 
   /**
@@ -137,19 +117,10 @@ export default class Detector extends EventEmitter implements IDetector {
    * @returns {predictions} Converted predictions
    * @memberof Detector
    */
-  convertPredictions(
-    predictions: Array<any>,
-    opts?: iDetectorOpts
-  ): Array<any> {
-    const personPredictions = predictions.filter(
-      ({ label }) => label === 'person'
-    );
+  convertPredictions(predictions: Array<any>, opts?: iDetectorOpts): Array<any> {
+    const personPredictions = predictions.filter(({ label }) => label === 'person');
 
-    if (
-      opts &&
-      opts.convertDetections === DetectionConvertion.FRAMING &&
-      this._frame
-    ) {
+    if (opts && opts.convertDetections === DetectionConvertion.FRAMING && this._frame) {
       const { bbox: framingBBox } = this._frame;
       const relativeSize = {
         height: PREVIEW_IMAGE_SIZE.height / framingBBox.height,
@@ -195,10 +166,11 @@ export default class Detector extends EventEmitter implements IDetector {
     const status = await this._deviceManager.api.getAutozoomStatus();
     if (!status['network-configured']) {
       this._logger.warn('uploading cnn blob.');
-      await this._deviceManager.api.sendAndReceive(blobBuffer,
+      await this._deviceManager.api.sendAndReceive(
+        blobBuffer,
         {
           send: 'network-blob',
-          receive: 'network-blob_reply'
+          receive: 'network-blob_reply',
         },
         60000
       );
@@ -218,10 +190,11 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async setDetectorConfig(config: JSON): Promise<void> {
     this._logger.warn('Sending detector config!');
-    await this._deviceManager.api.sendAndReceive(Api.encode(config),
+    await this._deviceManager.api.sendAndReceive(
+      Api.encode(config),
       {
         send: 'detector/config',
-        receive: 'detector/config_reply'
+        receive: 'detector/config_reply',
       },
       6000
     );
@@ -239,7 +212,8 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async uploadFramingConfig(config: any): Promise<void> {
     this._logger.warn('Uploading new framing config!');
-    await this._deviceManager.api.sendAndReceive(Api.encode(config),
+    await this._deviceManager.api.sendAndReceive(
+      Api.encode(config),
       {
         send: 'autozoom/framer-config',
         receive: 'autozoom/framer-config_reply',
