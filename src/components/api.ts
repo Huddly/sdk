@@ -77,7 +77,11 @@ export default class Api {
     return result;
   }
 
-  async withSubscribe<T>(subscribeMessages: string[], fn: () => Promise<T>): Promise<T> {
+  async withSubscribe<T>(
+    subscribeMessages: string[],
+    fn: () => Promise<T>,
+    shouldAwaitUnsubscribe: boolean = false
+  ): Promise<T> {
     await this.transport.clear();
     // Don't do these subscribes in parallel (Promise.all), as order sometimes matter currently.
     // That's not good, but unfortunatly the way the situation is today.
@@ -89,11 +93,13 @@ export default class Api {
       const result = await fn();
       return result;
     } finally {
-      subscribeMessages.forEach(msg => {
-        // Don't await these unsubscribes, as the transport might be broken.
-        this.transport.unsubscribe(msg);
-        this.transport.removeAllListeners(msg);
-      });
+      for (let i = 0; i < subscribeMessages.length; i += 1) {
+        const unsubscribePromise = this.transport.unsubscribe(subscribeMessages[i]);
+        if (shouldAwaitUnsubscribe) {
+          await unsubscribePromise;
+        }
+        this.transport.removeAllListeners(subscribeMessages[i]);
+      }
     }
   }
 
@@ -358,16 +364,20 @@ export default class Api {
         'async_file_transfer/timeout',
       ];
 
-      const result = await this.withSubscribe(subscribeMsgs, async () => {
-        return new Promise((resolve, reject) => {
-          this.fileTransfer(Buffer.alloc(0), subscribeMsgs)
-            .then(result => {
-              resolve(result.toString('ascii'));
-            })
-            .catch(reason => reject(reason));
-          this.transport.write('error_logger/read');
-        });
-      });
+      const result = await this.withSubscribe(
+        subscribeMsgs,
+        async () => {
+          return new Promise((resolve, reject) => {
+            this.fileTransfer(Buffer.alloc(0), subscribeMsgs)
+              .then(result => {
+                resolve(result.toString('ascii'));
+              })
+              .catch(reason => reject(reason));
+            this.transport.write('error_logger/read');
+          });
+        },
+        true
+      );
       return result;
     });
     return res;
@@ -390,7 +400,8 @@ export default class Api {
               })
               .catch(e => reject(e));
             this.transport.write('error_logger/erase');
-          })
+          }),
+        true
       );
     });
   }
