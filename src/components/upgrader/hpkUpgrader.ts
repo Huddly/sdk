@@ -8,6 +8,7 @@ import Boxfish from './../device/boxfish';
 import BoxfishHpk from './boxfishhpk';
 
 const MAX_UPLOAD_ATTEMPTS = 5;
+const REBOOT_TIMEOUT = 10000;
 
 export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
   verboseStatusLog: boolean;
@@ -88,8 +89,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
   async start(): Promise<void> {
       this.emit(CameraEvents.UPGRADE_START);
-
+      let upgradeTimoutId: NodeJS.Timer;
       this.once('UPGRADE_REBOOT_COMPLETE', async () => {
+        clearTimeout(upgradeTimoutId);
         try {
           // Wait two seconds to allow drivers to attach properly to the USB endpoint
           await new Promise(resolve => setTimeout(resolve, 2000));
@@ -105,7 +107,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
       try {
         const rebooted = await this.doUpgrade();
-
+        upgradeTimoutId = setTimeout(() =>
+          this.emit(CameraEvents.UPGRADE_FAILED, new Error('Did not come back after reboot'))
+        , REBOOT_TIMEOUT);
         if (!rebooted) {
           this.emit(CameraEvents.UPGRADE_COMPLETE);
         }

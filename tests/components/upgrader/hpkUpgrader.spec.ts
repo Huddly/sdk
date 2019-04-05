@@ -285,6 +285,35 @@ describe('HPKUpgrader', () => {
         hpkUpgrader.start();
         return completedPromise;
       });
+
+      describe('after reboot', () => {
+        let clock;
+        beforeEach(() => {
+          clock = sinon.useFakeTimers();
+        });
+
+        afterEach(() => {
+          clock.restore();
+        });
+
+        it('should timeout if camera does not come back', async () => {
+          mockSucessMessages({reboot: true});
+          hpkUpgrader.init({
+            file: validHpkBuffer,
+          });
+          const failedPromise = new Promise((resolve, reject) => {
+            hpkUpgrader.on('UPGRADE_FAILED', reject);
+          });
+          await hpkUpgrader.start();
+          clock.tick(10000);
+          try {
+            await failedPromise;
+            expect(true).to.be.equal(false);
+          } catch (e) {
+            expect(e.message).to.be.equal('Did not come back after reboot');
+          }
+        }).timeout(11000);
+      });
     });
   });
 
