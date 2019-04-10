@@ -218,12 +218,15 @@ describe('HPKUpgrader', () => {
             fn({
               payload: Api.encode({ operation: 'read_flash', elapsed_points: 65852139.84000063 })
             });
+            fn({
+              payload: Api.encode({  operation: 'done' })
+            });
           }
         });
 
         const upgradeProgressPromise = new Promise(resolve => {
           hpkUpgrader.on('UPGRADE_PROGRESS', message => {
-            if (message.operation === 'read_flash') {
+            if (message.progress > 82) {
               resolve(message);
             }
           });
@@ -235,13 +238,13 @@ describe('HPKUpgrader', () => {
 
         hpkUpgrader.start();
 
-        const { operation, progress } = <any>await upgradeProgressPromise;
-        expect(progress).to.equal(91.7931151465113);
+        const upgradeStatus = <any>await upgradeProgressPromise;
+        expect(upgradeStatus.progress).to.be.above(0);
       });
 
 
       describe('watchdog', () => {
-        it('should timeout if there no status message within 10s', async () => {
+        it('should timeout if there no status message within specified timeout', async () => {
           dummyCameraManager.api.withSubscribe.callsFake((topics, cb) => cb());
           dummyCameraManager.transport.on.withArgs('upgrader/status').callsFake(() => {});
           dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
@@ -251,27 +254,25 @@ describe('HPKUpgrader', () => {
 
           hpkUpgrader.init({
             file: validHpkBuffer,
+            statusMessageTimeout: 10,
           });
 
           const startPromise = hpkUpgrader.start();
-          await new Promise(resolve => setImmediate(resolve));
-
-          try {
-            await startPromise;
-            expect(true).to.be.equal(false);
-          } catch (e) {
-            expect(e).to.be.equal('Upgrading HPK: no status message within 10000');
-          }
-        }).timeout(11000);
+          return expect(startPromise).to.eventually.be.rejectedWith('Upgrading HPK: no status message within 10');
+        });
       });
 
       it('should not throw an error if transport close fails', () => {
-        mockSucessMessages({reboot: true});
+        mockSucessMessages({reboot: false});
         dummyCameraManager.transport.close.throws(new Error('transport close failed'));
         hpkUpgrader.init({
           file: validHpkBuffer,
         });
-        return hpkUpgrader.start();
+        const completedPromise = new Promise(resolve => {
+          hpkUpgrader.on('UPGRADE_COMPLETE', resolve);
+        });
+        hpkUpgrader.start();
+        return expect(completedPromise).to.eventually.be.resolved;
       });
 
       it('should complete if it gets done without reboot initally', () => {

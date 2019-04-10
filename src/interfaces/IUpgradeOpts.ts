@@ -40,4 +40,12 @@ export default interface UpgradeOpts {
    * @memberof UpgradeOpts
    */
   verboseStatusLog?: boolean;
+
+  /**
+   * Optional parameter to specify how long to wait for a status message before timing out
+   *
+   * @type {number}
+   * @memberof UpgradeOpts
+   */
+  statusMessageTimeout?: number;
 }
