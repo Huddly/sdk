@@ -51,14 +51,14 @@ export default class UpgradeStatus {
   }
 
   getStatus() {
-    let progress = 0;
+    let progress: number = 0;
     this._steps.forEach((s) => {
       progress += (s.weight / this._weights) * s.progress;
     });
 
     return {
       status: this._statusString,
-      progress: Math.ceil(progress),
+      progress: Math.round(progress),
       steps: this._steps,
     };
   }
