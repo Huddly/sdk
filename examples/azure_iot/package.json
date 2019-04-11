@@ -6,9 +6,9 @@
   "author": "Huddly",
   "license": "MIT",
   "dependencies": {
-    "@huddly/device-api-usb": "^0.1.5",
-    "@huddly/sdk": "^0.1.11",
-    "azure-iot-device": "^1.9.2",
-    "azure-iot-device-amqp": "^1.9.2"
+    "@huddly/device-api-usb": "~0.2",
+    "@huddly/sdk": "~0.2",
+    "azure-iot-device": "~1.9.2",
+    "azure-iot-device-amqp": "~1.9.2"
   }
 }
