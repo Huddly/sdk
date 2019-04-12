@@ -11,6 +11,19 @@ import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 
 const MAX_UPLOAD_ATTEMPTS = 5;
 const REBOOT_TIMEOUT = 10000;
+
+export class HPKUpgradeError extends Error {
+  code: Number;
+  constructor(message, code) {
+    super(message);
+    this.code = code;
+  }
+
+  toString(): String {
+    return `Upgrade HPK: ${super.toString()}`;
+  }
+}
+
 export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
   verboseStatusLog: boolean;
   _cameraManager: IDeviceManager;
@@ -84,7 +97,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         );
         const { status } = m;
         if (status !== 0) {
-          throw new Error(`Upload hpk failed with status ${status}`);
+          throw new HPKUpgradeError(`Upload hpk failed with status ${status}`, 17);
         }
         uploadStatusStep.progress = 100;
         this.emitProgressStatus();
@@ -93,6 +106,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         this._logger.error(`Failed uploading hpk file ${e} attemt ${attempt}`);
         attempt += 1;
       }
+    }
+    if (tryAgain && attempt >= MAX_UPLOAD_ATTEMPTS) {
+      throw new HPKUpgradeError('Upgrading HPK: Could not upload hpk', 17);
     }
   }
 
@@ -145,7 +161,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         runningHpkStep,
         rebootStep);
       upgradeTimoutId = setTimeout(() =>
-        this.emit(CameraEvents.UPGRADE_FAILED, new Error('Did not come back after reboot'))
+        this.emit(CameraEvents.UPGRADE_FAILED, new HPKUpgradeError('Did not come back after reboot', 10))
         , REBOOT_TIMEOUT);
       if (!rebooted) {
         clearTimeout(upgradeTimoutId);
@@ -167,7 +183,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     const reboot = await this._cameraManager.api.withSubscribe<boolean>(['upgrader/status'], () => new Promise((resolve, reject) => {
       const startTimeout = () => {
         return setTimeout(() => {
-          reject(`Upgrading HPK: no status message within ${this._statusMessageTimeout}`);
+        reject(new HPKUpgradeError(`Upgrading HPK: no status message within ${this._statusMessageTimeout}`, 12));
         }, this._statusMessageTimeout);
       };
 
@@ -188,7 +204,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
           return;
         }
         if (statusMessage.error_count > 0) {
-          return reject(statusMessage);
+          return reject(new HPKUpgradeError(`Failed during upgrade ${statusMessage}`, 14));
         }
         const now = Date.now();
         const deltaT = now - lastTime;
@@ -224,22 +240,26 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   async runHPKScript(runStatusStep: UpgradeStatusStep): Promise<void> {
     this._logger.debug('RUN hpk');
     runStatusStep.progress = 1;
-    const runMessage = await this._cameraManager.api.sendAndReceiveMessagePack(
-      { filename: 'upgrade.hpk' },
-      {
-        send: 'hpk/run',
-        receive: 'hpk/run_reply'
-      },
-      15000
-    );
-    if (runMessage.string === 'Success') {
-      this._logger.debug('RUN hpk complete');
-      runStatusStep.progress = 100;
-      this.emitProgressStatus();
-      return;
-    } else {
-      this._logger.error(`HPK run failed ${JSON.stringify(runMessage)}`);
-      throw new Error(`HPK run failed ${runMessage}`);
+    try {
+      const runMessage = await this._cameraManager.api.sendAndReceiveMessagePack(
+        { filename: 'upgrade.hpk' },
+        {
+          send: 'hpk/run',
+          receive: 'hpk/run_reply'
+        },
+        15000
+      );
+      if (runMessage.string === 'Success') {
+        this._logger.debug('RUN hpk complete');
+        runStatusStep.progress = 100;
+        this.emitProgressStatus();
+        return;
+      } else {
+        this._logger.error(`HPK run failed ${JSON.stringify(runMessage)}`);
+        throw new HPKUpgradeError(`run failed ${runMessage}`, 15);
+      }
+    } catch (e) {
+      throw new HPKUpgradeError(`Could not run hpk ${e}`, 15);
     }
   }
 
@@ -250,7 +270,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this._logger.info('Upgrading HPK \n');
     const hpkBuffer = this._fileBuffer;
     if (!BoxfishHpk.isHpk(this._fileBuffer)) {
-      throw new Error('HPK upgrader file is not a valid hpk file');
+      throw new HPKUpgradeError('HPK upgrader file is not a valid hpk file', 16);
     }
     await this.upload(hpkBuffer, uploadStatusStep);
     const completedPromise = this.awaitHPKCompletion(completionStatusStep, rebootStatusStep);
