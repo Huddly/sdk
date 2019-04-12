@@ -3,6 +3,7 @@ import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import CameraEvents from './../../utilitis/events';
 import JSZip from 'jszip';
+import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 
 const BINARY_APPLICATION = 'huddly.bin';
 const BINARY_BOOT = 'huddly_boot.bin';
@@ -29,6 +30,7 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
   logger: any;
   options: any = {};
   bootTimeout: number = (30 * 1000); // 30 seconds
+  private _upgradeStatus: UpgradeStatus;
 
   constructor(devInstance: any, cameraDiscovery: EventEmitter, hidAPI: any, logger: any) {
     super();
@@ -45,11 +47,22 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     }
   }
 
-  async start(): Promise<void> {
-    this.emit(CameraEvents.UPGRADE_START);
-    this.doUpgrade();
+  emitProgressStatus(statusString?: string) {
+    if (statusString) this._upgradeStatus.statusString = statusString;
+    this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
   }
 
+  async start(): Promise<void> {
+    const step = new UpgradeStatusStep('Upgrading camera');
+    this._upgradeStatus = new UpgradeStatus([step]);
+    this.emitProgressStatus('Starting upgrade');
+    this.emit(CameraEvents.UPGRADE_START);
+    step.progress = 1;
+    this.emitProgressStatus();
+    await this.doUpgrade();
+    step.progress = 100;
+    this.emitProgressStatus('Upgrade completed');
+  }
 
   async doUpgrade(): Promise<any> {
     const hidEventEmitter = new EventEmitter();

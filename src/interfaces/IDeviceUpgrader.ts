@@ -51,18 +51,6 @@ export default interface IDeviceUpgrader {
   removeListener(message: string, callback: any);
 
   /**
-   * Perform camera upgrade without event handlers. This is a
-   * function which you call and await for completion. You can either
-   * use `Promise await` style or `Promise then/catch` for handling
-   * callbacks.
-   *
-   * @returns {Promise<any>} A `Promise` that resolves when upgrade succeeds or rejects
-   * when uprade fails.
-   * @memberof IDeviceUpgrader
-   */
-  doUpgrade(): Promise<any>;
-
-  /**
    * Verifies if camera performed a valid upgrade
    *
    * @returns {Promise<booleean>} A `Promise` that resolves when upgrade is valid

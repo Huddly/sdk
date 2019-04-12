@@ -6,16 +6,19 @@ import CameraEvents from './../../utilitis/events';
 import Api from '../api';
 import Boxfish from './../device/boxfish';
 import BoxfishHpk from './boxfishhpk';
+import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
+
 
 const MAX_UPLOAD_ATTEMPTS = 5;
 const REBOOT_TIMEOUT = 10000;
-
 export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
   verboseStatusLog: boolean;
   _cameraManager: IDeviceManager;
   _sdkDeviceDiscoveryEmitter: EventEmitter;
   _fileBuffer: Buffer;
   _logger: any;
+  _upgradeStatus: UpgradeStatus;
+  private _statusMessageTimeout: number = 10000;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter, logger: any) {
     super();
@@ -28,6 +31,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   init(opts: UpgradeOpts) {
     if (opts.verboseStatusLog !== undefined) {
       this.verboseStatusLog = opts.verboseStatusLog;
+    }
+    if (opts.statusMessageTimeout) {
+      this._statusMessageTimeout = opts.statusMessageTimeout;
     }
     this._fileBuffer = opts.file;
     this.registerHotPlugEvents();
@@ -63,9 +69,10 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this._sdkDeviceDiscoveryEmitter.removeListener(CameraEvents.DETACH, this.onDetach);
   }
 
-  async upload(hpkBuffer: Buffer) {
+  async upload(hpkBuffer: Buffer, uploadStatusStep: UpgradeStatusStep) {
     let tryAgain = true;
     let attempt = 0;
+    uploadStatusStep.progress = 1;
     while (tryAgain && attempt < MAX_UPLOAD_ATTEMPTS) {
       try {
         const m = await this._cameraManager.api.sendAndReceiveMessagePack(
@@ -79,6 +86,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         if (status !== 0) {
           throw new Error(`Upload hpk failed with status ${status}`);
         }
+        uploadStatusStep.progress = 100;
+        this.emitProgressStatus();
         tryAgain = false;
       } catch (e) {
         this._logger.error(`Failed uploading hpk file ${e} attemt ${attempt}`);
@@ -88,46 +97,79 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   async start(): Promise<void> {
-      this.emit(CameraEvents.UPGRADE_START);
-      let upgradeTimoutId: NodeJS.Timer;
-      this.once('UPGRADE_REBOOT_COMPLETE', async () => {
-        clearTimeout(upgradeTimoutId);
-        try {
-          // Wait two seconds to allow drivers to attach properly to the USB endpoint
-          await new Promise(resolve => setTimeout(resolve, 2000));
-          await this.doUpgrade();
-          await this.deRegisterHotPlugEvents();
-          this.emit(CameraEvents.UPGRADE_COMPLETE);
-        } catch (e) {
-          await this.deRegisterHotPlugEvents();
-          this.emit(CameraEvents.UPGRADE_FAILED, e);
-          throw e;
-        }
-      });
+    const firstUploadStatusStep = new UpgradeStatusStep('Uploading software', 5);
+    const executingHpkStep = new UpgradeStatusStep('Executing upgrade package', 1);
+    const runningHpkStep = new UpgradeStatusStep('Running upgrade procedures', 80);
+    const rebootStep = new UpgradeStatusStep('Rebooting camera', 3);
+    const secondUploadStatusStep = new UpgradeStatusStep('Uploading software to verify', 3);
+    const executingHpkVerificationStep = new UpgradeStatusStep('Executing verification of new software', 1);
+    const runningHpkVerificationStep = new UpgradeStatusStep('Verifying new software', 3);
 
+    this._upgradeStatus = new UpgradeStatus([
+      firstUploadStatusStep,
+      executingHpkStep,
+      runningHpkStep,
+      rebootStep,
+      secondUploadStatusStep,
+      executingHpkVerificationStep,
+      runningHpkVerificationStep,
+    ]);
+    this.emitProgressStatus('Starting upgrade');
+    this.emit(CameraEvents.UPGRADE_START);
+    let upgradeTimoutId: NodeJS.Timer;
+    this.once('UPGRADE_REBOOT_COMPLETE', async () => {
+      rebootStep.progress = 100;
+      clearTimeout(upgradeTimoutId);
       try {
-        const rebooted = await this.doUpgrade();
-        upgradeTimoutId = setTimeout(() =>
-          this.emit(CameraEvents.UPGRADE_FAILED, new Error('Did not come back after reboot'))
-        , REBOOT_TIMEOUT);
-        if (!rebooted) {
-          this.emit(CameraEvents.UPGRADE_COMPLETE);
-        }
+        this.emitProgressStatus('Verifying new software');
+        // Wait two seconds to allow drivers to attach properly to the USB endpoint
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        await this.doUpgrade(secondUploadStatusStep,
+          executingHpkVerificationStep,
+          runningHpkVerificationStep,
+          rebootStep);
+        this.emitProgressStatus('Upgrade complete');
+        await this.deRegisterHotPlugEvents();
+        this.emit(CameraEvents.UPGRADE_COMPLETE);
       } catch (e) {
-        this._logger.error('Upgrade failed', e);
+        await this.deRegisterHotPlugEvents();
         this.emit(CameraEvents.UPGRADE_FAILED, e);
         throw e;
       }
+    });
+
+    try {
+      this.emitProgressStatus('Loading new software to camera');
+      const rebooted = await this.doUpgrade(firstUploadStatusStep,
+        executingHpkStep,
+        runningHpkStep,
+        rebootStep);
+      upgradeTimoutId = setTimeout(() =>
+        this.emit(CameraEvents.UPGRADE_FAILED, new Error('Did not come back after reboot'))
+        , REBOOT_TIMEOUT);
+      if (!rebooted) {
+        clearTimeout(upgradeTimoutId);
+        this.emit(CameraEvents.UPGRADE_COMPLETE);
+      }
+    } catch (e) {
+      this._logger.error('Upgrade failed', e);
+      this.emit(CameraEvents.UPGRADE_FAILED, e);
+      throw e;
+    }
   }
 
-  async awaitHPKCompletion(): Promise<boolean> {
+  emitProgressStatus(statusString?: string) {
+    if (statusString) this._upgradeStatus.statusString = statusString;
+    this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
+  }
+
+  async awaitHPKCompletion(completionStatusStep: UpgradeStatusStep, rebootStatusStep: UpgradeStatusStep): Promise<boolean> {
     const reboot = await this._cameraManager.api.withSubscribe<boolean>(['upgrader/status'], () => new Promise((resolve, reject) => {
-      const statusMessageTimoutTime = 10000;
-      function startTimeout() {
+      const startTimeout = () => {
         return setTimeout(() => {
-          reject(`Upgrading HPK: no status message within ${statusMessageTimoutTime}`);
-        }, statusMessageTimoutTime);
-      }
+          reject(`Upgrading HPK: no status message within ${this._statusMessageTimeout}`);
+        }, this._statusMessageTimeout);
+      };
 
       let totalProgressPoints = 1;
       let elapsedPoints = 0;
@@ -157,16 +199,17 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
           this._logger.info(`Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${statusMessage.operation}\r`);
         }
         lastOperation = statusMessage.operation;
-        this.emit(CameraEvents.UPGRADE_PROGRESS, {
-          operation: statusMessage.operation,
-          progress: progressPercentage,
-        });
+        completionStatusStep.operation = statusMessage.operation;
+        completionStatusStep.progress = Math.ceil(progressPercentage) > 100 ? 100 : Math.ceil(progressPercentage);
+        this.emitProgressStatus();
 
         messageTimeoutIt = startTimeout();
       });
     }));
 
     if (reboot) {
+      rebootStatusStep.progress = 1;
+      rebootStatusStep.operation = 'Issuing reboot command';
       await this._cameraManager.reboot();
       try {
         await this._cameraManager.transport.close();
@@ -178,8 +221,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     return reboot;
   }
 
-  async runHPKScript(): Promise<void> {
+  async runHPKScript(runStatusStep: UpgradeStatusStep): Promise<void> {
     this._logger.debug('RUN hpk');
+    runStatusStep.progress = 1;
     const runMessage = await this._cameraManager.api.sendAndReceiveMessagePack(
       { filename: 'upgrade.hpk' },
       {
@@ -190,6 +234,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     );
     if (runMessage.string === 'Success') {
       this._logger.debug('RUN hpk complete');
+      runStatusStep.progress = 100;
+      this.emitProgressStatus();
       return;
     } else {
       this._logger.error(`HPK run failed ${JSON.stringify(runMessage)}`);
@@ -197,15 +243,18 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
-  async doUpgrade(): Promise<boolean> {
+  async doUpgrade(uploadStatusStep: UpgradeStatusStep,
+      runStatusStep: UpgradeStatusStep,
+      completionStatusStep: UpgradeStatusStep,
+      rebootStatusStep: UpgradeStatusStep): Promise<boolean> {
     this._logger.info('Upgrading HPK \n');
     const hpkBuffer = this._fileBuffer;
     if (!BoxfishHpk.isHpk(this._fileBuffer)) {
       throw new Error('HPK upgrader file is not a valid hpk file');
     }
-    await this.upload(hpkBuffer);
-    const completedPromise = this.awaitHPKCompletion();
-    await this.runHPKScript();
+    await this.upload(hpkBuffer, uploadStatusStep);
+    const completedPromise = this.awaitHPKCompletion(completionStatusStep, rebootStatusStep);
+    await this.runHPKScript(runStatusStep);
     return await completedPromise;
   }
 

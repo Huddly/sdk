@@ -9,6 +9,7 @@ import Api from '../api';
 import { calculate } from './../../utilitis/crc32c';
 import CameraEvents from './../../utilitis/events';
 import Boxfish from './../device/boxfish';
+import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 
 import { createBoxfishUpgraderFile } from './../upgrader/boxfishUpgraderFactory';
 
@@ -24,6 +25,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   bootTimeout: number = (30 * 1000); // 30 seconds
   writeBufSupport: boolean = undefined;
   verboseStatusLog: boolean = true;
+  private _upgradeStatus: UpgradeStatus;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter, logger: any) {
     super();
@@ -63,9 +65,29 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     });
   }
 
+  emitProgressStatus(statusString?: string) {
+    if (statusString) this._upgradeStatus.statusString = statusString;
+    this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
+  }
+
   async start(): Promise<void> {
+    const firstUploadStatusStep = new UpgradeStatusStep('Executing software upgrade', 80);
+    const rebootStep = new UpgradeStatusStep('Rebooting camera', 3);
+    const verificationStep = new UpgradeStatusStep('Verifying new software', 3);
+
+    this._upgradeStatus = new UpgradeStatus([
+      firstUploadStatusStep,
+      rebootStep,
+      verificationStep,
+    ]);
+    this.emitProgressStatus('Starting upgrade');
     this.emit(CameraEvents.UPGRADE_START);
+    firstUploadStatusStep.progress = 1;
     const state = await this.upgrade();
+    firstUploadStatusStep.progress = 100;
+    this.emitProgressStatus();
+    rebootStep.progress = 1;
+    this.emitProgressStatus('Rebooting camera');
 
     // Timeout if the camera does not come back up after bootTimeout seconds have passed!
     const bootTimeout = setTimeout(() => {
@@ -75,7 +97,13 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
 
     this.once('UPGRADE_REBOOT_COMPLETE', async () => {
       try {
+        rebootStep.progress = 100;
+        this.emitProgressStatus();
+        verificationStep.progress = 1;
+        this.emitProgressStatus('Verifying new software');
         await this.postUpgrade(state);
+        verificationStep.progress = 100;
+        this.emitProgressStatus('Upgrade complete');
         clearTimeout(bootTimeout);
         this.emit(CameraEvents.UPGRADE_COMPLETE, this._cameraManager);
       } catch (e) {
