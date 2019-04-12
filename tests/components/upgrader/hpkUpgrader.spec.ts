@@ -11,6 +11,7 @@ import DefaultLogger from './../../../src/utilitis/logger';
 import Boxfish from './../../../src/components/device/boxfish';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
+import { executionAsyncId } from 'async_hooks';
 
 chai.should();
 chai.use(sinonChai);
@@ -105,12 +106,22 @@ describe('HPKUpgrader', () => {
     });
 
     describe('upload hpk file', () => {
+      beforeEach(() => {
+        hpkUpgrader.init({
+          file: validHpkBuffer,
+        });
+      });
 
-      it('should throw if status is not zero', () => {
+      it('should throw if status is not zero', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
           status: 1
         });
-        return hpkUpgrader.start().should.be.rejectedWith(Error);
+        try {
+          await hpkUpgrader.start();
+          throw new Error('Should fail');
+        } catch (e) {
+          expect(e.code).to.equal(17);
+        }
       });
 
       it('should emit UPGRADE_FAILED if status is not zero', () => {
@@ -126,15 +137,18 @@ describe('HPKUpgrader', () => {
     });
 
     describe('when uploaded run hpk', () => {
-      it('should wait for run completion if return success', () => {
-        mockSucessMessages();
+      beforeEach(() => {
         hpkUpgrader.init({
           file: validHpkBuffer,
         });
+      });
+
+      it('should wait for run completion if return success', () => {
+        mockSucessMessages();
         return hpkUpgrader.start();
       });
 
-      it('should throw if run fails', () => {
+      it('should throw if run fails', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
           status: 0
         });
@@ -148,31 +162,37 @@ describe('HPKUpgrader', () => {
           string: 'Success'
         });
 
-        return hpkUpgrader.start().should.be.rejectedWith(Error);
+        try {
+          await hpkUpgrader.start();
+          throw new Error('Should fail');
+        } catch (e) {
+          expect(e.code).to.equal(15);
+        }
       });
 
       it('should try again until MAX_UPLOAD_ATTEMPTS have been reached', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.throws(new Error('upload failed'));
-        hpkUpgrader.init({
-          file: validHpkBuffer,
-        });
         try {
           await hpkUpgrader.start();
         } catch (e) {
-          // will fail
+          expect(e.code).to.equal(17);
         }
-        expect(dummyCameraManager.api.sendAndReceiveMessagePack).to.have.callCount(6);
+        expect(dummyCameraManager.api.sendAndReceiveMessagePack).to.have.callCount(5);
       });
     });
 
     describe('running hpk', () => {
       beforeEach(() => {
+        hpkUpgrader.init({
+          file: validHpkBuffer,
+        });
         sinon.stub(dummyCameraManager.transport, 'close');
       });
       afterEach(() => {
         dummyCameraManager.transport.close.restore;
       });
-      it('should throw if run fails', () => {
+
+      it('should throw if run fails', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
           status: 0
         });
@@ -190,7 +210,12 @@ describe('HPKUpgrader', () => {
           payload: Api.encode({ operation: 'done' })
         });
 
-        return hpkUpgrader.start().should.be.rejectedWith(Error);
+        try {
+          await hpkUpgrader.start();
+          throw new Error('Should fail');
+        } catch (e) {
+          expect(e.code).to.equal(15);
+        }
       });
 
       it('should emit UPGRADE_PROGRESS with upgrade status as it progress', async () => {
@@ -258,8 +283,16 @@ describe('HPKUpgrader', () => {
           });
 
           const startPromise = hpkUpgrader.start();
-          return expect(startPromise).to.eventually.be.rejectedWith('Upgrading HPK: no status message within 10');
-        });
+          await new Promise(resolve => setImmediate(resolve));
+
+          try {
+            await startPromise;
+            expect(true).to.be.equal(false);
+          } catch (e) {
+            expect(e.message).to.be.equal('Upgrading HPK: no status message within 10');
+            expect(e.code).to.be.equal(12);
+          }
+        }).timeout(11000);
       });
 
       it('should not throw an error if transport close fails', () => {
@@ -309,9 +342,10 @@ describe('HPKUpgrader', () => {
           clock.tick(10000);
           try {
             await failedPromise;
-            expect(true).to.be.equal(false);
+            throw new Error('Should fail');
           } catch (e) {
             expect(e.message).to.be.equal('Did not come back after reboot');
+            expect(e.code).to.be.equal(10);
           }
         }).timeout(11000);
       });
