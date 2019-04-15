@@ -47,6 +47,14 @@ interface SDKOpts {
    * @memberof SDKOpts
    */
   apiDiscoveryEmitter?: EventEmitter;
+
+  /**
+   * @ignore
+   *
+   * @type {string}
+   * @memberof SDKOpts
+   */
+  serial?: string;
 }
 
 /**
@@ -106,6 +114,7 @@ class HuddlySdk extends EventEmitter {
   _deviceDiscoveryApi: IHuddlyDeviceAPI;
 
   private locksmith: Locksmith;
+  private targetSerial: string;
 
   /**
    * Creates an instance of HuddlySdk.
@@ -129,6 +138,7 @@ class HuddlySdk extends EventEmitter {
       this.mainDeviceApi = deviceDiscoveryApi;
       this._deviceApis = new Array<IHuddlyDeviceAPI>();
       this._deviceApis.push(deviceDiscoveryApi);
+
     } else {
       this._mainDeviceApi = deviceApis[0];
       this._deviceApis = deviceApis;
@@ -142,6 +152,7 @@ class HuddlySdk extends EventEmitter {
     this.emitter = options.emitter || this;
     this._deviceDiscoveryApi = deviceDiscoveryApi;
     this.logger = options.logger || new DefaultLogger(true);
+    this.targetSerial = options.serial;
 
     this.setupDeviceDiscoveryListeners();
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
@@ -149,14 +160,14 @@ class HuddlySdk extends EventEmitter {
 
   /**
    * Sets up listeners for ATTACH and DETACH camera events on the
-   * device discovery api. Will emit instances of `IDeviceManager`
-   * when an ATTACH event occurs.
-   *
+   * device discovery api.
+   * Will emit instances of `IDeviceManager` when an ATTACH event occurs.
+   * Will emit the device serial number when a DETACH event occurs.
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async d => {
-      if (d) {
+      if (d && (!this.targetSerial || (this.targetSerial === d.serialNumber)) ) {
         await this.locksmith.executeAsyncFunction(
           () =>
             new Promise(async resolve => {
@@ -181,7 +192,7 @@ class HuddlySdk extends EventEmitter {
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
-      if (d !== undefined) {
+      if (d !== undefined  && (!this.targetSerial || (this.targetSerial === d))) {
         await this.locksmith.executeAsyncFunction(() => new Promise((resolve) => {
           this.emitter.emit(CameraEvents.DETACH, d);
           resolve();
