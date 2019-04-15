@@ -55,10 +55,24 @@ describe('HPKUpgrader', () => {
         dummyCameraManager.transport.close.restore();
       });
 
-      it('should close transport on DETACH', () => {
+      it('should close transport on DETACH ', () => {
         hpkUpgrader.init({});
         dummyEmitter.emit(CameraEvents.DETACH);
         expect(dummyCameraManager.transport.close).to.have.been.calledOnce;
+      });
+
+      it('should close transport on DETACH if serial in cameraManager matces detach serial', () => {
+        hpkUpgrader.init({});
+        hpkUpgrader._cameraManager.serialNumber = 'ABCDE';
+        dummyEmitter.emit(CameraEvents.DETACH, 'ABCDE');
+        expect(dummyCameraManager.transport.close).to.have.been.calledOnce;
+      });
+
+      it('should not close transport if device that detaches does not match serial of device upgrading', () => {
+        hpkUpgrader.init({});
+        hpkUpgrader._cameraManager.serialNumber = 'ABCDE';
+        dummyEmitter.emit(CameraEvents.DETACH, 'QWERTY');
+        expect(dummyCameraManager.transport.close).to.have.callCount(0);
       });
 
       it('should emit UPGRADE_REBOOT on DETACH', () => {

@@ -50,8 +50,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
-  onDetach = () => {
-    if (this._cameraManager) {
+  onDetach = (deviceSerial) => {
+    if (this._cameraManager && deviceSerial === this._cameraManager['serialNumber'] ) {
       try {
         this._cameraManager.transport.close();
       } catch (e) {
