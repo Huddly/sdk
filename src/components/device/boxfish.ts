@@ -150,7 +150,10 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager) {
-    const upgrader = await createBoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
+    let upgrader: IDeviceUpgrader = opts.upgrader;
+    if (!upgrader) {
+      upgrader = await createBoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
+    }
     upgrader.init(opts);
     upgrader.start();
     return new Promise((resolve, reject) => {

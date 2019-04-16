@@ -1,3 +1,5 @@
+import IDeviceUpgrader from './IDeviceUpgrader';
+
 /**
  * Options used for camera upgrade.
  *
@@ -48,4 +50,12 @@ export default interface UpgradeOpts {
    * @memberof UpgradeOpts
    */
   statusMessageTimeout?: number;
+
+  /**
+   * Optional parameter providing upgrdare instance to be used for upgrade
+   *
+   * @type {IDeviceUpgrader}
+   * @memberof UpgradeOpts
+   */
+  upgrader?: IDeviceUpgrader;
 }
