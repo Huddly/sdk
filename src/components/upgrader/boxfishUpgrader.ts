@@ -1,3 +1,4 @@
+
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import { EventEmitter } from 'events';
 import IDeviceManager from './../../interfaces/iDeviceManager';
@@ -444,6 +445,11 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       const response = await this._cameraManager.getState();
 
       this._logger.info(`Upgrade status ${JSON.stringify(response)}`);
+      if (response.status === 10) {
+        // EMMC is not ready lets wait and try again
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return await this.upgradeIsValid();
+      }
       return response.status === 0;
     } catch (e) {
       return false;
