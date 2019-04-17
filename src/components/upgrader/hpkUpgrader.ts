@@ -283,6 +283,11 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       const response = await this._cameraManager.getState();
 
       this._logger.info(`Upgrade status ${response.string}`);
+      if (response.status === 10) {
+        // EMMC is not ready lets wait and try again
+        await new Promise(resolve => setTimeout(resolve, 1000));
+        return await this.upgradeIsValid();
+      }
       return response.status === 0;
     } catch (e) {
       return false;

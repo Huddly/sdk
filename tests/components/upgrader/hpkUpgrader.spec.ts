@@ -353,6 +353,10 @@ describe('HPKUpgrader', () => {
   });
 
   describe('#upgradeIsValid', () => {
+    beforeEach(() => {
+      dummyCameraManager.getState.reset();
+    });
+
     it('should be be true upgrade_status if status is 0', async () => {
       dummyCameraManager.getState.resolves({
         status: 0
@@ -361,6 +365,19 @@ describe('HPKUpgrader', () => {
       const isValid = await hpkUpgrader.upgradeIsValid();
       expect(isValid).to.equal(true);
     });
+
+    it('should try again if emmc is not ready (status 10)', async () => {
+      dummyCameraManager.getState.onCall(0).resolves({
+        status: 10
+      });
+
+      dummyCameraManager.getState.onCall(1).resolves({
+        status: 0
+      });
+
+      const isValid = await hpkUpgrader.upgradeIsValid();
+      expect(isValid).to.equal(true);
+    }).timeout(10000);
 
     it('should be be true upgrade_status if status is not 0', async () => {
       dummyCameraManager.getState.resolves({
