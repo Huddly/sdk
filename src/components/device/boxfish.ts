@@ -15,7 +15,7 @@ import { EventEmitter } from 'events';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 
-const MAX_UPGRADE_ATTEMT = 3;
+const MAX_UPGRADE_ATTEMPT = 3;
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   transport: ITransport;
   _api: Api;
@@ -149,9 +149,9 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return createBoxfishUpgrader(this, this.discoveryEmitter, this.logger);
   }
 
-  async createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager) {
+  async createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager, createNewUpgrader: boolean) {
     let upgrader: IDeviceUpgrader = opts.upgrader;
-    if (!upgrader) {
+    if (!upgrader || createNewUpgrader) {
       upgrader = await createBoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
     }
     upgrader.init(opts);
@@ -180,15 +180,15 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async upgrade(opts: UpgradeOpts): Promise<any> {
-    let upgradeAttepmts = 0;
+    let upgradeAttempts = 0;
     return new Promise((resolve, reject) => {
       const tryRunAgainOnFailure = async (deviceManager: IDeviceManager) => {
         try {
-          await this.createAndRunUpgrade(opts, deviceManager);
+          await this.createAndRunUpgrade(opts, deviceManager, upgradeAttempts > 0);
           resolve();
         } catch (e) {
-          if (e.runAgain && upgradeAttepmts < MAX_UPGRADE_ATTEMT) {
-            upgradeAttepmts += 1;
+          if (e.runAgain && upgradeAttempts < MAX_UPGRADE_ATTEMPT) {
+            upgradeAttempts += 1;
             tryRunAgainOnFailure(e.deviceManager);
           } else {
             reject(e);
