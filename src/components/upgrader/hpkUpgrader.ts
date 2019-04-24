@@ -269,13 +269,18 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       rebootStatusStep: UpgradeStatusStep): Promise<boolean> {
     this._logger.info('Upgrading HPK \n');
     const hpkBuffer = this._fileBuffer;
-    if (!BoxfishHpk.isHpk(this._fileBuffer)) {
-      throw new HPKUpgradeError('HPK upgrader file is not a valid hpk file', 16);
+    try {
+      if (!BoxfishHpk.isHpk(this._fileBuffer)) {
+        throw new HPKUpgradeError('HPK upgrader file is not a valid hpk file', 16);
+      }
+      await this.upload(hpkBuffer, uploadStatusStep);
+      const completedPromise = this.awaitHPKCompletion(completionStatusStep, rebootStatusStep);
+      await this.runHPKScript(runStatusStep);
+      return await completedPromise;
+    } catch (e) {
+      this.deRegisterHotPlugEvents();
+      throw e;
     }
-    await this.upload(hpkBuffer, uploadStatusStep);
-    const completedPromise = this.awaitHPKCompletion(completionStatusStep, rebootStatusStep);
-    await this.runHPKScript(runStatusStep);
-    return await completedPromise;
   }
 
   async upgradeIsValid(): Promise<boolean> {
