@@ -5,8 +5,17 @@ import DeviceFactory from './components/device/factory';
 import CameraEvents from './utilitis/events';
 import Locksmith from './components/locksmith';
 import sourceMapSupport from 'source-map-support';
+import ErrorCodes from './error/errorCodes';
 
 sourceMapSupport.install();
+
+class AttachError extends Error {
+  code: Number;
+  constructor(message: string, code: Number) {
+    super(message);
+    this.code = code;
+  }
+}
 
 /**
  * The SDK initialization options.
@@ -151,16 +160,21 @@ class HuddlySdk extends EventEmitter {
         await this.locksmith.executeAsyncFunction(
           () =>
             new Promise(async resolve => {
-              const cameraManager = await DeviceFactory.getDevice(
-                d.productId,
-                this.logger,
-                this.mainDeviceApi,
-                this.deviceApis,
-                d,
-                this.emitter
-              );
-              this.emitter.emit(CameraEvents.ATTACH, cameraManager);
-              resolve();
+              try {
+                const cameraManager = await DeviceFactory.getDevice(
+                  d.productId,
+                  this.logger,
+                  this.mainDeviceApi,
+                  this.deviceApis,
+                  d,
+                  this.emitter
+                );
+
+                this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+                resolve();
+              } catch (e) {
+                this.emitter.emit(CameraEvents.ERROR, new AttachError('No transport supported', ErrorCodes.NO_TRANSPORT));
+              }
             })
         );
       }
