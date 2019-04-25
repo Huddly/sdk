@@ -128,6 +128,25 @@ describe('HuddlySDK', () => {
       discoveryEmitter.emit('DETACH', undefined);
       expect(detachSpy.callCount).to.equals(0);
     });
+    describe('on error', () => {
+      let getDeviceStub;
+      beforeEach(() => {
+        getDeviceStub = sinon.stub(DeviceFactory, 'getDevice').rejects(new Error('No transport'));
+      });
+      afterEach(() => {
+        getDeviceStub.restore();
+      });
+
+      it('should not emit ERROR if can not get device', (done) => {
+
+        otherEmitter.on('ERROR', (e) => {
+          expect(e).to.be.instanceof(Error);
+          done();
+        });
+        discoveryEmitter.emit('ATTACH', dummyIQ);
+      });
+    });
+
   });
 
   describe('#init', () => {
