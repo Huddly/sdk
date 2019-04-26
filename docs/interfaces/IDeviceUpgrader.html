@@ -89,9 +89,6 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#doUpgrade">doUpgrade</a>
-                                </li>
-                                <li>
                                     <a href="#init">init</a>
                                 </li>
                                 <li>
@@ -125,56 +122,6 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="doUpgrade"></a>
-                        <span class="name">
-                            <b>
-                            doUpgrade
-                            </b>
-                            <a href="#doUpgrade"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>doUpgrade()</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="64" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:64</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Perform camera upgrade without event handlers. This is a
-function which you call and await for completion. You can either
-use <code>Promise await</code> style or <code>Promise then/catch</code> for handling
-callbacks.</p>
-</div>
-
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                            </div>
-                                <div class="io-description">
-                                    <p>A <code>Promise</code> that resolves when upgrade succeeds or rejects
-when uprade fails.</p>
-
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
                         <a name="init"></a>
                         <span class="name">
                             <b>
@@ -193,7 +140,7 @@ when uprade fails.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="17" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:17</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="16" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:16</a></div>
                             </td>
                         </tr>
 
@@ -270,7 +217,7 @@ verbose level etc.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:34</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="33" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:33</a></div>
                             </td>
                         </tr>
 
@@ -362,7 +309,7 @@ verbose level etc.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:43</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:42</a></div>
                             </td>
                         </tr>
 
@@ -454,7 +401,7 @@ verbose level etc.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:52</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="51" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:51</a></div>
                             </td>
                         </tr>
 
@@ -544,7 +491,7 @@ verbose level etc.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:25</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:24</a></div>
                             </td>
                         </tr>
 
@@ -585,7 +532,7 @@ Use event handlers to track the upgrade progress.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="72" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:72</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/interfaces/IDeviceUpgrader.ts:59</a></div>
                             </td>
                         </tr>
 
@@ -689,7 +636,6 @@ upgrader.start();</code></pre></div></p>
  * @interface IDeviceUpgrader
  */
 export default interface IDeviceUpgrader {
-
   /**
    * Initializes the upgrader with all the necessary upgrade options such as filepath,
    * verbose level etc.
@@ -733,18 +679,6 @@ export default interface IDeviceUpgrader {
    * @memberof Transportable
    */
   removeListener(message: string, callback: any);
-
-  /**
-   * Perform camera upgrade without event handlers. This is a
-   * function which you call and await for completion. You can either
-   * use &#x60;Promise await&#x60; style or &#x60;Promise then/catch&#x60; for handling
-   * callbacks.
-   *
-   * @returns {Promise&lt;any&gt;} A &#x60;Promise&#x60; that resolves when upgrade succeeds or rejects
-   * when uprade fails.
-   * @memberof IDeviceUpgrader
-   */
-  doUpgrade(): Promise&lt;any&gt;;
 
   /**
    * Verifies if camera performed a valid upgrade
