@@ -133,7 +133,7 @@ export default interface IDeviceManager {
   getDiagnostics(): Promise<Array<DiagnosticsMessage>>;
 
   /**
-   * Retrieves camera information such as name, serial number, software version etc.
+   * Reads out the current autozoom state on the camera (currently supported only on Huddly IQ)
    *
    * @returns {Promise<any>} A JSON representation of the camera state such as is genius framing enabled.
    * @memberof IDeviceManager

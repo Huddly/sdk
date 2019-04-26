@@ -396,7 +396,7 @@ please see <code>events</code> class.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="240" class="link-to-prism">src/index.ts:240</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="253" class="link-to-prism">src/index.ts:253</a></div>
                             </td>
                         </tr>
 
@@ -444,7 +444,7 @@ successful initialization or rejects otherwise.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="144" class="link-to-prism">src/index.ts:144</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="148" class="link-to-prism">src/index.ts:148</a></div>
                             </td>
                         </tr>
 
@@ -491,7 +491,7 @@ when an ATTACH event occurs.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="183" class="link-to-prism">src/index.ts:183</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="196" class="link-to-prism">src/index.ts:196</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -516,7 +516,7 @@ used for communicating with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="172" class="link-to-prism">src/index.ts:172</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="185" class="link-to-prism">src/index.ts:185</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -573,7 +573,7 @@ used for communicating with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="206" class="link-to-prism">src/index.ts:206</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="219" class="link-to-prism">src/index.ts:219</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -599,7 +599,7 @@ the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="194" class="link-to-prism">src/index.ts:194</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="207" class="link-to-prism">src/index.ts:207</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -657,7 +657,7 @@ communication channels with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="228" class="link-to-prism">src/index.ts:228</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="241" class="link-to-prism">src/index.ts:241</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -682,7 +682,7 @@ instance used for camera discovery.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="216" class="link-to-prism">src/index.ts:216</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="229" class="link-to-prism">src/index.ts:229</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -887,7 +887,11 @@ class HuddlySdk extends EventEmitter {
    * @param {SDKOpts} [opts] Options used for initializing the sdk. See &#x60;SDKOpts&#x60; interface.
    * @memberof HuddlySdk
    */
-  constructor(deviceDiscoveryApi: IHuddlyDeviceAPI, deviceApis?: Array&lt;IHuddlyDeviceAPI&gt;, opts?: SDKOpts) {
+  constructor(
+    deviceDiscoveryApi: IHuddlyDeviceAPI,
+    deviceApis?: Array&lt;IHuddlyDeviceAPI&gt;,
+    opts?: SDKOpts
+  ) {
     super();
     if (!deviceDiscoveryApi) {
       throw new Error(&#x27;A default device api should be provided to the sdk!&#x27;);
@@ -923,19 +927,28 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
-    this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) &#x3D;&gt; {
+    this.deviceDiscovery.on(CameraEvents.ATTACH, async d &#x3D;&gt; {
       if (d) {
-        await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise(async (resolve) &#x3D;&gt; {
-          const cameraManager &#x3D; await DeviceFactory.getDevice(d.productId,
-            this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
-          this.emitter.emit(CameraEvents.ATTACH, cameraManager);
-          resolve();
-        }));
+        await this.locksmith.executeAsyncFunction(
+          () &#x3D;&gt;
+            new Promise(async resolve &#x3D;&gt; {
+              const cameraManager &#x3D; await DeviceFactory.getDevice(
+                d.productId,
+                this.logger,
+                this.mainDeviceApi,
+                this.deviceApis,
+                d,
+                this.emitter
+              );
+              this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+              resolve();
+            })
+        );
       }
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
-      if (d) {
+      if (d !&#x3D;&#x3D; undefined) {
         await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise((resolve) &#x3D;&gt; {
           this.emitter.emit(CameraEvents.DETACH, d);
           resolve();

@@ -344,7 +344,7 @@ successful connnection close or rejects otherwise.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="134" class="link-to-prism">src/interfaces/iDeviceManager.ts:134</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="133" class="link-to-prism">src/interfaces/iDeviceManager.ts:133</a></div>
                             </td>
                         </tr>
 
@@ -482,14 +482,14 @@ successful connnection close or rejects otherwise.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="142" class="link-to-prism">src/interfaces/iDeviceManager.ts:142</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="141" class="link-to-prism">src/interfaces/iDeviceManager.ts:141</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Retrieves camera information such as name, serial number, software version etc.</p>
+                            <div class="io-description"><p>Reads out the current autozoom state on the camera (currently supported only on Huddly IQ)</p>
 </div>
 
                             <div>
@@ -1022,7 +1022,7 @@ export default interface IDeviceManager {
    * successful upgrade or rejects otherwise.
    * @memberof IDeviceManager
    */
-  upgrade(opts: UpgradeOpts): Promise &lt;any&gt;;
+  upgrade(opts: UpgradeOpts): Promise&lt;any&gt;;
 
   /**
    * Returns a new instance of the Detector class.
@@ -1032,7 +1032,6 @@ export default interface IDeviceManager {
    */
   getDetector(opts: DetectorOpts): IDetector;
 
-
   /**
    * Reads data from camera and returns diagnostics information
    *
@@ -1041,7 +1040,7 @@ export default interface IDeviceManager {
   getDiagnostics(): Promise&lt;Array&lt;DiagnosticsMessage&gt;&gt;;
 
   /**
-   * Retrieves camera information such as name, serial number, software version etc.
+   * Reads out the current autozoom state on the camera (currently supported only on Huddly IQ)
    *
    * @returns {Promise&lt;any&gt;} A JSON representation of the camera state such as is genius framing enabled.
    * @memberof IDeviceManager

@@ -94,6 +94,14 @@
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
+                                        <a href="#statusMessageTimeout">statusMessageTimeout</a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
+                                        <a href="#upgrader">upgrader</a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
                                         <a href="#verboseStatusLog">verboseStatusLog</a>
                                 </li>
                             </ul>
@@ -189,6 +197,86 @@ The number is specified in seconds!</p>
                         <tbody>
                                 <tr>
                                     <td class="col-md-4">
+                                        <a name="statusMessageTimeout"></a>
+                                        <span class="name"><b>statusMessageTimeout</b><a href="#statusMessageTimeout"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>statusMessageTimeout:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Optional parameter to specify how long to wait for a status message before timing out</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="upgrader"></a>
+                                        <span class="name"><b>upgrader</b><a href="#upgrader"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>upgrader:     <code><a href="../interfaces/IDeviceUpgrader.html" target="_self" >IDeviceUpgrader</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code><a href="../interfaces/IDeviceUpgrader.html" target="_self" >IDeviceUpgrader</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Optional parameter providing upgrdare instance to be used for upgrade</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
                                         <a name="verboseStatusLog"></a>
                                         <span class="name"><b>verboseStatusLog</b><a href="#verboseStatusLog"><span class="icon ion-ios-link"></span></a></span>
                                     </td>
@@ -232,7 +320,14 @@ upgrade process.</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface UpgradeOpts {
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IDeviceUpgrader from &#x27;./IDeviceUpgrader&#x27;;
+
+/**
+ * Options used for camera upgrade.
+ *
+ * @interface UpgradeOpts
+ */
+export default interface UpgradeOpts {
   /**
    * Buffer stream of the upgrade file.
    *
@@ -269,6 +364,22 @@ upgrade process.</p>
    * @memberof UpgradeOpts
    */
   verboseStatusLog?: boolean;
+
+  /**
+   * Optional parameter to specify how long to wait for a status message before timing out
+   *
+   * @type {number}
+   * @memberof UpgradeOpts
+   */
+  statusMessageTimeout?: number;
+
+  /**
+   * Optional parameter providing upgrdare instance to be used for upgrade
+   *
+   * @type {IDeviceUpgrader}
+   * @memberof UpgradeOpts
+   */
+  upgrader?: IDeviceUpgrader;
 }
 </code></pre>
     </div>

@@ -353,7 +353,11 @@ class HuddlySdk extends EventEmitter {
    * @param {SDKOpts} [opts] Options used for initializing the sdk. See &#x60;SDKOpts&#x60; interface.
    * @memberof HuddlySdk
    */
-  constructor(deviceDiscoveryApi: IHuddlyDeviceAPI, deviceApis?: Array&lt;IHuddlyDeviceAPI&gt;, opts?: SDKOpts) {
+  constructor(
+    deviceDiscoveryApi: IHuddlyDeviceAPI,
+    deviceApis?: Array&lt;IHuddlyDeviceAPI&gt;,
+    opts?: SDKOpts
+  ) {
     super();
     if (!deviceDiscoveryApi) {
       throw new Error(&#x27;A default device api should be provided to the sdk!&#x27;);
@@ -389,19 +393,28 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
-    this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) &#x3D;&gt; {
+    this.deviceDiscovery.on(CameraEvents.ATTACH, async d &#x3D;&gt; {
       if (d) {
-        await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise(async (resolve) &#x3D;&gt; {
-          const cameraManager &#x3D; await DeviceFactory.getDevice(d.productId,
-            this.logger, this.mainDeviceApi, this.deviceApis, d, this.emitter);
-          this.emitter.emit(CameraEvents.ATTACH, cameraManager);
-          resolve();
-        }));
+        await this.locksmith.executeAsyncFunction(
+          () &#x3D;&gt;
+            new Promise(async resolve &#x3D;&gt; {
+              const cameraManager &#x3D; await DeviceFactory.getDevice(
+                d.productId,
+                this.logger,
+                this.mainDeviceApi,
+                this.deviceApis,
+                d,
+                this.emitter
+              );
+              this.emitter.emit(CameraEvents.ATTACH, cameraManager);
+              resolve();
+            })
+        );
       }
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
-      if (d) {
+      if (d !&#x3D;&#x3D; undefined) {
         await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise((resolve) &#x3D;&gt; {
           this.emitter.emit(CameraEvents.DETACH, d);
           resolve();
