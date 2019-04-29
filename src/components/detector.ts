@@ -5,7 +5,9 @@ import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpt
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 
-const PREVIEW_IMAGE_SIZE = { width: 544, height: 306 };
+const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
+const labelWhiteList = ['head', 'person'];
+
 /**
  * Detector class used to configure genius framing on the camera.
  *
@@ -118,7 +120,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   convertPredictions(predictions: Array<any>, opts?: iDetectorOpts): Array<any> {
-    const personPredictions = predictions.filter(({ label }) => label === 'person');
+    const personPredictions = predictions.filter(({ label }) => labelWhiteList.some(x => x == label));
 
     if (opts && opts.convertDetections === DetectionConvertion.FRAMING && this._frame) {
       const { bbox: framingBBox } = this._frame;
