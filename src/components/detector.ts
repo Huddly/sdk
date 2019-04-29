@@ -120,7 +120,9 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   convertPredictions(predictions: Array<any>, opts?: iDetectorOpts): Array<any> {
-    const personPredictions = predictions.filter(({ label }) => labelWhiteList.some(x => x == label));
+    const personPredictions = predictions.filter(({ label }) =>
+      labelWhiteList.some(x => x == label)
+    );
 
     if (opts && opts.convertDetections === DetectionConvertion.FRAMING && this._frame) {
       const { bbox: framingBBox } = this._frame;

@@ -172,12 +172,12 @@ describe('Detector', () => {
         expect(newPredictions.length).to.equals(1);
         expect(newPredictions[0].label).to.equals('person');
         expect(newPredictions[0].bbox).to.deep.equals({
-          x: 7.555555555555555,
-          y: 7.555555555555555,
-          width: 45.33333333333333,
-          height: 90.66666666666666,
-          frameWidth: 544,
-          frameHeight: 306
+          x: 8.88888888888889,
+          y: 11.851851851851851,
+          width: 53.33333333333333,
+          height: 142.22222222222223,
+          frameWidth: 640,
+          frameHeight: 480
         });
       });
     });
@@ -187,10 +187,10 @@ describe('Detector', () => {
         expect(newPredictions.length).to.equals(1);
         expect(newPredictions[0].label).to.equals('person');
         expect(newPredictions[0].bbox).to.deep.equals({
-          x: 0.01838235294117647,
-          y: 0.032679738562091505,
-          width: 0.11029411764705882,
-          height: 0.39215686274509803
+          x: 0.015625,
+          y: 0.020833333333333332,
+          width: 0.09375,
+          height: 0.25
         });
       });
     });
