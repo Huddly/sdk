@@ -4,10 +4,10 @@ import DefaultLogger from './utilitis/logger';
 import DeviceFactory from './components/device/factory';
 import CameraEvents from './utilitis/events';
 import Locksmith from './components/locksmith';
-import sourceMapSupport from 'source-map-support';
+// import sourceMapSupport from 'source-map-support';
 import ErrorCodes from './error/errorCodes';
 
-sourceMapSupport.install();
+// sourceMapSupport.install();
 
 class AttachError extends Error {
   code: Number;
