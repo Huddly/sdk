@@ -8,6 +8,7 @@ import { EventEmitter } from 'events';
 
 export const HUDDLY_GO_PID = 0x11;
 export const HUDDLY_BOXFISH_PID = 0x21;
+export const HUDDLY_CLOWNFISH_PID = 0x31;
 
 export default class DeviceFactory {
 
@@ -146,6 +147,7 @@ export default class DeviceFactory {
         const hidApi = await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis);
         device = new HuddlyGo(devInstance, transport, uvcControlInterface, hidApi, logger, cameraDiscoveryEmitter);
         break;
+      case HUDDLY_CLOWNFISH_PID:
       case HUDDLY_BOXFISH_PID:
         device = new Boxfish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
