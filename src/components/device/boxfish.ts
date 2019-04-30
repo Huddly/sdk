@@ -23,6 +23,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   logger: DefaultLogger;
   locksmith: Locksmith;
   discoveryEmitter: EventEmitter;
+  productName: string = 'Huddly IQ';
 
   constructor(
     uvcCameraInstance: any,
