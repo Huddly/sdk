@@ -118,4 +118,28 @@ describe('Boxfish', () => {
       expect(upgrader.start).to.have.been.calledOnce;
     });
   });
+
+  describe('#reboot', () => {
+    describe('on mvusb mode', () => {
+      it('should send upgrader/mv_usb msg and not await for reboot msg', async () => {
+        await device.initialize();
+        sinon.stub(device.api, 'sendAndReceiveWithoutLock').resolves();
+        await device.reboot('mvusb');
+        expect(device.transport.clear).to.have.been.calledOnce;
+        expect(device.api.sendAndReceiveWithoutLock).to.have.been.calledOnce;
+        expect(device.api.sendAndReceiveWithoutLock).to.have.been.calledWith('upgrader/mv_usb', { args: {}});
+        expect(device.transport.write).to.have.been.calledWith('camctrl/reboot');
+      });
+    });
+    describe('on other modes', () => {
+      it('should only send reboot command', async () => {
+        await device.initialize();
+        sinon.stub(device.api, 'sendAndReceiveWithoutLock').resolves();
+        await device.reboot();
+        expect(device.transport.clear).to.have.been.calledOnce;
+        expect(device.api.sendAndReceiveWithoutLock).to.not.have.been.called;
+        expect(device.transport.write).to.have.been.calledWith('camctrl/reboot');
+      });
+    });
+  });
 });

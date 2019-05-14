@@ -137,8 +137,14 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       await this.transport.clear();
       if (mode === 'mvusb') {
         await this.api.sendAndReceiveWithoutLock('upgrader/mv_usb', { args: {} });
+        /**
+         * Do not await reboot as next time the device boots it will
+         * be a movidius device instead of a Huddly IQ device.
+         */
+        this.transport.write('camctrl/reboot');
+      } else {
+        await this.transport.write('camctrl/reboot');
       }
-      await this.transport.write('camctrl/reboot');
     });
   }
 
