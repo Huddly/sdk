@@ -10,6 +10,7 @@ import Boxfish from './../../../src/components/device/boxfish';
 import DefaultLogger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import CameraEvents from './../../../src/utilitis/events';
+import Api from './../../../src/components/api';
 
 chai.should();
 chai.use(sinonChai);
@@ -121,23 +122,20 @@ describe('Boxfish', () => {
 
   describe('#reboot', () => {
     describe('on mvusb mode', () => {
-      it('should send upgrader/mv_usb msg and not await for reboot msg', async () => {
+      it('should send upgrader/mv_usb', async () => {
         await device.initialize();
-        sinon.stub(device.api, 'sendAndReceiveWithoutLock').resolves();
         await device.reboot('mvusb');
         expect(device.transport.clear).to.have.been.calledOnce;
-        expect(device.api.sendAndReceiveWithoutLock).to.have.been.calledOnce;
-        expect(device.api.sendAndReceiveWithoutLock).to.have.been.calledWith('upgrader/mv_usb', { args: {}});
-        expect(device.transport.write).to.have.been.calledWith('camctrl/reboot');
+        expect(device.transport.write).to.have.been.calledOnce;
+        expect(device.transport.write).to.have.been.calledWith('upgrader/mv_usb', Api.encode({}));
       });
     });
     describe('on other modes', () => {
       it('should only send reboot command', async () => {
         await device.initialize();
-        sinon.stub(device.api, 'sendAndReceiveWithoutLock').resolves();
         await device.reboot();
         expect(device.transport.clear).to.have.been.calledOnce;
-        expect(device.api.sendAndReceiveWithoutLock).to.not.have.been.called;
+        expect(device.transport.write).to.have.been.calledOnce;
         expect(device.transport.write).to.have.been.calledWith('camctrl/reboot');
       });
     });

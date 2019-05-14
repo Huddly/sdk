@@ -136,12 +136,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
       if (mode === 'mvusb') {
-        await this.api.sendAndReceiveWithoutLock('upgrader/mv_usb', { args: {} });
-        /**
-         * Do not await reboot as next time the device boots it will
-         * be a movidius device instead of a Huddly IQ device.
-         */
-        this.transport.write('camctrl/reboot');
+        this.transport.write('upgrader/mv_usb', Api.encode({}));
       } else {
         await this.transport.write('camctrl/reboot');
       }
