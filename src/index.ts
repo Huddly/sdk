@@ -156,11 +156,13 @@ class HuddlySdk extends EventEmitter {
    */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async d => {
+      console.log('----------- SDK ATTACH ----------');
       if (d) {
         await this.locksmith.executeAsyncFunction(
           () =>
             new Promise(async resolve => {
               try {
+                console.log('----------- pre get device ----------');
                 const cameraManager = await DeviceFactory.getDevice(
                   d.productId,
                   this.logger,
@@ -169,6 +171,8 @@ class HuddlySdk extends EventEmitter {
                   d,
                   this.emitter
                 );
+
+                console.log('----------- post device ----------');
 
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
