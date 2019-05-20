@@ -6,7 +6,6 @@ import Api from './api';
 import CameraEvents from './../utilitis/events';
 
 const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
-const labelWhiteList = ['head', 'person'];
 
 /**
  * Detector class used to configure genius framing on the camera.
@@ -23,6 +22,7 @@ export default class Detector extends EventEmitter implements IDetector {
   _framingHandler: any;
   _frame: any;
   _options: iDetectorOpts;
+  _defaultLabelWhiteList: Array<String> = ['head', 'person'];
 
   /**
    * Creates an instance of Detector.
@@ -120,9 +120,13 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   convertPredictions(predictions: Array<any>, opts?: iDetectorOpts): Array<any> {
-    const personPredictions = predictions.filter(({ label }) =>
-      labelWhiteList.some(x => x == label)
-    );
+    let objectFilter = this._defaultLabelWhiteList;
+    if (opts && opts.objectFilter) {
+      objectFilter = opts.objectFilter;
+    }
+    const filteredPredictions = objectFilter.length === 0 ? predictions : predictions.filter(({ label }) => {
+      return objectFilter.some(x => x === label);
+    });
 
     if (opts && opts.convertDetections === DetectionConvertion.FRAMING && this._frame) {
       const { bbox: framingBBox } = this._frame;
@@ -130,7 +134,7 @@ export default class Detector extends EventEmitter implements IDetector {
         height: PREVIEW_IMAGE_SIZE.height / framingBBox.height,
         width: PREVIEW_IMAGE_SIZE.width / framingBBox.width,
       };
-      return personPredictions.map(({ label, bbox }) => {
+      return filteredPredictions.map(({ label, bbox }) => {
         return {
           label: label,
           bbox: {
@@ -144,7 +148,7 @@ export default class Detector extends EventEmitter implements IDetector {
         };
       });
     } else {
-      return personPredictions.map(({ label, bbox }) => {
+      return filteredPredictions.map(({ label, bbox }) => {
         return {
           label: label,
           bbox: {
