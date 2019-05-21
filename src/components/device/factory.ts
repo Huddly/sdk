@@ -22,6 +22,7 @@ export default class DeviceFactory {
    * with the camera
    * @param {Array<IHuddlyDeviceAPI>} secondaryDeviceApis Fallback IHuddlyDeviceAPI-s in case the
    * main interface does not work
+   * @param {DefaultLogger} logger The logger class used for logging messages on console
    * @returns {Promise<ITransportable>} Returns the transport implementation for the device used to talk
    * to the device
    * @memberof DeviceFactory
@@ -29,11 +30,13 @@ export default class DeviceFactory {
   static async getTransportImplementation(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array<IHuddlyDeviceAPI>): Promise<ITransport> {
+    secondaryDeviceApis: Array<IHuddlyDeviceAPI>,
+    logger: DefaultLogger): Promise<ITransport> {
     const mainTransport = await preferredDeviceApi.getValidatedTransport(device);
     if (mainTransport) {
       return mainTransport;
     }
+    logger.warn('Transport init on main device api failed. Falling back to secondary device apis', 'SDK DeviceFactory');
 
     for (const deviceApi of secondaryDeviceApis) {
       const fallbackTransport = await deviceApi.getValidatedTransport(device);
@@ -55,17 +58,21 @@ export default class DeviceFactory {
    * with the camera
    * @param {Array<IHuddlyDeviceAPI>} secondaryDeviceApis Fallback IHuddlyDeviceAPI-s in case the
    * main interface does not work
+   * @param {DefaultLogger} logger The logger class used for logging messages on console
    * @returns {Promise<any>} Returns the device class that is used for UVC controls
    * @memberof DeviceFactory
    */
   static async getUVCControlInterface(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array<IHuddlyDeviceAPI>): Promise<any> {
+    secondaryDeviceApis: Array<IHuddlyDeviceAPI>,
+    logger: DefaultLogger): Promise<any> {
 
     if (await preferredDeviceApi.isUVCControlsSupported(device)) {
       return preferredDeviceApi.getUVCControlAPIForDevice(device);
     }
+
+    logger.warn('Preferred device api does not support uvc control interface', 'SDK DeviceFactory');
 
     for (const deviceApi of secondaryDeviceApis) {
       if (await deviceApi.isUVCControlsSupported(device)) {
@@ -73,9 +80,8 @@ export default class DeviceFactory {
       }
     }
 
-    // throw new Error(`Unable to find appropriate uvc control api for ${device}`);
-    // TODO: Log a warning that none of device api-s support uvc control interface
-    // Boxfish.ts should handle to not use uvc commands when device-api is usb
+    logger.error('None of the device api\'s support uvc control interface', '', 'SDK DeviceFactory');
+
     return undefined;
   }
 
@@ -89,16 +95,21 @@ export default class DeviceFactory {
    * with the camera
    * @param {Array<IHuddlyDeviceAPI>} secondaryDeviceApis Fallback IHuddlyDeviceAPI-s in case the
    * main interface does not work
+   * @param {DefaultLogger} logger The logger class used for logging messages on console
    * @returns {Promise<any>}  Returns the device class that is used for UVC controls
    * @memberof DeviceFactory
    */
   static async getHIDInterface(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array<IHuddlyDeviceAPI>): Promise<any> {
+    secondaryDeviceApis: Array<IHuddlyDeviceAPI>,
+    logger: DefaultLogger): Promise<any> {
     if (await preferredDeviceApi.isHIDSupported(device)) {
       return preferredDeviceApi.getHIDAPIForDevice(device);
     }
+
+    logger.warn('Preferred device api does not support HID interface', 'SDK DeviceFactory');
+
     for (const deviceApi of secondaryDeviceApis) {
       if (await deviceApi.isHIDSupported(device)) {
         return deviceApi.getHIDAPIForDevice(device);
@@ -134,17 +145,19 @@ export default class DeviceFactory {
     const transport = await this.getTransportImplementation(
       devInstance,
       preferredDeviceApi,
-      secondaryDeviceApis);
+      secondaryDeviceApis,
+      logger);
 
     const uvcControlInterface = await this.getUVCControlInterface(
       devInstance,
       preferredDeviceApi,
-      secondaryDeviceApis);
+      secondaryDeviceApis,
+      logger);
 
     let device: IDeviceManager;
     switch (productId) {
       case HUDDLY_GO_PID:
-        const hidApi = await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis);
+        const hidApi = await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis, logger);
         device = new HuddlyGo(devInstance, transport, uvcControlInterface, hidApi, logger, cameraDiscoveryEmitter);
         break;
       case HUDDLY_CLOWNFISH_PID:

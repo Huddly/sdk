@@ -72,16 +72,18 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     do {
       try {
         fetchAttemts += 1;
-        //
         const versionInfo = await this.getXUControl(19);
         const softwareVersion = parseSoftwareVersion(versionInfo);
         return softwareVersion;
       } catch (e) {
         err = e;
-        this.logger.debug(e);
+        this.logger.error(
+          `Failed parsing/reading the software version on GO! Retry Attempts left: ${fetchAttemts - retryAttempts}`,
+          e,
+          'HuddlyGO API');
       }
     } while (fetchAttemts < retryAttempts);
-    this.logger.error(err);
+    this.logger.error('Unable to retrieve software version from camera!', err, 'HuddlyGO API');
     throw new Error('Failed to retrieve software version from camera');
   }
 
@@ -261,27 +263,33 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
         resolve();
       });
       upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
+        this.logger.error('Upgrade Failed', reason, 'HuddlyGO API');
         reject(reason);
       });
       upgrader.once(CameraEvents.TIMEOUT, (reason) => {
+        this.logger.error('Upgrader returned a timeout event', reason, 'HuddlyGO API');
         reject(reason);
       });
     });
   }
 
   getDetector(): IDetector {
+    this.logger.warn('Attempting to call method [getDetector] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Detections are not supported on Huddly GO camera!');
   }
 
   getState(): Promise<any> {
+    this.logger.warn('Attempting to call method [getState] on HuddlyGO', 'HuddlyGO API');
     throw new Error('State is not supported on Huddly GO camera');
   }
 
   async setInterpolationParams(params: InterpolationParams): Promise<any> {
+    this.logger.warn('Attempting to call method [setInterpolationParams] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Interpolation parameters are not supported on Huddly GO camera');
   }
 
   async getInterpolationParams(): Promise<InterpolationParams> {
+    this.logger.warn('Attempting to call method [getInterpolationParams] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Interpolation parameters are not supported on Huddly GO camera');
   }
 }
