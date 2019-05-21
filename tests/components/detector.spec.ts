@@ -154,7 +154,14 @@ describe('Detector', () => {
           height: 120
         }
       },
-      { label: 'couch'}
+      { label: 'couch',
+        bbox: {
+          x: 10,
+          y: 10,
+          width: 60,
+          height: 120
+        }
+      }
     ];
     beforeEach(() => {
       detector._frame = {
@@ -179,6 +186,20 @@ describe('Detector', () => {
           frameWidth: 640,
           frameHeight: 480
         });
+      });
+      it('should detect couch when objectFilter is set to all', () => {
+        const newPredictions = detector.convertPredictions(predictions, {
+          convertDetections: DetectionConvertion.FRAMING,
+          objectFilter: [],
+        });
+        expect(newPredictions.length).to.equals(2);
+      });
+      it('should detect objects specified by filter', () => {
+        const newPredictions = detector.convertPredictions(predictions, {
+          convertDetections: DetectionConvertion.FRAMING,
+          objectFilter: ['person'],
+        });
+        expect(newPredictions.length).to.equals(1);
       });
     });
     describe('ABSOLUTE', () => {

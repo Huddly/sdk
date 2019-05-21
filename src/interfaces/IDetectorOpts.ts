@@ -28,6 +28,15 @@ export default interface DetectorOpts {
    * @memberof DetectorOpts
    */
   shouldAutoFrame?: boolean;
+
+  /**
+   * Specify a list of labels for objects to detect, ie ['head', 'person']
+   * Provide an empty list to retrieve all
+   *
+   * @type {Array<String>}
+   * @memberof DetectorOpts
+   */
+  objectFilter?: Array<String>;
 }
 
 export { DetectionConvertion };

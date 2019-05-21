@@ -268,5 +268,6 @@ class HuddlySdk extends EventEmitter {
     await this.deviceDiscoveryApi.initialize();
   }
 }
+export { CameraEvents };
 
 export default HuddlySdk;
