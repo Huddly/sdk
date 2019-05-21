@@ -124,9 +124,12 @@ export default class Detector extends EventEmitter implements IDetector {
     if (opts && opts.objectFilter) {
       objectFilter = opts.objectFilter;
     }
-    const filteredPredictions = objectFilter.length === 0 ? predictions : predictions.filter(({ label }) => {
-      return objectFilter.some(x => x === label);
-    });
+    const filteredPredictions =
+      objectFilter.length === 0
+        ? predictions
+        : predictions.filter(({ label }) => {
+            return objectFilter.some(x => x === label);
+          });
 
     if (opts && opts.convertDetections === DetectionConvertion.FRAMING && this._frame) {
       const { bbox: framingBBox } = this._frame;
