@@ -19,8 +19,10 @@ export async function createBoxfishUpgrader(
 ): Promise<IDeviceUpgrader> {
   const info = await manager.getInfo();
   if (semver.gte(info.version, HPK_SUPPORT_VERSION)) {
+    logger.warn('Initializing HPKUpgrader', 'Boxfish Upgrader Factory');
     return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
   }
+  logger.warn(`Camera version is ${info.version} which is not supported by HPK Upgrader. Using BoxfishUpgrader as fallback.`, 'Boxfish Upgrader Factory');
   return new BoxfishUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
 }
 

@@ -121,12 +121,15 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       runningHpkVerificationStep,
     ]);
     this.emitProgressStatus('Starting upgrade');
+    this._logger.debug('Starting Upgrade', 'Boxfish HPK Upgrader');
     this.emit(CameraEvents.UPGRADE_START);
     let upgradeTimoutId: NodeJS.Timer;
     this.once('UPGRADE_REBOOT_COMPLETE', async () => {
+      this._logger.debug('Camera successfully booted after upgrade', 'Boxfish HPK Upgrader');
       rebootStep.progress = 100;
       clearTimeout(upgradeTimoutId);
       try {
+        this._logger.debug('Verifying new software', 'Boxfish HPK Upgrader');
         this.emitProgressStatus('Verifying new software');
         // Wait two seconds to allow drivers to attach properly to the USB endpoint
         await new Promise(resolve => setTimeout(resolve, 2000));
@@ -134,6 +137,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
           executingHpkVerificationStep,
           runningHpkVerificationStep,
           rebootStep);
+        this._logger.debug('Upgrade Completed', 'Boxfish HPK Upgrader');
         this.emitProgressStatus('Upgrade complete');
         await this.deRegisterHotPlugEvents();
         this.emit(CameraEvents.UPGRADE_COMPLETE);
@@ -145,6 +149,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     });
 
     try {
+      this._logger.debug('Loading new sw to the camera', 'Boxfish HPK Upgrader');
       this.emitProgressStatus('Loading new software to camera');
       const rebooted = await this.doUpgrade(firstUploadStatusStep,
         executingHpkStep,
@@ -158,7 +163,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         this.emit(CameraEvents.UPGRADE_COMPLETE);
       }
     } catch (e) {
-      this._logger.error('Upgrade failed', e);
+      this._logger.error('Upgrade failed', e, 'Boxfish HPK Upgrader');
       this.emit(CameraEvents.UPGRADE_FAILED, e);
       throw e;
     }
@@ -173,7 +178,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     const reboot = await this._cameraManager.api.withSubscribe<boolean>(['upgrader/status'], () => new Promise((resolve, reject) => {
       const startTimeout = () => {
         return setTimeout(() => {
-        reject(new HPKUpgradeError(`Upgrading HPK: no status message within ${this._statusMessageTimeout}`, ErrorCodes.UPGRADE_STATUS_TIMEOUT));
+          this._logger.debug(`Upgrade failure: no status message within ${this._statusMessageTimeout}`, 'Boxfish HPK Upgrader');
+          reject(new HPKUpgradeError(`Upgrading HPK: no status message within ${this._statusMessageTimeout}`, ErrorCodes.UPGRADE_STATUS_TIMEOUT));
         }, this._statusMessageTimeout);
       };
 
@@ -202,7 +208,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         elapsedPoints = statusMessage.elapsed_points || elapsedPoints;
         const progressPercentage = (elapsedPoints / totalProgressPoints) * 100;
         if (statusMessage.operation !== lastOperation || deltaT >= 1000) {
-          this._logger.info(`Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${statusMessage.operation}\r`);
+          this._logger.info(`Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${statusMessage.operation}\r`, 'Boxfish HPK Upgrader');
         }
         lastOperation = statusMessage.operation;
         completionStatusStep.operation = statusMessage.operation;
@@ -214,13 +220,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }));
 
     if (reboot) {
+      this._logger.debug('Rebooting camera after upgrade', 'Boxfish HPK Upgrader');
       rebootStatusStep.progress = 1;
       rebootStatusStep.operation = 'Issuing reboot command';
       await this._cameraManager.reboot();
       try {
         await this._cameraManager.transport.close();
       } catch (e) {
-        this._logger.info(`\nUpgrading HPK: failed closing device on reboot: ${e}\n`);
+        this._logger.error('Failed while closing the device on reboot', e, 'Boxfish HPK Upgrader');
       }
     }
 
@@ -240,15 +247,16 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         15000
       );
       if (runMessage.string === 'Success') {
-        this._logger.debug('RUN hpk complete');
+        this._logger.debug('RUN hpk complete', 'Boxfish HPK Upgrader');
         runStatusStep.progress = 100;
         this.emitProgressStatus();
         return;
       } else {
-        this._logger.error(`HPK run failed ${JSON.stringify(runMessage)}`);
+        this._logger.error(`HPK run failed ${JSON.stringify(runMessage)}`, '', 'Boxfish HPK Upgrader');
         throw new HPKUpgradeError(`run failed ${runMessage}`, ErrorCodes.UPGRADE_RUN_FAILED);
       }
     } catch (e) {
+      this._logger.error('Unable to run the hpk script', e, 'Boxfish HPK Upgrader');
       throw new HPKUpgradeError(`Could not run hpk ${e}`, ErrorCodes.UPGRADE_RUN_FAILED);
     }
   }
@@ -257,7 +265,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       runStatusStep: UpgradeStatusStep,
       completionStatusStep: UpgradeStatusStep,
       rebootStatusStep: UpgradeStatusStep): Promise<boolean> {
-    this._logger.info('Upgrading HPK \n');
+    this._logger.info('Upgrading HPK', 'Boxfish HPK Upgrader');
     const hpkBuffer = this._fileBuffer;
     try {
       if (!BoxfishHpk.isHpk(this._fileBuffer)) {
@@ -268,6 +276,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       await this.runHPKScript(runStatusStep);
       return await completedPromise;
     } catch (e) {
+      this._logger.error('Failed performing hpk upgrade on boxfish device', e, 'Boxfish HPK Upgrader');
       this.deRegisterHotPlugEvents();
       throw e;
     }
@@ -277,7 +286,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     try {
       const response = await this._cameraManager.getState();
 
-      this._logger.info(`Upgrade status ${response.string}`);
+      this._logger.info(`Upgrade status ${response.string}`, 'Boxfish HPK Upgrader');
       if (response.status === 10) {
         // EMMC is not ready lets wait and try again
         await new Promise(resolve => setTimeout(resolve, 1000));
