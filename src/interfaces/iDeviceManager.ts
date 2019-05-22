@@ -139,4 +139,20 @@ export default interface IDeviceManager {
    * @memberof IDeviceManager
    */
   getState(): Promise<any>;
+
+  /**
+   * Reads out the power consumtion on the camera.
+   *
+   * @returns {Promise<any>} An object containing different power consumtion parameters.
+   * @memberof IDeviceManager
+   */
+  getPowerUsage(): Promise<any>;
+
+  /**
+   * Reads out the internal and external temperature on the camera.
+   *
+   * @returns {Promise<any>} An object containing the internal and external temperature values.
+   * @memberof IDeviceManager
+   */
+  getTemperature(): Promise<any>;
 }
