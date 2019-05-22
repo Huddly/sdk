@@ -36,6 +36,8 @@ class DeviceManager implements IDeviceManager {
   getDetector(opts: DetectorOpts): IDetector { return undefined; }
   getDiagnostics(): Promise<Array<DiagnosticsMessage>> { return Promise.resolve([]); }
   getState(): Promise<any> { return Promise.resolve(); }
+  getPowerUsage(): Promise<any> { return Promise.resolve(); }
+  getTemperature(): Promise<any> { return Promise.resolve(); }
 }
 
 const createDummyLogger = (): DefaultLogger => {

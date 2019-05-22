@@ -127,7 +127,13 @@
                                     <a href="#getInfo">getInfo</a>
                                 </li>
                                 <li>
+                                    <a href="#getPowerUsage">getPowerUsage</a>
+                                </li>
+                                <li>
                                     <a href="#getState">getState</a>
+                                </li>
+                                <li>
+                                    <a href="#getTemperature">getTemperature</a>
                                 </li>
                                 <li>
                                     <a href="#getUpgrader">getUpgrader</a>
@@ -464,6 +470,52 @@ successful connnection close or rejects otherwise.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="getPowerUsage"></a>
+                        <span class="name">
+                            <b>
+                            getPowerUsage
+                            </b>
+                            <a href="#getPowerUsage"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getPowerUsage()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="149" class="link-to-prism">src/interfaces/iDeviceManager.ts:149</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Reads out the power consumtion on the camera.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>An object containing different power consumtion parameters.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="getState"></a>
                         <span class="name">
                             <b>
@@ -500,6 +552,52 @@ successful connnection close or rejects otherwise.</p>
                             </div>
                                 <div class="io-description">
                                     <p>A JSON representation of the camera state such as is genius framing enabled.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="getTemperature"></a>
+                        <span class="name">
+                            <b>
+                            getTemperature
+                            </b>
+                            <a href="#getTemperature"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getTemperature()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="157" class="link-to-prism">src/interfaces/iDeviceManager.ts:157</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Reads out the internal and external temperature on the camera.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>An object containing the internal and external temperature values.</p>
 
                                 </div>
                     </td>
@@ -1046,6 +1144,22 @@ export default interface IDeviceManager {
    * @memberof IDeviceManager
    */
   getState(): Promise&lt;any&gt;;
+
+  /**
+   * Reads out the power consumtion on the camera.
+   *
+   * @returns {Promise&lt;any&gt;} An object containing different power consumtion parameters.
+   * @memberof IDeviceManager
+   */
+  getPowerUsage(): Promise&lt;any&gt;;
+
+  /**
+   * Reads out the internal and external temperature on the camera.
+   *
+   * @returns {Promise&lt;any&gt;} An object containing the internal and external temperature values.
+   * @memberof IDeviceManager
+   */
+  getTemperature(): Promise&lt;any&gt;;
 }
 </code></pre>
     </div>
