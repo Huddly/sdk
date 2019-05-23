@@ -18,7 +18,11 @@ export async function createBoxfishUpgrader(
   logger: any
 ): Promise<IDeviceUpgrader> {
   const info = await manager.getInfo();
-  if (semver.gte(info.version, HPK_SUPPORT_VERSION)) {
+  let HPK_SUPPORT_VERSION_VAR = HPK_SUPPORT_VERSION;
+  if (process.env.HPK_SUPPORT_VERSION) {
+    HPK_SUPPORT_VERSION_VAR = process.env.HPK_SUPPORT_VERSION;
+  }
+  if (semver.gte(info.version, HPK_SUPPORT_VERSION_VAR)) {
     return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
   }
   return new BoxfishUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
