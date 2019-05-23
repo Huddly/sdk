@@ -10,7 +10,7 @@ import BoxfishHpk from './boxfishhpk';
 
 import { EventEmitter } from 'events';
 
-export const HPK_SUPPORT_VERSION = '1.2.1-0';
+export const HPK_SUPPORT_VERSION = process.env.HPK_SUPPORT_VERSION || '1.2.1-0';
 
 export async function createBoxfishUpgrader(
   manager: IDeviceManager,
@@ -18,11 +18,7 @@ export async function createBoxfishUpgrader(
   logger: any
 ): Promise<IDeviceUpgrader> {
   const info = await manager.getInfo();
-  let HPK_SUPPORT_VERSION_VAR = HPK_SUPPORT_VERSION;
-  if (process.env.HPK_SUPPORT_VERSION) {
-    HPK_SUPPORT_VERSION_VAR = process.env.HPK_SUPPORT_VERSION;
-  }
-  if (semver.gte(info.version, HPK_SUPPORT_VERSION_VAR)) {
+  if (semver.gte(info.version, HPK_SUPPORT_VERSION)) {
     return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
   }
   return new BoxfishUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
