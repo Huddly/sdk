@@ -70,64 +70,128 @@ describe('HuddlySDK', () => {
   });
 
   describe('#setupDeviceDiscoveryListeners', () => {
+    const deviceSerial = '123456';
     const dummyGO = {
-      productId: 0x11
+      productId: 0x11,
+      serialNumber: deviceSerial
     };
     const dummyIQ = {
-      productId: 0x21
+      productId: 0x21,
+      serialNumber: deviceSerial
     };
     let huddlygoInitStub;
     let boxfishInitStub;
     let discoveryEmitter;
     let otherEmitter;
     let hidInterfaceStub;
+
+    const initSdk = (targetSerial = undefined) => {
+      new HuddlySdk(nodeusbDeviceApi, [nodeusbDeviceApi], { emitter: otherEmitter, apiDiscoveryEmitter: discoveryEmitter, serial: targetSerial });
+    };
+
     beforeEach(() => {
       huddlygoInitStub = sinon.stub(HuddlyGo.prototype, 'initialize').resolves();
       boxfishInitStub = sinon.stub(Boxfish.prototype, 'initialize').resolves();
       hidInterfaceStub = sinon.stub(DeviceFactory, 'getHIDInterface').resolves();
       discoveryEmitter = new EventEmitter();
       otherEmitter = new EventEmitter();
-      new HuddlySdk(nodeusbDeviceApi, [nodeusbDeviceApi], { emitter: otherEmitter, apiDiscoveryEmitter: discoveryEmitter });
     });
     afterEach(() => {
       huddlygoInitStub.restore();
       boxfishInitStub.restore();
       hidInterfaceStub.restore();
+
     });
 
     it('should emit ATTACH event with Boxfish instance when attached device is boxfish', (done) => {
+      initSdk();
+      otherEmitter.on('ATTACH', (d) => {
+        expect(d).to.be.instanceof(Boxfish);
+        expect(d.serialNumber).to.equals(deviceSerial);
+        done();
+      });
+      discoveryEmitter.emit('ATTACH', dummyIQ);
+    });
+    it('should emit ATTACH event with Boxfish instance when attached device is boxfish and targetSerial match', (done) => {
+      const dummyTargetSerial = deviceSerial;
+      initSdk(dummyTargetSerial);
+      otherEmitter.on('ATTACH', (d) => {
+        expect(d).to.be.instanceof(Boxfish);
+        expect(d.serialNumber).to.equals(dummyTargetSerial);
+        done();
+      });
+      discoveryEmitter.emit('ATTACH', dummyIQ);
+    });
+
+    it('should not emit ATTACH event when device api emits attach with serialNumber not matching targetSerial', (done) => {
+      const dummyTargetSerial = 'nonMatchSerial';
+      initSdk(dummyTargetSerial);
+      const attachSpy = sinon.spy();
+      otherEmitter.on('ATTACH', attachSpy);
+      discoveryEmitter.emit('ATTACH', dummyIQ);
+
+      setTimeout(() => {
+        expect(attachSpy.callCount).to.equals(0);
+        done();
+      }
+      , 50);
+    });
+
+    it('should emit ATTACH event with empty targetSerial', (done) => {
+      const dummyTargetSerial = '';
+      initSdk(dummyTargetSerial);
       otherEmitter.on('ATTACH', (d) => {
         expect(d).to.be.instanceof(Boxfish);
         done();
       });
       discoveryEmitter.emit('ATTACH', dummyIQ);
     });
+
+
     it('should emit ATTACH event with HuddlyGo instance when attached device is go', (done) => {
+      initSdk();
       otherEmitter.on('ATTACH', (d) => {
         expect(d).to.be.instanceof(HuddlyGo);
         done();
       });
       discoveryEmitter.emit('ATTACH', dummyGO);
     });
-    it('should not emit ATTACH event when device api emits attach with undefined device instance', () => {
+
+    it('should not emit ATTACH event when device api emits attach with undefined device instance', (done) => {
+      initSdk();
       const attachSpy = sinon.spy();
       otherEmitter.on('ATTACH', attachSpy);
       discoveryEmitter.emit('ATTACH', undefined);
-      expect(attachSpy.callCount).to.equals(0);
+
+      setTimeout(() => {
+        expect(attachSpy.callCount).to.equals(0);
+        done();
+      }
+      , 50);
     });
+
     it('should emit DETACH event when device discovery api emits DETACH for a huddly device', (done) => {
+      initSdk();
       otherEmitter.on('DETACH', (d) => {
         expect(d).to.deep.equals(dummyIQ);
         done();
       });
       discoveryEmitter.emit('DETACH', dummyIQ);
     });
-    it('should not emit DETACH event when device api emits detach with undefined device instance', () => {
+
+    it('should not emit DETACH event when device api emits detach with undefined device instance', (done) => {
+      initSdk();
       const detachSpy = sinon.spy();
       otherEmitter.on('DETACH', detachSpy);
       discoveryEmitter.emit('DETACH', undefined);
-      expect(detachSpy.callCount).to.equals(0);
+
+      setTimeout(() => {
+        expect(detachSpy.callCount).to.equals(0);
+        done();
+      }
+      , 50);
     });
+
     describe('on error', () => {
       let getDeviceStub;
       beforeEach(() => {
@@ -138,7 +202,7 @@ describe('HuddlySDK', () => {
       });
 
       it('should not emit ERROR if can not get device', (done) => {
-
+        initSdk();
         otherEmitter.on('ERROR', (e) => {
           expect(e).to.be.instanceof(Error);
           done();
