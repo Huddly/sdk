@@ -71,12 +71,13 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     const upgradePromise = new Promise(async (resolve, reject) => {
       const binaries = await getBinaries(this.options.file);
       hidEventEmitter.on('HID_ATTACH', () => {
-        this.logger.debug('HID Device attached');
+        this.logger.debug('HID Device attached', 'HuddlyGO Upgrader');
         hidEventEmitter.removeAllListeners('HID_ATTACH');
         this._hidApi.upgrade(binaries);
       });
 
       hidEventEmitter.on('UPGRADE_FAILED', (msg) => {
+        this.logger.info('HID Upgrade failed', 'HuddlyGO Upgrader');
         hidEventEmitter.removeAllListeners('UPGRADE_FAILED');
         hidEventEmitter.removeAllListeners('UPGRADE_COMPLETE');
         this.emit(CameraEvents.UPGRADE_FAILED);
@@ -85,12 +86,14 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
       });
 
       hidEventEmitter.on('UPGRADE_PROGRESS', msg => {
-        this.logger.debug(msg);
+        this.logger.info(msg, 'HuddlyGO Upgrader');
       });
+
       hidEventEmitter.on('UPGRADE_COMPLETE', async () => {
         bootTimeout = setTimeout(() => {
           clearTimeout(bootTimeout);
           this.emit(CameraEvents.TIMEOUT, 'Camera did not come back up after upgrade!');
+          this.logger.info('HID Upgrade timed out', 'HuddlyGO Upgrader');
         }, this.bootTimeout);
 
         await this._hidApi.rebootInAppMode();
@@ -100,10 +103,12 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
         hidEventEmitter.removeAllListeners('UPGRADE_COMPLETE');
         clearTimeout(bootTimeout);
         this.emit(CameraEvents.UPGRADE_COMPLETE);
+        this.logger.info('Upgrade successful', 'HuddlyGO Upgrader');
         return resolve();
       });
 
       // this.eventEmitter.emit(CameraEvents.UPGRADE_START);
+      this.logger.debug('Booting the camera into bootloader mode', 'HuddlyGO Upgrader');
       this._devInstance.reboot('bl');
 
       this._hidApi.startScanner(100); // set low scan interval

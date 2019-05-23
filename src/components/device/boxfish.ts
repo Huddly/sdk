@@ -50,7 +50,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     try {
       this.transport.initEventLoop();
     } catch (e) {
-      this.logger.warn('Failed to init event loop when transport reset');
+      this.logger.error('Failed to init event loop when transport reset', e, 'Boxfish API');
     }
   }
 
@@ -172,10 +172,11 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         }
       });
       upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
-        this.logger.error(`UPGRADE FAILED ${reason}`);
+        this.logger.error('Upgrade Failed', reason, 'Boxfish API');
         reject(reason);
       });
       upgrader.once(CameraEvents.TIMEOUT, (reason) => {
+        this.logger.error('Upgrader returned a timeout event', reason, 'Boxfish API');
         reject(reason);
       });
     });
@@ -191,8 +192,10 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         } catch (e) {
           if (e.runAgain && upgradeAttempts < MAX_UPGRADE_ATTEMPT) {
             upgradeAttempts += 1;
+            this.logger.warn(`Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`, 'Boxfish API');
             tryRunAgainOnFailure(e.deviceManager);
           } else {
+            this.logger.error('Failed performing a camera upgrade', e, 'Boxfish API');
             reject(e);
           }
         }
