@@ -4,6 +4,7 @@ import DefaultLogger from './utilitis/logger';
 import DeviceFactory from './components/device/factory';
 import CameraEvents from './utilitis/events';
 import Locksmith from './components/locksmith';
+import Api from './components/api';
 import sourceMapSupport from 'source-map-support';
 import ErrorCodes from './error/errorCodes';
 
@@ -279,6 +280,6 @@ class HuddlySdk extends EventEmitter {
     await this.deviceDiscoveryApi.initialize();
   }
 }
-export { CameraEvents };
+export { CameraEvents, Api };
 
 export default HuddlySdk;
