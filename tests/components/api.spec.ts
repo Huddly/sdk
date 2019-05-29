@@ -154,7 +154,7 @@ describe('API', () => {
           await api.fileTransfer(Buffer.alloc(5, 0x00), subscribeMsgs);
           expect(true).to.equals(false);
         } catch (e) {
-          expect(e).to.equals('Data lenght is not 4, unable to proceed!');
+          expect(e.message).to.equals('Data length is not 4, unable to proceed!');
           expect(transport.removeAllListeners.callCount).to.equals(2);
           expect(transport.removeAllListeners.getCall(0).args[0]).to.equals('async_file_transfer/receive');
           expect(transport.removeAllListeners.getCall(1).args[0]).to.equals('async_file_transfer/done');
@@ -180,9 +180,20 @@ describe('API', () => {
           await api.fileTransfer(Buffer.alloc(0), subscribeMsgs);
           expect(true).to.equals(false);
         } catch (e) {
-          expect(e).to.equals('Error log transfer timed out');
+          expect(e.message).to.equals('Timeout');
           expect(transport.removeAllListeners.callCount).to.equals(1);
           expect(transport.removeAllListeners.getCall(0).args[0]).to.equals('async_file_transfer/timeout');
+        }
+      });
+    });
+
+    describe('on no response', () => {
+      it('should timeout if none of the filetransfer messages are resolved within given time limit', async () => {
+        try {
+          await api.fileTransfer(Buffer.alloc(0), [], 1000);
+          expect(true).to.equals(false);
+        } catch (e) {
+          expect(e.message).to.equals('Timeout');
         }
       });
     });
@@ -412,7 +423,7 @@ describe('API', () => {
       it('should call #fileTransfer with error log commands and decode the result to ascii string', async () => {
         const logStr = 'Camera Log 12333123';
         fileTransferStub.returns(Promise.resolve(Buffer.from(logStr)));
-        const log = await api.getErrorLog();
+        const log = await api.getErrorLog(100);
         expect(fileTransferStub.callCount).to.equals(1);
         expect(transport.write.firstCall.args[0]).to.equals('error_logger/read');
         expect(log).to.equals(logStr);
@@ -420,9 +431,8 @@ describe('API', () => {
     });
     describe('#eraseErrorLog', () => {
       it('should call #fileTransfer with commands to erase error log', async () => {
-        fileTransferStub.returns(Promise.resolve(Buffer.alloc(0)));
         transport.receiveMessage.resolves();
-        await api.eraseErrorLog();
+        await api.eraseErrorLog(100);
         expect(transport.receiveMessage.lastCall.args[0]).to.equals('error_logger/erase_done');
         expect(transport.write.lastCall.args[0]).to.equals('error_logger/erase');
       });

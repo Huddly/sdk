@@ -251,6 +251,7 @@ import DefaultLogger from &#x27;./utilitis/logger&#x27;;
 import DeviceFactory from &#x27;./components/device/factory&#x27;;
 import CameraEvents from &#x27;./utilitis/events&#x27;;
 import Locksmith from &#x27;./components/locksmith&#x27;;
+import Api from &#x27;./components/api&#x27;;
 import sourceMapSupport from &#x27;source-map-support&#x27;;
 import ErrorCodes from &#x27;./error/errorCodes&#x27;;
 
@@ -294,6 +295,14 @@ interface SDKOpts {
    * @memberof SDKOpts
    */
   apiDiscoveryEmitter?: EventEmitter;
+
+  /**
+   * @ignore
+   *
+   * @type {string}
+   * @memberof SDKOpts
+   */
+  serial?: string;
 }
 
 /**
@@ -353,6 +362,7 @@ class HuddlySdk extends EventEmitter {
   _deviceDiscoveryApi: IHuddlyDeviceAPI;
 
   private locksmith: Locksmith;
+  private targetSerial: string;
 
   /**
    * Creates an instance of HuddlySdk.
@@ -376,6 +386,7 @@ class HuddlySdk extends EventEmitter {
       this.mainDeviceApi &#x3D; deviceDiscoveryApi;
       this._deviceApis &#x3D; new Array&lt;IHuddlyDeviceAPI&gt;();
       this._deviceApis.push(deviceDiscoveryApi);
+
     } else {
       this._mainDeviceApi &#x3D; deviceApis[0];
       this._deviceApis &#x3D; deviceApis;
@@ -389,6 +400,7 @@ class HuddlySdk extends EventEmitter {
     this.emitter &#x3D; options.emitter || this;
     this._deviceDiscoveryApi &#x3D; deviceDiscoveryApi;
     this.logger &#x3D; options.logger || new DefaultLogger(true);
+    this.targetSerial &#x3D; options.serial;
 
     this.setupDeviceDiscoveryListeners();
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
@@ -396,14 +408,14 @@ class HuddlySdk extends EventEmitter {
 
   /**
    * Sets up listeners for ATTACH and DETACH camera events on the
-   * device discovery api. Will emit instances of &#x60;IDeviceManager&#x60;
-   * when an ATTACH event occurs.
-   *
+   * device discovery api.
+   * Will emit instances of &#x60;IDeviceManager&#x60; when an ATTACH event occurs.
+   * Will emit the device serial number when a DETACH event occurs.
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async d &#x3D;&gt; {
-      if (d) {
+      if (d &amp;&amp; (!this.targetSerial || (this.targetSerial &#x3D;&#x3D;&#x3D; d.serialNumber)) ) {
         await this.locksmith.executeAsyncFunction(
           () &#x3D;&gt;
             new Promise(async resolve &#x3D;&gt; {
@@ -428,7 +440,7 @@ class HuddlySdk extends EventEmitter {
     });
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
-      if (d !&#x3D;&#x3D; undefined) {
+      if (d !&#x3D;&#x3D; undefined  &amp;&amp; (!this.targetSerial || (this.targetSerial &#x3D;&#x3D;&#x3D; d))) {
         await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise((resolve) &#x3D;&gt; {
           this.emitter.emit(CameraEvents.DETACH, d);
           resolve();
@@ -515,7 +527,7 @@ class HuddlySdk extends EventEmitter {
     await this.deviceDiscoveryApi.initialize();
   }
 }
-export { CameraEvents };
+export { CameraEvents, Api };
 
 export default HuddlySdk;
 </code></pre>

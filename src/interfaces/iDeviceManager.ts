@@ -76,18 +76,22 @@ export default interface IDeviceManager {
   /**
    * Retrieves the camera log.
    *
+   * @param {number} timeout Timeout argument given in milliseconds to interrupt the process
+   * in case it takes longer than expected.
    * @returns {Promise<any>} A UTF8 string representation of the camera log.
    * @memberof IDeviceManager
    */
-  getErrorLog(): Promise<any>;
+  getErrorLog(timeout: number): Promise<any>;
 
   /**
-   * Perform an erase action on the camera log.
+   * Performs an erase action on the camera log.
    *
+   * @param {number} timeout Timeout argument given in milliseconds to interrupt the process
+   * in case it takes longer than expected.
    * @returns {Promise<void>}
    * @memberof IDeviceManager
    */
-  eraseErrorLog(): Promise<void>;
+  eraseErrorLog(timeout: number): Promise<void>;
 
   /**
    * Reboots the camera into a specific mode.
