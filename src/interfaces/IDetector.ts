@@ -18,20 +18,64 @@ export default interface IDetector {
   init(): Promise<any>;
 
   /**
-   * Sends a sequence of commands to the camera to start autozoom
-   * on the camera and register for detection events.
+   * Enables the autozoom feature persistently. The enable state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs] The amount of milliseconds to wait for
+   * the network to load into the camera after having enabled autozoom.
+   * Default (5000ms)
+   * @memberof IDetector
+   */
+  enable(idleTimeMs?: number): Promise<void>;
+
+  /**
+   * Disables the autozoom feature persistently. The disabled state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs] The amount of milliseconds to wait for
+   * the network to unload on the camera after having disabled autozoom.
+   * Default (5000ms)
+   * @memberof IDetector
+   */
+  disable(idleTimeMs?: number): Promise<void>;
+
+  /**
+   * Checks if autozoom is enabled on the camera. Returns true if yes, false if no
+   *
+   * @returns {Promise<Boolean} Returns a promise which resolves to true if autozoom is enabled
+   * false if disabled.
+   */
+  isEnabled(): Promise<Boolean>;
+
+  /**
+   * Starts autozoom feature on the camera and sets up
+   * detection and framing events that can be used to
+   * subscribe to for getting people count and framing
+   * data.
+   * NOTE: For persistent enable of autozoom feature you
+   * need to call the `enable` method.
    *
    * @memberof IDetector
    */
   start(): Promise<void>;
 
   /**
-   * Sends a sequence of commands to the camera to stop autozoom
-   * and unregister from getting detection events.
+   * Stops genius framing on the camera and unregisters
+   * the listeners for detection and framing information.
+   * NOTE: For persistent disable of autozoom feature you
+   * need to call the `disable` method.
    *
    * @memberof IDetector
    */
   stop(): Promise<void>;
+
+  /**
+   * Checks if autozoom is running on the camera. Returns true if yes, false if no
+   *
+   * @returns {Promise<Boolean>} Returns true if autozoom is running,
+   * false if autozoom is disabled
+   */
+  isRunning(): Promise<Boolean>;
 
   /**
    * @ignore

@@ -65,6 +65,12 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async init(): Promise<any> {
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
+      this._logger.debug(
+        `Initializing detector with framing config option AUTO_PTZ: ${
+          this._options.shouldAutoFrame
+        }`,
+        'Boxfish Detector'
+      );
       return this.uploadFramingConfig({
         AUTO_PTZ: this._options.shouldAutoFrame,
       });
@@ -72,17 +78,87 @@ export default class Detector extends EventEmitter implements IDetector {
   }
 
   /**
-   * Starts genius framing on the camera and sets up
-   * detection and framing events that can be used to
-   * listen to.
+   * Enables the autozoom feature persistently. The enable state
+   * is persistent on camera reboot/power cycle.
    *
-   * @returns {Promise<void>} Void Promise.
+   * @param {number} [idleTimeMs=5000] The amount of milliseconds to wait for
+   * the network to load into the camera after having enabled autozoom.
+   * @returns {Promise<void>} A void function.
+   * @memberof Detector
+   */
+  async enable(idleTimeMs: number = 5000): Promise<void> {
+    this._logger.debug('Enabling autozoom persistently', 'Boxfish Detector');
+    let isEnabled = await this.isEnabled();
+    if (isEnabled) return; // already enabled
+    await this._deviceManager.transport.write('autozoom/enable');
+    // Wait `idleTime` seconds for the camera to load the network and persist the new state
+    await new Promise(resolve => setTimeout(() => resolve(), idleTimeMs));
+    isEnabled = await this.isEnabled();
+    if (!isEnabled) {
+      throw new Error('Autozoom state could not be enabled at the moment!');
+    }
+    this._logger.debug('Autozoom state has been enabled. Persistently!', 'Boxfish Detector');
+  }
+
+  /**
+   * Disables the autozoom feature persistently. The disabled state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs=5000] The amount of milliseconds to wait for
+   * the network to unload on the camera after having disabled autozoom.
+   * @returns {Promise<void>}
+   * @memberof Detector
+   */
+  async disable(idleTimeMs: number = 5000): Promise<void> {
+    let isEnabled = await this.isEnabled();
+    if (!isEnabled) return; // already disabled
+    this._logger.debug('Disabling autozoom persistently', 'Boxfish Detector');
+    await this._deviceManager.transport.write('autozoom/disable');
+    // Wait `idleTimeMs` seconds for the camera to unload the network and persist the new state
+    await new Promise(resolve => setTimeout(() => resolve(), idleTimeMs));
+    isEnabled = await this.isEnabled();
+    if (isEnabled) {
+      throw new Error('Autozoom state could not be disabled at the moment!');
+    }
+    this._logger.debug('Autozoom state has been disabled. Persistently!', 'Boxfish Detector');
+  }
+
+  async isEnabled(): Promise<Boolean> {
+    const prodInfo = await this._deviceManager.api.getProductInfo();
+    return prodInfo.autozoom_enabled;
+  }
+
+  /**
+   * Starts autozoom feature on the camera and sets up
+   * detection and framing events that can be used to
+   * subscribe to for getting people count and framing
+   * data.
+   * NOTE: For persistent enable of autozoom feature you
+   * need to call the `enable` method.
+   *
+   * @returns {Promise<void>} A void function.
    * @memberof Detector
    */
   async start(): Promise<void> {
-    this._logger.warn('Start cnn enable');
-    await this._deviceManager.transport.write('autozoom/enable');
-    await this._deviceManager.transport.write('autozoom/start');
+    const isEnabled = await this.isEnabled();
+    const isRunning = await this.isRunning();
+    if (!isEnabled) {
+      // enable if not already enabled
+      await this.enable();
+    }
+    if (!isRunning) {
+      // Only start if not already started
+      this._logger.debug('Starting', 'Boxfish Detector');
+      await this._deviceManager.api.sendAndReceive(
+        Buffer.alloc(0),
+        {
+          send: 'autozoom/start',
+          receive: 'autozoom/start_reply',
+        },
+        3000
+      );
+    }
+
     try {
       await this._deviceManager.transport.subscribe('autozoom/predictions');
       this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
@@ -91,24 +167,43 @@ export default class Detector extends EventEmitter implements IDetector {
     } catch (e) {
       await this._deviceManager.transport.unsubscribe('autozoom/predictions');
       await this._deviceManager.transport.unsubscribe('autozoom/framing');
-      this._logger.warn(`Something went wrong getting predictions! Error: ${e}`);
+      this._logger.error('Something went wrong getting predictions!', e, 'Boxfish Detector');
     }
   }
 
   /**
    * Stops genius framing on the camera and unregisters
-   * the listeners for detection and framing information
+   * the listeners for detection and framing information.
+   * NOTE: For persistent disable of autozoom feature you
+   * need to call the `disable` method.
    *
-   * @returns {Promise<void>} Void Promise.
+   * @returns {Promise<void>} A void function.
    * @memberof Detector
    */
   async stop(): Promise<void> {
-    this._logger.warn('Stop cnn autozoom/disable');
-    await this._deviceManager.transport.write('autozoom/disable');
+    const isRunning = await this.isRunning();
+    if (isRunning) {
+      // Only stop if az is running
+      this._logger.debug('Stopping autozoom', 'Boxfish Detector');
+      await this._deviceManager.api.sendAndReceive(
+        Buffer.alloc(0),
+        {
+          send: 'autozoom/stop',
+          receive: 'autozoom/stop_reply',
+        },
+        3000
+      );
+    }
+
     await this._deviceManager.transport.unsubscribe('autozoom/predictions');
     await this._deviceManager.transport.unsubscribe('autozoom/framing');
     this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
     this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
+  }
+
+  async isRunning(): Promise<Boolean> {
+    const status = await this._deviceManager.api.getAutozoomStatus();
+    return status['autozoom-active'];
   }
 
   /**
@@ -176,7 +271,7 @@ export default class Detector extends EventEmitter implements IDetector {
   async uploadBlob(blobBuffer: Buffer): Promise<void> {
     const status = await this._deviceManager.api.getAutozoomStatus();
     if (!status['network-configured']) {
-      this._logger.warn('uploading cnn blob.');
+      this._logger.debug('Uploading cnn blob', 'Boxfish Detector');
       await this._deviceManager.api.sendAndReceive(
         blobBuffer,
         {
@@ -185,9 +280,9 @@ export default class Detector extends EventEmitter implements IDetector {
         },
         60000
       );
-      this._logger.warn('cnn blob uploaded. unlocking stream');
+      this._logger.debug('Cnn blob has been uploaded. Unlocking the stream!', 'Boxfish Detector');
     } else {
-      this._logger.info('Cnn blob already configured!');
+      this._logger.debug('Cnn blob already configured on the camera', 'Boxfish Detector');
     }
   }
 
@@ -200,7 +295,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async setDetectorConfig(config: JSON): Promise<void> {
-    this._logger.warn('Sending detector config!');
+    this._logger.debug('Sending detector config!', 'Boxfish Detector');
     await this._deviceManager.api.sendAndReceive(
       Api.encode(config),
       {
@@ -209,7 +304,7 @@ export default class Detector extends EventEmitter implements IDetector {
       },
       6000
     );
-    this._logger.warn('detector config sent.');
+    this._logger.debug('Detector config sent!', 'Boxfish Detector');
   }
 
   /**
@@ -222,7 +317,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async uploadFramingConfig(config: any): Promise<void> {
-    this._logger.warn('Uploading new framing config!');
+    this._logger.debug('Uploading new framing config', 'Boxfish Detector');
     await this._deviceManager.api.sendAndReceive(
       Api.encode(config),
       {
@@ -231,5 +326,6 @@ export default class Detector extends EventEmitter implements IDetector {
       },
       60000
     );
+    this._logger.debug('New framing config uploaded on the camera.', 'Boxfish Detector');
   }
 }
