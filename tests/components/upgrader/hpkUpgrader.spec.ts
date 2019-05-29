@@ -319,7 +319,7 @@ describe('HPKUpgrader', () => {
           hpkUpgrader.on('UPGRADE_COMPLETE', resolve);
         });
         hpkUpgrader.start();
-        return expect(completedPromise).to.eventually.be.resolved;
+        return expect(completedPromise).to.eventually.be.fulfilled;
       });
 
       it('should complete if it gets done without reboot initally', () => {

@@ -103,14 +103,31 @@ export default class Api {
     }
   }
 
-  async fileTransfer(data: Buffer, subscribedMessages: Array<string>): Promise<any> {
+  async fileTransfer(
+    data: Buffer,
+    subscribedMessages: Array<string>,
+    timeout: number = 60000
+  ): Promise<any> {
     const clearListeners = () => {
       subscribedMessages.forEach(msg => {
         this.transport.removeAllListeners(msg);
         this.transport.setEventLoopReadSpeed();
+        this.logger.debug('Clearing out all file transfer listeners', 'SDK API');
       });
     };
+
     return new Promise((resolve, reject) => {
+      const timeoutTimer = setTimeout(() => {
+        clearListeners();
+        this.logger.error(
+          `Timing out since file transfer did not resolve after ${timeout} ms`,
+          '',
+          'SDK API'
+        );
+        reject(new Error('Timeout'));
+      }, timeout);
+
+      this.logger.debug('Setting up async_file_transfer/* listeners', 'SDK API');
       if (subscribedMessages.indexOf('async_file_transfer/data') >= 0) {
         this.transport.on('async_file_transfer/data', async msgPacket => {
           this.transport.setEventLoopReadSpeed(1);
@@ -125,7 +142,8 @@ export default class Api {
           this.transport.setEventLoopReadSpeed(1);
           if (msgPacket.payload.length !== 4) {
             clearListeners();
-            reject('Data lenght is not 4, unable to proceed!');
+            clearTimeout(timeoutTimer);
+            reject(new Error('Data length is not 4, unable to proceed!'));
           } else {
             const length = Api.decode(msgPacket.payload, 'int');
             const slice = data.slice(0, length);
@@ -138,6 +156,7 @@ export default class Api {
       if (subscribedMessages.indexOf('async_file_transfer/done') >= 0) {
         this.transport.on('async_file_transfer/done', async buffer => {
           clearListeners();
+          clearTimeout(timeoutTimer);
           resolve(data);
         });
       }
@@ -145,7 +164,12 @@ export default class Api {
       if (subscribedMessages.indexOf('async_file_transfer/timeout') >= 0) {
         this.transport.on('async_file_transfer/timeout', async buffer => {
           clearListeners();
-          reject('Error log transfer timed out');
+          clearTimeout(timeoutTimer);
+          this.logger.debug(
+            'Received a async_file_transfer/timeout message from camera. Timing out!',
+            'SDK API'
+          );
+          reject(new Error('Timeout'));
         });
       }
     });
@@ -219,8 +243,9 @@ export default class Api {
       return info;
     } catch (e) {
       this.setProdInfoMsgPackSupport = false;
-      this.logger.warn(
-        'Prodinfo MessagePack not supported on this device. Using legacy procedure!'
+      this.logger.debug(
+        'Prodinfo MessagePack not supported on this device. Using legacy procedure!',
+        'SDK API'
       );
       return this.getProductInfoLegacy();
     }
@@ -289,8 +314,9 @@ export default class Api {
       return Promise.resolve();
     } catch (e) {
       this.setProdInfoMsgPackSupport = false;
-      this.logger.warn(
-        'SetProdinfo MessagePack not supported on this device. Using legacy procedure!'
+      this.logger.debug(
+        'SetProdinfo MessagePack not supported on this device. Using legacy procedure!',
+        'SDK API'
       );
       return this.setProductInfoLegacy(newProdInfoData);
     }
@@ -355,8 +381,10 @@ export default class Api {
     return info;
   }
 
-  async getErrorLog(): Promise<any> {
+  async getErrorLog(timeout: number): Promise<any> {
+    this.logger.debug('Start retrieving the error log', 'SDK API');
     const res = await this.locksmith.executeAsyncFunction(async () => {
+      this.logger.debug('Clearing transport pipes', 'SDK API');
       await this.transport.clear();
       const subscribeMsgs = [
         'async_file_transfer/data',
@@ -368,11 +396,12 @@ export default class Api {
         subscribeMsgs,
         async () => {
           return new Promise((resolve, reject) => {
-            this.fileTransfer(Buffer.alloc(0), subscribeMsgs)
+            this.fileTransfer(Buffer.alloc(0), subscribeMsgs, timeout)
               .then(result => {
                 resolve(result.toString('ascii'));
               })
               .catch(reason => reject(reason));
+            this.logger.debug('Sending "error_logger/read" message', 'SDK API');
             this.transport.write('error_logger/read');
           });
         },
@@ -383,19 +412,18 @@ export default class Api {
     return res;
   }
 
-  async eraseErrorLog(): Promise<void> {
-    this.logger.info('Start erasing log');
+  async eraseErrorLog(timeout: number): Promise<void> {
+    this.logger.debug('Start erasing the log', 'SDK API');
     await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
-      const timeoutMs = 60000;
       await this.withSubscribe(
         ['error_logger/erase_done'],
         async () =>
           new Promise(async (resolve, reject) => {
             this.transport
-              .receiveMessage('error_logger/erase_done', timeoutMs)
+              .receiveMessage('error_logger/erase_done', timeout)
               .then(reply => {
-                this.logger.info('Done erasing error log');
+                this.logger.debug('Done erasing error log', 'SDK API');
                 resolve();
               })
               .catch(e => reject(e));
