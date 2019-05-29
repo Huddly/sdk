@@ -21,7 +21,8 @@ class DeviceManager implements IDeviceManager {
   api: any = {
     sendAndReceive: (buffer, commands, timeout) => {},
     getAutozoomStatus: () => {},
-    encode: (msg) => {}
+    encode: (msg) => {},
+    getProductInfo: () => {}
   };
   uvcControlInterface: any;
   logger: any;
@@ -90,32 +91,98 @@ describe('Detector', () => {
     });
   });
 
-  describe('autozoom start/stop', () => {
+  describe('autozoom enable/disable', () => {
     let trasnsportWriteStub;
+    let prodInfoStub;
+
+    beforeEach(() => {
+      trasnsportWriteStub = sinon.stub(deviceManager.transport, 'write');
+      prodInfoStub = sinon.stub(deviceManager.api, 'getProductInfo');
+    });
+    afterEach(() => {
+      trasnsportWriteStub.restore();
+      prodInfoStub.restore();
+    });
+
+    describe('#enable', () => {
+      it('should enable autozoom and check the autozoom active state', async () => {
+        prodInfoStub.onCall(0).resolves({ 'autozoom_enabled': false });
+        prodInfoStub.onCall(1).resolves({ 'autozoom_enabled': true });
+        await detector.enable(10);
+        expect(trasnsportWriteStub.getCall(0).args[0]).to.equals('autozoom/enable');
+        expect(prodInfoStub).to.have.been.called;
+      });
+
+      it('should throw error if autozoom status state is disabled', async () => {
+        prodInfoStub.onCall(0).resolves({ 'autozoom_enabled': false });
+        prodInfoStub.onCall(1).resolves({ 'autozoom_enabled': false });
+        try {
+          await detector.enable(10);
+          expect(true).to.equals(false);
+        } catch (e) {
+          expect(e.message).to.equals('Autozoom state could not be enabled at the moment!');
+        }
+      });
+    });
+    describe('#disable', () => {
+      it('should disable autozoom and check the autozoom active state', async () => {
+        prodInfoStub.onCall(0).resolves({ 'autozoom_enabled': true });
+        prodInfoStub.onCall(1).resolves({ 'autozoom_enabled': false });
+        await detector.disable(10);
+        expect(trasnsportWriteStub.getCall(0).args[0]).to.equals('autozoom/disable');
+        expect(prodInfoStub).to.have.been.called;
+      });
+
+      it('should throw error if autozoom status state is enabled', async () => {
+        prodInfoStub.onCall(0).resolves({ 'autozoom_enabled': true });
+        prodInfoStub.onCall(1).resolves({ 'autozoom_enabled': true });
+        try {
+          await detector.disable(10);
+          expect(true).to.equals(false);
+        } catch (e) {
+          expect(e.message).to.equals('Autozoom state could not be disabled at the moment!');
+        }
+      });
+    });
+  });
+
+  describe('autozoom start/stop', () => {
+    let sendAndReceiveStub;
     let transportOnStub;
     let transportSubscribeStub;
     let transportUnsubscribeStub;
     let transportRemoveListenerStub;
+    let prodInfoStub;
+    let azStatusStub;
     beforeEach(() => {
-      trasnsportWriteStub = sinon.stub(deviceManager.transport, 'write');
+      sendAndReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceive');
       transportOnStub = sinon.stub(deviceManager.transport, 'on');
       transportSubscribeStub = sinon.stub(deviceManager.transport, 'subscribe');
       transportUnsubscribeStub = sinon.stub(deviceManager.transport, 'unsubscribe');
       transportRemoveListenerStub = sinon.stub(deviceManager.transport, 'removeListener');
+      prodInfoStub = sinon.stub(deviceManager.api, 'getProductInfo');
+      prodInfoStub.resolves({ 'autozoom_enabled': true });
+      azStatusStub = sinon.stub(deviceManager.api, 'getAutozoomStatus');
     });
     afterEach(() => {
-      trasnsportWriteStub.restore();
+      sendAndReceiveStub.restore();
       transportOnStub.restore();
       transportSubscribeStub.restore();
       transportUnsubscribeStub.restore();
       transportRemoveListenerStub.restore();
+      prodInfoStub.restore();
+      azStatusStub.restore();
     });
     describe('#start', () => {
       describe('on success', () => {
         it('should call appropriate api messages for enabling autozoom', async () => {
+          azStatusStub.resolves({ 'autozoom-active': false });
           await detector.start();
-          expect(trasnsportWriteStub.getCall(0).args[0]).to.equals('autozoom/enable');
-          expect(trasnsportWriteStub.getCall(1).args[0]).to.equals('autozoom/start');
+          expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
+            send: 'autozoom/start',
+            receive: 'autozoom/start_reply'
+          });
+          expect(sendAndReceiveStub.getCall(0).args[2]).to.equals(3000);
           expect(transportSubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
           expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/predictions');
           expect(transportSubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
@@ -127,6 +194,7 @@ describe('Detector', () => {
           transportSubscribeStub.rejects('Something went wrong');
         });
         it('should call appropriate api messages for enabling autozoom', async () => {
+          azStatusStub.resolves({ 'autozoom-active': false });
           await detector.start();
           expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
           expect(transportUnsubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
@@ -135,8 +203,13 @@ describe('Detector', () => {
     });
     describe('#stop', () => {
       it('should call appropriate api messages for disabling autozoom', async () => {
+        azStatusStub.resolves({ 'autozoom-active': true });
         await detector.stop();
-        expect(trasnsportWriteStub.getCall(0).args[0]).to.equals('autozoom/disable');
+        expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
+          send: 'autozoom/stop',
+          receive: 'autozoom/stop_reply'
+        });
+        expect(sendAndReceiveStub.getCall(0).args[2]).to.equals(3000);
         expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
         expect(transportUnsubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
         expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/predictions');

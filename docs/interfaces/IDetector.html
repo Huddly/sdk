@@ -89,7 +89,19 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
+                                    <a href="#disable">disable</a>
+                                </li>
+                                <li>
+                                    <a href="#enable">enable</a>
+                                </li>
+                                <li>
                                     <a href="#init">init</a>
+                                </li>
+                                <li>
+                                    <a href="#isEnabled">isEnabled</a>
+                                </li>
+                                <li>
+                                    <a href="#isRunning">isRunning</a>
                                 </li>
                                 <li>
                                     <a href="#on">on</a>
@@ -115,6 +127,164 @@
         <h3 id="methods">
             Methods
         </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="disable"></a>
+                        <span class="name">
+                            <b>
+                            disable
+                            </b>
+                            <a href="#disable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>disable(idleTimeMs?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/interfaces/IDetector.ts:40</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Disables the autozoom feature persistently. The disabled state
+is persistent on camera reboot/power cycle.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>idleTimeMs</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <p>The amount of milliseconds to wait for
+the network to unload on the camera after having disabled autozoom.
+Default (5000ms)</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="enable"></a>
+                        <span class="name">
+                            <b>
+                            enable
+                            </b>
+                            <a href="#enable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>enable(idleTimeMs?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/interfaces/IDetector.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Enables the autozoom feature persistently. The enable state
+is persistent on camera reboot/power cycle.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>idleTimeMs</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <p>The amount of milliseconds to wait for
+the network to load into the camera after having enabled autozoom.
+Default (5000ms)</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -169,6 +339,100 @@ otherwise it rejects with a rejection message!</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="isEnabled"></a>
+                        <span class="name">
+                            <b>
+                            isEnabled
+                            </b>
+                            <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>isEnabled()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/interfaces/IDetector.ts:48</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Checks if autozoom is enabled on the camera. Returns true if yes, false if no</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns a promise which resolves to true if autozoom is enabled
+false if disabled.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isRunning"></a>
+                        <span class="name">
+                            <b>
+                            isRunning
+                            </b>
+                            <a href="#isRunning"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>isRunning()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="78" class="link-to-prism">src/interfaces/IDetector.ts:78</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Checks if autozoom is running on the camera. Returns true if yes, false if no</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns true if autozoom is running,
+false if autozoom is disabled</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="on"></a>
                         <span class="name">
                             <b>
@@ -187,7 +451,7 @@ otherwise it rejects with a rejection message!</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/interfaces/IDetector.ts:76</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="120" class="link-to-prism">src/interfaces/IDetector.ts:120</a></div>
                             </td>
                         </tr>
 
@@ -281,7 +545,7 @@ detector events together with all the other camera events can be found in the <c
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/interfaces/IDetector.ts:87</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="131" class="link-to-prism">src/interfaces/IDetector.ts:131</a></div>
                             </td>
                         </tr>
 
@@ -375,15 +639,19 @@ the first time the message is emitted from the <code>Detector</code> implementat
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/interfaces/IDetector.ts:26</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/interfaces/IDetector.ts:60</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Sends a sequence of commands to the camera to start autozoom
-on the camera and register for detection events.</p>
+                            <div class="io-description"><p>Starts autozoom feature on the camera and sets up
+detection and framing events that can be used to
+subscribe to for getting people count and framing
+data.
+NOTE: For persistent enable of autozoom feature you
+need to call the <code>enable</code> method.</p>
 </div>
 
                             <div class="io-description">
@@ -416,15 +684,17 @@ on the camera and register for detection events.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/interfaces/IDetector.ts:34</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="70" class="link-to-prism">src/interfaces/IDetector.ts:70</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Sends a sequence of commands to the camera to stop autozoom
-and unregister from getting detection events.</p>
+                            <div class="io-description"><p>Stops genius framing on the camera and unregisters
+the listeners for detection and framing information.
+NOTE: For persistent disable of autozoom feature you
+need to call the <code>disable</code> method.</p>
 </div>
 
                             <div class="io-description">
@@ -507,20 +777,64 @@ await detector.stop();
   init(): Promise&lt;any&gt;;
 
   /**
-   * Sends a sequence of commands to the camera to start autozoom
-   * on the camera and register for detection events.
+   * Enables the autozoom feature persistently. The enable state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs] The amount of milliseconds to wait for
+   * the network to load into the camera after having enabled autozoom.
+   * Default (5000ms)
+   * @memberof IDetector
+   */
+  enable(idleTimeMs?: number): Promise&lt;void&gt;;
+
+  /**
+   * Disables the autozoom feature persistently. The disabled state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs] The amount of milliseconds to wait for
+   * the network to unload on the camera after having disabled autozoom.
+   * Default (5000ms)
+   * @memberof IDetector
+   */
+  disable(idleTimeMs?: number): Promise&lt;void&gt;;
+
+  /**
+   * Checks if autozoom is enabled on the camera. Returns true if yes, false if no
+   *
+   * @returns {Promise&lt;Boolean} Returns a promise which resolves to true if autozoom is enabled
+   * false if disabled.
+   */
+  isEnabled(): Promise&lt;Boolean&gt;;
+
+  /**
+   * Starts autozoom feature on the camera and sets up
+   * detection and framing events that can be used to
+   * subscribe to for getting people count and framing
+   * data.
+   * NOTE: For persistent enable of autozoom feature you
+   * need to call the &#x60;enable&#x60; method.
    *
    * @memberof IDetector
    */
   start(): Promise&lt;void&gt;;
 
   /**
-   * Sends a sequence of commands to the camera to stop autozoom
-   * and unregister from getting detection events.
+   * Stops genius framing on the camera and unregisters
+   * the listeners for detection and framing information.
+   * NOTE: For persistent disable of autozoom feature you
+   * need to call the &#x60;disable&#x60; method.
    *
    * @memberof IDetector
    */
   stop(): Promise&lt;void&gt;;
+
+  /**
+   * Checks if autozoom is running on the camera. Returns true if yes, false if no
+   *
+   * @returns {Promise&lt;Boolean&gt;} Returns true if autozoom is running,
+   * false if autozoom is disabled
+   */
+  isRunning(): Promise&lt;Boolean&gt;;
 
   /**
    * @ignore

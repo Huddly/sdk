@@ -94,6 +94,10 @@
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
+                                        <a href="#production_upgrade">production_upgrade</a>
+                                </li>
+                                <li>
+                                            <span class="modifier">Optional</span>
                                         <a href="#statusMessageTimeout">statusMessageTimeout</a>
                                 </li>
                                 <li>
@@ -188,6 +192,47 @@ The number is specified in seconds!</p>
                             <tr>
                                 <td class="col-md-4">
                                     <div class="io-description"><p>Buffer stream of the upgrade file.</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="production_upgrade"></a>
+                                        <span class="name"><b>production_upgrade</b><a href="#production_upgrade"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>production_upgrade:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>A boolean option which is used only in production of camera.
+Changes the criterias when an upgrade has been completed successfully.</p>
 </div>
                                 </td>
                             </tr>
@@ -380,6 +425,15 @@ export default interface UpgradeOpts {
    * @memberof UpgradeOpts
    */
   upgrader?: IDeviceUpgrader;
+
+  /**
+   * A boolean option which is used only in production of camera.
+   * Changes the criterias when an upgrade has been completed successfully.
+   *
+   * @type {boolean}
+   * @memberof UpgradeOpts
+   */
+  production_upgrade?: boolean;
 }
 </code></pre>
     </div>
