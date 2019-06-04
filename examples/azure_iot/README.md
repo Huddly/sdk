@@ -167,7 +167,7 @@ And here’s screenshots of what it looks like a after successful provisioning.
 ![image](https://user-images.githubusercontent.com/3704622/58804753-e883dd00-8612-11e9-8dbd-91b622909fd0.png)
 
 
-4. Visualizing the data
+# Visualizing the data
 Datavisualization in this example is done through Microsoft PowerBI. PowerBI is a powerfull tool that allows you to easily connect to a variety of data sources, visualize and discover what you find important and share with anyone you want.
 
 To get our data from IoT Hub to PowerBI, we will be using a Stream Analytics job in Azure. This is done by adding a consumer group to the IoT Hub, and by running a Stream Analytics job for data transfer from IoT Hub to PowerBI. 
