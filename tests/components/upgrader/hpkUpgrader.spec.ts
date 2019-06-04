@@ -55,6 +55,20 @@ describe('HPKUpgrader', () => {
         dummyCameraManager.transport.close.restore();
       });
 
+      it('should have production flag be false by default', () => {
+        hpkUpgrader.init({});
+
+        expect(hpkUpgrader._production_upgrade).to.equal(false);
+      });
+
+      it('should have production flag be true when passing in production_upgrade UpgradeOpts ', () => {
+        hpkUpgrader.init({
+          production_upgrade: true
+        });
+
+        expect(hpkUpgrader._production_upgrade).to.equal(true);
+      });
+
       it('should close transport on DETACH ', () => {
         hpkUpgrader.init({});
         dummyEmitter.emit(CameraEvents.DETACH);
@@ -393,7 +407,7 @@ describe('HPKUpgrader', () => {
       expect(isValid).to.equal(true);
     }).timeout(10000);
 
-    it('should be be true upgrade_status if status is not 0', async () => {
+    it('should be false upgrade_status if status is not 0', async () => {
       dummyCameraManager.getState.resolves({
         status: 12
       });
@@ -402,7 +416,29 @@ describe('HPKUpgrader', () => {
       expect(isValid).to.equal(false);
     });
 
-    it('should be be false if upgrade_status throws ', async () => {
+    it('should be true with response status 3 when _production_upgrade is true', async () => {
+      dummyCameraManager.getState.resolves({
+        status: 3
+      });
+
+      hpkUpgrader.init({
+        production_upgrade: true
+      });
+
+      const isValid = await hpkUpgrader.upgradeIsValid();
+      expect(isValid).to.equal(true);
+    });
+
+    it('should be false with response status 3 when _production_upgrade is not set', async () => {
+      dummyCameraManager.getState.resolves({
+        status: 3
+      });
+
+      const isValid = await hpkUpgrader.upgradeIsValid();
+      expect(isValid).to.equal(false);
+    });
+
+    it('should be false if upgrade_status throws ', async () => {
       dummyCameraManager.getState.rejects({});
 
       const isValid = await hpkUpgrader.upgradeIsValid();

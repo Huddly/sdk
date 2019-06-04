@@ -58,4 +58,13 @@ export default interface UpgradeOpts {
    * @memberof UpgradeOpts
    */
   upgrader?: IDeviceUpgrader;
+
+  /**
+   * A boolean option which is used only in production of camera.
+   * Changes the criterias when an upgrade has been completed successfully.
+   *
+   * @type {boolean}
+   * @memberof UpgradeOpts
+   */
+  production_upgrade?: boolean;
 }
