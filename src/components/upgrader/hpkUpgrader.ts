@@ -21,6 +21,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   _fileBuffer: Buffer;
   _logger: any;
   _upgradeStatus: UpgradeStatus;
+  _production_upgrade: boolean;
   private _statusMessageTimeout: number = 10000;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter, logger: any) {
@@ -29,6 +30,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this._logger = logger;
     this._cameraManager = manager;
     this._sdkDeviceDiscoveryEmitter = sdkDeviceDiscoveryEmitter;
+    this._production_upgrade = false;
+
   }
 
   init(opts: UpgradeOpts) {
@@ -38,6 +41,10 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     if (opts.statusMessageTimeout) {
       this._statusMessageTimeout = opts.statusMessageTimeout;
     }
+    if (opts.production_upgrade) {
+      this._production_upgrade = opts.production_upgrade;
+    }
+
     this._fileBuffer = opts.file;
     this.registerHotPlugEvents();
   }
@@ -292,7 +299,12 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         await new Promise(resolve => setTimeout(resolve, 1000));
         return await this.upgradeIsValid();
       }
-      return response.status === 0;
+      if (!this._production_upgrade) {
+        return response.status === 0;
+      } else {
+        // When flashing the boxfish-prod.hpk we can ignore the cnn emmc error
+        return (response.status === 0) || (response.status === 3);
+      }
     } catch (e) {
       return false;
     }
