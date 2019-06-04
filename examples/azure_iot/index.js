@@ -1,4 +1,4 @@
-const HuddlyService = require('./lib/huddlyService.js');
+const HuddlyService = require('./src/huddlyService.js');
 
 const service = new HuddlyService();
 
