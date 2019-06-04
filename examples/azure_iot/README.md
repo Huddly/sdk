@@ -184,23 +184,14 @@ There are several solutions out there to bundle a NodeJS application into a wind
 
 Modify our package.json file to have a `bin` property pointing to the main js file(index.js). Since we are using native modules for communication to USB devices, we also need to add the `.node` files to the output folder. I added a `pack.js` script to the project that invokes `pkg` and copies the `.node` files to the `dist` folder.
 
+# Considerations
 
-5. Running as a windows service
-Another great tool for this, 
+### False detections
+Although the onboard detector on the camera is very accurate, false detections may happen and you may see more/less people in rooms then expected. Should consider filtering these spikes, ie using a median filter.
 
-TODO
+### Windows service
+With this example, you can create a windows executable that retrieves Insight Analytics from the camera and posts them to Azure. Wrapping this executable inside a windows service can simplify distribution and control of the code. This can also be provisioned to computers using common software tools such as Microsoft Intune.
 
-6. Provisioning the computers
-- Intune
-
-
-
-The code used in this post, including running example can be found on Github,
-https://github............
-
-7. Considerations
-False detections
-
-
-
+### Camera upgrades
+Using the Huddly SDK, you can also control software versions on the camera.
 
