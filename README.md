@@ -6,6 +6,7 @@
   <a href="https://npmcharts.com/compare/@huddly/sdk?minimal=true"><img src="https://img.shields.io/npm/dm/@huddly/sdk.svg?style=flat" alt="NPM Downloads"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT badge"></a>
   <a href="https://badges.greenkeeper.io/greenkeeperio/badges.svg"><img src="https://badges.greenkeeper.io/Huddly/sdk.svg" alt="Greenkeeper badge"></a>
+  <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen badge"></a>
 </p>
 
 
