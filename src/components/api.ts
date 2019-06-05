@@ -23,7 +23,7 @@ export default class Api {
     receiveTimeout: number = 3000
   ): Promise<any> {
     const buffer = Api.encode(message);
-    const res = await this.locksmith.executeAsyncFunction(async () => {
+    const res: any = await this.locksmith.executeAsyncFunction(async () => {
       const reply = await this.sendAndReceive(buffer, commands, receiveTimeout);
       return reply;
     });
