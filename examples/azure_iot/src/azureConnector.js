@@ -25,6 +25,9 @@ class AzureConnector {
   }
 
   async init() {
+    if (!idScope || !provisioningKey) {
+      throw new Error(`ID_SCOPE or PROVISIONING_SYMMETRIC_KEY not set`);
+    }
     const symmetricKey = this.computeDerivedSymmetricKey(provisioningKey, this.deviceId);
     const securityClient = new SymmetricKeySecurityClient(this.deviceId, symmetricKey);
 
