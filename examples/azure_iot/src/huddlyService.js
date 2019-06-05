@@ -39,9 +39,12 @@ class HuddlyService {
       try {
         const cameraInfo = await deviceManager.getInfo();
         const deviceId = cameraInfo.serialNumber;
+        this.logger.info(`Camera attached with serial number ${deviceId}`)
+
         const roomName = process.env.ROOM_NAME || os.hostname;
     
         const eventHandler = new EventHandler(deviceId, roomName);
+        await eventHandler.init();
         this.detector = await deviceManager.getDetector({
           objectFilter: ['person']
         });
