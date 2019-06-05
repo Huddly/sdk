@@ -15,10 +15,12 @@ The demo shown in this repository shows you how these analytics data can be coll
 
 # Getting up and running with the SDK
 
-Before we dive in to Azure and the analytics dashboard, we will start by getting up and running with the Huddly SDK. The Huddly SDK is a toolkit for NodeJS based applications to easily get started. The SDK itself is open source its code can be found on Github <Link>.
+Before we dive in to Azure and the analytics dashboard, we will start by getting up and running with the Huddly SDK. The Huddly SDK is a toolkit for NodeJS based applications to easily get started. The SDK itself is open source can be found in this repository.
 
-Now lets get NodeJS and the Huddly SDK. The Huddly SDK uses a native NodeJS module to interact with the USB interface of the camera. This native module is currently compiled for NodeJS version 10. Since NodeJS is a rapidly changing environment and new versions coming out quite often, I prefer using a version manager to be able to toggle between multiple version. There are several of these, but currently I’m sticking to `nvm`. 
+Now let's get NodeJS and the Huddly SDK. The Huddly SDK uses a native NodeJS module to interact with the USB interface of the camera. This native module is built using the N-API v3. See [N-API version compatibility matrix](https://nodejs.org/api/n-api.html#n_api_n_api_version_matrix) for supported node version. Since NodeJS is a rapidly changing environment and new versions coming out quite often, I prefer using a version manager to be able to toggle between multiple version. There are several of these, but currently I’m sticking to `nvm`. 
+
 Mac/Linux: https://github.com/nvm-sh/nvm
+
 Windows: https://github.com/coreybutler/nvm-windows
 
 Installing node
@@ -48,13 +50,13 @@ The result will look something like this
 
 In this example I used index.js as the main entry for the project. 
 
-Now lets install the Huddly SDK and the Huddly Device API for USB through npm.
+Now let's install the Huddly SDK and the Huddly Device API for USB through npm.
 
 ```
 npm install --save @huddly/sdk @huddly/device-api-usb
 ```
 
-This will download the Huddly SDK and Huddly Device API for USB and add it to the dependencies section of your package.json
+This will download the Huddly SDK and Huddly Device API for USB and add it to the dependencies section of your package.json. These modules are required to set up communication with the Huddly IQ device as in the example below.
 
 ### Hello Huddly IQ
 ```
@@ -73,8 +75,9 @@ huddlySdk.on('ATTACH', async (deviceManager) => {
 
 huddlySdk.init();
 ```
+This code is also located in `demo_steps/hello.js`
 
-Now that we have communication with the device up and running, lets start retrieving some more intelligent data from the camera. The camera has an onboard neural compute engine and is programmed to performed convolutional operations on full-image frames. The current neural network on Huddly IQ is optimized for detecting people and heads. 
+Now that we have communication with the device up and running, let's start retrieving some more intelligent data from the camera. The camera has an onboard neural compute engine and is programmed to perform convolutional operations on full-image frames. The current neural network on Huddly IQ is optimized for detecting people and heads. 
 
 The following example will print to the console every time Huddly IQ detects people within its frame.
 
@@ -154,11 +157,29 @@ We will connect to the Provisioning Service using the ID Scope of the provisioni
 
 Once the Provisioning Service completes, it will return connection parameters to the assigned IoT Hub to our application. We will use these parameters to communicate with the IoT Hub.
 
-Our cloud connector component is defined in `lib/azureConnector.js`
+Our cloud connector component is defined in `src/azureConnector.js`
 
 It requires two environment variables to be set in order to communicate with Azure, `PROVISIONING_ID_SCOPE` and `PROVISIONING_SYMMETRIC_KEY`.
 
-And here’s screenshots of what it looks like a after successful provisioning.
+## Running the entire example
+
+### Windows command line
+```
+set PROVISIONING_ID_SCOPE="YOUR ID SCOPE"
+set PROVISIONING_SYMMETRIC_KEY="YOUR SYMMETRIC KEY"
+
+node index.js
+```
+
+### Mac/Linux terminal
+```
+export PROVISIONING_ID_SCOPE="YOUR ID SCOPE"
+export PROVISIONING_SYMMETRIC_KEY="YOUR SYMMETRIC KEY"
+
+node index.js
+```
+
+And here’s screenshots of what it looks like in the Azure portal after successful provisioning.
 
 ### Provisioning Service
 ![image](https://user-images.githubusercontent.com/3704622/58804717-d013c280-8612-11e9-9c05-05ec4e7e0835.png)
@@ -182,7 +203,7 @@ There are several solutions out there to bundle a NodeJS application into a wind
 
 `npm install --save pkg`
 
-Modify our package.json file to have a `bin` property pointing to the main js file(index.js). Since we are using native modules for communication to USB devices, we also need to add the `.node` files to the output folder. I added a `pack.js` script to the project that invokes `pkg` and copies the `.node` files to the `dist` folder.
+Modify our package.json file to have a `bin` property pointing to the main js file(main.js). Since we are using native modules for communication to USB devices, we also need to add the `.node` files to the output folder. I added a `pack.js` script to the project to simplify this. It invokes `pkg` and copies the `.node` files for win32-x64 platforms the `dist` folder.
 
 # Considerations
 
