@@ -1,14 +1,34 @@
 {
-  "name": "huddly_azure_iot",
+  "name": "huddly-azure-connector",
   "version": "1.0.0",
-  "description": "Example demonstrating events from IQ to Azure IoT Hub ",
+  "description": "An azure cloud connector for Huddly IQ devices",
   "main": "index.js",
-  "author": "Huddly",
+  "bin": "main.js",
+  "pkg": {
+    "targets": [
+      "node10-win"
+    ]
+  },
+  "scripts": {
+    "build": "node pack.js"
+  },
+  "author": "Oystein Grimstad",
   "license": "MIT",
   "dependencies": {
-    "@huddly/device-api-usb": "~0.2",
-    "@huddly/sdk": "~0.2",
-    "azure-iot-device": "~1.9.2",
-    "azure-iot-device-amqp": "~1.9.2"
+    "@huddly/device-api-usb": "^0.2.6",
+    "@huddly/sdk": "^0.2.12",
+    "azure-iot-device": "^1.9.9",
+    "azure-iot-device-amqp": "^1.9.9",
+    "azure-iot-provisioning-device": "^1.5.9",
+    "azure-iot-provisioning-device-amqp": "^1.5.9",
+    "azure-iot-security-symmetric-key": "^1.5.9",
+    "crypto": "^1.0.1",
+    "npm": "^6.9.0",
+    "winston": "^3.2.1"
+  },
+  "devDependencies": {
+    "cpy": "^7.2.0",
+    "execa": "^1.0.0",
+    "pkg": "^4.4.0"
   }
 }
