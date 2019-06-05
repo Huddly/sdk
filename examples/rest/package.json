@@ -23,7 +23,7 @@
     "@babel/preset-env": "^7.1.0",
     "@huddly/device-api-usb": "~0.2.6",
     "@huddly/sdk": "~0.2.12",
-    "@koa/cors": "2",
+    "@koa/cors": "^3.0.0",
     "cors": "^2.8.5",
     "koa": "^2.5.3",
     "koa-body": "^4.0.4",
@@ -36,19 +36,19 @@
   },
   "devDependencies": {
     "@babel/register": "^7.0.0",
-    "@huddly/sdk": "^0.0.7",
-    "@huddly/device-api-usb": "^0.0.8",
+    "@huddly/sdk": "^0.2.12",
+    "@huddly/device-api-usb": "^0.2.6",
     "babel-core": "7.0.0-bridge.0",
     "babel-eslint": "^10.0.1",
-    "babel-jest": "^23.6.0",
-    "dotenv": "^6.0.0",
-    "eslint": "^5.10.0",
-    "eslint-plugin-import": "^2.14.0",
+    "babel-jest": "^24.8.0",
+    "dotenv": "^8.0.0",
+    "eslint": "~5.16.0",
+    "eslint-plugin-import": "~2.17.3",
     "eslint-plugin-jest": "^22.1.2",
-    "eslint-watch": "^4.0.2",
-    "jest": "^23.6.0",
+    "eslint-watch": "^5.1.2",
+    "jest": "^24.8.0",
     "nodemon": "^1.18.4",
-    "supertest": "^3.3.0"
+    "supertest": "^4.0.2"
   },
   "babel": {
     "presets": [
