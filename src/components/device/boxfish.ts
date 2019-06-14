@@ -66,6 +66,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       vendorId: this['vendorId'],
       productId: this['productId'],
       version: this.extractSemanticSoftwareVersion(info.softwareVersion),
+      location: this['location'],
       ...info
     };
     if (this['pathName'] !== undefined) {
