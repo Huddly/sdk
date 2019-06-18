@@ -121,9 +121,11 @@ describe('Boxfish', () => {
   });
 
   describe('#reboot', () => {
+    beforeEach(async () => {
+      await device.initialize();
+    });
     describe('on mvusb mode', () => {
       it('should send upgrader/mv_usb', async () => {
-        await device.initialize();
         await device.reboot('mvusb');
         expect(device.transport.clear).to.have.been.calledOnce;
         expect(device.transport.write).to.have.been.calledOnce;
@@ -132,12 +134,41 @@ describe('Boxfish', () => {
     });
     describe('on other modes', () => {
       it('should only send reboot command', async () => {
-        await device.initialize();
         await device.reboot();
         expect(device.transport.clear).to.have.been.calledOnce;
         expect(device.transport.write).to.have.been.calledOnce;
         expect(device.transport.write).to.have.been.calledWith('camctrl/reboot');
       });
     });
+  });
+
+  describe('setCameraMode', () => {
+    beforeEach(async () => {
+      const receiveStub: sinon.SinonStub = device.transport.receiveMessage;
+      receiveStub.resolves({});
+      const writeStub: sinon.SinonStub = device.transport.write;
+      writeStub.resolves({});
+      await device.initialize();
+    });
+
+    it('should set product info with the provided mode', async () => {
+        await device.setCameraMode('testMode');
+        const writeStub: sinon.SinonStub = device.transport.write;
+        expect(writeStub).to.have.been.calledWith('prodinfo/set_msgpack', Api.encode({
+          'camera-mode': 'testMode'
+        }));
+    });
+
+
+    it('should set read the camera mode from camere info', async () => {
+      const receiveStub: sinon.SinonStub = device.transport.receiveMessage;
+      receiveStub.resolves({
+        payload: Api.encode({
+          'camera-mode': 'a-test-mode',
+        }),
+      });
+      const cameraMode = await device.getCameraMode();
+      expect(cameraMode).to.equal('a-test-mode');
+  });
   });
 });

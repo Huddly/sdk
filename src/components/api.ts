@@ -199,6 +199,7 @@ export default class Api {
             command,
             timeout
           );
+
           if (!status || !status['payload']) {
             throw Error(
               `Failed to get status. Status: ${JSON.stringify(status)} ${command['send']}`

@@ -226,4 +226,16 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   async getInterpolationParams(): Promise<InterpolationParams> {
     return this.api.getInterpolationParameters();
   }
+
+
+  async setCameraMode(mode) {
+    return this.api.setProductInfo({
+      'camera-mode': mode,
+    });
+  }
+
+  async getCameraMode() {
+    const productInfo = await this.api.getProductInfo();
+    return productInfo['camera-mode'];
+  }
 }
