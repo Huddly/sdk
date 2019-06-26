@@ -462,11 +462,15 @@ export default class Api {
    * and values.
    * @memberof Api
    */
-  async getAutozoomStatus(): Promise<any> {
-    const msgpackReply = await this.sendAndReceive(Buffer.alloc(0), {
-      send: 'autozoom/status',
-      receive: 'autozoom/status_reply',
-    });
+  async getAutozoomStatus(timeout: number = 500): Promise<any> {
+    const msgpackReply = await this.sendAndReceive(
+      Buffer.alloc(0),
+      {
+        send: 'autozoom/status',
+        receive: 'autozoom/status_reply',
+      },
+      timeout
+    );
     const azStatus = Api.decode(msgpackReply.payload, 'messagepack');
     return azStatus;
   }
