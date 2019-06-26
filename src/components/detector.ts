@@ -71,9 +71,13 @@ export default class Detector extends EventEmitter implements IDetector {
         }`,
         'Boxfish Detector'
       );
-      return this.uploadFramingConfig({
+      await this.uploadFramingConfig({
         AUTO_PTZ: this._options.shouldAutoFrame,
       });
+      // Autozoom status command will after boot only respond
+      // when the cnn is finished attempting to load the blob.
+      // waiting to the status reply will assure the detector is ready.
+      await this._deviceManager.api.getAutozoomStatus(8000);
     }
   }
 
@@ -86,18 +90,20 @@ export default class Detector extends EventEmitter implements IDetector {
    * @returns {Promise<void>} A void function.
    * @memberof Detector
    */
-  async enable(idleTimeMs: number = 5000): Promise<void> {
+  async enable(idleTimeMs: number = 2000): Promise<void> {
     this._logger.debug('Enabling autozoom persistently', 'Boxfish Detector');
-    let isEnabled = await this.isEnabled();
-    if (isEnabled) return; // already enabled
-    await this._deviceManager.transport.write('autozoom/enable');
-    // Wait `idleTime` seconds for the camera to load the network and persist the new state
-    await new Promise(resolve => setTimeout(() => resolve(), idleTimeMs));
-    isEnabled = await this.isEnabled();
-    if (!isEnabled) {
-      throw new Error('Autozoom state could not be enabled at the moment!');
+
+    const reply = await this._deviceManager.api.sendAndReceiveMessagePack(
+      Buffer.alloc(0),
+      {
+        send: 'autozoom/enable',
+        receive: 'autozoom/enable_reply',
+      },
+      idleTimeMs
+    );
+    if (!reply['autozoom-active']) {
+      throw new Error('Autozoom not on after enable.');
     }
-    this._logger.debug('Autozoom state has been enabled. Persistently!', 'Boxfish Detector');
   }
 
   /**
@@ -109,18 +115,20 @@ export default class Detector extends EventEmitter implements IDetector {
    * @returns {Promise<void>}
    * @memberof Detector
    */
-  async disable(idleTimeMs: number = 5000): Promise<void> {
-    let isEnabled = await this.isEnabled();
-    if (!isEnabled) return; // already disabled
+  async disable(idleTimeMs: number = 2000): Promise<void> {
     this._logger.debug('Disabling autozoom persistently', 'Boxfish Detector');
-    await this._deviceManager.transport.write('autozoom/disable');
-    // Wait `idleTimeMs` seconds for the camera to unload the network and persist the new state
-    await new Promise(resolve => setTimeout(() => resolve(), idleTimeMs));
-    isEnabled = await this.isEnabled();
-    if (isEnabled) {
-      throw new Error('Autozoom state could not be disabled at the moment!');
+
+    const reply = await this._deviceManager.api.sendAndReceiveMessagePack(
+      Buffer.alloc(0),
+      {
+        send: 'autozoom/disable',
+        receive: 'autozoom/disable_reply',
+      },
+      idleTimeMs
+    );
+    if (reply['autozoom-active'] != false) {
+      throw new Error('No blob loaded while enabling autozoom');
     }
-    this._logger.debug('Autozoom state has been disabled. Persistently!', 'Boxfish Detector');
   }
 
   async isEnabled(): Promise<Boolean> {
@@ -140,13 +148,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async start(): Promise<void> {
-    const isEnabled = await this.isEnabled();
-    const isRunning = await this.isRunning();
-    if (!isEnabled) {
-      // enable if not already enabled
-      await this.enable();
-    }
-    if (!isRunning) {
+    if (!(await this.isRunning())) {
       // Only start if not already started
       this._logger.debug('Starting', 'Boxfish Detector');
       await this._deviceManager.api.sendAndReceive(
@@ -181,8 +183,7 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async stop(): Promise<void> {
-    const isRunning = await this.isRunning();
-    if (isRunning) {
+    if (await this.isRunning()) {
       // Only stop if az is running
       this._logger.debug('Stopping autozoom', 'Boxfish Detector');
       await this._deviceManager.api.sendAndReceive(

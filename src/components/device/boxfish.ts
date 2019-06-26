@@ -16,6 +16,7 @@ import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 
 const MAX_UPGRADE_ATTEMPT = 3;
+
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   transport: ITransport;
   _api: Api;
