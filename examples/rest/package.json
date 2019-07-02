@@ -22,7 +22,7 @@
     "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
     "@babel/preset-env": "^7.1.0",
     "@huddly/device-api-usb": "~0.2.6",
-    "@huddly/sdk": "~0.2.12",
+    "@huddly/sdk": "~0.3.1",
     "@koa/cors": "2",
     "cors": "^2.8.5",
     "koa": "^2.5.3",
