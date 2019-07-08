@@ -13,6 +13,7 @@ import Detector from './../detector';
 import { MinMaxDiagnosticsMessage, DiagnosticsMessage  } from '../diagnosticsMessage';
 import { EventEmitter } from 'events';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
+import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 
 const MAX_UPGRADE_ATTEMPT = 3;
@@ -153,6 +154,24 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return createBoxfishUpgrader(this, this.discoveryEmitter, this.logger);
   }
 
+  async createAndRunFsblUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager) {
+    const upgrader = new BoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
+    const mvusbFile = opts.file;
+    const timeoutMs = opts.bootTimeout * 1000;
+
+    return new Promise((resolve, reject) => {
+      const bootTimeout = setTimeout(() => {
+        clearTimeout(bootTimeout);
+        reject('Fsbl upgrade timed out');
+      }, timeoutMs);
+
+      upgrader.flashFsbl(mvusbFile).then(() => {
+        clearTimeout(bootTimeout);
+        resolve();
+      });
+    });
+  }
+
   async createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager, createNewUpgrader: boolean) {
     let upgrader: IDeviceUpgrader = opts.upgrader;
     if (!upgrader || createNewUpgrader) {
@@ -204,6 +223,16 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       };
       tryRunAgainOnFailure(this);
     });
+  }
+
+  async upgradeFsbl(opts: UpgradeOpts): Promise<any> {
+      try {
+        await this.createAndRunFsblUpgrade(opts, this);
+        Promise.resolve();
+      } catch (e) {
+        this.logger.error('Failed performing a FSBL camera upgrade', e, 'Boxfish API');
+        Promise.reject(e);
+      }
   }
 
    getDetector(opts?: DetectorOpts): IDetector {
