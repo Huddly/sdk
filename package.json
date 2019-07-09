@@ -61,7 +61,7 @@
     "url": "https://github.com/Huddly/sdk/issues"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "1.1.8",
+    "@compodoc/compodoc": "1.1.10",
     "@types/mocha": "~5.2.5",
     "chai": "~4.2.0",
     "chai-as-promised": "~7.1.1",
