@@ -1,7 +1,9 @@
 import { EventEmitter } from 'events';
 import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
+import iDeviceFactory from './interfaces/iDeviceFactory';
+import iLogger from './interfaces/iLogger';
 import DefaultLogger from './utilitis/logger';
-import DeviceFactory from './components/device/factory';
+import { createFactory } from './components/device/factory';
 import CameraEvents from './utilitis/events';
 import Locksmith from './components/locksmith';
 import Api from './components/api';
@@ -30,7 +32,7 @@ interface SDKOpts {
    * @type {*}
    * @memberof SDKOpts
    */
-  logger?: any;
+  logger?: iLogger;
   /**
    * Optional event emitter instance used to catch
    * SDK events!
@@ -56,6 +58,14 @@ interface SDKOpts {
    * @memberof SDKOpts
    */
   serial?: string;
+
+  /**
+   * @ignore
+   *
+   * @returns {iDeviceFactory}
+   * @memberof SDKOpts
+   */
+  createFactory?(): iDeviceFactory;
 }
 
 /**
@@ -78,10 +88,10 @@ class HuddlySdk extends EventEmitter {
   /**
    * Logger instance used to log messages from the SDK.
    *
-   * @type {DefaultLogger}
+   * @type {iLogger}
    * @memberof HuddlySdk
    */
-  logger: DefaultLogger;
+  logger: iLogger;
 
   /**
    * @ignore
@@ -113,6 +123,15 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   _deviceDiscoveryApi: IHuddlyDeviceAPI;
+
+
+  /**
+   * @ignore
+   *
+   * @type {any}
+   * @memberof HuddlySdk
+   */
+  _deviceFactory;
 
   private locksmith: Locksmith;
   private targetSerial: string;
@@ -147,13 +166,22 @@ class HuddlySdk extends EventEmitter {
 
     this.locksmith = new Locksmith();
 
-    const options = opts ? opts : {};
+    const options = {
+      ...{
+        apiDiscoveryEmitter: new EventEmitter(),
+        emitter: this,
+        logger: new DefaultLogger(true),
+        createFactory: createFactory,
+      },
+      ...opts,
+    };
 
-    this.deviceDiscovery = options.apiDiscoveryEmitter || new EventEmitter();
-    this.emitter = options.emitter || this;
+    this.deviceDiscovery = options.apiDiscoveryEmitter;
+    this.emitter = options.emitter;
     this._deviceDiscoveryApi = deviceDiscoveryApi;
-    this.logger = options.logger || new DefaultLogger(true);
+    this.logger = options.logger;
     this.targetSerial = options.serial;
+    this._deviceFactory = options.createFactory();
 
     this.setupDeviceDiscoveryListeners();
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
@@ -173,7 +201,7 @@ class HuddlySdk extends EventEmitter {
           () =>
             new Promise(async resolve => {
               try {
-                const cameraManager = await DeviceFactory.getDevice(
+                const cameraManager = await this._deviceFactory.getDevice(
                   d.productId,
                   this.logger,
                   this.mainDeviceApi,
