@@ -45,7 +45,7 @@
     "eslint": "^5.10.0",
     "eslint-plugin-import": "^2.14.0",
     "eslint-plugin-jest": "^22.1.2",
-    "eslint-watch": "^4.0.2",
+    "eslint-watch": "^6.0.0",
     "jest": "^23.6.0",
     "nodemon": "^1.18.4",
     "supertest": "^3.3.0"
