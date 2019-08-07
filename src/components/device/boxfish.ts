@@ -158,6 +158,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     const upgrader = new BoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
     const mvusbFile = opts.file;
     const timeoutMs = opts.bootTimeout * 1000;
+    const fsblAddress = 'fsblAddress' in opts ? opts.fsblAddress : '0x0';
 
     return new Promise((resolve, reject) => {
       const bootTimeout = setTimeout(() => {
@@ -165,7 +166,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         reject('Fsbl upgrade timed out');
       }, timeoutMs);
 
-      upgrader.flashFsbl(mvusbFile).then(() => {
+      upgrader.flashFsbl(mvusbFile, fsblAddress).then(() => {
         clearTimeout(bootTimeout);
         resolve();
       });

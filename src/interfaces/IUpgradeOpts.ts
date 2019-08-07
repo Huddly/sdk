@@ -67,4 +67,14 @@ export default interface UpgradeOpts {
    * @memberof UpgradeOpts
    */
   production_upgrade?: boolean;
+
+  /**
+   * A string option which is used only in production of camera.
+   * Used in conjunction with the fsbl option and gives the address which
+   * to flash the fsbl to.
+   *
+   * @type {string}
+   * @memberof UpgradeOpts
+   */
+  fsblAddress?: string;
 }

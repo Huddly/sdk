@@ -344,9 +344,9 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     }
   }
 
-  async flashFsbl(fsblMvcmd: Buffer): Promise<any> {
-    this._logger.info('Flashing fsbl', 'Boxfish PKG Upgrader');
-    return this.doFlash(fsblMvcmd, '0x00');
+  async flashFsbl(fsblMvcmd: Buffer, address = '0x00'): Promise<any> {
+    this._logger.info(`Flashing fsbl to address ${address}`, 'Boxfish PKG Upgrader');
+    return this.doFlash(fsblMvcmd, address);
   }
 
   async setFlashBootState(state: string): Promise<any> {
