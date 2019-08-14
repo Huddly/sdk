@@ -32,7 +32,7 @@
     "koa-router": "^7.4.0",
     "koa-router-static": "^1.2.0",
     "koa-static": "^5.0.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^3.0.0"
   },
   "devDependencies": {
     "@babel/register": "^7.0.0",
