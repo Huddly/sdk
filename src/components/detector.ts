@@ -23,6 +23,7 @@ export default class Detector extends EventEmitter implements IDetector {
   _frame: any;
   _options: iDetectorOpts;
   _defaultLabelWhiteList: Array<String> = ['head', 'person'];
+  _detectorSubscriptionsSetup: boolean;
 
   /**
    * Creates an instance of Detector.
@@ -54,13 +55,8 @@ export default class Detector extends EventEmitter implements IDetector {
   }
 
   /**
-   * Convenience function for setting up the camera
-   * for starting/stopping genius framing. Should be
-   * called before any other methods.
-   *
-   * @returns {Promise<any>} Returns a promise which
-   * resolves in case the detector init is completed
-   * otherwise it rejects with a rejection message!
+   * @ignore
+   * Check `IDetector` interface for method documentation.
    * @memberof Detector
    */
   async init(): Promise<any> {
@@ -82,12 +78,8 @@ export default class Detector extends EventEmitter implements IDetector {
   }
 
   /**
-   * Enables the autozoom feature persistently. The enable state
-   * is persistent on camera reboot/power cycle.
-   *
-   * @param {number} [idleTimeMs=5000] The amount of milliseconds to wait for
-   * the network to load into the camera after having enabled autozoom.
-   * @returns {Promise<void>} A void function.
+   * @ignore
+   * Check `IDetector` interface for method documentation.
    * @memberof Detector
    */
   async enable(idleTimeMs: number = 2000): Promise<void> {
@@ -107,12 +99,8 @@ export default class Detector extends EventEmitter implements IDetector {
   }
 
   /**
-   * Disables the autozoom feature persistently. The disabled state
-   * is persistent on camera reboot/power cycle.
-   *
-   * @param {number} [idleTimeMs=5000] The amount of milliseconds to wait for
-   * the network to unload on the camera after having disabled autozoom.
-   * @returns {Promise<void>}
+   * @ignore
+   * Check `IDetector` interface for method documentation.
    * @memberof Detector
    */
   async disable(idleTimeMs: number = 2000): Promise<void> {
@@ -131,26 +119,25 @@ export default class Detector extends EventEmitter implements IDetector {
     }
   }
 
+  /**
+   * @ignore
+   * Check `IDetector` interface for method documentation.
+   * @memberof Detector
+   */
   async isEnabled(): Promise<Boolean> {
     const prodInfo = await this._deviceManager.api.getProductInfo();
     return prodInfo.autozoom_enabled;
   }
 
   /**
-   * Starts autozoom feature on the camera and sets up
-   * detection and framing events that can be used to
-   * subscribe to for getting people count and framing
-   * data.
-   * NOTE: For persistent enable of autozoom feature you
-   * need to call the `enable` method.
-   *
-   * @returns {Promise<void>} A void function.
+   * @ignore
+   * Check `IDetector` interface for method documentation.
    * @memberof Detector
    */
   async start(): Promise<void> {
     if (!(await this.isRunning())) {
       // Only start if not already started
-      this._logger.debug('Starting', 'Boxfish Detector');
+      this._logger.debug('Starting Autozoom', 'Boxfish Detector');
       await this._deviceManager.api.sendAndReceive(
         Buffer.alloc(0),
         {
@@ -160,32 +147,32 @@ export default class Detector extends EventEmitter implements IDetector {
         3000
       );
     }
-
-    try {
-      await this._deviceManager.transport.subscribe('autozoom/predictions');
-      this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
-      await this._deviceManager.transport.subscribe('autozoom/framing');
-      this._deviceManager.transport.on('autozoom/framing', this._framingHandler);
-    } catch (e) {
-      await this._deviceManager.transport.unsubscribe('autozoom/predictions');
-      await this._deviceManager.transport.unsubscribe('autozoom/framing');
-      this._logger.error('Something went wrong getting predictions!', e, 'Boxfish Detector');
-    }
+    await this.setupDetectorSubscriptions();
   }
 
   /**
-   * Stops genius framing on the camera and unregisters
-   * the listeners for detection and framing information.
-   * NOTE: For persistent disable of autozoom feature you
-   * need to call the `disable` method.
-   *
-   * @returns {Promise<void>} A void function.
+   * @ignore
+   * Check `IDetector` interface for method documentation.
+   * @memberof Detector
+   */
+  async detectorStart(): Promise<void> {
+    this._logger.debug('Starting detector', 'Boxfish Detector');
+    await this._deviceManager.transport.write('detector/start');
+    await this.setupDetectorSubscriptions({
+      detectionListener: true,
+      framingListener: false,
+    });
+  }
+
+  /**
+   * @ignore
+   * Check `IDetector` interface for method documentation.
    * @memberof Detector
    */
   async stop(): Promise<void> {
     if (await this.isRunning()) {
       // Only stop if az is running
-      this._logger.debug('Stopping autozoom', 'Boxfish Detector');
+      this._logger.debug('Stopping Autozoom', 'Boxfish Detector');
       await this._deviceManager.api.sendAndReceive(
         Buffer.alloc(0),
         {
@@ -195,13 +182,98 @@ export default class Detector extends EventEmitter implements IDetector {
         3000
       );
     }
-
-    await this._deviceManager.transport.unsubscribe('autozoom/predictions');
-    await this._deviceManager.transport.unsubscribe('autozoom/framing');
-    this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
-    this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
+    await this.teardownDetectorSubscriptions();
   }
 
+  /**
+   * @ignore
+   * Check `IDetector` interface for method documentation.
+   * @memberof Detector
+   */
+  async detectorStop(): Promise<void> {
+    this._logger.debug('Stopping detector', 'Boxfish Detector');
+    await this._deviceManager.transport.write('detector/stop');
+    await this.teardownDetectorSubscriptions({
+      detectionListener: true,
+      framingListener: false,
+    });
+  }
+
+  /**
+   * @ignore
+   * Convenience function for setting up detection and framing
+   * data listeners and subscribing to camera events that send
+   * such data to the host.
+   *
+   * @param {*} [listenerConfigOpts={
+   *       detectionListener: true,
+   *       framingListener: true,
+   *     }]
+   * @memberof Detector
+   */
+  async setupDetectorSubscriptions(
+    listenerConfigOpts: any = {
+      detectionListener: true,
+      framingListener: true,
+    }
+  ) {
+    try {
+      // Detection listener setup
+      if (!this._detectorSubscriptionsSetup && listenerConfigOpts.detectionListener) {
+        await this._deviceManager.transport.subscribe('autozoom/predictions');
+        this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
+      }
+      // Framing listener setup
+      if (!this._detectorSubscriptionsSetup && listenerConfigOpts.framingListener) {
+        await this._deviceManager.transport.subscribe('autozoom/framing');
+        this._deviceManager.transport.on('autozoom/framing', this._framingHandler);
+      }
+      this._detectorSubscriptionsSetup = true;
+    } catch (e) {
+      await this._deviceManager.transport.unsubscribe('autozoom/predictions');
+      await this._deviceManager.transport.unsubscribe('autozoom/framing');
+      this._logger.error('Something went wrong getting predictions!', e, 'Boxfish Detector');
+      this._detectorSubscriptionsSetup = false;
+    }
+  }
+
+  /**
+   * @ignore
+   * Convenience function for tearing down all the setup listeners
+   * for detection and framing data and unsubscribes from getting
+   * detection events from camera.
+   *
+   * @param {*} [listenerConfigOpts={
+   *       detectionListener: true,
+   *       framingListener: true,
+   *     }]
+   * @memberof Detector
+   */
+  async teardownDetectorSubscriptions(
+    listenerConfigOpts: any = {
+      detectionListener: true,
+      framingListener: true,
+    }
+  ) {
+    // Detection listener teardown
+    if (this._detectorSubscriptionsSetup && listenerConfigOpts.detectionListener) {
+      await this._deviceManager.transport.unsubscribe('autozoom/predictions');
+      this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
+    }
+
+    // Framing listener teardown
+    if (this._detectorSubscriptionsSetup && listenerConfigOpts.framingListener) {
+      await this._deviceManager.transport.unsubscribe('autozoom/framing');
+      this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
+    }
+    this._detectorSubscriptionsSetup = false;
+  }
+
+  /**
+   * @ignore
+   * Check `IDetector` interface for method documentation.
+   * @memberof Detector
+   */
   async isRunning(): Promise<Boolean> {
     const status = await this._deviceManager.api.getAutozoomStatus();
     return status['autozoom-active'];

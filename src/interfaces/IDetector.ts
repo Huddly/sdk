@@ -21,9 +21,9 @@ export default interface IDetector {
    * Enables the autozoom feature persistently. The enable state
    * is persistent on camera reboot/power cycle.
    *
-   * @param {number} [idleTimeMs] The amount of milliseconds to wait for
+   * @param {number} [idleTimeMs=5000] The amount of milliseconds to wait for
    * the network to load into the camera after having enabled autozoom.
-   * Default (5000ms)
+   * @returns {Promise<void>} A void function.
    * @memberof IDetector
    */
   enable(idleTimeMs?: number): Promise<void>;
@@ -35,6 +35,7 @@ export default interface IDetector {
    * @param {number} [idleTimeMs] The amount of milliseconds to wait for
    * the network to unload on the camera after having disabled autozoom.
    * Default (5000ms)
+   * @returns {Promise<void>} A void function.
    * @memberof IDetector
    */
   disable(idleTimeMs?: number): Promise<void>;
@@ -48,10 +49,11 @@ export default interface IDetector {
   isEnabled(): Promise<Boolean>;
 
   /**
-   * Starts autozoom feature on the camera and sets up
-   * detection and framing events that can be used to
-   * subscribe to for getting people count and framing
-   * data.
+   * Start autozoom feature on the camera and subscribes for detections
+   * and framing information which are then emitted by this class with
+   * appropriate messages. Detections and framing information are retrieved
+   * only when user is streaming using a streaming application.
+   *
    * NOTE: For persistent enable of autozoom feature you
    * need to call the `enable` method.
    *
@@ -60,14 +62,37 @@ export default interface IDetector {
   start(): Promise<void>;
 
   /**
+   * Starts detector on the camera and subscribes for detections
+   * information which are emitted by this class with appropriate
+   * messages. Detections information are retrieved regardless
+   * whether the host is streaming using a streaming application.
+   * Camera will start an internal stream for generating detections
+   * data.
+   *
+   * @returns {Promise<void>} A void function
+   * @memberof IDetector
+   */
+  detectorStart(): Promise<void>;
+
+  /**
    * Stops genius framing on the camera and unregisters
    * the listeners for detection and framing information.
+   *
    * NOTE: For persistent disable of autozoom feature you
    * need to call the `disable` method.
    *
+   * @returns {Promise<void>} A void function.
    * @memberof IDetector
    */
   stop(): Promise<void>;
+
+  /**
+   * Stops the detector from sending detection data to the host.
+   *
+   * @returns {Promise<void>} A void function.
+   * @memberof IDetector
+   */
+  detectorStop(): Promise<void>;
 
   /**
    * Checks if autozoom is running on the camera. Returns true if yes, false if no
