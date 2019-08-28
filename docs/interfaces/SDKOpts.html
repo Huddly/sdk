@@ -432,6 +432,7 @@ class HuddlySdk extends EventEmitter {
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
+                this.logger.error(&#x60;Could not get device ${e}&#x60;, &#x27;SDK&#x27;);
                 this.emitter.emit(CameraEvents.ERROR, new AttachError(&#x27;No transport supported&#x27;, ErrorCodes.NO_TRANSPORT));
               }
             })

@@ -407,7 +407,7 @@ please see <code>events</code> class.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="279" class="link-to-prism">src/index.ts:279</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="280" class="link-to-prism">src/index.ts:280</a></div>
                             </td>
                         </tr>
 
@@ -503,7 +503,7 @@ Will emit the device serial number when a DETACH event occurs.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="222" class="link-to-prism">src/index.ts:222</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="223" class="link-to-prism">src/index.ts:223</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -528,7 +528,7 @@ used for communicating with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="211" class="link-to-prism">src/index.ts:211</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="212" class="link-to-prism">src/index.ts:212</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -585,7 +585,7 @@ used for communicating with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="245" class="link-to-prism">src/index.ts:245</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="246" class="link-to-prism">src/index.ts:246</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -611,7 +611,7 @@ the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="233" class="link-to-prism">src/index.ts:233</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="234" class="link-to-prism">src/index.ts:234</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -669,7 +669,7 @@ communication channels with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="267" class="link-to-prism">src/index.ts:267</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="268" class="link-to-prism">src/index.ts:268</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -694,7 +694,7 @@ instance used for camera discovery.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="255" class="link-to-prism">src/index.ts:255</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="256" class="link-to-prism">src/index.ts:256</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -978,6 +978,7 @@ class HuddlySdk extends EventEmitter {
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
+                this.logger.error(&#x60;Could not get device ${e}&#x60;, &#x27;SDK&#x27;);
                 this.emitter.emit(CameraEvents.ERROR, new AttachError(&#x27;No transport supported&#x27;, ErrorCodes.NO_TRANSPORT));
               }
             })
