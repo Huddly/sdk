@@ -121,7 +121,7 @@ describe('Detector', () => {
           expect(e instanceof Error).to.equal(true);
           return;
         }
-        throw new Error('This should not happen');
+        throw new Error('Autozoom enable assert failed!');
       });
     });
     describe('#disable', () => {
@@ -142,80 +142,233 @@ describe('Detector', () => {
           expect(e instanceof Error).to.equal(true);
           return;
         }
-        throw new Error('This should not happen');
+        throw new Error('Autozoom disable assert failed!');
       });
+    });
+  });
+
+  describe('#isEnabled', () => {
+    let prodInfoStub;
+    beforeEach(() => {
+      prodInfoStub = sinon.stub(deviceManager.api, 'getProductInfo');
+    });
+    afterEach(() => {
+      prodInfoStub.restore();
+    });
+
+    it('should call #getProductInfo function on api class and return autozoom_enabled property', async () => {
+      const prodInfoRes = {
+        serial: '12344t5o4132',
+        name: 'Huddly Camera',
+        vendor: 1234,
+        autozoom_enabled: false
+      };
+      prodInfoStub.resolves(prodInfoRes);
+      const isEnabled = await detector.isEnabled();
+      expect(isEnabled).to.equals(prodInfoRes.autozoom_enabled);
     });
   });
 
   describe('autozoom start/stop', () => {
     let sendAndReceiveStub;
-    let transportOnStub;
-    let transportSubscribeStub;
-    let transportUnsubscribeStub;
-    let transportRemoveListenerStub;
-    let prodInfoStub;
-    let azStatusStub;
+    let transportWriteStub;
+    let isRunningStub;
     beforeEach(() => {
       sendAndReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceive');
-      transportOnStub = sinon.stub(deviceManager.transport, 'on');
-      transportSubscribeStub = sinon.stub(deviceManager.transport, 'subscribe');
-      transportUnsubscribeStub = sinon.stub(deviceManager.transport, 'unsubscribe');
-      transportRemoveListenerStub = sinon.stub(deviceManager.transport, 'removeListener');
-      prodInfoStub = sinon.stub(deviceManager.api, 'getProductInfo');
-      prodInfoStub.resolves({ 'autozoom_enabled': true });
-      azStatusStub = sinon.stub(deviceManager.api, 'getAutozoomStatus');
+      transportWriteStub = sinon.stub(deviceManager.transport, 'write');
+      isRunningStub = sinon.stub(detector, 'isRunning');
     });
     afterEach(() => {
       sendAndReceiveStub.restore();
-      transportOnStub.restore();
-      transportSubscribeStub.restore();
-      transportUnsubscribeStub.restore();
-      transportRemoveListenerStub.restore();
-      prodInfoStub.restore();
-      azStatusStub.restore();
+      transportWriteStub.restore();
+      isRunningStub.restore();
     });
+
     describe('#start', () => {
-      describe('on success', () => {
-        it('should call appropriate api messages for enabling autozoom', async () => {
-          azStatusStub.resolves({ 'autozoom-active': false });
+      describe('az not running', () => {
+        it('should send autozoom/start command and setup subscription listeners', async () => {
+          const detectionSubscritionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
+          isRunningStub.resolves(false);
           await detector.start();
           expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
             send: 'autozoom/start',
             receive: 'autozoom/start_reply'
           });
           expect(sendAndReceiveStub.getCall(0).args[2]).to.equals(3000);
-          expect(transportSubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-          expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-          expect(transportSubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
-          expect(transportOnStub.getCall(1).args[0]).to.equals('autozoom/framing');
+          expect(detectionSubscritionSpy.called).to.equals(true);
+          expect(detectionSubscritionSpy.getCall(0).args[0]).to.undefined;
         });
       });
-      describe('on fail', () => {
-        beforeEach(() => {
-          transportSubscribeStub.rejects('Something went wrong');
-        });
-        it('should call appropriate api messages for enabling autozoom', async () => {
-          azStatusStub.resolves({ 'autozoom-active': false });
+      describe('az already running', () => {
+        it('should only setup the subscription listeners', async () => {
+          isRunningStub.resolves(true);
+          const detectionSubscritionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
           await detector.start();
-          expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-          expect(transportUnsubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
+          expect(sendAndReceiveStub.called).to.equals(false);
+          expect(detectionSubscritionSpy.called).to.equals(true);
         });
       });
     });
-    describe('#stop', () => {
-      it('should call appropriate api messages for disabling autozoom', async () => {
-        azStatusStub.resolves({ 'autozoom-active': true });
-        await detector.stop();
-        expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
-          send: 'autozoom/stop',
-          receive: 'autozoom/stop_reply'
+
+    describe('#detectorStart', () => {
+      it('should send detector/start command and setup subscription listeners', async () => {
+        transportWriteStub.resolves();
+        const detectionSubscritionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
+        await detector.detectorStart();
+        expect(transportWriteStub.called).to.equals(true);
+        expect(transportWriteStub.getCall(0).args[0]).to.equals('detector/start');
+        expect(detectionSubscritionSpy.called).to.equals(true);
+        expect(detectionSubscritionSpy.getCall(0).args[0]).to.deep.equals({
+          detectionListener: true,
+          framingListener: false,
         });
-        expect(sendAndReceiveStub.getCall(0).args[2]).to.equals(3000);
-        expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-        expect(transportUnsubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
-        expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-        expect(transportRemoveListenerStub.getCall(1).args[0]).to.equals('autozoom/framing');
       });
+    });
+
+    describe('#stop', () => {
+      describe('az running', () => {
+        it('should send autozoom/stop command and teardown subscription listeners', async () => {
+          const detectionTeardownSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
+          isRunningStub.resolves(true);
+          await detector.stop();
+          expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
+            send: 'autozoom/stop',
+            receive: 'autozoom/stop_reply'
+          });
+          expect(sendAndReceiveStub.getCall(0).args[2]).to.equals(3000);
+          expect(detectionTeardownSpy.called).to.equals(true);
+          expect(detectionTeardownSpy.getCall(0).args[0]).to.undefined;
+        });
+      });
+      describe('az not running', () => {
+        it('should only teardown subscription listeners', async () => {
+          const detectionTeardownSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
+          isRunningStub.resolves(false);
+          await detector.stop();
+          expect(sendAndReceiveStub.called).to.equals(false);
+          expect(detectionTeardownSpy.called).to.equals(true);
+        });
+      });
+    });
+
+    describe('#detectorStop', () => {
+      it('should send detector/stop command and teardown subscription listeners', async () => {
+        transportWriteStub.resolves();
+        const detectionTeardownSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
+        await detector.detectorStop();
+        expect(transportWriteStub.called).to.equals(true);
+        expect(transportWriteStub.getCall(0).args[0]).to.equals('detector/stop');
+        expect(detectionTeardownSpy.called).to.equals(true);
+        expect(detectionTeardownSpy.getCall(0).args[0]).to.deep.equals({
+          detectionListener: true,
+          framingListener: false,
+        });
+      });
+    });
+  });
+
+  describe('detection/framing subscription listener setup/teardown', () => {
+    let transportOnStub;
+    let transportSubscribeStub;
+    let transportUnsubscribeStub;
+    let transportRemoveListenerStub;
+    beforeEach(() => {
+      transportOnStub = sinon.stub(deviceManager.transport, 'on');
+      transportSubscribeStub = sinon.stub(deviceManager.transport, 'subscribe');
+      transportUnsubscribeStub = sinon.stub(deviceManager.transport, 'unsubscribe');
+      transportRemoveListenerStub = sinon.stub(deviceManager.transport, 'removeListener');
+    });
+    afterEach(() => {
+      transportOnStub.restore();
+      transportSubscribeStub.restore();
+      transportUnsubscribeStub.restore();
+      transportRemoveListenerStub.restore();
+    });
+
+    describe('on detection setup', () => {
+      describe('on subscription success', () => {
+        it('should setup detections event listeners only', async () => {
+          await detector.setupDetectorSubscriptions({
+            detectionListener: true,
+            framingListener: false,
+          });
+          expect(transportSubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
+          expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/predictions');
+          expect(transportSubscribeStub.callCount).to.equals(1);
+          expect(transportOnStub.callCount).to.equals(1);
+          expect(detector._detectorSubscriptionsSetup).to.equals(true);
+        });
+        it('should setup framing event listeners only', async () => {
+          await detector.setupDetectorSubscriptions({
+            detectionListener: false,
+            framingListener: true,
+          });
+          expect(transportSubscribeStub.getCall(0).args[0]).to.equals('autozoom/framing');
+          expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/framing');
+          expect(transportSubscribeStub.callCount).to.equals(1);
+          expect(transportOnStub.callCount).to.equals(1);
+          expect(detector._detectorSubscriptionsSetup).to.equals(true);
+        });
+      });
+
+      describe('on subscription failure', () => {
+        beforeEach(() => {
+          transportSubscribeStub.rejects('Something went wrong');
+        });
+        it('should unsubscribe to detection and framing events', async () => {
+          await detector.setupDetectorSubscriptions();
+          expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
+          expect(transportUnsubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
+          expect(detector._detectorSubscriptionsSetup).to.equals(false);
+        });
+      });
+    });
+
+    describe('on detection teardown', () => {
+      it('should unsubscribe to detection events and remove detection listener', async () => {
+        detector._detectorSubscriptionsSetup = true;
+        await detector.teardownDetectorSubscriptions({
+          detectionListener: true,
+          framingListener: false,
+        });
+        expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
+        expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/predictions');
+        expect(transportUnsubscribeStub.callCount).to.equals(1);
+        expect(transportRemoveListenerStub.callCount).to.equals(1);
+        expect(detector._detectorSubscriptionsSetup).to.equals(false);
+      });
+      it('should unsubscribe to framing events and remove detection listener', async () => {
+        detector._detectorSubscriptionsSetup = true;
+        await detector.teardownDetectorSubscriptions({
+          detectionListener: false,
+          framingListener: true,
+        });
+        expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/framing');
+        expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/framing');
+        expect(transportUnsubscribeStub.callCount).to.equals(1);
+        expect(transportRemoveListenerStub.callCount).to.equals(1);
+        expect(detector._detectorSubscriptionsSetup).to.equals(false);
+      });
+    });
+  });
+
+  describe('#isRunning', () => {
+    let azStatusStub;
+    beforeEach(() => {
+      azStatusStub = sinon.stub(deviceManager.api, 'getAutozoomStatus');
+    });
+    afterEach(() => {
+      azStatusStub.restore();
+    });
+
+    it('should call #getAutozoomStatus on api class and return autozoom-active property', async () => {
+      const autozoomStatusRes = {
+        time: '130 min',
+        'autozoom-active': true,
+      };
+      azStatusStub.resolves(autozoomStatusRes);
+      const isRunning = await detector.isRunning();
+      expect(isRunning).to.equals(autozoomStatusRes['autozoom-active']);
     });
   });
 
