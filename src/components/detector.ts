@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import IDetector from './../interfaces/IDetector';
 import IDeviceManager from './../interfaces/iDeviceManager';
-import iDetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
+import DetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 
@@ -18,40 +18,32 @@ const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
 export default class Detector extends EventEmitter implements IDetector {
   _deviceManager: IDeviceManager;
   _logger: any;
-  _predictionHandler: any;
+  _detectionHandler: any;
   _framingHandler: any;
   _frame: any;
-  _options: iDetectorOpts;
+  _options: DetectorOpts;
   _defaultLabelWhiteList: Array<String> = ['head', 'person'];
   _detectorSubscriptionsSetup: boolean;
+  _detectionsOnSubstreamStarted: boolean = false;
 
   /**
    * Creates an instance of Detector.
    * @param {IDeviceManager} manager An instance of the IDeviceManager (for example
    * the Boxfish implementation of IDeviceManager) for communicating with the device.
    * @param {*} logger Logger class for logging messages produced from the detector.
-   * @param options options detector.
+   * @param {DetectorOpts} options options detector.
    * @memberof Detector
    */
-  constructor(manager: IDeviceManager, logger: any, options?: iDetectorOpts) {
+  constructor(manager: IDeviceManager, logger: any, options?: DetectorOpts) {
     super();
     this._deviceManager = manager;
     this._logger = logger;
-    this._options = options || {
-      convertDetections: DetectionConvertion.RELATIVE,
-      shouldAutoFrame: true,
-    };
+    this._options = {};
+    this._options.convertDetections =
+      (options && options.convertDetections) || DetectionConvertion.RELATIVE;
+    this._options.configDetectionsOnSubstream =
+      (options && options.configDetectionsOnSubstream) || false;
     this.setMaxListeners(50);
-    this._predictionHandler = detectionBuffer => {
-      const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
-      const convertedPredictions = this.convertPredictions(predictions, this._options);
-      this.emit(CameraEvents.DETECTIONS, convertedPredictions);
-    };
-    this._framingHandler = frameBuffer => {
-      const frame = Api.decode(frameBuffer.payload, 'messagepack');
-      this.emit(CameraEvents.FRAMING, frame);
-      this._frame = frame;
-    };
   }
 
   /**
@@ -60,141 +52,56 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async init(): Promise<any> {
-    if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
-      this._logger.debug(
-        `Initializing detector with framing config option AUTO_PTZ: ${this._options.shouldAutoFrame}`,
-        'Boxfish Detector'
-      );
-      await this.uploadFramingConfig({
-        AUTO_PTZ: this._options.shouldAutoFrame,
+    this._detectionHandler = detectionBuffer => {
+      const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
+      const convertedDetections = this.convertDetections(predictions, this._options);
+      this.emit(CameraEvents.DETECTIONS, convertedDetections);
+    };
+
+    this._framingHandler = frameBuffer => {
+      const frame = Api.decode(frameBuffer.payload, 'messagepack');
+      this.emit(CameraEvents.FRAMING, frame);
+      this._frame = frame;
+    };
+
+    if (this._options.configDetectionsOnSubstream) {
+      this._logger.debug('Setting up detection data generation on substream', 'IQ Detector');
+      await this._deviceManager.transport.write('detector/start');
+      await this.setupDetectorSubscriptions({
+        detectionListener: true,
+        framingListener: false,
       });
-      // Autozoom status command will after boot only respond
-      // when the cnn is finished attempting to load the blob.
-      // waiting to the status reply will assure the detector is ready.
-      await this._deviceManager.api.getAutozoomStatus(8000);
-    }
-  }
-
-  /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async enable(idleTimeMs: number = 2000): Promise<void> {
-    this._logger.debug('Enabling autozoom persistently', 'Boxfish Detector');
-
-    const reply = await this._deviceManager.api.sendAndReceiveMessagePack(
-      Buffer.alloc(0),
-      {
-        send: 'autozoom/enable',
-        receive: 'autozoom/enable_reply',
-      },
-      idleTimeMs
-    );
-    if (!reply['autozoom-active']) {
-      throw new Error('Autozoom not on after enable.');
-    }
-  }
-
-  /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async disable(idleTimeMs: number = 2000): Promise<void> {
-    this._logger.debug('Disabling autozoom persistently', 'Boxfish Detector');
-
-    const reply = await this._deviceManager.api.sendAndReceiveMessagePack(
-      Buffer.alloc(0),
-      {
-        send: 'autozoom/disable',
-        receive: 'autozoom/disable_reply',
-      },
-      idleTimeMs
-    );
-    if (reply['autozoom-active'] != false) {
-      throw new Error('No blob loaded while enabling autozoom');
-    }
-  }
-
-  /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async isEnabled(): Promise<Boolean> {
-    const prodInfo = await this._deviceManager.api.getProductInfo();
-    return prodInfo.autozoom_enabled;
-  }
-
-  /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async start(): Promise<void> {
-    if (!(await this.isRunning())) {
-      // Only start if not already started
-      this._logger.debug('Starting Autozoom', 'Boxfish Detector');
-      await this._deviceManager.api.sendAndReceive(
-        Buffer.alloc(0),
-        {
-          send: 'autozoom/start',
-          receive: 'autozoom/start_reply',
-        },
-        3000
+      this._detectionsOnSubstreamStarted = true;
+    } else {
+      this._logger.debug(
+        'Setting up detection event listeners. \n\n** NB ** Host application must stream main in order to get detection events',
+        'IQ Detector'
       );
+      await this.setupDetectorSubscriptions();
     }
-    await this.setupDetectorSubscriptions();
   }
 
-  /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async detectorStart(): Promise<void> {
-    this._logger.debug('Starting detector', 'Boxfish Detector');
-    await this._deviceManager.transport.write('detector/start');
-    await this.setupDetectorSubscriptions({
-      detectionListener: true,
-      framingListener: false,
-    });
-  }
-
-  /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async stop(): Promise<void> {
-    if (await this.isRunning()) {
-      // Only stop if az is running
-      this._logger.debug('Stopping Autozoom', 'Boxfish Detector');
-      await this._deviceManager.api.sendAndReceive(
-        Buffer.alloc(0),
-        {
-          send: 'autozoom/stop',
-          receive: 'autozoom/stop_reply',
-        },
-        3000
+  async destroy(): Promise<void> {
+    if (this._options.configDetectionsOnSubstream) {
+      this._logger.debug(
+        'IQ Detector teardown by stopping detection generation on substream, unsubscribing to events and unregistering listeners',
+        'IQ Detector'
       );
+      if (this._detectionsOnSubstreamStarted) {
+        // Send `detector/stop` only if `detector/start` was called previously
+        await this._deviceManager.transport.write('detector/stop');
+        this._detectionsOnSubstreamStarted = false;
+      }
+      await this.teardownDetectorSubscriptions({
+        detectionListener: true,
+        framingListener: false,
+      });
+    } else {
+      this._logger.debug(
+        'IQ Detector teardown by unsubscribing to events and unregistering listeners'
+      );
+      await this.teardownDetectorSubscriptions();
     }
-    await this.teardownDetectorSubscriptions();
-  }
-
-  /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async detectorStop(): Promise<void> {
-    this._logger.debug('Stopping detector', 'Boxfish Detector');
-    await this._deviceManager.transport.write('detector/stop');
-    await this.teardownDetectorSubscriptions({
-      detectionListener: true,
-      framingListener: false,
-    });
   }
 
   /**
@@ -219,7 +126,7 @@ export default class Detector extends EventEmitter implements IDetector {
       // Detection listener setup
       if (!this._detectorSubscriptionsSetup && listenerConfigOpts.detectionListener) {
         await this._deviceManager.transport.subscribe('autozoom/predictions');
-        this._deviceManager.transport.on('autozoom/predictions', this._predictionHandler);
+        this._deviceManager.transport.on('autozoom/predictions', this._detectionHandler);
       }
       // Framing listener setup
       if (!this._detectorSubscriptionsSetup && listenerConfigOpts.framingListener) {
@@ -230,7 +137,7 @@ export default class Detector extends EventEmitter implements IDetector {
     } catch (e) {
       await this._deviceManager.transport.unsubscribe('autozoom/predictions');
       await this._deviceManager.transport.unsubscribe('autozoom/framing');
-      this._logger.error('Something went wrong getting predictions!', e, 'Boxfish Detector');
+      this._logger.error('Something went wrong getting predictions!', e, 'IQ Detector');
       this._detectorSubscriptionsSetup = false;
     }
   }
@@ -256,7 +163,7 @@ export default class Detector extends EventEmitter implements IDetector {
     // Detection listener teardown
     if (this._detectorSubscriptionsSetup && listenerConfigOpts.detectionListener) {
       await this._deviceManager.transport.unsubscribe('autozoom/predictions');
-      this._deviceManager.transport.removeListener('autozoom/predictions', this._predictionHandler);
+      this._deviceManager.transport.removeListener('autozoom/predictions', this._detectionHandler);
     }
 
     // Framing listener teardown
@@ -269,31 +176,21 @@ export default class Detector extends EventEmitter implements IDetector {
 
   /**
    * @ignore
-   * Check `IDetector` interface for method documentation.
-   * @memberof Detector
-   */
-  async isRunning(): Promise<Boolean> {
-    const status = await this._deviceManager.api.getAutozoomStatus();
-    return status['autozoom-active'];
-  }
-
-  /**
-   * @ignore
-   * Normalizes and filters predictions so they are relative to image size
+   * Normalizes and filters detection objects so they are relative to image size
    *
-   * @param {predictions} Array of predictions
-   * @returns {predictions} Converted predictions
+   * @param {detections} Array of detections
+   * @returns {detections} Converted detections
    * @memberof Detector
    */
-  convertPredictions(predictions: Array<any>, opts?: iDetectorOpts): Array<any> {
+  convertDetections(detections: Array<any>, opts?: DetectorOpts): Array<any> {
     let objectFilter = this._defaultLabelWhiteList;
     if (opts && opts.objectFilter) {
       objectFilter = opts.objectFilter;
     }
-    const filteredPredictions =
+    const filteredDetections =
       objectFilter.length === 0
-        ? predictions
-        : predictions.filter(({ label }) => {
+        ? detections
+        : detections.filter(({ label }) => {
             return objectFilter.some(x => x === label);
           });
 
@@ -303,7 +200,7 @@ export default class Detector extends EventEmitter implements IDetector {
         height: PREVIEW_IMAGE_SIZE.height / framingBBox.height,
         width: PREVIEW_IMAGE_SIZE.width / framingBBox.width,
       };
-      return filteredPredictions.map(({ label, bbox }) => {
+      return filteredDetections.map(({ label, bbox }) => {
         return {
           label: label,
           bbox: {
@@ -317,7 +214,7 @@ export default class Detector extends EventEmitter implements IDetector {
         };
       });
     } else {
-      return filteredPredictions.map(({ label, bbox }) => {
+      return filteredDetections.map(({ label, bbox }) => {
         return {
           label: label,
           bbox: {
@@ -329,74 +226,5 @@ export default class Detector extends EventEmitter implements IDetector {
         };
       });
     }
-  }
-
-  /**
-   * @ignore
-   * Uploads the detector blob to the camera.
-   *
-   * @param {Buffer} blobBuffer The blob buffer to be uploaded to the camera.
-   * @returns {Promise<void>} Void Promise.
-   * @memberof Detector
-   */
-  async uploadBlob(blobBuffer: Buffer): Promise<void> {
-    const status = await this._deviceManager.api.getAutozoomStatus();
-    if (!status['network-configured']) {
-      this._logger.debug('Uploading cnn blob', 'Boxfish Detector');
-      await this._deviceManager.api.sendAndReceive(
-        blobBuffer,
-        {
-          send: 'network-blob',
-          receive: 'network-blob_reply',
-        },
-        60000
-      );
-      this._logger.debug('Cnn blob has been uploaded. Unlocking the stream!', 'Boxfish Detector');
-    } else {
-      this._logger.debug('Cnn blob already configured on the camera', 'Boxfish Detector');
-    }
-  }
-
-  /**
-   * @ignore
-   * Uploads the configuration file for the detector.
-   *
-   * @param {JSON} config JSON file representing the detector configuration.
-   * @returns {Promise<void>} Void Promise.
-   * @memberof Detector
-   */
-  async setDetectorConfig(config: JSON): Promise<void> {
-    this._logger.debug('Sending detector config!', 'Boxfish Detector');
-    await this._deviceManager.api.sendAndReceive(
-      Api.encode(config),
-      {
-        send: 'detector/config',
-        receive: 'detector/config_reply',
-      },
-      6000
-    );
-    this._logger.debug('Detector config sent!', 'Boxfish Detector');
-  }
-
-  /**
-   * @ignore
-   * Uploads the framing configuration file on the camera for using
-   * new framing ruleset.
-   *
-   * @param {JSON} config JSON file representing the framing configuration.
-   * @returns {Promise<void>} Void Promise.
-   * @memberof Detector
-   */
-  async uploadFramingConfig(config: any): Promise<void> {
-    this._logger.debug('Uploading new framing config', 'Boxfish Detector');
-    await this._deviceManager.api.sendAndReceive(
-      Api.encode(config),
-      {
-        send: 'autozoom/framer-config',
-        receive: 'autozoom/framer-config_reply',
-      },
-      60000
-    );
-    this._logger.debug('New framing config uploaded on the camera.', 'Boxfish Detector');
   }
 }
