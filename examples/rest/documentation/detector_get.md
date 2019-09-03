@@ -1,6 +1,6 @@
 # Get detections
 
-Quires for the last detections that have come in.
+Queries for the last detections that have come in.
 
 **URL** : `/detector/detections`
 

@@ -14,6 +14,6 @@ Configures and start detector and genius framing, this is necessary to be able t
 
 ```json
 {
-    "status": "Autozoom started!"
+    "status": "Autozoom started and subscribed for detection events!"
 }
 ```

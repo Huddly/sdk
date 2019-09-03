@@ -45,6 +45,9 @@ class HuddlyService {
     
         const eventHandler = new EventHandler(deviceId, roomName);
         await eventHandler.init();
+        this.autozoomCtl = deviceManager.getAutozoomCtl();
+        await this.autozoomCtl.init();
+        await this.autozoomCtl.start();
         this.detector = await deviceManager.getDetector({
           objectFilter: ['person']
         });
@@ -53,7 +56,7 @@ class HuddlyService {
             people: detections ? detections.length : 0,
           });
         });
-        this.detector.start();
+        this.detector.init();
       } catch (e) {
         this.logger.error('Whoops, we encountered an error. ' + e);
       }
@@ -63,7 +66,10 @@ class HuddlyService {
   
   stop() {
     if (this.detector) {
-      this.detector.stop();
+      this.detector.destroy();
+    }
+    if (this.autozoomCtl) {
+      this.autozoomCtl.stop();
     }
     this.huddlySdk = null;
   }
