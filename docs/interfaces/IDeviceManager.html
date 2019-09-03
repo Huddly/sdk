@@ -115,6 +115,9 @@
                                     <a href="#eraseErrorLog">eraseErrorLog</a>
                                 </li>
                                 <li>
+                                    <a href="#getAutozoomCtl">getAutozoomCtl</a>
+                                </li>
+                                <li>
                                     <a href="#getDetector">getDetector</a>
                                 </li>
                                 <li>
@@ -181,7 +184,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/interfaces/iDeviceManager.ts:66</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/interfaces/iDeviceManager.ts:68</a></div>
                             </td>
                         </tr>
 
@@ -228,7 +231,7 @@ successful connnection close or rejects otherwise.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/interfaces/iDeviceManager.ts:94</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="96" class="link-to-prism">src/interfaces/iDeviceManager.ts:96</a></div>
                             </td>
                         </tr>
 
@@ -287,6 +290,84 @@ in case it takes longer than expected.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="getAutozoomCtl"></a>
+                        <span class="name">
+                            <b>
+                            getAutozoomCtl
+                            </b>
+                            <a href="#getAutozoomCtl"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>getAutozoomCtl(opts: <a href="../interfaces/AutozoomCtlOpts.html">AutozoomCtlOpts</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="134" class="link-to-prism">src/interfaces/iDeviceManager.ts:134</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Get a new instance of <code>AutozoomCtl</code> controller class which allows
+you to configure the autozoom (genius framing) on the camera.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>opts</td>
+                                                        <td>
+                                                                    <code><a href="../interfaces/AutozoomCtlOpts.html" target="_self" >AutozoomCtlOpts</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <p>AutozoomCtl options</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="../interfaces/IAutozoomCtl.html" target="_self" >IAutozoomCtl</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns a new instance of <code>AutozoomCtl</code> class.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="getDetector"></a>
                         <span class="name">
                             <b>
@@ -305,14 +386,16 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="130" class="link-to-prism">src/interfaces/iDeviceManager.ts:130</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/interfaces/iDeviceManager.ts:145</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Returns a new instance of the Detector class.</p>
+                            <div class="io-description"><p>Get a new instance of the <code>Detector</code> class which allows
+you to subscribe to detection and framing events generated
+from the camera.</p>
 </div>
 
                             <div class="io-description">
@@ -353,7 +436,7 @@ in case it takes longer than expected.</p>
 
                             </div>
                                 <div class="io-description">
-                                    <p>Returns a new instance of the Detector class.</p>
+                                    <p>Returns a new instance of the <code>Detector</code> class.</p>
 
                                 </div>
                     </td>
@@ -382,7 +465,7 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/interfaces/iDeviceManager.ts:137</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="152" class="link-to-prism">src/interfaces/iDeviceManager.ts:152</a></div>
                             </td>
                         </tr>
 
@@ -428,7 +511,7 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="84" class="link-to-prism">src/interfaces/iDeviceManager.ts:84</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/interfaces/iDeviceManager.ts:86</a></div>
                             </td>
                         </tr>
 
@@ -506,7 +589,7 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/interfaces/iDeviceManager.ts:74</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="76" class="link-to-prism">src/interfaces/iDeviceManager.ts:76</a></div>
                             </td>
                         </tr>
 
@@ -552,7 +635,7 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="153" class="link-to-prism">src/interfaces/iDeviceManager.ts:153</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="168" class="link-to-prism">src/interfaces/iDeviceManager.ts:168</a></div>
                             </td>
                         </tr>
 
@@ -598,7 +681,7 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/interfaces/iDeviceManager.ts:145</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="160" class="link-to-prism">src/interfaces/iDeviceManager.ts:160</a></div>
                             </td>
                         </tr>
 
@@ -644,7 +727,7 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="161" class="link-to-prism">src/interfaces/iDeviceManager.ts:161</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="176" class="link-to-prism">src/interfaces/iDeviceManager.ts:176</a></div>
                             </td>
                         </tr>
 
@@ -690,7 +773,7 @@ in case it takes longer than expected.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="112" class="link-to-prism">src/interfaces/iDeviceManager.ts:112</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/interfaces/iDeviceManager.ts:114</a></div>
                             </td>
                         </tr>
 
@@ -737,7 +820,7 @@ be used to perform camera upgrades.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/interfaces/iDeviceManager.ts:57</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/interfaces/iDeviceManager.ts:59</a></div>
                             </td>
                         </tr>
 
@@ -782,7 +865,7 @@ be used to perform camera upgrades.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/interfaces/iDeviceManager.ts:103</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="105" class="link-to-prism">src/interfaces/iDeviceManager.ts:105</a></div>
                             </td>
                         </tr>
 
@@ -858,7 +941,7 @@ be used to perform camera upgrades.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="122" class="link-to-prism">src/interfaces/iDeviceManager.ts:122</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/interfaces/iDeviceManager.ts:124</a></div>
                             </td>
                         </tr>
 
@@ -1070,9 +1153,11 @@ the device such as Zoom, Pan, Tilt, Brightness etc.</p>
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ITransport from &#x27;./iTransport&#x27;;
 import Api from &#x27;./../components/api&#x27;;
 import IDeviceUpgrader from &#x27;./IDeviceUpgrader&#x27;;
+import IAutozoomCtl from &#x27;./IAutozoomCtl&#x27;;
 import IDetector from &#x27;./IDetector&#x27;;
 import UpgradeOpts from &#x27;./IUpgradeOpts&#x27;;
 import DetectorOpts from &#x27;./IDetectorOpts&#x27;;
+import AutozoomCtlOpts from &#x27;./IAutozoomCtlOpts&#x27;;
 import { DiagnosticsMessage } from &#x27;../components/diagnosticsMessage&#x27;;
 
 /**
@@ -1191,9 +1276,22 @@ export default interface IDeviceManager {
   upgrade(opts: UpgradeOpts): Promise&lt;any&gt;;
 
   /**
-   * Returns a new instance of the Detector class.
+   * Get a new instance of &#x60;AutozoomCtl&#x60; controller class which allows
+   * you to configure the autozoom (genius framing) on the camera.
+   *
+   * @param {AutozoomCtlOpts} opts AutozoomCtl options
+   * @returns {IAutozoomCtl} Returns a new instance of &#x60;AutozoomCtl&#x60; class.
+   * @memberof IDeviceManager
+   */
+  getAutozoomCtl(opts: AutozoomCtlOpts): IAutozoomCtl;
+
+  /**
+   * Get a new instance of the &#x60;Detector&#x60; class which allows
+   * you to subscribe to detection and framing events generated
+   * from the camera.
+   *
    * @param {DetectorOpts} opts Detector options
-   * @returns {IDetector} Returns a new instance of the Detector class.
+   * @returns {IDetector} Returns a new instance of the &#x60;Detector&#x60; class.
    * @memberof HuddlySdk
    */
   getDetector(opts: DetectorOpts): IDetector;

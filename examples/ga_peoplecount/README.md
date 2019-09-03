@@ -1,7 +1,6 @@
 # Huddly analytics + Google analytics
 This example illustrates how you can use a tracking tool like google analytics to track how many people is in a meeting room.
 
-
 Our objective is to find out how many people are using our meeting room on average during the day, we accomplish this by using our huddly sdk and push the tally of people detected to google analytics.
 
 Using google analytics we can create a report that shows the average number of people in the room per hour.
@@ -23,21 +22,29 @@ const sdk = new HuddlySdk(usbApi);
 async function init() {
   await sdk.init();
 
-  sdk.on('ATTACH', (cameraManager) => {
-    const detector = cameraManager.getDetector();
-    await detector.init();
+  sdk.on('ATTACH', async (cameraManager) => {
+    const autozoomCtl = cameraManager.getAutozoomCtl();
+    // Make sure that autozoom (genius framing is started)
+    await autozoomCtl.init();
+    await autozoomCtl.start();
 
+    // Now get the detector instance from sdk
+    const detector = cameraManager.getDetector();
+
+    // Setup the detection listener
     detector.on('DETECTIONS', detections => {
       console.log('Number of people detected', detections.length);
     });
 
-    detector.start();
+    // Calling detector init will initiate the generation of detection events
+    detector.init();
   });
 }
 
 init();
 ```
-First we need to setup the sdk and when the camera is attached, then we initialize the detector so we get a detection object.
+First we need to setup the sdk and when the camera is attached, get the autozoom controller instance to make sure that autozoom
+is configured and running on the camera.
 
 ```javascript
 const usbApi = new HuddlyDeviceAPIUSB();
@@ -46,20 +53,28 @@ const usbApi = new HuddlyDeviceAPIUSB();
 const sdk = new HuddlySdk(usbApi, [usbApi]);
 await sdk.init();
 
-sdk.on('ATTACH', (cameraManager) => {
-  const detector = cameraManager.getDetector();
-  await detector.init();
+sdk.on('ATTACH', async (cameraManager) => {
+  const autozoomCtl = cameraManager.getAutozoomCtl();
+  await autozoomCtl.init();
+  await autozoomCtl.start();
 });
 ```
-
-We then start listening to incoming detections and count them, and finally we start the detector.
+Then we get an instance of te detector class, initialize it and setup the detection listener so we get a detection events.
 
 ```javascript
+...
+const detector = cameraManager.getDetector();
+
 detector.on('DETECTIONS', detections => {
   console.log('Number of people detected', detections.length);
 });
+...
+```
+Finally, calling `detector.init()` will start the detection engine which generates detection data that is caught
+by our event listener that we set up in the previous step.
 
-detector.start();
+```javascript
+detector.init();
 ```
 
 The meeting room name is declared with an environment variable, so this can be configured from machine to machine.
@@ -133,20 +148,27 @@ const meetingRoomName = process.env.HUDDLY_MEETING_ROOM || 'TEST_ROOM';
 const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(usbApi, [usbApi]);
+const sdk = new HuddlySdk(usbApi);
 
 async function init() {
   await sdk.init();
 
-  sdk.on('ATTACH', (cameraManager) => {
-    const detector = cameraManager.getDetector();
-    await detector.init();
+  sdk.on('ATTACH', async (cameraManager) => {
+    const autozoomCtl = cameraManager.getAutozoomCtl();
+    // Make sure that autozoom (genius framing is started)
+    await autozoomCtl.init();
+    await autozoomCtl.start();
 
+    // Now get the detector instance from sdk
+    const detector = cameraManager.getDetector();
+
+    // Setup the detection listener
     detector.on('DETECTIONS', detections => {
       trackPeopleCount(meetingRoomName, detections.length);
     });
 
-    detector.start();
+    // Calling detector init will initiate the generation of detection events
+    detector.init();
   });
 }
 
@@ -178,3 +200,7 @@ You should now have tracking data coming in, and you can select different date r
 ## NB!
 ### I'm not getting any detections:
   Make sure that you're streaming from the camera, pick any video application and select HUDDLY IQ, you should start getting in detections.
+
+### Detections without streaming on a video applications?
+It is possible to configure the detector in a way that you still get detection events even though you are not occupying the camera stream on the host machine. Please
+have a look at the `IDetector` interface documentation and the Readme file to find out how this is done!

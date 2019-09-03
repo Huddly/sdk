@@ -80,6 +80,7 @@ For more details on the rest of the functionality to the sdk check out the docum
 
  - [SDK](http://developer.huddly.com/classes/HuddlySdk.html)
  - [IDeviceManager](http://developer.huddly.com/interfaces/IDeviceManager.html)
+ - [Autozoom Controller](http://developer.huddly.com/interfaces/IAutozoomCtl.html)
  - [Detector](http://developer.huddly.com/interfaces/IDetector.html)
 
 ## Repo

@@ -1,9 +1,11 @@
 import ITransport from './iTransport';
 import Api from './../components/api';
 import IDeviceUpgrader from './IDeviceUpgrader';
+import IAutozoomCtl from './IAutozoomCtl';
 import IDetector from './IDetector';
 import UpgradeOpts from './IUpgradeOpts';
 import DetectorOpts from './IDetectorOpts';
+import AutozoomCtlOpts from './IAutozoomCtlOpts';
 import { DiagnosticsMessage } from '../components/diagnosticsMessage';
 
 /**
@@ -122,9 +124,22 @@ export default interface IDeviceManager {
   upgrade(opts: UpgradeOpts): Promise<any>;
 
   /**
-   * Returns a new instance of the Detector class.
+   * Get a new instance of `AutozoomCtl` controller class which allows
+   * you to configure the autozoom (genius framing) on the camera.
+   *
+   * @param {AutozoomCtlOpts} opts AutozoomCtl options
+   * @returns {IAutozoomCtl} Returns a new instance of `AutozoomCtl` class.
+   * @memberof IDeviceManager
+   */
+  getAutozoomCtl(opts: AutozoomCtlOpts): IAutozoomCtl;
+
+  /**
+   * Get a new instance of the `Detector` class which allows
+   * you to subscribe to detection and framing events generated
+   * from the camera.
+   *
    * @param {DetectorOpts} opts Detector options
-   * @returns {IDetector} Returns a new instance of the Detector class.
+   * @returns {IDetector} Returns a new instance of the `Detector` class.
    * @memberof HuddlySdk
    */
   getDetector(opts: DetectorOpts): IDetector;
