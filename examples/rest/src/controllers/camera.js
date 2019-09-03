@@ -42,6 +42,7 @@ async function getInfo() {
   }
 }
 
+let autozoomCtl;
 let detector;
 let detectorObj = {};
 let frame = {};
@@ -58,17 +59,22 @@ function setupFramerListener() {
 }
 
 async function startAutozoom() {
+  if (!autozoomCtl) {
+    autozoomCtl = cameraManager.getAutozoomCtl();
+    await autozoomCtl.init();
+  }
+
   if (!detector) {
     detector = cameraManager.getDetector();
-    await detector.init();
   }
 
   if (detector) {
     try {
-      detector.start();
       setupDetectionListener();
       setupFramerListener();
-      return { "status": "Autozoom started!" };
+      await autozoomCtl.start();
+      await detector.init();
+      return { "status": "Autozoom started and subscribed for detection events!" };
     } catch (e) {
       return { "error": e };
     }
@@ -79,9 +85,10 @@ async function startAutozoom() {
 
 async function stopAutozoom() {
   if (detector) {
-    detector.stop();
+    await detector.destroy();
+    await autozoomCtl.stop();
     detector = undefined;
-    return { "status": "Autozoom stopped!" };
+    return { "status": "Autozoom stopped and unsubscribed from detection events!" };
   } else {
     return { "error": 'Camera manager not initialized! Cannot stop detector!' };
   }
