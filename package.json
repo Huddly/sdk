@@ -61,16 +61,16 @@
     "url": "https://github.com/Huddly/sdk/issues"
   },
   "devDependencies": {
-    "@compodoc/compodoc": "1.1.8",
+    "@compodoc/compodoc": "1.1.10",
     "@types/mocha": "~5.2.5",
     "chai": "~4.2.0",
     "chai-as-promised": "~7.1.1",
     "chai-things": "~0.2.0",
-    "commitizen": "^3.1.1",
+    "commitizen": "^4.0.3",
     "cross-env": "~5.2",
-    "cz-conventional-changelog": "^2.1.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb": "~17.1.0",
+    "cz-conventional-changelog": "^3.0.2",
+    "eslint": "^6.3.0",
+    "eslint-config-airbnb": "~18.0.1",
     "eslint-plugin-import": "^2.17.3",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
@@ -88,7 +88,7 @@
     "webpack-cli": "^3.3.2"
   },
   "dependencies": {
-    "@types/node": "~12.0.5",
+    "@types/node": "~12.7.4",
     "source-map-support": "~0.5.11",
     "jszip": "^3.2.1",
     "msgpack-lite": "~0.1.26",
