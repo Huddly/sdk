@@ -145,3 +145,15 @@ $ npm run prettier
 ### Tests and Code Coverage
 
 You can run the unit tests manually by running the `npm run test` command. Node that this command is run as part of the commit hook too. We use [`nyc`](https://github.com/istanbuljs/nyc) for code coverage that prints out the coverage results at the end of the test command and generates the coverage report.
+
+
+### Updating documentation pages
+Updating or generating new content on the documentation pages you are required to install a specific version of [Compodoc](https://compodoc.app/) npm module. Run the following command to install compodoc on your machine:
+
+```
+npm install -g @compodoc/compodoc@1.1.8
+```
+After having installed compodoc as a global dependency, you can run our script for generating the @huddly/sdk documentation:
+```
+npm run compodoc
+```
