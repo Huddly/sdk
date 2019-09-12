@@ -87,8 +87,6 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <h2 id="repo">Repo</h2>
 <p>Check out the sdk code on github (<a href="https://github.com/Huddly/sdk">https://github.com/Huddly/sdk</a>)</p>
 <h2 id="faq">FAQ</h2>
-<h3 id="i-m-not-getting-any-detections-">I&#39;m not getting any detections:</h3>
-<p>  Make sure that you&#39;re streaming from the camera, pick any video application and select HUDDLY IQ, you should start getting in detections.</p>
 <h3 id="my-detections-are-not-matching-what-i-see-in-the-stream-">My detections are not matching what I see in the stream:</h3>
 <p>  Internally the camera always sees full field of view, the coordinates are relative to full field of view by deafault. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ convertDetections: &#39;FRAMING&#39; });</code></pre></div><p>  This makes it easy to draw these bbox directly on top of the main stream.</p>
@@ -97,6 +95,11 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ shouldAutoFrame: false });</code></pre></div><p>  By default, the detector is configured to run autoframing and generate detection information.</p>
 <h3 id="the-camera-is-never-attached-or-throwing-an-error">The camera is never attached, or throwing an Error</h3>
 <p>  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.</p>
+<h3 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq-">LED light is ON, but I am not streaming with my Huddly IQ!</h3>
+<p>  After <strong>v0.4.0</strong>, SDK comes with a new feature ragarding the way you get detection data from the camera. On this version (and onward) the default behavior of detector is starting an internal stream (controlled by the camera only) to give you detection information. As a result the LED light is turned ON. Proper tearing down of the detector instance will stop the internal stream on the camera and with it the LED light.</p>
+<h3 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-iq-">How do I get detections only when I am streaming with my Huddly IQ!</h3>
+<p>  If you want to get detection data only when the camera is streaming on the host machine, you need to configure the detector class with the <code>DOWS</code> option.</p>
+<div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ DOWS: true });</code></pre></div><p>  This option makes it possible to configure the detector so that you only get detection data when you are streaming on host machine. By default, this option set to <code>false</code> so that you don&#39;t have to stream to get detection data.</p>
 
 
 

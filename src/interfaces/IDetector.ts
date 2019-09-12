@@ -60,4 +60,13 @@ export default interface IDetector {
    * @memberof IDetector
    */
   removeListener(message: string, callbackFn: any);
+
+  /**
+   * EventEmitter `removeAllListeners` method. Unregisters all event
+   * listeners setup on the given message name.
+   *
+   * @param {string} message The message used to setup the listeners
+   * @memberof IDetector
+   */
+  removeAllListeners(message: string);
 }

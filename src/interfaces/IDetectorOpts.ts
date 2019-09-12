@@ -30,20 +30,15 @@ export default interface DetectorOpts {
   objectFilter?: Array<String>;
 
   /**
-   * This option sets up the `Detector` class to configure the
-   * camera in such a way that you can get detection data without
-   * the need of streaming the main stream using a third party streaming
-   * application on the host machine.
-   *
-   * **NOTE** Always call `#destroy` method on `Detector` class when
-   * tearing down the application. the `#destroy` function will make
-   * sure that the camera stops the internal stream that emits detection
-   * data to the host.
+   * DOWS short for `D`etections `O`nly `W`hen `S`treaming.
+   * When set to true, this option will configure the `Detector`
+   * so that detection and framing events are emitted only when
+   * camera is being streamed on host machine.
    *
    * @type {boolean}
    * @memberof DetectorOpts
    */
-  configDetectionsOnSubstream?: boolean;
+  DOWS?: boolean;
 }
 
 export { DetectionConvertion };
