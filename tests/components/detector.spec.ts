@@ -28,31 +28,47 @@ describe('Detector', () => {
       transportWriteStub.restore();
     });
 
-    describe('on configDetectionsOnSubstream set', () => {
-      it('should send detector/start command and setup detection listener only', async () => {
-        detector = new Detector(deviceManager, createDummyLogger(), { configDetectionsOnSubstream: true });
-        const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
-        transportWriteStub.resolves();
-        await detector.init();
-        expect(transportWriteStub.called).to.equals(true);
-        expect(transportWriteStub.getCall(0).args[0]).to.equals('detector/start');
-        expect(setupDetectorSubscriptionSpy.callCount).to.equals(1);
-        expect(setupDetectorSubscriptionSpy.getCall(0).args[0]).to.deep.equals({
-          detectionListener: true,
-          framingListener: false,
+    describe('on detector not initialized', () => {
+      describe('on DOWS not set', () => {
+        it('should send detector/start command and setup detection listener only', async () => {
+          detector = new Detector(deviceManager, createDummyLogger(), {});
+          const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
+          transportWriteStub.resolves();
+          await detector.init();
+          expect(transportWriteStub.called).to.equals(true);
+          expect(transportWriteStub.getCall(0).args[0]).to.equals('detector/start');
+          expect(setupDetectorSubscriptionSpy.callCount).to.equals(1);
+          expect(setupDetectorSubscriptionSpy.getCall(0).args[0]).to.deep.equals({
+            detectionListener: true,
+            framingListener: false,
+          });
+          expect(detector._previewStreamStarted).to.equals(true);
+          expect(detector._detectorInitialized).to.equals(true);
         });
-        expect(detector._detectionsOnSubstreamStarted).to.equals(true);
+      });
+
+      describe('on DOWS set', () => {
+        it('should only setup event listeners for detection and framing data', async () => {
+          detector = new Detector(deviceManager, createDummyLogger(), { DOWS: true });
+          const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
+          await detector.init();
+          expect(transportWriteStub.called).to.equals(false);
+          expect(setupDetectorSubscriptionSpy.callCount).to.equals(1);
+          expect(setupDetectorSubscriptionSpy.getCall(0).args[0]).to.undefined;
+          expect(detector._previewStreamStarted).to.equals(false);
+          expect(detector._detectorInitialized).to.equals(true);
+        });
       });
     });
 
-    describe('on configDetectionsOnSubstream unset', () => {
-      it('should only setup event listeners for detection and framing data', async () => {
+    describe('on detector initialized', () => {
+      it('should not do anthing', async () => {
         detector = new Detector(deviceManager, createDummyLogger(), {});
         const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
+        detector._detectorInitialized = true;
         await detector.init();
-        expect(setupDetectorSubscriptionSpy.callCount).to.equals(1);
-        expect(setupDetectorSubscriptionSpy.getCall(0).args[0]).to.undefined;
-        expect(detector._detectionsOnSubstreamStarted).to.equals(false);
+        expect(transportWriteStub.called).to.equals(false);
+        expect(setupDetectorSubscriptionSpy.called).to.equals(false);
       });
     });
   });
@@ -66,32 +82,46 @@ describe('Detector', () => {
       transportWriteStub.restore();
     });
 
-    describe('on configDetectionsOnSubstream set', () => {
-      it('should send detector/stop command and teardown detection listener/subscriber', async () => {
-        detector = new Detector(deviceManager, createDummyLogger(), { configDetectionsOnSubstream: true });
-        const teardownDetectorSubscriptionSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
-        transportWriteStub.resolves();
-        detector._detectionsOnSubstreamStarted = true;
-        await detector.destroy();
-        expect(transportWriteStub.called).to.equals(true);
-        expect(transportWriteStub.getCall(0).args[0]).to.equals('detector/stop');
-        expect(teardownDetectorSubscriptionSpy.callCount).to.equals(1);
-        expect(teardownDetectorSubscriptionSpy.getCall(0).args[0]).to.deep.equals({
-          detectionListener: true,
-          framingListener: false,
+    describe('on detector initialized', () => {
+      describe('on DOWS not set', () => {
+        it('should send detector/stop command and teardown detection listener/subscriber', async () => {
+          detector = new Detector(deviceManager, createDummyLogger(), { });
+          const teardownDetectorSubscriptionSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
+          transportWriteStub.resolves();
+          detector._previewStreamStarted = true;
+          detector._detectorInitialized = true;
+          await detector.destroy();
+          expect(transportWriteStub.called).to.equals(true);
+          expect(transportWriteStub.getCall(0).args[0]).to.equals('detector/stop');
+          expect(teardownDetectorSubscriptionSpy.callCount).to.equals(1);
+          expect(teardownDetectorSubscriptionSpy.getCall(0).args[0]).to.deep.equals({
+            detectionListener: true,
+            framingListener: false,
+          });
+          expect(detector._previewStreamStarted).to.equals(false);
+          expect(detector._detectorInitialized).to.equals(false);
         });
-        expect(detector._detectionsOnSubstreamStarted).to.equals(false);
+      });
+      describe('on DOWS set', () => {
+        it('should only teardown detection and framing listeners/subscribers', async () => {
+          detector = new Detector(deviceManager, createDummyLogger(), { DOWS: true });
+          const teardownDetectorSubscriptionSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
+          detector._detectorInitialized = true;
+          await detector.destroy();
+          expect(teardownDetectorSubscriptionSpy.callCount).to.equals(1);
+          expect(teardownDetectorSubscriptionSpy.getCall(0).args[0]).to.undefined;
+          expect(detector._detectorInitialized).to.equals(false);
+        });
       });
     });
-    describe('on configDetectionsOnSubstream unset', () => {
-      it('should only teardown detection and framing listeners/subscribers', async () => {
-        detector._detectionsOnSubstreamStarted = true;
+
+    describe('on detector not initialized', () => {
+      it('should not do anthing', async () => {
         detector = new Detector(deviceManager, createDummyLogger(), {});
         const teardownDetectorSubscriptionSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
         await detector.destroy();
-        expect(teardownDetectorSubscriptionSpy.callCount).to.equals(1);
-        expect(teardownDetectorSubscriptionSpy.getCall(0).args[0]).to.undefined;
-        expect(detector._detectionsOnSubstreamStarted).to.equals(false);
+        expect(transportWriteStub.called).to.equals(false);
+        expect(teardownDetectorSubscriptionSpy.called).to.equals(false);
       });
     });
   });
@@ -125,7 +155,7 @@ describe('Detector', () => {
           expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/predictions');
           expect(transportSubscribeStub.callCount).to.equals(1);
           expect(transportOnStub.callCount).to.equals(1);
-          expect(detector._detectorSubscriptionsSetup).to.equals(true);
+          expect(detector._subscriptionsSetup).to.equals(true);
         });
         it('should setup framing event listeners only', async () => {
           await detector.setupDetectorSubscriptions({
@@ -136,7 +166,7 @@ describe('Detector', () => {
           expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/framing');
           expect(transportSubscribeStub.callCount).to.equals(1);
           expect(transportOnStub.callCount).to.equals(1);
-          expect(detector._detectorSubscriptionsSetup).to.equals(true);
+          expect(detector._subscriptionsSetup).to.equals(true);
         });
       });
 
@@ -148,14 +178,14 @@ describe('Detector', () => {
           await detector.setupDetectorSubscriptions();
           expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
           expect(transportUnsubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
-          expect(detector._detectorSubscriptionsSetup).to.equals(false);
+          expect(detector._subscriptionsSetup).to.equals(false);
         });
       });
     });
 
     describe('on detection teardown', () => {
       it('should unsubscribe to detection events and remove detection listener', async () => {
-        detector._detectorSubscriptionsSetup = true;
+        detector._subscriptionsSetup = true;
         await detector.teardownDetectorSubscriptions({
           detectionListener: true,
           framingListener: false,
@@ -164,10 +194,10 @@ describe('Detector', () => {
         expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/predictions');
         expect(transportUnsubscribeStub.callCount).to.equals(1);
         expect(transportRemoveListenerStub.callCount).to.equals(1);
-        expect(detector._detectorSubscriptionsSetup).to.equals(false);
+        expect(detector._subscriptionsSetup).to.equals(false);
       });
       it('should unsubscribe to framing events and remove detection listener', async () => {
-        detector._detectorSubscriptionsSetup = true;
+        detector._subscriptionsSetup = true;
         await detector.teardownDetectorSubscriptions({
           detectionListener: false,
           framingListener: true,
@@ -176,7 +206,7 @@ describe('Detector', () => {
         expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/framing');
         expect(transportUnsubscribeStub.callCount).to.equals(1);
         expect(transportRemoveListenerStub.callCount).to.equals(1);
-        expect(detector._detectorSubscriptionsSetup).to.equals(false);
+        expect(detector._subscriptionsSetup).to.equals(false);
       });
     });
   });

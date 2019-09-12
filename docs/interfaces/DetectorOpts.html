@@ -87,11 +87,11 @@
                             <ul class="index-list">
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#configDetectionsOnSubstream">configDetectionsOnSubstream</a>
+                                        <a href="#convertDetections">convertDetections</a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#convertDetections">convertDetections</a>
+                                        <a href="#DOWS">DOWS</a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
@@ -108,53 +108,6 @@
 
             <section>
                 <h3 id="inputs">Properties</h3>
-                    <table class="table table-sm table-bordered">
-                        <tbody>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <a name="configDetectionsOnSubstream"></a>
-                                        <span class="name"><b>configDetectionsOnSubstream</b><a href="#configDetectionsOnSubstream"><span class="icon ion-ios-link"></span></a></span>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="col-md-4">
-                                        <code>configDetectionsOnSubstream:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-</code>
-                                    </td>
-                                </tr>
-
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
-                                        </td>
-                                    </tr>
-
-                                    <tr>
-                                        <td class="col-md-4">
-                                            <i>Optional</i>
-                                        </td>
-                                    </tr>
-
-
-
-
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-description"><p>This option sets up the <code>Detector</code> class to configure the
-camera in such a way that you can get detection data without
-the need of streaming the main stream using a third party streaming
-application on the host machine.</p>
-<p><strong>NOTE</strong> Always call <code>#destroy</code> method on <code>Detector</code> class when
-tearing down the application. the <code>#destroy</code> function will make
-sure that the camera stops the internal stream that emits detection
-data to the host.</p>
-</div>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
                     <table class="table table-sm table-bordered">
                         <tbody>
                                 <tr>
@@ -194,6 +147,49 @@ DETECTIONS topic.</p>
 <p>RELATIVE is between 0 1 (default)
 FRAMING coordinates are absolute to the selected
 frame in the main stream</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="DOWS"></a>
+                                        <span class="name"><b>DOWS</b><a href="#DOWS"><span class="icon ion-ios-link"></span></a></span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>DOWS:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
+                                        </td>
+                                    </tr>
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Optional</i>
+                                        </td>
+                                    </tr>
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>DOWS short for <code>D</code>etections <code>O</code>nly <code>W</code>hen <code>S</code>treaming.
+When set to true, this option will configure the <code>Detector</code>
+so that detection and framing events are emitted only when
+camera is being streamed on host machine.</p>
 </div>
                                 </td>
                             </tr>
@@ -277,20 +273,15 @@ export default interface DetectorOpts {
   objectFilter?: Array&lt;String&gt;;
 
   /**
-   * This option sets up the &#x60;Detector&#x60; class to configure the
-   * camera in such a way that you can get detection data without
-   * the need of streaming the main stream using a third party streaming
-   * application on the host machine.
-   *
-   * **NOTE** Always call &#x60;#destroy&#x60; method on &#x60;Detector&#x60; class when
-   * tearing down the application. the &#x60;#destroy&#x60; function will make
-   * sure that the camera stops the internal stream that emits detection
-   * data to the host.
+   * DOWS short for &#x60;D&#x60;etections &#x60;O&#x60;nly &#x60;W&#x60;hen &#x60;S&#x60;treaming.
+   * When set to true, this option will configure the &#x60;Detector&#x60;
+   * so that detection and framing events are emitted only when
+   * camera is being streamed on host machine.
    *
    * @type {boolean}
    * @memberof DetectorOpts
    */
-  configDetectionsOnSubstream?: boolean;
+  DOWS?: boolean;
 }
 
 export { DetectionConvertion };
