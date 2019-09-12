@@ -23,8 +23,9 @@ export default class Detector extends EventEmitter implements IDetector {
   _frame: any;
   _options: DetectorOpts;
   _defaultLabelWhiteList: Array<String> = ['head', 'person'];
-  _detectorSubscriptionsSetup: boolean;
-  _detectionsOnSubstreamStarted: boolean = false;
+  _subscriptionsSetup: boolean = false;
+  _detectorInitialized: boolean = false;
+  _previewStreamStarted: boolean = false;
 
   /**
    * Creates an instance of Detector.
@@ -41,8 +42,7 @@ export default class Detector extends EventEmitter implements IDetector {
     this._options = {};
     this._options.convertDetections =
       (options && options.convertDetections) || DetectionConvertion.RELATIVE;
-    this._options.configDetectionsOnSubstream =
-      (options && options.configDetectionsOnSubstream) || false;
+    this._options.DOWS = (options && options.DOWS) || false;
     this.setMaxListeners(50);
   }
 
@@ -52,26 +52,36 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   async init(): Promise<any> {
-    this._detectionHandler = detectionBuffer => {
-      const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
-      const convertedDetections = this.convertDetections(predictions, this._options);
-      this.emit(CameraEvents.DETECTIONS, convertedDetections);
-    };
+    if (this._detectorInitialized) {
+      this._logger.warn('Detector already initialized', 'IQ Detector');
+      return;
+    }
 
-    this._framingHandler = frameBuffer => {
-      const frame = Api.decode(frameBuffer.payload, 'messagepack');
-      this.emit(CameraEvents.FRAMING, frame);
-      this._frame = frame;
-    };
+    this._logger.debug('Initializing detector class', 'IQ Detector');
+    if (!this._detectionHandler) {
+      this._detectionHandler = detectionBuffer => {
+        const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
+        const convertedDetections = this.convertDetections(predictions, this._options);
+        this.emit(CameraEvents.DETECTIONS, convertedDetections);
+      };
+    }
 
-    if (this._options.configDetectionsOnSubstream) {
-      this._logger.debug('Setting up detection data generation on substream', 'IQ Detector');
+    if (!this._framingHandler) {
+      this._framingHandler = frameBuffer => {
+        const frame = Api.decode(frameBuffer.payload, 'messagepack');
+        this.emit(CameraEvents.FRAMING, frame);
+        this._frame = frame;
+      };
+    }
+
+    if (!this._options.DOWS) {
+      this._logger.debug('Sending detector start command', 'IQ Detector');
       await this._deviceManager.transport.write('detector/start');
       await this.setupDetectorSubscriptions({
         detectionListener: true,
         framingListener: false,
       });
-      this._detectionsOnSubstreamStarted = true;
+      this._previewStreamStarted = true;
     } else {
       this._logger.debug(
         'Setting up detection event listeners. \n\n** NB ** Host application must stream main in order to get detection events',
@@ -79,19 +89,25 @@ export default class Detector extends EventEmitter implements IDetector {
       );
       await this.setupDetectorSubscriptions();
     }
+
+    this._detectorInitialized = true;
+    this._logger.debug('Detector class initialized and ready', 'IQ Detector');
   }
 
   async destroy(): Promise<void> {
-    if (this._options.configDetectionsOnSubstream) {
+    if (!this._detectorInitialized) {
+      this._logger.warn('Detector already destroyed', 'IQ Detector');
+      return;
+    }
+
+    if (!this._options.DOWS && this._previewStreamStarted) {
       this._logger.debug(
-        'IQ Detector teardown by stopping detection generation on substream, unsubscribing to events and unregistering listeners',
+        'IQ Detector teardown by stopping detection generation on previewstream, unsubscribing to events and unregistering listeners',
         'IQ Detector'
       );
-      if (this._detectionsOnSubstreamStarted) {
-        // Send `detector/stop` only if `detector/start` was called previously
-        await this._deviceManager.transport.write('detector/stop');
-        this._detectionsOnSubstreamStarted = false;
-      }
+      // Send `detector/stop` only if `detector/start` was called previously
+      await this._deviceManager.transport.write('detector/stop');
+      this._previewStreamStarted = false;
       await this.teardownDetectorSubscriptions({
         detectionListener: true,
         framingListener: false,
@@ -102,6 +118,7 @@ export default class Detector extends EventEmitter implements IDetector {
       );
       await this.teardownDetectorSubscriptions();
     }
+    this._detectorInitialized = false;
   }
 
   /**
@@ -124,21 +141,21 @@ export default class Detector extends EventEmitter implements IDetector {
   ) {
     try {
       // Detection listener setup
-      if (!this._detectorSubscriptionsSetup && listenerConfigOpts.detectionListener) {
+      if (!this._subscriptionsSetup && listenerConfigOpts.detectionListener) {
         await this._deviceManager.transport.subscribe('autozoom/predictions');
         this._deviceManager.transport.on('autozoom/predictions', this._detectionHandler);
       }
       // Framing listener setup
-      if (!this._detectorSubscriptionsSetup && listenerConfigOpts.framingListener) {
+      if (!this._subscriptionsSetup && listenerConfigOpts.framingListener) {
         await this._deviceManager.transport.subscribe('autozoom/framing');
         this._deviceManager.transport.on('autozoom/framing', this._framingHandler);
       }
-      this._detectorSubscriptionsSetup = true;
+      this._subscriptionsSetup = true;
     } catch (e) {
       await this._deviceManager.transport.unsubscribe('autozoom/predictions');
       await this._deviceManager.transport.unsubscribe('autozoom/framing');
       this._logger.error('Something went wrong getting predictions!', e, 'IQ Detector');
-      this._detectorSubscriptionsSetup = false;
+      this._subscriptionsSetup = false;
     }
   }
 
@@ -161,17 +178,17 @@ export default class Detector extends EventEmitter implements IDetector {
     }
   ) {
     // Detection listener teardown
-    if (this._detectorSubscriptionsSetup && listenerConfigOpts.detectionListener) {
+    if (this._subscriptionsSetup && listenerConfigOpts.detectionListener) {
       await this._deviceManager.transport.unsubscribe('autozoom/predictions');
       this._deviceManager.transport.removeListener('autozoom/predictions', this._detectionHandler);
     }
 
     // Framing listener teardown
-    if (this._detectorSubscriptionsSetup && listenerConfigOpts.framingListener) {
+    if (this._subscriptionsSetup && listenerConfigOpts.framingListener) {
       await this._deviceManager.transport.unsubscribe('autozoom/framing');
       this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
     }
-    this._detectorSubscriptionsSetup = false;
+    this._subscriptionsSetup = false;
   }
 
   /**

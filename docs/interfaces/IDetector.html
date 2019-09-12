@@ -101,6 +101,9 @@
                                     <a href="#once">once</a>
                                 </li>
                                 <li>
+                                    <a href="#removeAllListeners">removeAllListeners</a>
+                                </li>
+                                <li>
                                     <a href="#removeListener">removeListener</a>
                                 </li>
                             </ul>
@@ -405,6 +408,83 @@ the first time the message is emitted from the <code>Detector</code> implementat
             <tbody>
                 <tr>
                     <td class="col-md-4">
+                        <a name="removeAllListeners"></a>
+                        <span class="name">
+                            <b>
+                            removeAllListeners
+                            </b>
+                            <a href="#removeAllListeners"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>removeAllListeners(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/interfaces/IDetector.ts:71</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>EventEmitter <code>removeAllListeners</code> method. Unregisters all event
+listeners setup on the given message name.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>message</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <p>The message used to setup the listeners</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                            </div>
+                                <div class="io-description">
+                                    
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
                         <a name="removeListener"></a>
                         <span class="name">
                             <b>
@@ -504,7 +584,7 @@ on the caught event.</p>
     <div class="tab-pane fade " id="c-readme">
         <p><h2 id="how-to-use-the-detector-interface-">How to use the detector interface!</h2>
 <p>In order to use the detector interface you need to make sure that the autozoom feature is enabled on the camera (see the <a href="http://developer.huddly.com/interfaces/IAutozoomCtl.html">IAutozoomCtl</a> interface for documentation on how to do it).</p>
-<p>The detector interface allows you to subscribe to detection and/or framing data from the camera. It is also possible to configure the detector in a way where detection data can be retrieved even without streaming on host using a streaming application. Examples below show how the detector can be used.</p>
+<p>The detector interface allows you to subscribe to detection and/or framing data from the camera. From version 0.4.0 we support getting detection data from Detector without having to stream the camera on the host machine. <strong>NOTE</strong> that this is the default behavior now. It is still possible to get detections the old way, where you only get detection when streaming the camera on the host machine. We show you below how to do that!</p>
 <div><pre class="line-numbers"><code class="language-javascript">/* 
 We suppose that the sdk has been initialized and autozoom feature is enabled
 and running.
@@ -536,23 +616,25 @@ detector.on(&#39;FRAMING&#39;, (framingInfo) =&gt; {
 
 
 /**
- * When you are done call `destroy` method to properly teardown
+ * When you are done, call `destroy` method to properly teardown
  * the detection instance.
  */
 await detector.destroy();
 
-...</code></pre></div><h2 id="detection-data-without-streaming">Detection data without streaming</h2>
-<p>Wondering how to configure detector to get detection data without streaming main? The new feature has been added on release 0.4.0 and can be set up as the following:</p>
+...</code></pre></div><p><strong>!! NOTE !!</strong> When tearing down your application which is using the detector object, it is important that you call <code>destroy</code> method before closing the host application. Not doing so will leave the camera streaming internally after you have closed the application which might lead to confusion. The camera will stop generating detection data at some point when it detects that no host application is consuming its data. However, it is strongly recommended to properly teardown the detector instance from the host application.</p>
+<h2 id="get-detections-only-when-streaming-dows-">Get detections only when streaming (DOWS)</h2>
+<p>If you would like to configure the detector so that you get detection events only and only when the user starts streaming the camera on the host machine, then the following code sinppet illustrates how to do just that:</p>
 <div><pre class="line-numbers"><code class="language-javascript">...
 
 /**
  * The `getDetector` method accepts options documented on
  * `IDetectorOpts` interface. One of the options allows you
- * to configure the detector to get detection data without
- * having to stream main stream on the host machine.
+ * to configure the detector to get detection only when
+ * camera is streaming on the host machine. This option is
+ * called `DOWS` short for Detections Only When Streaming.
  */
 const detector = await cameraManager.getDetector({
-  configDetectionsOnSubstream: true,
+  DOWS: true,
 });
 
 // Call init
@@ -563,10 +645,9 @@ detector.on(&#39;DETECTIONS&#39;, (detectionList) =&gt; {
   // Your code here
 });
 
-// !!! IMPORTANT !!! Make sure you call `destroy` when you are done with detection data
+// Teardown
 await detector.destroy();
-...</code></pre></div><p><strong>!! NOTE !!</strong> When tearing down your application which is using the detector object, it is important that you call <code>destroy</code> method before closing the host application. Not doing so will leave the camera streaming internally after you have closed the application which might lead to confusion. The camera will stop generating detection data at some point when it detects that no host application is consuming its data. However, it is strongly recommended to properly teardown the detector instance from the host application.</p>
-<h2 id="detector-events">Detector Events</h2>
+...</code></pre></div><h2 id="detector-events">Detector Events</h2>
 <p>The detector class can emit the following events:</p>
 <table class="table table-bordered compodoc-table">
 <thead>
@@ -646,6 +727,15 @@ await detector.destroy();
    * @memberof IDetector
    */
   removeListener(message: string, callbackFn: any);
+
+  /**
+   * EventEmitter &#x60;removeAllListeners&#x60; method. Unregisters all event
+   * listeners setup on the given message name.
+   *
+   * @param {string} message The message used to setup the listeners
+   * @memberof IDetector
+   */
+  removeAllListeners(message: string);
 }
 </code></pre>
     </div>
