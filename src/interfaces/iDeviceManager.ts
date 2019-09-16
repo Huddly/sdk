@@ -7,6 +7,7 @@ import UpgradeOpts from './IUpgradeOpts';
 import DetectorOpts from './IDetectorOpts';
 import AutozoomControlOpts from './IAutozoomControlOpts';
 import { DiagnosticsMessage } from '../components/diagnosticsMessage';
+import ReleaseChannel from './ReleaseChannelEnum';
 
 /**
  * Interface used for performing actions on the camera.
@@ -174,4 +175,15 @@ export default interface IDeviceManager {
    * @memberof IDeviceManager
    */
   getTemperature(): Promise<any>;
+
+  /**
+   * Queries the Huddly release server to find out the url
+   * to the latest firmware release for the specific device
+   * type (IQ, GO).
+   *
+   * @param {ReleaseChannel} releaseChannel The firmware release
+   * channel.
+   * @memberof IDeviceManager
+   */
+  getLatestFirmwareUrl(releaseChannel: ReleaseChannel);
 }

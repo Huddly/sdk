@@ -46,4 +46,5 @@ export default class DeviceManagerMock implements IDeviceManager {
   getState(): Promise<any> { return Promise.resolve(); }
   getPowerUsage(): Promise<any> { return Promise.resolve(); }
   getTemperature(): Promise<any> { return Promise.resolve(); }
+  getLatestFirmwareUrl(): Promise<any> { return Promise.resolve(); }
 }

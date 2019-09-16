@@ -1,8 +1,11 @@
+import * as msgpack from 'msgpack-lite';
+import http from 'http';
+
 import ITransport from './../interfaces/iTransport';
 import DefaultLogger from './../utilitis/logger';
-import * as msgpack from 'msgpack-lite';
 import Locksmith from './locksmith';
 import InterpolationParams from './../interfaces/InterpolationParams';
+import ReleaseChannel from './../interfaces/ReleaseChannelEnum';
 
 export default class Api {
   transport: ITransport;
@@ -473,5 +476,56 @@ export default class Api {
     );
     const azStatus = Api.decode(msgpackReply.payload, 'messagepack');
     return azStatus;
+  }
+
+  async getLatestFirmwareUrl(
+    device: string,
+    releaseChannel: ReleaseChannel = ReleaseChannel.STABLE
+  ) {
+    const urlJsonKey = device === 'iq' ? 'url_hpk' : 'url';
+    const url = `http://huddlyreleaseserver.azurewebsites.net/releases/${releaseChannel}/latest/${device}`;
+    return new Promise((resolve, reject) =>
+      http
+        .get(url, res => {
+          const { statusCode } = res;
+          const contentType = res.headers['content-type'];
+
+          let error;
+          if (statusCode === 204) {
+            error = new Error('There are no available firmware packages for this this channel');
+          } else if (statusCode !== 200) {
+            error = new Error(
+              'Failed performing a request to Huddly release server!\n' +
+                `Status Code: ${statusCode}`
+            );
+          } else if (!/^application\/json/.test(contentType)) {
+            error = new Error(
+              'Invalid content-type.\n' + `Expected application/json but received ${contentType}`
+            );
+          }
+
+          if (error) {
+            res.resume();
+            reject(error);
+            return;
+          }
+
+          res.setEncoding('utf8');
+          let rawData = '';
+          res.on('data', chunk => {
+            rawData += chunk;
+          });
+          res.on('end', () => {
+            const parsedData = JSON.parse(rawData);
+            if (Object.keys(parsedData).indexOf(urlJsonKey) === -1) {
+              reject(new Error(`JSON content does not contain '${urlJsonKey}' key!`));
+            }
+            resolve(parsedData[urlJsonKey]);
+          });
+        })
+        .on('error', e => {
+          reject(new Error(`Request error!\n ${e}`));
+        })
+    );
   }
 }
