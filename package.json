@@ -51,7 +51,9 @@
     "preversion": "npm run tslint",
     "prettier": "./node_modules/.bin/prettier  --config ./.prettierrc --write src/**/*.ts",
     "prettier-check": "./node_modules/.bin/prettier  --config ./.prettierrc --check src/**/*.ts",
-    "commit": "git-cz"
+    "release:major": "changelog -M && git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
+    "release:minor": "changelog -m && git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
+    "release:patch": "changelog -p && git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags"
   },
   "pre-commit": [
     "prettier-check",
@@ -74,6 +76,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "mocha": "^6.2.1",
     "eslint-plugin-react": "^7.13.0",
+    "generate-changelog": "^1.8.0",
     "nock": "^11.3.4",
     "nyc": "~14.1.1",
     "pre-commit": "~1.2.2",
