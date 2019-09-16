@@ -1,3 +1,5 @@
+import { EventEmitter } from 'events';
+
 import Api from '../api';
 import DefaultLogger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
@@ -9,10 +11,10 @@ import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
-import { EventEmitter } from 'events';
 import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
 import { DiagnosticsMessage, MinMaxDiagnosticsMessage } from '../diagnosticsMessage';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;
 
@@ -297,5 +299,9 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   async getInterpolationParams(): Promise<InterpolationParams> {
     this.logger.warn('Attempting to call method [getInterpolationParams] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Interpolation parameters are not supported on Huddly GO camera');
+  }
+
+  async getLatestFirmwareUrl(releaseChannel: ReleaseChannel = ReleaseChannel.STABLE) {
+    return this.api.getLatestFirmwareUrl('go', releaseChannel);
   }
 }

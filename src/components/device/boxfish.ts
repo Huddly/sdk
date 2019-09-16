@@ -1,3 +1,5 @@
+import { EventEmitter } from 'events';
+
 import Api from './../api';
 import DefaultLogger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
@@ -11,13 +13,13 @@ import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
 import { MinMaxDiagnosticsMessage, DiagnosticsMessage  } from '../diagnosticsMessage';
-import { EventEmitter } from 'events';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 import AutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import AutozoomControl from '../autozoomControl';
+import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
@@ -262,5 +264,9 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   async getInterpolationParams(): Promise<InterpolationParams> {
     return this.api.getInterpolationParameters();
+  }
+
+  async getLatestFirmwareUrl(releaseChannel: ReleaseChannel = ReleaseChannel.STABLE) {
+    return this.api.getLatestFirmwareUrl('iq', releaseChannel);
   }
 }
