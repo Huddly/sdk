@@ -93,7 +93,7 @@ We are two modules for helping us structure our commit message in a clean, undes
 
 Please keep in mind that the commit messages will be included in the release notes, therefore it is important that you use the proper way of creating a git commit message.
 
-After staging your changes with `git add`, run `npm run commit` to start the interactive commit message CLI.
+After staging your changes with `git add`, run `git cz` to start the interactive commit message CLI.
 
 **NOTE** We require that you have properly formatted commits when submitting a PR.
 
@@ -101,7 +101,7 @@ After staging your changes with `git add`, run `npm run commit` to start the int
 
 If you are used to creating a lot of commits before submitting a pull request, you can create standard git commits during development. However, when preparing your feature branch for PR and merge, make sure you do the following:
 - Squash all yourt commits in one (if possible)
-- Create a new commit using `npm run commit` or `yarn commit` with a proper commit message
+- Create a new commit using `git cz` with a proper commit message
 - Rebase your commits so that all your previously squashed commits are rebased into your last properly formatted commit. Use that commit to submit the PR.
 
 Examples:
