@@ -73,6 +73,8 @@
     "eslint-plugin-import": "^2.18.2",
     "eslint-plugin-jsx-a11y": "^6.2.1",
     "mocha": "^6.2.1",
+    "eslint-plugin-react": "^7.13.0",
+    "nock": "^11.3.4",
     "nyc": "~14.1.1",
     "pre-commit": "~1.2.2",
     "prettier": "^1.18.2",
