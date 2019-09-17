@@ -2,9 +2,9 @@
  * Interface used to configure the autozoom (genius framing) feature on the IQ camera
  *
  * @export
- * @interface IAutozoomCtl
+ * @interface IAutozoomControl
  */
-export default interface IAutozoomCtl {
+export default interface IAutozoomControl {
   /**
    * Convenience function for setting up the camera
    * for starting/stopping autozoom (genius framing).
@@ -13,7 +13,7 @@ export default interface IAutozoomCtl {
    * @returns {Promise<any>} Returns a promise which
    * resolves in case the autozoom init is completed
    * otherwise it rejects with a rejection message!
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   init(): Promise<any>;
 
@@ -24,7 +24,7 @@ export default interface IAutozoomCtl {
    * @param {number} [idleTimeMs=5000] The amount of milliseconds to wait for
    * the network to load into the camera after having enabled autozoom.
    * @returns {Promise<void>} A void function.
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   enable(idleTimeMs?: number): Promise<void>;
 
@@ -36,7 +36,7 @@ export default interface IAutozoomCtl {
    * the network to unload on the camera after having disabled autozoom.
    * Default (5000ms)
    * @returns {Promise<void>} A void function.
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   disable(idleTimeMs?: number): Promise<void>;
 
@@ -55,7 +55,7 @@ export default interface IAutozoomCtl {
    * NOTE: For persistent enable of autozoom feature you
    * need to call the `enable` method.
    *
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   start(): Promise<void>;
 
@@ -66,7 +66,7 @@ export default interface IAutozoomCtl {
    * need to call the `disable` method.
    *
    * @returns {Promise<void>} A void function.
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   stop(): Promise<void>;
 
@@ -85,7 +85,7 @@ export default interface IAutozoomCtl {
    *
    * @param {Buffer} blobBuffer The Cnn blob as a Buffer
    * @returns {Promise<void>}
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   uploadBlob(blobBuffer: Buffer): Promise<void>;
 
@@ -95,7 +95,7 @@ export default interface IAutozoomCtl {
    *
    * @param {JSON} config JSON representation of the detector configuration file.
    * @returns {Promise<void>}
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   setDetectorConfig(config: JSON): Promise<void>;
 
@@ -105,7 +105,7 @@ export default interface IAutozoomCtl {
    *
    * @param {JSON} config JSON representation of the framing configuration file.
    * @returns {Promise<void>}
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   uploadFramingConfig(config: JSON): Promise<void>;
 }

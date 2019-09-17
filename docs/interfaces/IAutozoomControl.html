@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>IAutozoomCtl</li>
+  <li>IAutozoomControl</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -64,7 +64,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/interfaces/IAutozoomCtl.ts</code>
+            <code>src/interfaces/IAutozoomControl.ts</code>
         </p>
 
             <p class="comment">
@@ -143,7 +143,7 @@
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/interfaces/IAutozoomCtl.ts:41</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/interfaces/IAutozoomControl.ts:41</a></div>
                             </td>
                         </tr>
 
@@ -223,7 +223,7 @@ Default (5000ms)</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/interfaces/IAutozoomCtl.ts:29</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/interfaces/IAutozoomControl.ts:29</a></div>
                             </td>
                         </tr>
 
@@ -302,7 +302,7 @@ the network to load into the camera after having enabled autozoom.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/interfaces/IAutozoomCtl.ts:18</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/interfaces/IAutozoomControl.ts:18</a></div>
                             </td>
                         </tr>
 
@@ -352,7 +352,7 @@ otherwise it rejects with a rejection message!</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/interfaces/IAutozoomCtl.ts:49</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/interfaces/IAutozoomControl.ts:49</a></div>
                             </td>
                         </tr>
 
@@ -399,7 +399,7 @@ false if disabled.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/interfaces/IAutozoomCtl.ts:79</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="79" class="link-to-prism">src/interfaces/IAutozoomControl.ts:79</a></div>
                             </td>
                         </tr>
 
@@ -446,7 +446,7 @@ of autozoom feature.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/interfaces/IAutozoomCtl.ts:60</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="60" class="link-to-prism">src/interfaces/IAutozoomControl.ts:60</a></div>
                             </td>
                         </tr>
 
@@ -489,7 +489,7 @@ need to call the <code>enable</code> method.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/interfaces/IAutozoomCtl.ts:71</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/interfaces/IAutozoomControl.ts:71</a></div>
                             </td>
                         </tr>
 
@@ -521,7 +521,7 @@ need to call the <code>disable</code> method.</p>
     </div>
 
     <div class="tab-pane fade " id="c-readme">
-        <p><h2 id="how-to-use-the-autozoom-controller-interface">How to use the autozoom controller interface</h2>
+        <p><h2 id="how-to-use-the-autozoom-control-interface">How to use the autozoom control interface</h2>
 <p>Below you can find an example on how to get started with autozoom (Genius Framing) on IQ. Follow the steps below for configuring the autozoom feature on the camera.</p>
 <div><pre class="line-numbers"><code class="language-javascript">/**
  * We suppose that the SDK has been initialized previously
@@ -530,11 +530,11 @@ need to call the <code>disable</code> method.</p>
  */
 
 /**
- * Get an autozoom controller instance from the initialized camera manager.
- * For custom autozoom, `getAutozoomCtl` accepts some options which are
- * documented on the `IAutozoomCtlOpts` interface.
+ * Get an autozoom control instance from the initialized camera manager.
+ * For custom autozoom, `getAutozoomControl` accepts some options which are
+ * documented on the `IAutozoomControlOpts` interface.
  */
-const autozoomCtl = cameraManager.getAutozoomCtl();
+const autozoomCtl = cameraManager.getAutozoomControl();
 
 // Always call init before doing anything
 await autozoomCtl.init();
@@ -556,14 +556,14 @@ await autozoomCtl.start();
 
 /**
  * You can call `stop` on autozoom controller class to stop autozom feature.
- * Keep in mind, `stop` is not persistent across camera boot 
+ * Keep in mind, `stop` is not persistent across camera boot
  */
 await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribing for detection and/or framing events you need to use the <a href="http://developer.huddly.com/interfaces/IDetector.html">Detector</a> class.</p>
 </p>
     </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface IAutozoomCtl {
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface IAutozoomControl {
   /**
    * Convenience function for setting up the camera
    * for starting/stopping autozoom (genius framing).
@@ -572,7 +572,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    * @returns {Promise&lt;any&gt;} Returns a promise which
    * resolves in case the autozoom init is completed
    * otherwise it rejects with a rejection message!
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   init(): Promise&lt;any&gt;;
 
@@ -583,7 +583,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    * @param {number} [idleTimeMs&#x3D;5000] The amount of milliseconds to wait for
    * the network to load into the camera after having enabled autozoom.
    * @returns {Promise&lt;void&gt;} A void function.
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   enable(idleTimeMs?: number): Promise&lt;void&gt;;
 
@@ -595,7 +595,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    * the network to unload on the camera after having disabled autozoom.
    * Default (5000ms)
    * @returns {Promise&lt;void&gt;} A void function.
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   disable(idleTimeMs?: number): Promise&lt;void&gt;;
 
@@ -614,7 +614,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    * NOTE: For persistent enable of autozoom feature you
    * need to call the &#x60;enable&#x60; method.
    *
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   start(): Promise&lt;void&gt;;
 
@@ -625,7 +625,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    * need to call the &#x60;disable&#x60; method.
    *
    * @returns {Promise&lt;void&gt;} A void function.
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   stop(): Promise&lt;void&gt;;
 
@@ -644,7 +644,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    *
    * @param {Buffer} blobBuffer The Cnn blob as a Buffer
    * @returns {Promise&lt;void&gt;}
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   uploadBlob(blobBuffer: Buffer): Promise&lt;void&gt;;
 
@@ -654,7 +654,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    *
    * @param {JSON} config JSON representation of the detector configuration file.
    * @returns {Promise&lt;void&gt;}
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   setDetectorConfig(config: JSON): Promise&lt;void&gt;;
 
@@ -664,7 +664,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
    *
    * @param {JSON} config JSON representation of the framing configuration file.
    * @returns {Promise&lt;void&gt;}
-   * @memberof IAutozoomCtl
+   * @memberof IAutozoomControl
    */
   uploadFramingConfig(config: JSON): Promise&lt;void&gt;;
 }
@@ -694,7 +694,7 @@ await detector.stop();</code></pre></div><p><strong>NOTE</strong>: For subscribi
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'IAutozoomCtl.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IAutozoomControl.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

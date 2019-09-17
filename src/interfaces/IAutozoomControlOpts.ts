@@ -1,9 +1,9 @@
 /**
- * Options used for autozoom controller class
+ * Options used for autozoom control class
  *
- * @interface DetectorOpts
+ * @interface AutozoomControlOpts
  */
-export default interface AutozoomCtlOpts {
+export default interface AutozoomControlOpts {
   /**
    * Configure autozoom without doing auto
    * framing. With this option set to true,
@@ -12,7 +12,7 @@ export default interface AutozoomCtlOpts {
    * not done on the camera any more.
    *
    * @type {Boolean}
-   * @memberof DetectorOpts
+   * @memberof AutozoomControlOpts
    */
   shouldAutoFrame?: boolean;
 }

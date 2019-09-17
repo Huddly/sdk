@@ -37,7 +37,6 @@
   <a href="https://img.shields.io/david/dev/Huddly/sdk"><img src="https://img.shields.io/david/dev/Huddly/sdk.svg" alt="npm devDependencies"></a>
   <a href="https://npmcharts.com/compare/@huddly/sdk?minimal=true"><img src="https://img.shields.io/npm/dm/@huddly/sdk.svg?style=flat" alt="NPM Downloads"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT badge"></a>
-  <a href="https://badges.greenkeeper.io/greenkeeperio/badges.svg"><img src="https://badges.greenkeeper.io/Huddly/sdk.svg" alt="Greenkeeper badge"></a>
   <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen badge"></a>
 </p>
 
@@ -81,7 +80,7 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <ul>
 <li><a href="http://developer.huddly.com/classes/HuddlySdk.html">SDK</a></li>
 <li><a href="http://developer.huddly.com/interfaces/IDeviceManager.html">IDeviceManager</a></li>
-<li><a href="http://developer.huddly.com/interfaces/IAutozoomCtl.html">Autozoom Controller</a></li>
+<li><a href="http://developer.huddly.com/interfaces/IAutozoomControl.html">Autozoom Controller</a></li>
 <li><a href="http://developer.huddly.com/interfaces/IDetector.html">Detector</a></li>
 </ul>
 <h2 id="repo">Repo</h2>
@@ -93,13 +92,15 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <h3 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera-">How can i disable autoframing and still get detection information from camera?</h3>
 <p>  Another available detector configuration is the <code>shouldAutoFrame</code> option which when set to false, it allows you to configure Genius Framing to send detection data without autoframing.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ shouldAutoFrame: false });</code></pre></div><p>  By default, the detector is configured to run autoframing and generate detection information.</p>
-<h3 id="the-camera-is-never-attached-or-throwing-an-error">The camera is never attached, or throwing an Error</h3>
-<p>  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.</p>
-<h3 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq-">LED light is ON, but I am not streaming with my Huddly IQ!</h3>
-<p>  After <strong>v0.4.0</strong>, SDK comes with a new feature ragarding the way you get detection data from the camera. On this version (and onward) the default behavior of detector is starting an internal stream (controlled by the camera only) to give you detection information. As a result the LED light is turned ON. Proper tearing down of the detector instance will stop the internal stream on the camera and with it the LED light.</p>
 <h3 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-iq-">How do I get detections only when I am streaming with my Huddly IQ!</h3>
 <p>  If you want to get detection data only when the camera is streaming on the host machine, you need to configure the detector class with the <code>DOWS</code> option.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ DOWS: true });</code></pre></div><p>  This option makes it possible to configure the detector so that you only get detection data when you are streaming on host machine. By default, this option set to <code>false</code> so that you don&#39;t have to stream to get detection data.</p>
+<h3 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq-">LED light is ON, but I am not streaming with my Huddly IQ!</h3>
+<p>  After <strong>v0.4.0</strong>, SDK comes with a new feature ragarding the way you get detection data from the camera. On this version (and onward) the default behavior of detector is starting an internal stream (controlled by the camera only) to give you detection information. As a result the LED light is turned ON. Proper tearing down of the detector instance will stop the internal stream on the camera and with it the LED light.</p>
+<h3 id="the-camera-is-never-attached-or-throwing-an-error">The camera is never attached, or throwing an Error</h3>
+<p>  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.</p>
+<h3 id="transition-from-0-3-to-0-4-0">Transition from 0.3.* to 0.4.0</h3>
+<p>  The transition from 0.3.* to 0.4.0 involves breaking changes with regards to Genius Framing configuration and detection data retrival. The breaking change is that we have moved the configuraion part of GeniusFraming (autozoom) into a separate interface that we called <a href="http://developer.huddly.com/interfaces/IAutozoomControl.html#readme">AutozoomControl</a>. The autozoom configuration methods <code>enable</code>, <code>disable</code>, <code>start</code> and <code>stop</code> which used to live in the detector interface are now moved to the new <code>AutozoomControl</code> interface. On the other hand, the <a href="https://developer.huddly.com/interfaces/IDetector.html#readme">Detector</a> interace remains responsible for only setting up events for getting detection and framing data from the camera. Have a look at the documentation of each interface to see usage examples.</p>
 
 
 

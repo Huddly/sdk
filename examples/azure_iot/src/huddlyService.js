@@ -34,7 +34,7 @@ class HuddlyService {
     this.huddlySdk = new HuddlySdk(new DeviceApiUsb(), null, {
       logger: this.logger
     });
-    
+
     this.huddlySdk.on(CameraEvents.ATTACH, async (deviceManager) => {
       try {
         const cameraInfo = await deviceManager.getInfo();
@@ -42,10 +42,10 @@ class HuddlyService {
         this.logger.info(`Camera attached with serial number ${deviceId}`)
 
         const roomName = process.env.ROOM_NAME || os.hostname;
-    
+
         const eventHandler = new EventHandler(deviceId, roomName);
         await eventHandler.init();
-        this.autozoomCtl = deviceManager.getAutozoomCtl();
+        this.autozoomCtl = deviceManager.getAutozoomControl();
         await this.autozoomCtl.init();
         await this.autozoomCtl.start();
         this.detector = await deviceManager.getDetector({
@@ -63,7 +63,7 @@ class HuddlyService {
     });
     this.huddlySdk.init();
   }
-  
+
   stop() {
     if (this.detector) {
       this.detector.destroy();
