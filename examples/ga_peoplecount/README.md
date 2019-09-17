@@ -23,7 +23,7 @@ async function init() {
   await sdk.init();
 
   sdk.on('ATTACH', async (cameraManager) => {
-    const autozoomCtl = cameraManager.getAutozoomCtl();
+    const autozoomCtl = cameraManager.getAutozoomControl();
     // Make sure that autozoom (genius framing is started)
     await autozoomCtl.init();
     await autozoomCtl.start();
@@ -54,7 +54,7 @@ const sdk = new HuddlySdk(usbApi, [usbApi]);
 await sdk.init();
 
 sdk.on('ATTACH', async (cameraManager) => {
-  const autozoomCtl = cameraManager.getAutozoomCtl();
+  const autozoomCtl = cameraManager.getAutozoomControl();
   await autozoomCtl.init();
   await autozoomCtl.start();
 });
@@ -154,7 +154,7 @@ async function init() {
   await sdk.init();
 
   sdk.on('ATTACH', async (cameraManager) => {
-    const autozoomCtl = cameraManager.getAutozoomCtl();
+    const autozoomCtl = cameraManager.getAutozoomControl();
     // Make sure that autozoom (genius framing is started)
     await autozoomCtl.init();
     await autozoomCtl.start();
@@ -196,11 +196,3 @@ We want to create a report that calculates the average number of people in our m
 
 ## Check out your Dashboard
 You should now have tracking data coming in, and you can select different date ranges for your report.
-
-## NB!
-### I'm not getting any detections:
-  Make sure that you're streaming from the camera, pick any video application and select HUDDLY IQ, you should start getting in detections.
-
-### Detections without streaming on a video applications?
-It is possible to configure the detector in a way that you still get detection events even though you are not occupying the camera stream on the host machine. Please
-have a look at the `IDetector` interface documentation and the Readme file to find out how this is done!

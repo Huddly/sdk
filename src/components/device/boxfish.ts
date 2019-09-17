@@ -15,9 +15,9 @@ import { EventEmitter } from 'events';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import InterpolationParams from './../../interfaces/InterpolationParams';
-import AutozoomCtlOpts from './../../interfaces/IAutozoomCtlOpts';
-import IAutozoomCtl from './../../interfaces/IAutozoomCtl';
-import AutozoomCtl from './../autozoomCtl';
+import AutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
+import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import AutozoomControl from '../autozoomControl';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
@@ -238,8 +238,8 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       }
   }
 
-  getAutozoomCtl(opts: AutozoomCtlOpts): IAutozoomCtl {
-    return new AutozoomCtl(this, this.logger, opts);
+  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl {
+    return new AutozoomControl(this, this.logger, opts);
   }
 
   getDetector(opts?: DetectorOpts): IDetector {

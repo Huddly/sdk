@@ -2,8 +2,8 @@ import IDeviceManager from './../../src/interfaces/iDeviceManager';
 import IDeviceUpgrader from './../../src/interfaces/IDeviceUpgrader';
 import UpgradeOpts from './../../src/interfaces/IUpgradeOpts';
 import IDetector from './../../src/interfaces/IDetector';
-import IAutozoomCtl from './../../src/interfaces//IAutozoomCtl';
-import AutozoomCtlOpts from './../../src/interfaces//IAutozoomCtlOpts';
+import IAutozoomControl from '../../src/interfaces/IAutozoomControl';
+import AutozoomControlOpts from '../../src/interfaces/IAutozoomControlOpts';
 import DetectorOpts from './../../src//interfaces/IDetectorOpts';
 import { DiagnosticsMessage } from './../../src//components/diagnosticsMessage';
 
@@ -40,7 +40,7 @@ export default class DeviceManagerMock implements IDeviceManager {
   reboot(mode?: string): Promise<void> { return Promise.resolve(); }
   getUpgrader(): Promise<IDeviceUpgrader> { return Promise.resolve(undefined); }
   upgrade(opts: UpgradeOpts): Promise<any> { return Promise.resolve({}); }
-  getAutozoomCtl(opts: AutozoomCtlOpts): IAutozoomCtl { return undefined; }
+  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl { return undefined; }
   getDetector(opts: DetectorOpts): IDetector { return undefined; }
   getDiagnostics(): Promise<Array<DiagnosticsMessage>> { return Promise.resolve([]); }
   getState(): Promise<any> { return Promise.resolve(); }
