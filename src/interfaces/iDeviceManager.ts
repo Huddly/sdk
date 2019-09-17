@@ -1,11 +1,11 @@
 import ITransport from './iTransport';
 import Api from './../components/api';
 import IDeviceUpgrader from './IDeviceUpgrader';
-import IAutozoomCtl from './IAutozoomCtl';
+import IAutozoomControl from './IAutozoomControl';
 import IDetector from './IDetector';
 import UpgradeOpts from './IUpgradeOpts';
 import DetectorOpts from './IDetectorOpts';
-import AutozoomCtlOpts from './IAutozoomCtlOpts';
+import AutozoomControlOpts from './IAutozoomControlOpts';
 import { DiagnosticsMessage } from '../components/diagnosticsMessage';
 
 /**
@@ -124,14 +124,14 @@ export default interface IDeviceManager {
   upgrade(opts: UpgradeOpts): Promise<any>;
 
   /**
-   * Get a new instance of `AutozoomCtl` controller class which allows
+   * Get a new instance of `AutozoomControl` controller class which allows
    * you to configure the autozoom (genius framing) on the camera.
    *
-   * @param {AutozoomCtlOpts} opts AutozoomCtl options
-   * @returns {IAutozoomCtl} Returns a new instance of `AutozoomCtl` class.
+   * @param {AutozoomControlOpts} opts AutozoomControl options
+   * @returns {IAutozoomControl} Returns a new instance of `IAutozoomControl` class.
    * @memberof IDeviceManager
    */
-  getAutozoomCtl(opts: AutozoomCtlOpts): IAutozoomCtl;
+  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl;
 
   /**
    * Get a new instance of the `Detector` class which allows

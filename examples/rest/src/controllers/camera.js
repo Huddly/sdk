@@ -60,7 +60,7 @@ function setupFramerListener() {
 
 async function startAutozoom() {
   if (!autozoomCtl) {
-    autozoomCtl = cameraManager.getAutozoomCtl();
+    autozoomCtl = cameraManager.getAutozoomControl();
     await autozoomCtl.init();
   }
 

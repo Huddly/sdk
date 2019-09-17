@@ -115,7 +115,7 @@
                                     <a href="#eraseErrorLog">eraseErrorLog</a>
                                 </li>
                                 <li>
-                                    <a href="#getAutozoomCtl">getAutozoomCtl</a>
+                                    <a href="#getAutozoomControl">getAutozoomControl</a>
                                 </li>
                                 <li>
                                     <a href="#getDetector">getDetector</a>
@@ -290,18 +290,18 @@ in case it takes longer than expected.</p>
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="getAutozoomCtl"></a>
+                        <a name="getAutozoomControl"></a>
                         <span class="name">
                             <b>
-                            getAutozoomCtl
+                            getAutozoomControl
                             </b>
-                            <a href="#getAutozoomCtl"><span class="icon ion-ios-link"></span></a>
+                            <a href="#getAutozoomControl"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-<code>getAutozoomCtl(opts: <a href="../interfaces/AutozoomCtlOpts.html">AutozoomCtlOpts</a>)</code>
+<code>getAutozoomControl(opts: <a href="../interfaces/AutozoomControlOpts.html">AutozoomControlOpts</a>)</code>
                     </td>
                 </tr>
 
@@ -315,7 +315,7 @@ in case it takes longer than expected.</p>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Get a new instance of <code>AutozoomCtl</code> controller class which allows
+                            <div class="io-description"><p>Get a new instance of <code>AutozoomControl</code> controller class which allows
 you to configure the autozoom (genius framing) on the camera.</p>
 </div>
 
@@ -334,7 +334,7 @@ you to configure the autozoom (genius framing) on the camera.</p>
                                                 <tr>
                                                         <td>opts</td>
                                                         <td>
-                                                                    <code><a href="../interfaces/AutozoomCtlOpts.html" target="_self" >AutozoomCtlOpts</a></code>
+                                                                    <code><a href="../interfaces/AutozoomControlOpts.html" target="_self" >AutozoomControlOpts</a></code>
                                                         </td>
                                                     
                                                     <td>
@@ -343,7 +343,7 @@ you to configure the autozoom (genius framing) on the camera.</p>
                                                     
 
                                                         <td>
-                                                                <p>AutozoomCtl options</p>
+                                                                <p>AutozoomControl options</p>
 
                                                         </td>
                                                 </tr>
@@ -353,11 +353,11 @@ you to configure the autozoom (genius framing) on the camera.</p>
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/IAutozoomCtl.html" target="_self" >IAutozoomCtl</a></code>
+                                <b>Returns : </b>    <code><a href="../interfaces/IAutozoomControl.html" target="_self" >IAutozoomControl</a></code>
 
                             </div>
                                 <div class="io-description">
-                                    <p>Returns a new instance of <code>AutozoomCtl</code> class.</p>
+                                    <p>Returns a new instance of <code>IAutozoomControl</code> class.</p>
 
                                 </div>
                     </td>
@@ -1153,11 +1153,11 @@ the device such as Zoom, Pan, Tilt, Brightness etc.</p>
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ITransport from &#x27;./iTransport&#x27;;
 import Api from &#x27;./../components/api&#x27;;
 import IDeviceUpgrader from &#x27;./IDeviceUpgrader&#x27;;
-import IAutozoomCtl from &#x27;./IAutozoomCtl&#x27;;
+import IAutozoomControl from &#x27;./IAutozoomControl&#x27;;
 import IDetector from &#x27;./IDetector&#x27;;
 import UpgradeOpts from &#x27;./IUpgradeOpts&#x27;;
 import DetectorOpts from &#x27;./IDetectorOpts&#x27;;
-import AutozoomCtlOpts from &#x27;./IAutozoomCtlOpts&#x27;;
+import AutozoomControlOpts from &#x27;./IAutozoomControlOpts&#x27;;
 import { DiagnosticsMessage } from &#x27;../components/diagnosticsMessage&#x27;;
 
 /**
@@ -1276,14 +1276,14 @@ export default interface IDeviceManager {
   upgrade(opts: UpgradeOpts): Promise&lt;any&gt;;
 
   /**
-   * Get a new instance of &#x60;AutozoomCtl&#x60; controller class which allows
+   * Get a new instance of &#x60;AutozoomControl&#x60; controller class which allows
    * you to configure the autozoom (genius framing) on the camera.
    *
-   * @param {AutozoomCtlOpts} opts AutozoomCtl options
-   * @returns {IAutozoomCtl} Returns a new instance of &#x60;AutozoomCtl&#x60; class.
+   * @param {AutozoomControlOpts} opts AutozoomControl options
+   * @returns {IAutozoomControl} Returns a new instance of &#x60;IAutozoomControl&#x60; class.
    * @memberof IDeviceManager
    */
-  getAutozoomCtl(opts: AutozoomCtlOpts): IAutozoomCtl;
+  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl;
 
   /**
    * Get a new instance of the &#x60;Detector&#x60; class which allows
