@@ -67,7 +67,7 @@ async function init() {
   await sdk.init();
 
   sdk.on(&#39;ATTACH&#39;, async (cameraManager) =&gt; {
-    const autozoomCtl = cameraManager.getAutozoomCtl();
+    const autozoomCtl = cameraManager.getAutozoomControl();
     // Make sure that autozoom (genius framing is started)
     await autozoomCtl.init();
     await autozoomCtl.start();
@@ -94,7 +94,7 @@ const sdk = new HuddlySdk(usbApi, [usbApi]);
 await sdk.init();
 
 sdk.on(&#39;ATTACH&#39;, async (cameraManager) =&gt; {
-  const autozoomCtl = cameraManager.getAutozoomCtl();
+  const autozoomCtl = cameraManager.getAutozoomControl();
   await autozoomCtl.init();
   await autozoomCtl.start();
 });</code></pre></div><p>Then we get an instance of te detector class, initialize it and setup the detection listener so we get a detection events.</p>
@@ -161,7 +161,7 @@ async function init() {
   await sdk.init();
 
   sdk.on(&#39;ATTACH&#39;, async (cameraManager) =&gt; {
-    const autozoomCtl = cameraManager.getAutozoomCtl();
+    const autozoomCtl = cameraManager.getAutozoomControl();
     // Make sure that autozoom (genius framing is started)
     await autozoomCtl.init();
     await autozoomCtl.start();

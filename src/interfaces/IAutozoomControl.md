@@ -1,4 +1,4 @@
-## How to use the autozoom controller interface
+## How to use the autozoom control interface
 
 Below you can find an example on how to get started with autozoom (Genius Framing) on IQ. Follow the steps below for configuring the autozoom feature on the camera.
 ```javascript
@@ -9,11 +9,11 @@ Below you can find an example on how to get started with autozoom (Genius Framin
  */
 
 /**
- * Get an autozoom controller instance from the initialized camera manager.
- * For custom autozoom, `getAutozoomCtl` accepts some options which are
- * documented on the `IAutozoomCtlOpts` interface.
+ * Get an autozoom control instance from the initialized camera manager.
+ * For custom autozoom, `getAutozoomControl` accepts some options which are
+ * documented on the `IAutozoomControlOpts` interface.
  */
-const autozoomCtl = cameraManager.getAutozoomCtl();
+const autozoomCtl = cameraManager.getAutozoomControl();
 
 // Always call init before doing anything
 await autozoomCtl.init();
@@ -35,7 +35,7 @@ await autozoomCtl.start();
 
 /**
  * You can call `stop` on autozoom controller class to stop autozom feature.
- * Keep in mind, `stop` is not persistent across camera boot 
+ * Keep in mind, `stop` is not persistent across camera boot
  */
 await detector.stop();
 ```

@@ -6,7 +6,7 @@ const huddlySdk = new HuddlySdk(new DeviceApiUsb());
 
 huddlySdk.on(CameraEvents.ATTACH, async (deviceManager) => {
   this.deviceManager = deviceManager;
-  this.autozoomCtl = this.deviceManager.getAutozoomCtl();
+  this.autozoomCtl = this.deviceManager.getAutozoomControl();
   await this.autozoomCtl.init();
   await this.autozoomCtl.start();
   this.detector = this.deviceManager.getDetector();
