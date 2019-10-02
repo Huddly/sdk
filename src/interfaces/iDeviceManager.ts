@@ -1,13 +1,10 @@
 import ITransport from './iTransport';
 import Api from './../components/api';
 import IDeviceUpgrader from './IDeviceUpgrader';
-import IAutozoomControl from './IAutozoomControl';
 import IDetector from './IDetector';
 import UpgradeOpts from './IUpgradeOpts';
 import DetectorOpts from './IDetectorOpts';
-import AutozoomControlOpts from './IAutozoomControlOpts';
 import { DiagnosticsMessage } from '../components/diagnosticsMessage';
-import ReleaseChannel from './ReleaseChannelEnum';
 
 /**
  * Interface used for performing actions on the camera.
@@ -125,22 +122,9 @@ export default interface IDeviceManager {
   upgrade(opts: UpgradeOpts): Promise<any>;
 
   /**
-   * Get a new instance of `AutozoomControl` controller class which allows
-   * you to configure the autozoom (genius framing) on the camera.
-   *
-   * @param {AutozoomControlOpts} opts AutozoomControl options
-   * @returns {IAutozoomControl} Returns a new instance of `IAutozoomControl` class.
-   * @memberof IDeviceManager
-   */
-  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl;
-
-  /**
-   * Get a new instance of the `Detector` class which allows
-   * you to subscribe to detection and framing events generated
-   * from the camera.
-   *
+   * Returns a new instance of the Detector class.
    * @param {DetectorOpts} opts Detector options
-   * @returns {IDetector} Returns a new instance of the `Detector` class.
+   * @returns {IDetector} Returns a new instance of the Detector class.
    * @memberof HuddlySdk
    */
   getDetector(opts: DetectorOpts): IDetector;
@@ -175,15 +159,4 @@ export default interface IDeviceManager {
    * @memberof IDeviceManager
    */
   getTemperature(): Promise<any>;
-
-  /**
-   * Queries the Huddly release server to find out the url
-   * to the latest firmware release for the specific device
-   * type (IQ, GO).
-   *
-   * @param {ReleaseChannel} releaseChannel The firmware release
-   * channel.
-   * @memberof IDeviceManager
-   */
-  getLatestFirmwareUrl(releaseChannel: ReleaseChannel);
 }

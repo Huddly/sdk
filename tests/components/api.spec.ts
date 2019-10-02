@@ -1,13 +1,12 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import * as msgpack from 'msgpack-lite';
-import nock from 'nock';
 import Api from './../../src/components/api';
 import Locksmith from './../../src/components/locksmith';
+import * as msgpack from 'msgpack-lite';
 import ITransport from './../../src/interfaces/iTransport';
 import DefaultLogger from './../../src/utilitis/logger';
-import ReleaseChannel from './../../src/interfaces/ReleaseChannelEnum';
+
 
 chai.should();
 chai.use(sinonChai);
@@ -492,111 +491,6 @@ describe('API', () => {
         receive: 'autozoom/status_reply'
       });
       expect(status).to.equals('enabled');
-    });
-  });
-
-  describe('#getLatestFirmwareUrl', () => {
-    describe('on 204 status code', () => {
-      beforeEach(() => {
-        nock('http://huddlyreleaseserver.azurewebsites.net')
-        .get('/releases/stable/latest/iq')
-        .reply(204);
-      });
-      it('should reject with NO_UPDATE_AVAILABLE when response status code is 204', () =>
-        api.getLatestFirmwareUrl('iq', ReleaseChannel.STABLE)
-        .should.be.rejectedWith('There are no available firmware packages for this this channel')
-      );
-    });
-    describe('on request error', () => {
-      beforeEach(() => {
-        nock('http://huddlyreleaseserver.azurewebsites.net')
-        .get('/releases/stable/latest/iq')
-        .replyWithError('FAILED');
-      });
-      it('should reject when the response contains error message', async () => {
-        try {
-          await api.getLatestFirmwareUrl('iq', ReleaseChannel.STABLE);
-          throw new Error('Request should fail, but it passed!');
-        } catch (e) {
-          expect(e.message).to.be.equal('Request error!\n Error: FAILED');
-        }
-      });
-    });
-
-    describe('on 404 status code', () => {
-      beforeEach(() => {
-        nock('http://huddlyreleaseserver.azurewebsites.net')
-        .get('/releases/stable/latest/iq')
-        .reply(404);
-      });
-      it('should reject with 404', () =>
-        api.getLatestFirmwareUrl('iq', ReleaseChannel.STABLE)
-        .should.be.rejectedWith('Failed performing a request to Huddly release server!\nStatus Code: 404')
-      );
-    });
-
-    describe('on non json content type', () => {
-      beforeEach(() => {
-        nock('http://huddlyreleaseserver.azurewebsites.net')
-          .defaultReplyHeaders({
-            'Content-Type': 'application/xml',
-          })
-          .get('/releases/stable/latest/iq')
-          .reply(200);
-      });
-      it('should reject content type error message', () =>
-        api.getLatestFirmwareUrl('iq', ReleaseChannel.STABLE)
-          .should.be.rejectedWith('Invalid content-type.\nExpected application/json but received application/xml')
-      );
-    });
-
-    describe('on get IQ firmware url', () => {
-      describe('on empty url_hpk key', () => {
-        beforeEach(() => {
-          nock('http://huddlyreleaseserver.azurewebsites.net')
-          .get('/releases/stable/latest/iq')
-          .reply(200, { version: '1.1.2' });
-        });
-
-        it('should reject when json cant be parsed', async () => {
-          try {
-            await api.getLatestFirmwareUrl('iq', ReleaseChannel.STABLE);
-            throw new Error('Request should fail, but it passed!');
-          } catch (e) {
-            expect(e.message).to.be.equal('JSON content does not contain \'url_hpk\' key!');
-          }
-        });
-      });
-
-      describe('on valid json body', () => {
-        beforeEach(() => {
-          nock('http://huddlyreleaseserver.azurewebsites.net')
-          .get('/releases/stable/latest/iq')
-          .reply(200, { url_hpk: 'test', version: '1.1.2' });
-        });
-
-        it('should download the firmware on the given url specified in url_hpk key', async () => {
-          const url = await api.getLatestFirmwareUrl('iq', ReleaseChannel.STABLE);
-          expect(url).to.equals('test');
-        });
-      });
-    });
-
-    describe('on get GO firmware url', () => {
-      beforeEach(() => {
-        nock('http://huddlyreleaseserver.azurewebsites.net')
-          .get('/releases/stable/latest/go')
-          .reply(200, { hpk_url: '123', version: '1.1.2' });
-      });
-
-      it('should reject when json body does not contain "url" key', async () => {
-        try {
-          await api.getLatestFirmwareUrl('go', ReleaseChannel.STABLE);
-          throw new Error('Request should fail, but it passed!');
-        } catch (e) {
-          expect(e.message).to.be.equal('JSON content does not contain \'url\' key!');
-        }
-      });
     });
   });
 });

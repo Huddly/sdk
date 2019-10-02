@@ -14,6 +14,6 @@ Stops detector and genius framing, after this you can no longer poll detections.
 
 ```json
 {
-    "status": "Autozoom stopped and unsubscribed from detection events!"
+    "status": "Autozoom stopped!"
 }
 ```

@@ -113,13 +113,7 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse" ${ isNormalMode ? ' id="interfaces-links"' : 'id="xs-interfaces-links"' }>
                             <li class="link">
-                                <a href="interfaces/AutozoomControlOpts.html" data-type="entity-link">AutozoomControlOpts</a>
-                            </li>
-                            <li class="link">
                                 <a href="interfaces/DetectorOpts.html" data-type="entity-link">DetectorOpts</a>
-                            </li>
-                            <li class="link">
-                                <a href="interfaces/IAutozoomControl.html" data-type="entity-link">IAutozoomControl</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/IDetector.html" data-type="entity-link">IDetector</a>

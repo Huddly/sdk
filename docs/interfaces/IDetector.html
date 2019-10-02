@@ -89,10 +89,25 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#destroy">destroy</a>
+                                    <a href="#detectorStart">detectorStart</a>
+                                </li>
+                                <li>
+                                    <a href="#detectorStop">detectorStop</a>
+                                </li>
+                                <li>
+                                    <a href="#disable">disable</a>
+                                </li>
+                                <li>
+                                    <a href="#enable">enable</a>
                                 </li>
                                 <li>
                                     <a href="#init">init</a>
+                                </li>
+                                <li>
+                                    <a href="#isEnabled">isEnabled</a>
+                                </li>
+                                <li>
+                                    <a href="#isRunning">isRunning</a>
                                 </li>
                                 <li>
                                     <a href="#on">on</a>
@@ -101,10 +116,10 @@
                                     <a href="#once">once</a>
                                 </li>
                                 <li>
-                                    <a href="#removeAllListeners">removeAllListeners</a>
+                                    <a href="#start">start</a>
                                 </li>
                                 <li>
-                                    <a href="#removeListener">removeListener</a>
+                                    <a href="#stop">stop</a>
                                 </li>
                             </ul>
                         </td>
@@ -122,39 +137,244 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="destroy"></a>
+                        <a name="detectorStart"></a>
                         <span class="name">
                             <b>
-                            destroy
+                            detectorStart
                             </b>
-                            <a href="#destroy"><span class="icon ion-ios-link"></span></a>
+                            <a href="#detectorStart"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-<code>destroy()</code>
+<code>detectorStart()</code>
                     </td>
                 </tr>
 
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/interfaces/IDetector.ts:28</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/interfaces/IDetector.ts:74</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>This function takes care of appropriately tearing down the
-detector instance by unregistering all previously setup
-subscriptions. In case the detector has been configured
-to generate detection data without streaming main, then
-this method will make sure the camera stops generating
-detection events and stops it&#39;s internal streaming.</p>
+                            <div class="io-description"><p>Starts detector on the camera and subscribes for detections and
+framing information which are emitted by this class with appropriate
+messages. Detections and framing information are retrieved regardless
+whether the host is streaming using a streaming application. Camera
+will start an internal stream for generating detections data.</p>
 </div>
 
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>A void function</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="detectorStop"></a>
+                        <span class="name">
+                            <b>
+                            detectorStop
+                            </b>
+                            <a href="#detectorStop"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>detectorStop()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/interfaces/IDetector.ts:95</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Stops the detector from sending detection and framing
+data to the host.</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>A void function.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="disable"></a>
+                        <span class="name">
+                            <b>
+                            disable
+                            </b>
+                            <a href="#disable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>disable(idleTimeMs?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/interfaces/IDetector.ts:41</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Disables the autozoom feature persistently. The disabled state
+is persistent on camera reboot/power cycle.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>idleTimeMs</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <p>The amount of milliseconds to wait for
+the network to unload on the camera after having disabled autozoom.
+Default (5000ms)</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>A void function.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="enable"></a>
+                        <span class="name">
+                            <b>
+                            enable
+                            </b>
+                            <a href="#enable"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>enable(idleTimeMs?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/interfaces/IDetector.ts:29</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Enables the autozoom feature persistently. The enable state
+is persistent on camera reboot/power cycle.</p>
+</div>
+
+                            <div class="io-description">
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>idleTimeMs</td>
+                                                        <td>
+                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                                        </td>
+                                                    
+                                                    <td>
+                                                            Yes
+                                                    </td>
+                                                    
+
+                                                        <td>
+                                                                <p>The amount of milliseconds to wait for
+the network to load into the camera after having enabled autozoom.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
                             <div>
                             </div>
                             <div class="io-description">
@@ -191,25 +411,122 @@ detection events and stops it&#39;s internal streaming.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="15" class="link-to-prism">src/interfaces/IDetector.ts:15</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="18" class="link-to-prism">src/interfaces/IDetector.ts:18</a></div>
                             </td>
                         </tr>
 
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Convenience function for setting detection and/or
-framing data event listeners.</p>
+                            <div class="io-description"><p>Convenience function for setting up the camera
+for starting/stopping genius framing. Should be
+called before any other methods.</p>
 </div>
 
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
                             </div>
                                 <div class="io-description">
-                                    <p>A void function.</p>
+                                    <p>Returns a promise which
+resolves in case the detector init is completed
+otherwise it rejects with a rejection message!</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isEnabled"></a>
+                        <span class="name">
+                            <b>
+                            isEnabled
+                            </b>
+                            <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>isEnabled()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/interfaces/IDetector.ts:49</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Checks if autozoom is enabled on the camera. Returns true if yes, false if no</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns a promise which resolves to true if autozoom is enabled
+false if disabled.</p>
+
+                                </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="isRunning"></a>
+                        <span class="name">
+                            <b>
+                            isRunning
+                            </b>
+                            <a href="#isRunning"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>isRunning()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/interfaces/IDetector.ts:103</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Checks if autozoom is running on the camera. Returns true if yes, false if no</p>
+</div>
+
+                            <div>
+                            </div>
+                            <div class="io-description">
+                                <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                            </div>
+                                <div class="io-description">
+                                    <p>Returns true if autozoom is running,
+false if autozoom is disabled</p>
 
                                 </div>
                     </td>
@@ -238,7 +555,7 @@ framing data event listeners.</p>
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="39" class="link-to-prism">src/interfaces/IDetector.ts:39</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/interfaces/IDetector.ts:145</a></div>
                             </td>
                         </tr>
 
@@ -332,7 +649,7 @@ detector events together with all the other camera events can be found in the <c
 
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="50" class="link-to-prism">src/interfaces/IDetector.ts:50</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="156" class="link-to-prism">src/interfaces/IDetector.ts:156</a></div>
                             </td>
                         </tr>
 
@@ -384,7 +701,7 @@ the first time the message is emitted from the <code>Detector</code> implementat
                                                     
 
                                                         <td>
-                                                                <p>A callback used to perform actions on the caught event.</p>
+                                                                <p>A callback used to perform actions on the caught event</p>
 
                                                         </td>
                                                 </tr>
@@ -408,95 +725,18 @@ the first time the message is emitted from the <code>Detector</code> implementat
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="removeAllListeners"></a>
+                        <a name="start"></a>
                         <span class="name">
                             <b>
-                            removeAllListeners
+                            start
                             </b>
-                            <a href="#removeAllListeners"><span class="icon ion-ios-link"></span></a>
+                            <a href="#start"><span class="icon ion-ios-link"></span></a>
                         </span>
                     </td>
                 </tr>
                 <tr>
                     <td class="col-md-4">
-<code>removeAllListeners(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="71" class="link-to-prism">src/interfaces/IDetector.ts:71</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>EventEmitter <code>removeAllListeners</code> method. Unregisters all event
-listeners setup on the given message name.</p>
-</div>
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>message</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                        <td>
-                                                                <p>The message used to setup the listeners</p>
-
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="removeListener"></a>
-                        <span class="name">
-                            <b>
-                            removeListener
-                            </b>
-                            <a href="#removeListener"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>removeListener(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, callbackFn: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>start()</code>
                     </td>
                 </tr>
 
@@ -510,67 +750,66 @@ listeners setup on the given message name.</p>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>EventEmitter <code>removeListener</code> method. Unregisters any event listeners
-setup on the detector class (that is either the detection or framing
-data event listeners).</p>
+                            <div class="io-description"><p>Start autozoom feature on the camera and subscribes for detections
+and framing information which are then emitted by this class with
+appropriate messages. Detections and framing information are retrieved
+only when user is streaming using a streaming application.</p>
+<p>NOTE: For persistent enable of autozoom feature you
+need to call the <code>enable</code> method.</p>
 </div>
 
                             <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>message</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
-                                                        <td>
-                                                                <p>The message used to setup the listener</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>callbackFn</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                        <td>
-                                                                <p>The callback function used to perform actions
-on the caught event.</p>
-
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
                             </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="stop"></a>
+                        <span class="name">
+                            <b>
+                            stop
+                            </b>
+                            <a href="#stop"><span class="icon ion-ios-link"></span></a>
+                        </span>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+<code>stop()</code>
+                    </td>
+                </tr>
+
+
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="86" class="link-to-prism">src/interfaces/IDetector.ts:86</a></div>
+                            </td>
+                        </tr>
+
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Stops genius framing on the camera and unregisters
+the listeners for detection and framing information.</p>
+<p>NOTE: For persistent disable of autozoom feature you
+need to call the <code>disable</code> method.</p>
+</div>
+
                             <div>
                             </div>
                             <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                             </div>
                                 <div class="io-description">
-                                    
+                                    <p>A void function.</p>
+
                                 </div>
                     </td>
                 </tr>
@@ -583,27 +822,20 @@ on the caught event.</p>
 
     <div class="tab-pane fade " id="c-readme">
         <p><h2 id="how-to-use-the-detector-interface-">How to use the detector interface!</h2>
-<p>In order to use the detector interface you need to make sure that the autozoom feature is enabled on the camera (see the <a href="http://developer.huddly.com/interfaces/IAutozoomControl.html">IAutozoomControl</a> interface for documentation on how to do it).</p>
-<p>The detector interface allows you to subscribe to detection and/or framing data from the camera. From version 0.4.0 we support getting detection data from Detector without having to stream the camera on the host machine. <strong>NOTE</strong> that this is the default behavior now. It is still possible to get detections the old way, where you only get detection when streaming the camera on the host machine. We show you below how to do that!</p>
+<p>Below you can find an example on how to get started with Genius Framing on IQ. Follow the steps below for configuring Genius Framing on the camera
+and subscribing for detection and framing information!</p>
 <div><pre class="line-numbers"><code class="language-javascript">/* 
-We suppose that the sdk has been initialized and autozoom feature is enabled
-and running.
+We suppose that the SDK has been initialized previously
+and the camera is attached and an instance of IDeviceManager
+is created!
 */
-...
-
-/**
- * Get an instance of detector implementation from the
- * camera manager.
- */
-const detector = cameraManager.getDetector();
-
-// Always call `init`
+const detector = await cameraManager.getDetector();
 await detector.init();
+await detector.start();
 
 /*
-Detector class implements EventEmitter and therefor implements
-all the event emitter methods. Below we show how to listen
-to detector events such as DETECTIONS and FRAMING.
+In order to subscribe for detection and framing information
+proceed with the following code snippet
 */
 
 detector.on(&#39;DETECTIONS&#39;, (detectionList) =&gt; {
@@ -615,39 +847,31 @@ detector.on(&#39;FRAMING&#39;, (framingInfo) =&gt; {
 });
 
 
-/**
- * When you are done, call `destroy` method to properly teardown
- * the detection instance.
- */
-await detector.destroy();
+/* To stop Genius Framing on IQ, use the #stop method */
+await detector.stop();
+</code></pre></div><h2 id="detection-data-without-streaming">Detection data without streaming</h2>
+<p>Wondering whether it is possible getting detection and framing data from the camera without streaming on a third party streaming application? The answer is yes! This new feature has been release with version 0.3.2 of the SDK and the follow code snippet illustrates the usage of the new feature:</p>
+<div><pre class="line-numbers"><code class="language-javascript">/* 
+We suppose that the SDK has been initialized previously
+and the camera is attached and an instance of IDeviceManager
+is created!
+*/
+...
 
-...</code></pre></div><p><strong>!! NOTE !!</strong> When tearing down your application which is using the detector object, it is important that you call <code>destroy</code> method before closing the host application. Not doing so will leave the camera streaming internally after you have closed the application which might lead to confusion. The camera will stop generating detection data at some point when it detects that no host application is consuming its data. However, it is strongly recommended to properly teardown the detector instance from the host application.</p>
-<h2 id="get-detections-only-when-streaming-dows-">Get detections only when streaming (DOWS)</h2>
-<p>If you would like to configure the detector so that you get detection events only and only when the user starts streaming the camera on the host machine, then the following code sinppet illustrates how to do just that:</p>
-<div><pre class="line-numbers"><code class="language-javascript">...
-
-/**
- * The `getDetector` method accepts options documented on
- * `IDetectorOpts` interface. One of the options allows you
- * to configure the detector to get detection only when
- * camera is streaming on the host machine. This option is
- * called `DOWS` short for Detections Only When Streaming.
- */
-const detector = await cameraManager.getDetector({
-  DOWS: true,
-});
-
-// Call init
+const detector = await cameraManager.getDetector();
 await detector.init();
+
+await detector.detectorStart(); // Call #detectorStart instead of #start for getting detection data without streaming on host
 
 // Setup detection event listener
 detector.on(&#39;DETECTIONS&#39;, (detectionList) =&gt; {
   // Your code here
 });
 
-// Teardown
-await detector.destroy();
-...</code></pre></div><h2 id="detector-events">Detector Events</h2>
+// !!! IMPORTANT !!! Make sure you call #detectorStop when you are done with detection data
+await detector.detectorStop();
+...</code></pre></div><p><strong>!! NOTE !!</strong> When tearing down your application which is using the detector object, it is important that you call <code>detectorStop</code> method before closing the host application. Not doing so will leave the camera streaming after you have closed the application which might lead to confusion. The camera will stop generating detection data at some point when it detects that no host application is consuming its data. However, it is strongly recommended to properly teardown the detector instance from the host application.</p>
+<h2 id="detector-events">Detector Events</h2>
 <p>The detector class can emit the following events:</p>
 <table class="table table-bordered compodoc-table">
 <thead>
@@ -673,26 +897,132 @@ await detector.destroy();
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface IDetector {
   /**
-   * Convenience function for setting detection and/or
-   * framing data event listeners.
+   * Convenience function for setting up the camera
+   * for starting/stopping genius framing. Should be
+   * called before any other methods.
    *
-   * @returns {Promise&lt;any&gt;} A void function.
+   * @returns {Promise&lt;any&gt;} Returns a promise which
+   * resolves in case the detector init is completed
+   * otherwise it rejects with a rejection message!
    * @memberof IDetector
    */
-  init(): Promise&lt;void&gt;;
+  init(): Promise&lt;any&gt;;
 
   /**
-   * This function takes care of appropriately tearing down the
-   * detector instance by unregistering all previously setup
-   * subscriptions. In case the detector has been configured
-   * to generate detection data without streaming main, then
-   * this method will make sure the camera stops generating
-   * detection events and stops it&#x27;s internal streaming.
+   * Enables the autozoom feature persistently. The enable state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs&#x3D;5000] The amount of milliseconds to wait for
+   * the network to load into the camera after having enabled autozoom.
+   * @returns {Promise&lt;void&gt;} A void function.
+   * @memberof IDetector
+   */
+  enable(idleTimeMs?: number): Promise&lt;void&gt;;
+
+  /**
+   * Disables the autozoom feature persistently. The disabled state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs] The amount of milliseconds to wait for
+   * the network to unload on the camera after having disabled autozoom.
+   * Default (5000ms)
+   * @returns {Promise&lt;void&gt;} A void function.
+   * @memberof IDetector
+   */
+  disable(idleTimeMs?: number): Promise&lt;void&gt;;
+
+  /**
+   * Checks if autozoom is enabled on the camera. Returns true if yes, false if no
+   *
+   * @returns {Promise&lt;Boolean} Returns a promise which resolves to true if autozoom is enabled
+   * false if disabled.
+   */
+  isEnabled(): Promise&lt;Boolean&gt;;
+
+  /**
+   * Start autozoom feature on the camera and subscribes for detections
+   * and framing information which are then emitted by this class with
+   * appropriate messages. Detections and framing information are retrieved
+   * only when user is streaming using a streaming application.
+   *
+   * NOTE: For persistent enable of autozoom feature you
+   * need to call the &#x60;enable&#x60; method.
+   *
+   * @memberof IDetector
+   */
+  start(): Promise&lt;void&gt;;
+
+  /**
+   * Starts detector on the camera and subscribes for detections and
+   * framing information which are emitted by this class with appropriate
+   * messages. Detections and framing information are retrieved regardless
+   * whether the host is streaming using a streaming application. Camera
+   * will start an internal stream for generating detections data.
+   *
+   * @returns {Promise&lt;void&gt;} A void function
+   * @memberof IDetector
+   */
+  detectorStart(): Promise&lt;void&gt;;
+
+  /**
+   * Stops genius framing on the camera and unregisters
+   * the listeners for detection and framing information.
+   *
+   * NOTE: For persistent disable of autozoom feature you
+   * need to call the &#x60;disable&#x60; method.
    *
    * @returns {Promise&lt;void&gt;} A void function.
    * @memberof IDetector
    */
-  destroy(): Promise&lt;void&gt;;
+  stop(): Promise&lt;void&gt;;
+
+  /**
+   * Stops the detector from sending detection and framing
+   * data to the host.
+   *
+   * @returns {Promise&lt;void&gt;} A void function.
+   * @memberof IDetector
+   */
+  detectorStop(): Promise&lt;void&gt;;
+
+  /**
+   * Checks if autozoom is running on the camera. Returns true if yes, false if no
+   *
+   * @returns {Promise&lt;Boolean&gt;} Returns true if autozoom is running,
+   * false if autozoom is disabled
+   */
+  isRunning(): Promise&lt;Boolean&gt;;
+
+  /**
+   * @ignore
+   * Uploads the CNN blob used for detecting people and other
+   * objects in the field of view on to the camera.
+   *
+   * @param {Buffer} blobBuffer The Cnn blob as a Buffer
+   * @returns {Promise&lt;void&gt;}
+   * @memberof IDetector
+   */
+  uploadBlob(blobBuffer: Buffer): Promise&lt;void&gt;;
+
+  /**
+   * @ignore
+   * Uploads the detector configuration.
+   *
+   * @param {JSON} config JSON representation of the detector configuration file.
+   * @returns {Promise&lt;void&gt;}
+   * @memberof IDetector
+   */
+  setDetectorConfig(config: JSON): Promise&lt;void&gt;;
+
+  /**
+   * @ignore
+   * Uploads the framing configuration file on to the camera.
+   *
+   * @param {JSON} config JSON representation of the framing configuration file.
+   * @returns {Promise&lt;void&gt;}
+   * @memberof IDetector
+   */
+  uploadFramingConfig(config: JSON): Promise&lt;void&gt;;
 
   /**
    * EventEmitter &#x60;on&#x60; listener. It is used for emitting detector events
@@ -711,31 +1041,10 @@ await detector.destroy();
    * the first time the message is emitted from the &#x60;Detector&#x60; implementation class.
    *
    * @param {string} message The message use to setup the listener for
-   * @param {*} callback A callback used to perform actions on the caught event.
+   * @param {*} callback A callback used to perform actions on the caught event
    * @memberof IDetector
    */
   once(message: string, callback: any);
-
-  /**
-   * EventEmitter &#x60;removeListener&#x60; method. Unregisters any event listeners
-   * setup on the detector class (that is either the detection or framing
-   * data event listeners).
-   *
-   * @param {string} message The message used to setup the listener
-   * @param {*} callbackFn The callback function used to perform actions
-   * on the caught event.
-   * @memberof IDetector
-   */
-  removeListener(message: string, callbackFn: any);
-
-  /**
-   * EventEmitter &#x60;removeAllListeners&#x60; method. Unregisters all event
-   * listeners setup on the given message name.
-   *
-   * @param {string} message The message used to setup the listeners
-   * @memberof IDetector
-   */
-  removeAllListeners(message: string);
 }
 </code></pre>
     </div>
