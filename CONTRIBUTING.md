@@ -87,19 +87,13 @@ To ensure consistency and quality, all documentation modifications must:
 
 ### Commit message guidelines
 
-In order to structure a commit in a clean, understandable and parsable way, we use an npm module called `commitizen`. Using  [commitizen](https://github.com/commitizen/cz-cli) you will be promted with a wizard that asks you a few meta questions about your commit. Please keep in mind that the commit messages will be included in the release notes, therefore it is important that you use the proper way of creating a git commit message.
+We are two modules for helping us structure our commit message in a clean, undestandable and parasable way. These tools are `commitizen` and `az-conventional-changelog`.
 
-Install `commitizen` on your development environment as a global npm module by running the following command:
+[commitizen](https://github.com/commitizen/cz-cli) provides a wizard that will ask you a few meta questions about your commit and [cz-conventional-changelog](https://github.com/commitizen/cz-conventional-changelog) is a plugin that describes the desired commit format.
 
-```
-npm install -g commitizen
-```
-This will create a git alias on your development environment which you can use in the following way:
-* Proceed with your normal development workflow
-* Stage your changes using `git add`
-* Run `git cz` to start the interactive commit message CLI
+Please keep in mind that the commit messages will be included in the release notes, therefore it is important that you use the proper way of creating a git commit message.
 
-SDK has a pre-commit hook that runs `prettier-check` and `build` npm scripts before each commit. Make sure that these checks pass before you run `git cz` as all meta information given on the interactive mode will be discarded if the pre-commit hook fails.
+After staging your changes with `git add`, run `npm run commit` to start the interactive commit message CLI.
 
 **NOTE** We require that you have properly formatted commits when submitting a PR.
 
@@ -107,7 +101,7 @@ SDK has a pre-commit hook that runs `prettier-check` and `build` npm scripts bef
 
 If you are used to creating a lot of commits before submitting a pull request, you can create standard git commits during development. However, when preparing your feature branch for PR and merge, make sure you do the following:
 - Squash all yourt commits in one (if possible)
-- Create a new commit using `git cz` with a proper commit message
+- Create a new commit using `npm run commit` or `yarn commit` with a proper commit message
 - Rebase your commits so that all your previously squashed commits are rebased into your last properly formatted commit. Use that commit to submit the PR.
 
 Examples:
@@ -118,7 +112,7 @@ Date:   Wed Jun 5 09:41:05 2019 +0200
 feat(release-process): added plugins for aiding release process
 
 Using the commitizen and az-conventional-changelog dependenceis it is possible to structure the
-commit message in a proper and standard way which will help possible another module for generating the release notes when releasing a new version of the sdk dependency
+commit message in a proper and standard way which will help possible another module for generating the release notes when releasing a new version of the sdk dependency 
 ```
 
 ## Working with the code

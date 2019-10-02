@@ -11,7 +11,6 @@ import DefaultLogger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
-import ReleaseChannel from './../../../src/interfaces/ReleaseChannelEnum';
 
 chai.should();
 chai.use(sinonChai);
@@ -139,31 +138,6 @@ describe('Boxfish', () => {
         expect(device.transport.write).to.have.been.calledOnce;
         expect(device.transport.write).to.have.been.calledWith('camctrl/reboot');
       });
-    });
-  });
-
-  describe('#getLatestFirmwareUrl', () => {
-    let getLatestFirmwareUrlStub;
-    beforeEach(async () => {
-      await device.initialize();
-      getLatestFirmwareUrlStub = sinon.stub(device.api, 'getLatestFirmwareUrl').resolves({});
-    });
-    afterEach(() => {
-      getLatestFirmwareUrlStub.restore();
-    });
-
-    it('should call api.getLatestFirmwareUrl', async () => {
-      await device.getLatestFirmwareUrl();
-      expect(getLatestFirmwareUrlStub.called).to.equals(true);
-      expect(getLatestFirmwareUrlStub.getCall(0).args[0]).to.equals('iq');
-      expect(getLatestFirmwareUrlStub.getCall(0).args[1]).to.equals(ReleaseChannel.STABLE);
-    });
-
-    it('should call api.getLatestFirmwareUrl with non-default channel', async () => {
-      await device.getLatestFirmwareUrl(ReleaseChannel.RELEASE_CANDIDATE);
-      expect(getLatestFirmwareUrlStub.called).to.equals(true);
-      expect(getLatestFirmwareUrlStub.getCall(0).args[0]).to.equals('iq');
-      expect(getLatestFirmwareUrlStub.getCall(0).args[1]).to.equals(ReleaseChannel.RELEASE_CANDIDATE);
     });
   });
 });

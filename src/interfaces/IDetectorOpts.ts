@@ -21,6 +21,15 @@ export default interface DetectorOpts {
   convertDetections?: DetectionConvertion;
 
   /**
+   * Set to false in case you want to get detections without
+   * enabling genius framing
+   *
+   * @type {Boolean}
+   * @memberof DetectorOpts
+   */
+  shouldAutoFrame?: boolean;
+
+  /**
    * Specify a list of labels for objects to detect, ie ['head', 'person']
    * Provide an empty list to retrieve all
    *
@@ -28,17 +37,6 @@ export default interface DetectorOpts {
    * @memberof DetectorOpts
    */
   objectFilter?: Array<String>;
-
-  /**
-   * DOWS short for `D`etections `O`nly `W`hen `S`treaming.
-   * When set to true, this option will configure the `Detector`
-   * so that detection and framing events are emitted only when
-   * camera is being streamed on host machine.
-   *
-   * @type {boolean}
-   * @memberof DetectorOpts
-   */
-  DOWS?: boolean;
 }
 
 export { DetectionConvertion };
