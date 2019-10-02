@@ -62,9 +62,7 @@ export default class Detector extends EventEmitter implements IDetector {
   async init(): Promise<any> {
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
       this._logger.debug(
-        `Initializing detector with framing config option AUTO_PTZ: ${
-          this._options.shouldAutoFrame
-        }`,
+        `Initializing detector with framing config option AUTO_PTZ: ${this._options.shouldAutoFrame}`,
         'Boxfish Detector'
       );
       await this.uploadFramingConfig({
