@@ -416,16 +416,26 @@ describe('API', () => {
   });
 
   describe('#errorLog', () => {
-    let fileTransferStub;
-    beforeEach(() => { fileTransferStub = sinon.stub(api, 'fileTransfer'); });
-    afterEach(() => { fileTransferStub.restore(); });
+    let sendAndReceiveMsgPackStub;
+    beforeEach(() => {
+      sendAndReceiveMsgPackStub = sinon.stub(api, 'sendAndReceiveMessagePack');
+    });
+    afterEach(() => {
+      sendAndReceiveMsgPackStub.restore();
+    });
     describe('#getErrorLog', () => {
       it('should call #fileTransfer with error log commands and decode the result to ascii string', async () => {
         const logStr = 'Camera Log 12333123';
-        fileTransferStub.returns(Promise.resolve(Buffer.from(logStr)));
+        const errorLogDummy = {
+          error: 0,
+          string: 'Success',
+          log: logStr,
+        };
+        sendAndReceiveMsgPackStub.resolves(errorLogDummy);
         const log = await api.getErrorLog(100);
-        expect(fileTransferStub.callCount).to.equals(1);
-        expect(transport.write.firstCall.args[0]).to.equals('error_logger/read');
+        expect(sendAndReceiveMsgPackStub.firstCall.args[1]).to.deep.equals({
+          send: 'error_logger/read_simple', receive: 'error_logger/read_simple_reply'
+        });
         expect(log).to.equals(logStr);
       });
     });
@@ -435,6 +445,30 @@ describe('API', () => {
         await api.eraseErrorLog(100);
         expect(transport.receiveMessage.lastCall.args[0]).to.equals('error_logger/erase_done');
         expect(transport.write.lastCall.args[0]).to.equals('error_logger/erase');
+      });
+    });
+  });
+
+  describe('#errorLogLegacy', () => {
+    let fileTransferStub;
+    let sendAndReceiveMsgPackStub;
+    beforeEach(() => {
+      fileTransferStub = sinon.stub(api, 'fileTransfer');
+      sendAndReceiveMsgPackStub = sinon.stub(api, 'sendAndReceiveMessagePack');
+    });
+    afterEach(() => {
+      fileTransferStub.restore();
+      sendAndReceiveMsgPackStub.restore();
+    });
+    describe('#getErrorLog', () => {
+      it('should call #fileTransfer with error log commands and decode the result to ascii string', async () => {
+        const logStr = 'Camera Log 12333123';
+        sendAndReceiveMsgPackStub.rejects('Timed out');
+        fileTransferStub.returns(Promise.resolve(Buffer.from(logStr)));
+        const log = await api.getErrorLog(100);
+        expect(fileTransferStub.callCount).to.equals(1);
+        expect(transport.write.firstCall.args[0]).to.equals('error_logger/read');
+        expect(log).to.equals(logStr);
       });
     });
   });

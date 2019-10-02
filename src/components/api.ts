@@ -9,6 +9,7 @@ export default class Api {
   logger: DefaultLogger;
   locksmith: Locksmith;
   setProdInfoMsgPackSupport: boolean = true;
+  getErrorLogMsgPackSupport: boolean = true;
 
   constructor(transport: ITransport, logger: DefaultLogger, locksmith: Locksmith) {
     this.transport = transport;
@@ -381,7 +382,7 @@ export default class Api {
     return info;
   }
 
-  async getErrorLog(timeout: number): Promise<any> {
+  async getErrorLogLegacy(timeout: number): Promise<any> {
     this.logger.debug('Start retrieving the error log', 'SDK API');
     const res = await this.locksmith.executeAsyncFunction(async () => {
       this.logger.debug('Clearing transport pipes', 'SDK API');
@@ -410,6 +411,32 @@ export default class Api {
       return result;
     });
     return res;
+  }
+
+  async getErrorLog(timeout: number): Promise<any> {
+    if (!this.getErrorLogMsgPackSupport) {
+      return this.getErrorLogLegacy(timeout);
+    }
+
+    try {
+      const result = await this.sendAndReceiveMessagePack(
+        Buffer.from(''),
+        {
+          send: 'error_logger/read_simple',
+          receive: 'error_logger/read_simple_reply',
+        },
+        1000
+      );
+      this.getErrorLogMsgPackSupport = true;
+      return result.log;
+    } catch (e) {
+      this.getErrorLogMsgPackSupport = false;
+      this.logger.debug(
+        'ErrorLog MessagePack not supported on this device. Using legacy procedure!',
+        'SDK API'
+      );
+      return this.getErrorLogLegacy(timeout);
+    }
   }
 
   async eraseErrorLog(timeout: number): Promise<void> {
