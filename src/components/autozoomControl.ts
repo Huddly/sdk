@@ -45,7 +45,7 @@ export default class AutozoomControl implements IAutozoomControl {
   async enable(idleTimeMs: number = 2000): Promise<void> {
     this._logger.debug('Enabling autozoom persistently', 'Autozoom Control');
 
-    const reply = await this._deviceManager.api.sendAndReceiveMessagePack(
+    await this._deviceManager.api.sendAndReceive(
       Buffer.alloc(0),
       {
         send: 'autozoom/enable',
@@ -53,9 +53,30 @@ export default class AutozoomControl implements IAutozoomControl {
       },
       idleTimeMs
     );
-    if (!reply['autozoom-active']) {
-      throw new Error('Autozoom not on after enable.');
-    }
+
+    /**
+     * `autozoom/enable` asynchronously sets the
+     * "autozoom_enabled" property of the camera product
+     * info. It is necessary to query the isEnabled more
+     * than once to have a legitimate assertion.
+     */
+    const promise = new Promise(async (resolve, reject) => {
+      let retry = 3;
+      while (retry) {
+        const isEnabled = await this.isEnabled();
+        if (isEnabled) {
+          resolve();
+          break;
+        }
+        retry -= 1;
+      }
+      if (retry === 0) {
+        reject(new Error('Autozoom not on after enable.'));
+      }
+    });
+
+    await promise;
+    this._logger.debug('Autozoom enabled persistently', 'Autozoom Control');
   }
 
   /**
@@ -66,7 +87,7 @@ export default class AutozoomControl implements IAutozoomControl {
   async disable(idleTimeMs: number = 2000): Promise<void> {
     this._logger.debug('Disabling autozoom persistently', 'Autozoom Control');
 
-    const reply = await this._deviceManager.api.sendAndReceiveMessagePack(
+    await this._deviceManager.api.sendAndReceive(
       Buffer.alloc(0),
       {
         send: 'autozoom/disable',
@@ -74,9 +95,30 @@ export default class AutozoomControl implements IAutozoomControl {
       },
       idleTimeMs
     );
-    if (reply['autozoom-active'] != false) {
-      throw new Error('No blob loaded while enabling autozoom');
-    }
+
+    /**
+     * `autozoom/disable` asynchronously sets the
+     * "autozoom_enabled" property of the camera product
+     * info. It is necessary to query the isEnabled more
+     * than once to have a legitimate assertion.
+     */
+    const promise = new Promise(async (resolve, reject) => {
+      let retry = 3;
+      while (retry) {
+        const isEnabled = await this.isEnabled();
+        if (!isEnabled) {
+          resolve();
+          break;
+        }
+        retry -= 1;
+      }
+      if (retry === 0) {
+        reject(new Error('Autozoom not off after disable.'));
+      }
+    });
+
+    await promise;
+    this._logger.debug('Autozoom disabled persistently', 'Autozoom Control');
   }
 
   /**

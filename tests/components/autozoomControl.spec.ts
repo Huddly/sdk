@@ -58,17 +58,21 @@ describe('AutozoomControl', () => {
 
   describe('autozoom enable/disable', () => {
     let sendAndReceiveStub;
+    let isEnabledStub;
 
     beforeEach(() => {
-      sendAndReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceiveMessagePack');
+      sendAndReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceive');
+      isEnabledStub = sinon.stub(autozoomControl, 'isEnabled');
     });
     afterEach(() => {
       sendAndReceiveStub.restore();
+      isEnabledStub.restore();
     });
 
     describe('#enable', () => {
       it('should enable autozoom and check the autozoom active state', async () => {
-        sendAndReceiveStub.resolves({ 'autozoom-active': true });
+        sendAndReceiveStub.resolves();
+        isEnabledStub.resolves(true);
         await autozoomControl.enable(10);
         expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
           send: 'autozoom/enable',
@@ -76,8 +80,28 @@ describe('AutozoomControl', () => {
         });
       });
 
-      it('should throw error if autozoom status state is disabled', async () => {
-        sendAndReceiveStub.resolves({ 'autozoom-active': false });
+      it('should resolve after first retry', async () => {
+        sendAndReceiveStub.resolves();
+        isEnabledStub.onCall(0).resolves(false);
+        isEnabledStub.onCall(1).resolves(true);
+        await autozoomControl.enable(10);
+        expect(isEnabledStub.callCount).to.equals(2);
+      });
+
+      it('should resolve after second', async () => {
+        sendAndReceiveStub.resolves();
+        isEnabledStub.onCall(0).resolves(false);
+        isEnabledStub.onCall(1).resolves(false);
+        isEnabledStub.onCall(2).resolves(true);
+        await autozoomControl.enable(10);
+        expect(isEnabledStub.callCount).to.equals(3);
+      });
+
+      it('should throw error when all retries result disabled state', async () => {
+        sendAndReceiveStub.resolves();
+        isEnabledStub.onFirstCall().resolves(false)
+          .onSecondCall().resolves(false)
+          .onThirdCall().resolves(false);
         try {
           await autozoomControl.enable();
         } catch (e) {
@@ -89,23 +113,45 @@ describe('AutozoomControl', () => {
     });
     describe('#disable', () => {
       it('should disable autozoom and check the autozoom active state', async () => {
-        sendAndReceiveStub.resolves({ 'autozoom-active': false });
+        sendAndReceiveStub.resolves();
+        isEnabledStub.resolves(false);
         await autozoomControl.disable(10);
         expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
           send: 'autozoom/disable',
           receive: 'autozoom/disable_reply'
         });
+        expect(isEnabledStub.callCount).to.equals(1);
       });
 
-      it('should throw error if autozoom status state is enabled', async () => {
-        sendAndReceiveStub.resolves({ 'autozoom-active': true });
+      it('should resolve after first retry', async () => {
+        sendAndReceiveStub.resolves();
+        isEnabledStub.onCall(0).resolves(true);
+        isEnabledStub.onCall(1).resolves(false);
+        await autozoomControl.disable(10);
+        expect(isEnabledStub.callCount).to.equals(2);
+      });
+
+      it('should resolve after second', async () => {
+        sendAndReceiveStub.resolves();
+        isEnabledStub.onCall(0).resolves(true);
+        isEnabledStub.onCall(1).resolves(true);
+        isEnabledStub.onCall(2).resolves(false);
+        await autozoomControl.disable(10);
+        expect(isEnabledStub.callCount).to.equals(3);
+      });
+
+      it('should throw error when all retries result in enabled state', async () => {
+        sendAndReceiveStub.resolves();
+        isEnabledStub.onFirstCall().resolves(true)
+          .onSecondCall().resolves(true)
+          .onThirdCall().resolves(true);
         try {
           await autozoomControl.disable();
         } catch (e) {
           expect(e instanceof Error).to.equal(true);
           return;
         }
-        throw new Error('Autozoom disable assert failed!');
+        throw new Error('Autozoom not off after disable.');
       });
     });
   });
