@@ -74,7 +74,9 @@ export default class DeviceFactory {
       return preferredDeviceApi.getUVCControlAPIForDevice(device);
     }
 
-    logger.warn('Preferred device api does not support uvc control interface', 'SDK DeviceFactory');
+    /**
+     * Main device api does not support uvc control interface
+     */
 
     for (const deviceApi of secondaryDeviceApis) {
       if (await deviceApi.isUVCControlsSupported(device)) {
@@ -82,8 +84,9 @@ export default class DeviceFactory {
       }
     }
 
-    logger.error('None of the device api\'s support uvc control interface', '', 'SDK DeviceFactory');
-
+    /**
+     * None of the device api's support uvc control interface
+     */
     return undefined;
   }
 
