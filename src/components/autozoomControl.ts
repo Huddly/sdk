@@ -37,6 +37,15 @@ export default class AutozoomControl implements IAutozoomControl {
     }
   }
 
+  updateOpts(options: AutozoomControlOpts): Promise<any> {
+    const currentSetOpts = this._options;
+    this._options = {
+      ...currentSetOpts,
+      ...options,
+    };
+    return this.init();
+  }
+
   /**
    * @ignore
    * Check `IAutozoomControl` interface for method documentation.

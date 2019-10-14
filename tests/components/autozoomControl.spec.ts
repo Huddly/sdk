@@ -5,6 +5,7 @@ import IDeviceManager from '../../src/interfaces/iDeviceManager';
 import DefaultLogger from '../../src/utilitis/logger';
 import Api from '../../src/components/api';
 import DeviceManagerMock from '../mocks/devicemanager.mock';
+import AutozoomControlOpts from '../../src/interfaces/IAutozoomControlOpts';
 
 const createDummyLogger = (): DefaultLogger => {
   return sinon.createStubInstance(DefaultLogger);
@@ -53,6 +54,18 @@ describe('AutozoomControl', () => {
         await autozoomControl.init();
         expect(uploadFramingConfigStub.callCount).to.equals(0);
       });
+    });
+  });
+
+  describe('#updateOpts', () => {
+    it('should update old opts with new opts and call init to reconfigure autozoom', () => {
+      const newOpts: AutozoomControlOpts = {
+        shouldAutoFrame: false,
+      };
+      const initSpy = sinon.spy(autozoomControl, 'init');
+      autozoomControl.updateOpts(newOpts);
+      expect(autozoomControl._options).to.deep.equals(newOpts);
+      expect(initSpy.called).to.equals(true);
     });
   });
 
