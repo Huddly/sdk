@@ -40,10 +40,19 @@ export default class Detector extends EventEmitter implements IDetector {
     this._deviceManager = manager;
     this._logger = logger;
     this._options = {};
+    this.validateOptions(options);
+    this.setMaxListeners(50);
+  }
+
+  validateOptions(options: DetectorOpts) {
+    const currentSetOpts = this._options;
+    this._options = {
+      ...currentSetOpts,
+      ...options,
+    };
     this._options.convertDetections =
       (options && options.convertDetections) || DetectionConvertion.RELATIVE;
     this._options.DOWS = (options && options.DOWS) || false;
-    this.setMaxListeners(50);
   }
 
   /**
@@ -92,6 +101,13 @@ export default class Detector extends EventEmitter implements IDetector {
 
     this._detectorInitialized = true;
     this._logger.debug('Detector class initialized and ready', 'IQ Detector');
+  }
+
+  async updateOpts(options: DetectorOpts): Promise<any> {
+    this.validateOptions(options);
+    await this.teardownDetectorSubscriptions();
+    this._detectorInitialized = false;
+    return this.init();
   }
 
   async destroy(): Promise<void> {

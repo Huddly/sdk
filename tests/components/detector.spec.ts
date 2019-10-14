@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import Detector from './../../src/components/detector';
 import IDeviceManager from './../../src/interfaces/iDeviceManager';
-import { DetectionConvertion } from './../../src//interfaces/IDetectorOpts';
+import DetectorOpts, { DetectionConvertion } from './../../src//interfaces/IDetectorOpts';
 import DefaultLogger from './../../src/utilitis/logger';
 import DeviceManagerMock from './../mocks/devicemanager.mock';
 
@@ -17,6 +17,19 @@ describe('Detector', () => {
   beforeEach(() => {
     deviceManager = new DeviceManagerMock();
     detector = new Detector(deviceManager, createDummyLogger());
+  });
+
+  describe('#validateOptions', () => {
+    it('should update old options with new options', () => {
+      expect(detector._options.convertDetections).to.equals(DetectionConvertion.RELATIVE);
+      expect(detector._options.DOWS).to.equals(false);
+      const newOpts: DetectorOpts = {
+        DOWS: true,
+        convertDetections: DetectionConvertion.FRAMING,
+      };
+      detector.validateOptions(newOpts);
+      expect(detector._options).to.deep.equals(newOpts);
+    });
   });
 
   describe('#init', () => {
@@ -70,6 +83,37 @@ describe('Detector', () => {
         expect(transportWriteStub.called).to.equals(false);
         expect(setupDetectorSubscriptionSpy.called).to.equals(false);
       });
+    });
+  });
+
+  describe('#updateOpts', () => {
+    let teardownStub;
+    let initStub;
+    const newOpts: DetectorOpts = {
+      DOWS: true,
+      convertDetections: DetectionConvertion.FRAMING,
+    };
+    beforeEach(() => {
+      teardownStub = sinon.stub(detector, 'teardownDetectorSubscriptions').resolves();
+      initStub = sinon.stub(detector, 'init').resolves();
+    });
+    afterEach(() => {
+      teardownStub.restore();
+      initStub.restore();
+    });
+
+    it('should validate new options', async () => {
+      const validateOptionsSpy = sinon.spy(detector, 'validateOptions');
+      await detector.updateOpts(newOpts);
+      expect(validateOptionsSpy.called).to.equals(true);
+      expect(validateOptionsSpy.getCall(0).args[0]).to.deep.equals(newOpts);
+    });
+
+    it('should reset detector class with new options', async () => {
+      await detector.updateOpts(newOpts);
+      expect(teardownStub.called).to.equals(true);
+      expect(detector._detectorInitialized).to.equals(false);
+      expect(initStub.called).to.equals(true);
     });
   });
 
