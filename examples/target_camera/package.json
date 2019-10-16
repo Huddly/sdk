@@ -1,17 +1,15 @@
 {
-  "name": "ga_peoplecount",
+  "name": "target_camera",
   "version": "1.0.0",
   "description": "",
-  "main": "ga_peoplecount.js",
+  "main": "index.js",
   "scripts": {
-    "start": "node ga_peoplecount.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
   "license": "ISC",
   "dependencies": {
     "@huddly/device-api-usb": "^0.2.9",
-    "@huddly/sdk": "^0.2.12",
-    "got": "~9.2.2"
+    "@huddly/sdk": "^0.4.0"
   }
 }

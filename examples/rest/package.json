@@ -32,6 +32,7 @@
     "koa-router": "^7.4.0",
     "koa-router-static": "^1.2.0",
     "koa-static": "^5.0.0",
+    "nock": "^11.4.0",
     "rimraf": "^2.6.2"
   },
   "devDependencies": {

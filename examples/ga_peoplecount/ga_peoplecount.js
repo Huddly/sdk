@@ -13,7 +13,10 @@ async function init() {
   await sdk.init();
 
   sdk.on('ATTACH', async (cameraManager) => {
-    const detector = await cameraManager.getDetector();
+    const detectorOpts = {
+      objectFilter: ['person']
+    };
+    const detector = await cameraManager.getDetector(detectorOpts);
     await detector.init();
 
     detector.on('DETECTIONS', detections => {
