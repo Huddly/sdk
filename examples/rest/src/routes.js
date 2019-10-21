@@ -1,4 +1,4 @@
-import { name, version } from '../package.json';
+
 import Router from 'koa-router';
 import fs from 'fs';
 
@@ -13,13 +13,9 @@ router.get('/info', async (ctx) => {
   try {
     ctx.body = await camera.getInfo();
   } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else {
-      throw e;
-    }
+    ctx.throw(404, {
+      error_message: e.message
+    });
   }
 });
 
@@ -27,13 +23,9 @@ router.put('/detector/start', async (ctx) => {
   try {
     ctx.body = await camera.startAutozoom();
   } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else {
-      throw e;
-    }
+    ctx.throw(404, {
+      error_message: e.message
+    });
   }
 });
 
@@ -42,13 +34,9 @@ router.put('/detector/stop', async (ctx) => {
   try {
     ctx.body = await camera.stopAutozoom();
   } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else {
-      throw e;
-    }
+    ctx.throw(404, {
+      error_message: e.message
+    });
   }
 });
 
@@ -56,13 +44,9 @@ router.get('/detector/detections', async (ctx) => {
   try {
     ctx.body = await camera.detect();
   } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else {
-      throw e;
-    }
+    ctx.throw(404, {
+      error_message: e.message
+    });
   }
 });
 
@@ -85,16 +69,14 @@ router.post('/upgrade', async (ctx) => {
       }
     }
   } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else if (e instanceof RangeError){
+    if (e instanceof RangeError){
       ctx.throw(400, {
         error_message: e.message
       });
     } else {
-      throw e;
+      ctx.throw(404, {
+        error_message: e.message
+      });
     }
   }
 });
@@ -103,13 +85,9 @@ router.get('/upgrade/status', async (ctx) => {
   try {
     ctx.body = camera.getUpgradeStatus();
   } catch (e) {
-    if (e instanceof camera.SDK.CameraNotFoundError) {
-      ctx.throw(404, {
-        error_message: e.message
-      });
-    } else {
-      throw e;
-    }
+    ctx.throw(404, {
+      error_message: e.message
+    });
   }
 });
 

@@ -46,6 +46,7 @@ class HuddlyService {
         const eventHandler = new EventHandler(deviceId, roomName);
         await eventHandler.init();
         this.detector = await deviceManager.getDetector({
+          DOWS: true,
           objectFilter: ['person']
         });
         this.detector.on(CameraEvents.DETECTIONS, async (detections) => {
@@ -61,12 +62,12 @@ class HuddlyService {
     this.huddlySdk.init();
   }
 
-  stop() {
+  async stop() {
     if (this.detector) {
-      this.detector.destroy();
+      await this.detector.destroy();
     }
     if (this.autozoomCtl) {
-      this.autozoomCtl.stop();
+      await this.autozoomCtl.stop();
     }
     this.huddlySdk = null;
   }
