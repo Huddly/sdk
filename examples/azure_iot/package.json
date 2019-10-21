@@ -15,15 +15,15 @@
   "author": "Oystein Grimstad",
   "license": "MIT",
   "dependencies": {
-    "@huddly/device-api-usb": "^0.2.9",
-    "@huddly/sdk": "^0.4",
+    "@huddly/device-api-usb": "~0.2",
+    "@huddly/sdk": "~0.4",
     "azure-iot-device": "^1.9.9",
     "azure-iot-device-amqp": "^1.9.9",
     "azure-iot-provisioning-device": "^1.5.9",
     "azure-iot-provisioning-device-amqp": "^1.5.9",
     "azure-iot-security-symmetric-key": "^1.5.9",
     "crypto": "^1.0.1",
-    "npm": "^6.9.0",
+    "npm": "^6.12.0",
     "winston": "^3.2.1"
   },
   "devDependencies": {

@@ -14,16 +14,36 @@ async function init() {
 
   sdk.on('ATTACH', async (cameraManager) => {
     const detectorOpts = {
-      objectFilter: ['person']
+      objectFilter: ['person'],
+      DOWS: true // Get detection only when streaming main
     };
+    const autozoomCtl = cameraManager.getAutozoomControl();
     const detector = await cameraManager.getDetector(detectorOpts);
+    // Make sure that autozoom (genius framing is started)
+    await autozoomCtl.init();
+    await autozoomCtl.start();
     await detector.init();
 
+    // Setup detection listener
     detector.on('DETECTIONS', detections => {
       trackPeopleCount(meetingRoomName, detections.length);
     });
 
-    detector.start();
+    process.on('SIGINT', async () => {
+      console.log("\nClosing application gracefully");
+      if (detector) {
+        console.log('Destroying detector');
+        //If you don't destroy the detector correctly the LED on the camera will be left on
+        await detector.destroy();
+      }
+
+      if (cameraManager) {
+        console.log('Closing connection with the camera');
+        await cameraManager.closeConnection();
+      }
+      console.log("\nTeardown completed! Application closed");
+      process.exit();
+    });
   });
 }
 
