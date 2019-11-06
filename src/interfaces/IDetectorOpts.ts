@@ -34,6 +34,7 @@ export default interface DetectorOpts {
    * When set to true, this option will configure the `Detector`
    * so that detection and framing events are emitted only when
    * camera is being streamed on host machine.
+   * Currently you will need to enable Autozoom for this to work.
    *
    * @type {boolean}
    * @memberof DetectorOpts

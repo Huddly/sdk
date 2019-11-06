@@ -43,52 +43,19 @@
 
 
 
-                   
 
 
 
 
-<h1 id="get-detections">Get detections</h1>
-<p>Queries for the last detections that have come in.</p>
-<p><strong>URL</strong> : <code>/detector/detections</code></p>
-<p><strong>Method</strong> : <code>GET</code></p>
+<h1 id="start-detector">Start detector</h1>
+<p>Configures and start detector and genius framing, this is necessary to be able to get detections.</p>
+<p><strong>URL</strong> : <code>/detector/start</code></p>
+<p><strong>Method</strong> : <code>PUT</code></p>
 <h2 id="success-response">Success Response</h2>
 <p><strong>Code</strong> : <code>200 OK</code></p>
 <p><strong>Content examples</strong></p>
 <div><pre class="line-numbers"><code class="language-json">{
-    &quot;detections&quot;: [
-        {
-            &quot;id&quot;: 0,
-            &quot;label&quot;: &quot;person&quot;,
-            &quot;confidence&quot;: 0.40885019302368164,
-            &quot;bbox&quot;: {
-                &quot;x&quot;: 7,
-                &quot;y&quot;: 77,
-                &quot;width&quot;: 218,
-                &quot;height&quot;: 136
-            }
-        },
-        {
-            &quot;id&quot;: 1,
-            &quot;label&quot;: &quot;diningtable&quot;,
-            &quot;confidence&quot;: 0.3582177758216858,
-            &quot;bbox&quot;: {
-                &quot;x&quot;: 94,
-                &quot;y&quot;: 162,
-                &quot;width&quot;: 340,
-                &quot;height&quot;: 212
-            }
-        }
-    ],
-    &quot;framing&quot;: {
-        &quot;bbox&quot;: {
-            &quot;x&quot;: 0,
-            &quot;y&quot;: 0,
-            &quot;width&quot;: 544,
-            &quot;height&quot;: 360
-        },
-        &quot;shouldptz&quot;: false
-    }
+    &quot;status&quot;: &quot;Autozoom started and subscribed for detection events!&quot;
 }</code></pre></div>
                    </div><div class="search-results">
     <div class="has-results">
@@ -107,7 +74,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 3;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
-            var COMPODOC_CURRENT_PAGE_URL = 'get-detections.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'detector-start.html';
        </script>
 
        <script src="../../../js/libs/custom-elements.min.js"></script>
