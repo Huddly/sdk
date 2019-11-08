@@ -43,7 +43,7 @@
 
 <img class="huddly-logo" width="200px" height="auto" src="http://developer.huddly.com/assets/imgs/huddly.png" />
 
-<h1 id="huddly-software-development-kit-sdk-">Huddly Software Development Kit (SDK)</h1>
+<h1 id="huddly-software-development-kit-sdk">Huddly Software Development Kit (SDK)</h1>
 <h2 id="prerequisites">Prerequisites</h2>
 <p>Huddly SDK supportes the following node versions: (Needs to support NAPI v3 )</p>
 <ul>
@@ -86,20 +86,22 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <h2 id="repo">Repo</h2>
 <p>Check out the sdk code on github (<a href="https://github.com/Huddly/sdk">https://github.com/Huddly/sdk</a>)</p>
 <h2 id="faq">FAQ</h2>
-<h3 id="my-detections-are-not-matching-what-i-see-in-the-stream-">My detections are not matching what I see in the stream:</h3>
+<h3 id="my-detections-are-not-matching-what-i-see-in-the-stream">My detections are not matching what I see in the stream:</h3>
 <p>  Internally the camera always sees full field of view, the coordinates are relative to full field of view by deafault. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ convertDetections: &#39;FRAMING&#39; });</code></pre></div><p>  This makes it easy to draw these bbox directly on top of the main stream.</p>
-<h3 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera-">How can i disable autoframing and still get detection information from camera?</h3>
+<h3 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera">How can i disable autoframing and still get detection information from camera?</h3>
 <p>  Another available detector configuration is the <code>shouldAutoFrame</code> option which when set to false, it allows you to configure Genius Framing to send detection data without autoframing.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ shouldAutoFrame: false });</code></pre></div><p>  By default, the detector is configured to run autoframing and generate detection information.</p>
-<h3 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-iq-">How do I get detections only when I am streaming with my Huddly IQ!</h3>
+<h3 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-iq">How do I get detections only when I am streaming with my Huddly IQ!</h3>
 <p>  If you want to get detection data only when the camera is streaming on the host machine, you need to configure the detector class with the <code>DOWS</code> option.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ DOWS: true });</code></pre></div><p>  This option makes it possible to configure the detector so that you only get detection data when you are streaming on host machine. By default, this option set to <code>false</code> so that you don&#39;t have to stream to get detection data.</p>
-<h3 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq-">LED light is ON, but I am not streaming with my Huddly IQ!</h3>
+<h3 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq">LED light is ON, but I am not streaming with my Huddly IQ!</h3>
 <p>  After <strong>v0.4.0</strong>, SDK comes with a new feature ragarding the way you get detection data from the camera. On this version (and onward) the default behavior of detector is starting an internal stream (controlled by the camera only) to give you detection information. As a result the LED light is turned ON. Proper tearing down of the detector instance will stop the internal stream on the camera and with it the LED light.</p>
 <h3 id="the-camera-is-never-attached-or-throwing-an-error">The camera is never attached, or throwing an Error</h3>
 <p>  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.</p>
-<h3 id="transition-from-0-3-to-0-4-0">Transition from 0.3.* to 0.4.0</h3>
+<h3 id="can-i-use-undocumented-methods">Can I use undocumented methods.</h3>
+<p>No. To make sure that camera is compatible with the sdk the documented api gets thoroughly tested, we do not guarantee that undocumented functionality will not break/change from sdk version to sdk version, or camera sw to camera sw.</p>
+<h3 id="transition-from-03-to-040">Transition from 0.3.* to 0.4.0</h3>
 <p>  The transition from 0.3.* to 0.4.0 involves breaking changes with regards to Genius Framing configuration and detection data retrival. The breaking change is that we have moved the configuraion part of GeniusFraming (autozoom) into a separate interface that we called <a href="http://developer.huddly.com/interfaces/IAutozoomControl.html#readme">AutozoomControl</a>. The autozoom configuration methods <code>enable</code>, <code>disable</code>, <code>start</code> and <code>stop</code> which used to live in the detector interface are now moved to the new <code>AutozoomControl</code> interface. On the other hand, the <a href="https://developer.huddly.com/interfaces/IDetector.html#readme">Detector</a> interace remains responsible for only setting up events for getting detection and framing data from the camera. Have a look at the documentation of each interface to see usage examples.</p>
 
 
@@ -115,6 +117,7 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 
 
 
+                   
 
 
 
@@ -136,7 +139,7 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 0;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
-            var COMPODOC_CURRENT_PAGE_URL = 'index.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'upgrade-status.html';
        </script>
 
        <script src="./js/libs/custom-elements.min.js"></script>

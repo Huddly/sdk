@@ -30,7 +30,7 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<h1 id="contributing-to-huddly-sdk">Contributing to @huddly/sdk</h1>
+<h1 id="contributing-to-huddlysdk">Contributing to @huddly/sdk</h1>
 <p>✨ Thanks for contributing our open source sdk module <strong>@huddly/sdk</strong>! ✨</p>
 <p>As a contributor, here are some of the guidelines we would like you to follow:</p>
 <ul>
@@ -40,7 +40,7 @@
 <li><a href="#working-with-the-code">Working with the code</a></li>
 </ul>
 <p>Also, we strongly recommend that you read <a href="https://opensource.guide/how-to-contribute">How to Contribute to Open Source</a>.</p>
-<h2 id="how-can-i-contribute-">How can I contribute?</h2>
+<h2 id="how-can-i-contribute">How can I contribute?</h2>
 <p>You as a user of our sdk module are the perfect candidate for contributing on improving our documentation: typo corrections, clarifications, more examples (rest api, azure iot ...).</p>
 <p>Please try to be concise and clear when writing documentation, use links when appropriate and write examples if deemd necessary to help the reader understand better.</p>
 <h3 id="give-feedback-on-issues">Give feedback on issues</h3>
@@ -105,16 +105,21 @@ $ npm install</code></pre></div></li>
 </li>
 </ul>
 <h3 id="commit-message-guidelines">Commit message guidelines</h3>
-<p>We are two modules for helping us structure our commit message in a clean, undestandable and parasable way. These tools are <code>commitizen</code> and <code>az-conventional-changelog</code>.</p>
-<p><a href="https://github.com/commitizen/cz-cli">commitizen</a> provides a wizard that will ask you a few meta questions about your commit and <a href="https://github.com/commitizen/cz-conventional-changelog">cz-conventional-changelog</a> is a plugin that describes the desired commit format.</p>
-<p>Please keep in mind that the commit messages will be included in the release notes, therefore it is important that you use the proper way of creating a git commit message.</p>
-<p>After staging your changes with <code>git add</code>, run <code>npm run commit</code> to start the interactive commit message CLI.</p>
+<p>In order to structure a commit in a clean, understandable and parsable way, we use an npm module called <code>commitizen</code>. Using  <a href="https://github.com/commitizen/cz-cli">commitizen</a> you will be promted with a wizard that asks you a few meta questions about your commit. Please keep in mind that the commit messages will be included in the release notes, therefore it is important that you use the proper way of creating a git commit message.</p>
+<p>Install <code>commitizen</code> on your development environment as a global npm module by running the following command:</p>
+<div><pre class="line-numbers"><code class="language-none">npm install -g commitizen</code></pre></div><p>This will create a git alias on your development environment which you can use in the following way:</p>
+<ul>
+<li>Proceed with your normal development workflow</li>
+<li>Stage your changes using <code>git add</code></li>
+<li>Run <code>git cz</code> to start the interactive commit message CLI</li>
+</ul>
+<p>SDK has a pre-commit hook that runs <code>prettier-check</code> and <code>build</code> npm scripts before each commit. Make sure that these checks pass before you run <code>git cz</code> as all meta information given on the interactive mode will be discarded if the pre-commit hook fails.</p>
 <p><strong>NOTE</strong> We require that you have properly formatted commits when submitting a PR.</p>
 <p><strong>Tips</strong>:</p>
 <p>If you are used to creating a lot of commits before submitting a pull request, you can create standard git commits during development. However, when preparing your feature branch for PR and merge, make sure you do the following:</p>
 <ul>
 <li>Squash all yourt commits in one (if possible)</li>
-<li>Create a new commit using <code>npm run commit</code> or <code>yarn commit</code> with a proper commit message</li>
+<li>Create a new commit using <code>git cz</code> with a proper commit message</li>
 <li>Rebase your commits so that all your previously squashed commits are rebased into your last properly formatted commit. Use that commit to submit the PR.</li>
 </ul>
 <p>Examples:</p>
@@ -124,7 +129,7 @@ Date:   Wed Jun 5 09:41:05 2019 +0200
 feat(release-process): added plugins for aiding release process
 
 Using the commitizen and az-conventional-changelog dependenceis it is possible to structure the
-commit message in a proper and standard way which will help possible another module for generating the release notes when releasing a new version of the sdk dependency </code></pre></div><h2 id="working-with-the-code">Working with the code</h2>
+commit message in a proper and standard way which will help possible another module for generating the release notes when releasing a new version of the sdk dependency</code></pre></div><h2 id="working-with-the-code">Working with the code</h2>
 <p><a href="https://guides.github.com/activities/forking/#fork">Fork</a> the project, <a href="https://guides.github.com/activities/forking/#clone">clone</a> your fork, configure the remotes and install the dependencies:</p>
 <div><pre class="line-numbers"><code class="language-bash"># Clone your fork of the repo into the current directory
 $ git clone git&#64;github.com:Huddly/sdk.git
@@ -142,7 +147,7 @@ $ npm run prettier</code></pre></div><h3 id="tests-and-code-coverage">Tests and 
 <p>You can run the unit tests manually by running the <code>npm run test</code> command. Node that this command is run as part of the commit hook too. We use <a href="https://github.com/istanbuljs/nyc"><code>nyc</code></a> for code coverage that prints out the coverage results at the end of the test command and generates the coverage report.</p>
 <h3 id="updating-documentation-pages">Updating documentation pages</h3>
 <p>Updating or generating new content on the documentation pages you are required to install a specific version of <a href="https://compodoc.app/">Compodoc</a> npm module. Run the following command to install compodoc on your machine:</p>
-<div><pre class="line-numbers"><code class="language-none">npm install -g &#64;compodoc/compodoc&#64;1.1.8</code></pre></div><p>After having installed compodoc as a global dependency, you can run our script for generating the @huddly/sdk documentation:</p>
+<div><pre class="line-numbers"><code class="language-none">npm install -g &#64;compodoc/compodoc&#64;1.1.11</code></pre></div><p>After having installed compodoc as a global dependency, you can run our script for generating the @huddly/sdk documentation:</p>
 <div><pre class="line-numbers"><code class="language-none">npm run compodoc</code></pre></div>
 
 
@@ -157,6 +162,7 @@ $ npm run prettier</code></pre></div><h3 id="tests-and-code-coverage">Tests and 
 
 
 
+                   
 
 
 
@@ -178,7 +184,7 @@ $ npm run prettier</code></pre></div><h3 id="tests-and-code-coverage">Tests and 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 0;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'getting-started';
-            var COMPODOC_CURRENT_PAGE_URL = 'contributing.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'upgrade-status.html';
        </script>
 
        <script src="./js/libs/custom-elements.min.js"></script>
