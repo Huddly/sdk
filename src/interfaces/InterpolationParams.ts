@@ -6,6 +6,7 @@
  * parameters. See http://cubic-bezier.com for visualisation.
  *
  * @interface InterpolationParams
+ * @ignore
  */
 export default interface InterpolationParams {
   x1: number;
