@@ -1,3 +1,6 @@
+/**
+ * @ignore
+ */
 export enum IMAGE_TYPES {
   FSBL = 'bf_fsbl_mvcmd',
   SSBL = 'bf_ssbl_mvcmd',
@@ -12,6 +15,9 @@ export enum IMAGE_TYPES {
   APP_HEADER_SIGNED = 'bf_app_header_signed',
 }
 
+/**
+ * @ignore
+ */
 export const FLASH_ADDR_LOCATION = Object.freeze({
   bf_fsbl_mvcmd: '0x000000',
   bf_app_elf_zlib: {

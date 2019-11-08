@@ -147,7 +147,7 @@ export default interface IDeviceManager {
 
   /**
    * Reads data from camera and returns diagnostics information
-   *
+   * @ignore
    * @returns an array of DiagnosticsMessages
    */
   getDiagnostics(): Promise<Array<DiagnosticsMessage>>;
@@ -162,7 +162,7 @@ export default interface IDeviceManager {
 
   /**
    * Reads out the power consumtion on the camera.
-   *
+   * @ignore
    * @returns {Promise<any>} An object containing different power consumtion parameters.
    * @memberof IDeviceManager
    */
@@ -170,7 +170,7 @@ export default interface IDeviceManager {
 
   /**
    * Reads out the internal and external temperature on the camera.
-   *
+   * @ignore
    * @returns {Promise<any>} An object containing the internal and external temperature values.
    * @memberof IDeviceManager
    */
