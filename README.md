@@ -116,7 +116,7 @@ Check out the sdk code on github (https://github.com/Huddly/sdk)
   Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.
 
 ### Can I use undocumented methods.
-No. To make sure that camera is compatible with the sdk the documented api gets thoroughly tested, we won't guarantee that undocumented functionality might break/change from sdk version to sdk version, or camera sw to camera sw.
+No. To make sure that camera is compatible with the sdk the documented api gets thoroughly tested, we do not guarantee that undocumented functionality will not break/change from sdk version to sdk version, or camera sw to camera sw.
 
 ### Transition from 0.3.* to 0.4.0
   The transition from 0.3.* to 0.4.0 involves breaking changes with regards to Genius Framing configuration and detection data retrival. The breaking change is that we have moved the configuraion part of GeniusFraming (autozoom) into a separate interface that we called [AutozoomControl](http://developer.huddly.com/interfaces/IAutozoomControl.html#readme). The autozoom configuration methods `enable`, `disable`, `start` and `stop` which used to live in the detector interface are now moved to the new `AutozoomControl` interface. On the other hand, the [Detector](https://developer.huddly.com/interfaces/IDetector.html#readme) interace remains responsible for only setting up events for getting detection and framing data from the camera. Have a look at the documentation of each interface to see usage examples.
