@@ -17,12 +17,7 @@ async function init() {
       objectFilter: ['person'],
       DOWS: true // Get detection only when streaming main
     };
-    const autozoomCtl = cameraManager.getAutozoomControl();
     const detector = await cameraManager.getDetector(detectorOpts);
-    // Make sure that autozoom (genius framing is started)
-    await autozoomCtl.init();
-    await autozoomCtl.start();
-    await detector.init();
 
     // Setup detection listener
     detector.on('DETECTIONS', detections => {

@@ -23,12 +23,7 @@ async function init() {
   await sdk.init();
 
   sdk.on('ATTACH', async (cameraManager) => {
-    const autozoomCtl = cameraManager.getAutozoomControl();
-    // Make sure that autozoom (genius framing is started)
-    await autozoomCtl.init();
-    await autozoomCtl.start();
-
-    // Now get the detector instance from sdk
+    // Get the detector instance from sdk
     const detector = cameraManager.getDetector();
 
     // Setup the detection listener
@@ -43,8 +38,7 @@ async function init() {
 
 init();
 ```
-First we need to setup the sdk and when the camera is attached, get the autozoom controller instance to make sure that autozoom
-is configured and running on the camera.
+First we need to setup the sdk and when the camera is attached, get an instance of te detector class, initialize it and setup the detection listener so we get a detection events.
 
 ```javascript
 const usbApi = new HuddlyDeviceAPIUSB();
@@ -54,22 +48,15 @@ const sdk = new HuddlySdk(usbApi, [usbApi]);
 await sdk.init();
 
 sdk.on('ATTACH', async (cameraManager) => {
-  const autozoomCtl = cameraManager.getAutozoomControl();
-  await autozoomCtl.init();
-  await autozoomCtl.start();
+  const detector = cameraManager.getDetector();
+
+  detector.on('DETECTIONS', detections => {
+    console.log('Number of people detected', detections.length);
+  });
+  ...
 });
 ```
-Then we get an instance of te detector class, initialize it and setup the detection listener so we get a detection events.
 
-```javascript
-...
-const detector = cameraManager.getDetector();
-
-detector.on('DETECTIONS', detections => {
-  console.log('Number of people detected', detections.length);
-});
-...
-```
 Finally, calling `detector.init()` will start the detection engine which generates detection data that is caught
 by our event listener that we set up in the previous step.
 
@@ -154,12 +141,7 @@ async function init() {
   await sdk.init();
 
   sdk.on('ATTACH', async (cameraManager) => {
-    const autozoomCtl = cameraManager.getAutozoomControl();
-    // Make sure that autozoom (genius framing is started)
-    await autozoomCtl.init();
-    await autozoomCtl.start();
-
-    // Now get the detector instance from sdk
+    // Get the detector instance from sdk
     const detector = cameraManager.getDetector();
 
     // Setup the detection listener

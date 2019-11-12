@@ -34,7 +34,7 @@ export default class DeviceManagerMock implements IDeviceManager {
   logger: any;
   initialize(): Promise<void> { return Promise.resolve(); }
   closeConnection(): Promise<void> { return Promise.resolve(); }
-  getInfo(): Promise<void> { return Promise.resolve(); }
+  getInfo(): Promise<object> { return Promise.resolve({ version: '99.99.99' }); }
   getErrorLog(): Promise<void> { return Promise.resolve(); }
   eraseErrorLog(): Promise<void> { return Promise.resolve(); }
   reboot(mode?: string): Promise<void> { return Promise.resolve(); }

@@ -4,8 +4,10 @@ import IDeviceManager from './../interfaces/iDeviceManager';
 import DetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import Api from './api';
 import CameraEvents from './../utilitis/events';
+import semver from 'semver';
 
 const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
+const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
 
 /**
  * Detector class used to configure genius framing on the camera.
@@ -26,6 +28,7 @@ export default class Detector extends EventEmitter implements IDetector {
   _subscriptionsSetup: boolean = false;
   _detectorInitialized: boolean = false;
   _previewStreamStarted: boolean = false;
+  _usePeopleCount: boolean = false;
 
   /**
    * Creates an instance of Detector.
@@ -66,6 +69,14 @@ export default class Detector extends EventEmitter implements IDetector {
       return;
     }
 
+    const cameraInfo = await this._deviceManager.getInfo();
+    try {
+      this._usePeopleCount = semver.gt(cameraInfo.version, LATEST_WITHOUT_PEOPLE_COUNT);
+    } catch (err) {
+      this._logger.warn('Unable to test camera version with semver.');
+      this._usePeopleCount = false;
+    }
+
     this._logger.debug('Initializing detector class', 'IQ Detector');
     if (!this._detectionHandler) {
       this._detectionHandler = detectionBuffer => {
@@ -84,8 +95,16 @@ export default class Detector extends EventEmitter implements IDetector {
     }
 
     if (!this._options.DOWS) {
-      this._logger.debug('Sending detector start command', 'IQ Detector');
-      await this._deviceManager.transport.write('detector/start');
+      if (this._usePeopleCount) {
+        this._logger.debug('Sending people_count start command', 'IQ Detector');
+        await this._deviceManager.transport.write(
+          'people_count/start',
+          Api.encode({ STREAMING_ONLY: false })
+        );
+      } else {
+        this._logger.debug('Sending detector start command', 'IQ Detector');
+        await await this._deviceManager.transport.write('detector/start');
+      }
       await this.setupDetectorSubscriptions({
         detectionListener: true,
         framingListener: false,
@@ -96,9 +115,16 @@ export default class Detector extends EventEmitter implements IDetector {
         'Setting up detection event listeners. \n\n** NB ** Host application must stream main in order to get detection events',
         'IQ Detector'
       );
+
+      if (this._usePeopleCount) {
+        await this._deviceManager.transport.write(
+          'people_count/start',
+          Api.encode({ STREAMING_ONLY: true })
+        );
+      }
+
       await this.setupDetectorSubscriptions();
     }
-
     this._detectorInitialized = true;
     this._logger.debug('Detector class initialized and ready', 'IQ Detector');
   }
@@ -116,21 +142,34 @@ export default class Detector extends EventEmitter implements IDetector {
       return;
     }
 
+    if (this._usePeopleCount) {
+      await this._deviceManager.transport.write('people_count/stop');
+    }
+
     if (!this._options.DOWS && this._previewStreamStarted) {
       this._logger.debug(
         'IQ Detector teardown by stopping detection generation on previewstream, unsubscribing to events and unregistering listeners',
         'IQ Detector'
       );
-      // Send `detector/stop` only if `detector/start` was called previously
-      await this._deviceManager.transport.write('detector/stop');
+      // Send `[people_count/detector]/stop` only if `[people_count/detector]/start` was called previously
+      if (!this._usePeopleCount) {
+        await this._deviceManager.transport.write('detector/stop');
+      }
       this._previewStreamStarted = false;
       await this.teardownDetectorSubscriptions({
         detectionListener: true,
         framingListener: false,
       });
     } else {
+      if (this._usePeopleCount) {
+        this._logger.debug(
+          'IQ Detector teardown by  unsubscribing to events and unregistering listeners'
+        );
+      }
       this._logger.debug(
-        'IQ Detector teardown by unsubscribing to events and unregistering listeners'
+        `IQ Detector teardown by ${
+          this._usePeopleCount ? 'stopping detection generation on previewstream,' : ''
+        } unsubscribing to events and unregistering listeners`
       );
       await this.teardownDetectorSubscriptions();
     }
