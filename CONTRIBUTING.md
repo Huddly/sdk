@@ -163,3 +163,17 @@ After having installed compodoc as a global dependency, you can run our script f
 ```
 npm run compodoc
 ```
+
+
+## Releasing
+To release you need to be a verified contributer.
+
+Run ```release:major```, ```release:minor``` or ```release:patch``` depending on how big the change is. Followed by ```npm publish``` which will publish to the registry.
+After this is done it is important to update ```test_version``` file in the camerasw tests so the new version gets tested with the correct camera sw.
+Add
+
+```sha-to-cli-with-correct-sdk new-sdk-version```
+
+for example.
+
+```cbaf87ee9c4a8235e29d2f3f5d297fb504bba7a 0.4.X```
