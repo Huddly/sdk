@@ -189,7 +189,8 @@ frame in the main stream</p>
                                     <div class="io-description"><p>DOWS short for <code>D</code>etections <code>O</code>nly <code>W</code>hen <code>S</code>treaming.
 When set to true, this option will configure the <code>Detector</code>
 so that detection and framing events are emitted only when
-camera is being streamed on host machine.</p>
+camera is being streamed on host machine.
+Currently you will need to enable Autozoom for this to work.</p>
 </div>
                                 </td>
                             </tr>
@@ -277,6 +278,7 @@ export default interface DetectorOpts {
    * When set to true, this option will configure the &#x60;Detector&#x60;
    * so that detection and framing events are emitted only when
    * camera is being streamed on host machine.
+   * Currently you will need to enable Autozoom for this to work.
    *
    * @type {boolean}
    * @memberof DetectorOpts
@@ -312,7 +314,7 @@ export { DetectionConvertion };
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'upgrade-status.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'DetectorOpts.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

@@ -55,39 +55,56 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         <div class="simple menu-toggler" data-toggle="collapse" ${ isNormalMode ? 'data-target="#additional-pages"'
                             : 'data-target="#xs-additional-pages"' }>
                             <span class="icon ion-ios-book"></span>
-                            <span>Examples</span>
+                            <span>Additional Information</span>
                             <span class="icon ion-ios-arrow-down"></span>
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="additional-pages"' : 'id="xs-additional-pages"' }>
-                                    <li class="link ">
-                                        <a href="additional-documentation/peoplecount-in-a-meeting-room.html" data-type="entity-link" data-context-id="additional">Peoplecount in a meeting room</a>
-                                    </li>
                                     <li class="chapter inner">
-                                        <a data-type="chapter-link" href="additional-documentation/rest-api.html" data-context-id="additional">
+                                        <a data-type="chapter-link" href="additional-documentation/examples.html" data-context-id="additional">
                                             <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#additional-page-6282c18ef4d56079327ffe0c289c7207"' : 'data-target="#xs-additional-page-6282c18ef4d56079327ffe0c289c7207"' }>
-                                                <span class="link-name">REST api</span>
+                                            'data-target="#additional-page-8ca1d4e00aecfd0c791bb89268726675"' : 'data-target="#xs-additional-page-8ca1d4e00aecfd0c791bb89268726675"' }>
+                                                <span class="link-name">Examples</span>
                                                 <span class="icon ion-ios-arrow-down"></span>
                                             </div>
                                         </a>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-6282c18ef4d56079327ffe0c289c7207"' : 'id="xs-additional-page-6282c18ef4d56079327ffe0c289c7207"' }>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-8ca1d4e00aecfd0c791bb89268726675"' : 'id="xs-additional-page-8ca1d4e00aecfd0c791bb89268726675"' }>
                                             <li class="link for-chapter2">
-                                                <a href="additional-documentation/rest-api/get-detections.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Get detections</a>
+                                                <a href="additional-documentation/examples/peoplecount-in-a-meeting-room.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Peoplecount in a meeting room</a>
                                             </li>
                                             <li class="link for-chapter2">
-                                                <a href="additional-documentation/rest-api/detector-start.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Detector start</a>
+                                                <a href="additional-documentation/examples/rest-api.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">REST api</a>
                                             </li>
-                                            <li class="link for-chapter2">
-                                                <a href="additional-documentation/rest-api/detector-stop.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Detector stop</a>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/examples/rest-api/get-detections.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Get detections</a>
                                             </li>
-                                            <li class="link for-chapter2">
-                                                <a href="additional-documentation/rest-api/camera-info.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Camera info</a>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/examples/rest-api/detector-start.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Detector start</a>
                                             </li>
-                                            <li class="link for-chapter2">
-                                                <a href="additional-documentation/rest-api/upgrade.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Upgrade</a>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/examples/rest-api/detector-stop.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Detector stop</a>
                                             </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/examples/rest-api/camera-info.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Camera info</a>
+                                            </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/examples/rest-api/upgrade.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Upgrade</a>
+                                            </li>
+                                            <li class="link for-chapter3">
+                                                <a href="additional-documentation/examples/rest-api/upgrade-status.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Upgrade status</a>
+                                            </li>
+                                        </ul>
+                                    </li>
+                                    <li class="chapter inner">
+                                        <a data-type="chapter-link" href="additional-documentation/detector.html" data-context-id="additional">
+                                            <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
+                                            'data-target="#additional-page-a028636532e4612c39dedd405fdc32ff"' : 'data-target="#xs-additional-page-a028636532e4612c39dedd405fdc32ff"' }>
+                                                <span class="link-name">Detector</span>
+                                                <span class="icon ion-ios-arrow-down"></span>
+                                            </div>
+                                        </a>
+                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-a028636532e4612c39dedd405fdc32ff"' : 'id="xs-additional-page-a028636532e4612c39dedd405fdc32ff"' }>
                                             <li class="link for-chapter2">
-                                                <a href="additional-documentation/rest-api/upgrade-status.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Upgrade status</a>
+                                                <a href="additional-documentation/detector/previous-detectors.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Previous Detectors</a>
                                             </li>
                                         </ul>
                                     </li>

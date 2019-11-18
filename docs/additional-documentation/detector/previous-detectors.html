@@ -48,31 +48,17 @@
 
 
 
-<h1 id="rest-server">REST server</h1>
-<p>In order to run this examples you first need to clone the repo</p>
-<div><pre class="line-numbers"><code class="language-none">git clone git&#64;github.com:Huddly/sdk.git</code></pre></div><p>then go to the example folder</p>
-<div><pre class="line-numbers"><code class="language-none">cd examples/rest</code></pre></div><p>After that install the project dependencies using npm as below:</p>
-<div><pre class="line-numbers"><code class="language-none">npm install</code></pre></div><p>Yarn can also be used to install dependencies.</p>
-<div><pre class="line-numbers"><code class="language-none">yarn install</code></pre></div><p>Start the server by running the command below:</p>
-<div><pre class="line-numbers"><code class="language-none">npm run start</code></pre></div><p>The REST api will then be available under <code>localhost:8080</code></p>
-<p>This example applications is a REST server that where you can get camera information as well as performing actions and changing state in the camera.</p>
-<p>Here are the actions you can perform:</p>
-<h2 id="camera-info">Camera Info</h2>
+<h1 id="previous-detectors">Previous Detectors</h1>
+<h2 id="az_v20">az_v20</h2>
 <ul>
-<li><a href="rest-api/camera-info.html">Get camera info</a> : <code>GET /info</code></li>
+<li><strong>Released</strong>: 20. Aug 2019</li>
 </ul>
-<h2 id="detector">Detector</h2>
+<p><strong>Changes</strong></p>
 <ul>
-<li><a href="rest-api/detector-start.html">Start autozoom (genius framing) and detector</a> : <code>PUT /detector/start</code></li>
-<li><a href="rest-api/detector-stop-.html">Stop autozoom (genius framing) and detector</a> : <code>PUT /detector/stop</code></li>
-<li><a href="rest-api/get-detections.html">Get detections</a> : <code>GET /detector/detections</code></li>
+<li>More specialized towards use case. Only outputs person, head and chair label.</li>
+<li>Significantly better at correctly detecting all labels.  </li>
+<li>Slightly higher probability of detecting relfections.</li>
 </ul>
-<h2 id="upgrade">Upgrade</h2>
-<ul>
-<li><a href="rest-api/upgrade.html">Upgrade camera</a> : <code>POST /upgrade</code></li>
-<li><a href="rest-api/upgrade-status.html">Status of upgrade</a> : <code>GET /upgrade/status</code></li>
-</ul>
-<p>The server is using the huddly-sdk to communicate with the camera, and koa for the web application.</p>
 
                    </div><div class="search-results">
     <div class="has-results">
@@ -91,7 +77,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 2;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
-            var COMPODOC_CURRENT_PAGE_URL = 'rest-api.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'previous-detectors.html';
        </script>
 
        <script src="../../js/libs/custom-elements.min.js"></script>
