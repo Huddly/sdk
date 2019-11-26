@@ -32,4 +32,22 @@ export default interface DeviceApiOpts {
    * @memberof ApiOpts
    */
   enforceSupport?: boolean;
+
+  /**
+   * @ignore
+   * Amount of attemts seraching for provided device in LIBUSB
+   * if undefined default value of 10 will be used
+   * @type {*}
+   * @memberof ApiOpts
+   */
+  maxSearchRetries?: Number;
+
+  /**
+   * @ignore
+   * If true it will continue to search for device until it is found
+   * or process is aborted, if false maxSearchRetries will be use
+   * @type {*}
+   * @memberof ApiOpts
+   */
+  alwaysRetry?: boolean;
 }
