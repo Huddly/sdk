@@ -7,9 +7,6 @@
 * **CONTRIBUTING.md:**  Bumped version of compodoc ([e6ca4ffb](https://github.com/Huddly/sdk/commit/e6ca4ffbfdf548330846460917c0131a6033d312))
 
 ##### New Features
-
-* **Added options how long to search for device:**  Option for setting # of times looking for device ([056c533f](https://github.com/Huddly/sdk/commit/056c533faac96f8b7c39c7607a0ac99be210a1ae))
-* **Added support for dartfish PID in factory.ts:**  Added support for dartfish PID ([e6c03775](https://github.com/Huddly/sdk/commit/e6c037755cee8d47b5f0f1dbd8e68ca46aa5e856))
 * **Examples:**  Added an example where a specific camera is targeted ([1c88a341](https://github.com/Huddly/sdk/commit/1c88a34137e7b84da248281d8f2c2eb2e363d81f))
 
 ##### Bug Fixes
