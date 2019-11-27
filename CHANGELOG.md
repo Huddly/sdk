@@ -1,3 +1,21 @@
+#### 0.4.1 (2019-11-27)
+
+##### Documentation Changes
+
+*  Added documentation for the detector ([#237](https://github.com/Huddly/sdk/pull/237)) ([de0bea1d](https://github.com/Huddly/sdk/commit/de0bea1d3142e9f0befa90162a5690eb6bc3fd54))
+* **Contribution:**  Added description for release process ([7a7399fe](https://github.com/Huddly/sdk/commit/7a7399fef9be93672580a6326b063840a749d4af))
+* **CONTRIBUTING.md:**  Bumped version of compodoc ([e6ca4ffb](https://github.com/Huddly/sdk/commit/e6ca4ffbfdf548330846460917c0131a6033d312))
+
+##### New Features
+
+* **Added options how long to search for device:**  Option for setting # of times looking for device ([056c533f](https://github.com/Huddly/sdk/commit/056c533faac96f8b7c39c7607a0ac99be210a1ae))
+* **Added support for dartfish PID in factory.ts:**  Added support for dartfish PID ([e6c03775](https://github.com/Huddly/sdk/commit/e6c037755cee8d47b5f0f1dbd8e68ca46aa5e856))
+* **Examples:**  Added an example where a specific camera is targeted ([1c88a341](https://github.com/Huddly/sdk/commit/1c88a34137e7b84da248281d8f2c2eb2e363d81f))
+
+##### Bug Fixes
+
+* **examples:**  Update sdk examples to use latest sdk version (0.4.0) ([3b462f73](https://github.com/Huddly/sdk/commit/3b462f73cdd51032b69619c99fc42625c677c8b0))
+
 ### 0.4.0 (2019-10-14)
 
 ##### Chores
