@@ -416,7 +416,7 @@ export default class Api {
     return res;
   }
 
-  async getErrorLog(timeout: number): Promise<any> {
+  async getErrorLog(timeout: number, retry: number = 1): Promise<any> {
     if (!this.getErrorLogMsgPackSupport) {
       return this.getErrorLogLegacy(timeout);
     }
@@ -433,12 +433,17 @@ export default class Api {
       this.getErrorLogMsgPackSupport = true;
       return result.log;
     } catch (e) {
-      this.getErrorLogMsgPackSupport = false;
-      this.logger.debug(
-        'ErrorLog MessagePack not supported on this device. Using legacy procedure!',
-        'SDK API'
-      );
-      return this.getErrorLogLegacy(timeout);
+      if (retry > 0) {
+        this.logger.debug('Retrying getErrorLog', 'SDK API');
+        return this.getErrorLog(timeout, retry - 1);
+      } else {
+        this.getErrorLogMsgPackSupport = false;
+        this.logger.debug(
+          'ErrorLog MessagePack not supported on this device. Using legacy procedure!',
+          'SDK API'
+        );
+        return this.getErrorLogLegacy(timeout);
+      }
     }
   }
 
