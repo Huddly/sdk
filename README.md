@@ -19,12 +19,13 @@ Huddly SDK supportes the following node versions: (Needs to support NAPI v3 )
 - 8.11.2
 - 10.15.2
 - 11.5.0
+- 12.4.0 (LTS)
 
 We recommend using nvm as your node version manager [https://github.com/creationix/nvm](https://github.com/creationix/nvm).
 
 After you've setup nvm run
 ```
-  nvm use 8.11.2
+  nvm use 12.4.0
 ```
 
 ## Get started
