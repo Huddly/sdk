@@ -12,6 +12,6 @@
   "dependencies": {
     "@huddly/device-api-usb": "~0.2",
     "@huddly/sdk": "~0.4",
-    "got": "~9.2.2"
+    "got": "^10.2.1"
   }
 }
