@@ -18,7 +18,7 @@ async function init() {
       DOWS: true // Get detection only when streaming main
     };
     const detector = await cameraManager.getDetector(detectorOpts);
-
+    await detector.init();
     // Setup detection listener
     detector.on('DETECTIONS', detections => {
       trackPeopleCount(meetingRoomName, detections.length);
