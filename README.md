@@ -88,7 +88,7 @@ Check out the sdk code on github (https://github.com/Huddly/sdk)
 
 ## FAQ
 ### My detections are not matching what I see in the stream:
-  Internally the camera always sees full field of view, the coordinates are relative to full field of view by deafault. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.
+  Internally the camera always sees full field of view, the coordinates are relative to full field of view by default. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.
   ```
     cameraManager.getDetector({ convertDetections: 'FRAMING' });
   ```
