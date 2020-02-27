@@ -76,7 +76,7 @@
     "eslint-plugin-jsx-a11y": "^6.2.3",
     "eslint-plugin-react": "^7.17.0",
     "generate-changelog": "^1.8.0",
-    "mocha": "^6.2.2",
+    "mocha": "^7.1.0",
     "nock": "^11.7.0",
     "nyc": "~14.1.1",
     "pre-commit": "~1.2.2",
