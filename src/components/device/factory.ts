@@ -12,6 +12,7 @@ export const HUDDLY_BOXFISH_PRODTEST_PID = 0x22;
 export const HUDDLY_CLOWNFISH_PID = 0x31;
 export const HUDDLY_DARTFISH_PID = 0x41;
 export const HUDDLY_DWARFFISH_PID = 0x51;
+export const HUDDLY_DUMMY_PID = 0x61;
 
 
 export default class DeviceFactory {
@@ -172,6 +173,7 @@ export default class DeviceFactory {
       case HUDDLY_BOXFISH_PRODTEST_PID:
       case HUDDLY_DARTFISH_PID:
       case HUDDLY_DWARFFISH_PID:
+      case HUDDLY_DUMMY_PID:
         device = new Boxfish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
       default:
