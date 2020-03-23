@@ -431,6 +431,11 @@ export default class Api {
         1000
       );
       this.getErrorLogMsgPackSupport = true;
+      if (result.error !== 0) {
+        throw new Error(
+          `Camera returned error on reading error log: ${result.error} ${result.string}`
+        );
+      }
       return result.log;
     } catch (e) {
       if (retry > 0) {
