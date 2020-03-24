@@ -93,8 +93,8 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     }
   }
 
-  async getErrorLog(timeout: number = 60000): Promise<any> {
-    return this.api.getErrorLog(timeout);
+  async getErrorLog(timeout: number = 60000, retry: number = 1, allowLegacy: boolean = true): Promise<any> {
+    return this.api.getErrorLog(timeout, retry, allowLegacy);
   }
 
   async eraseErrorLog(timeout: number = 60000): Promise<void> {

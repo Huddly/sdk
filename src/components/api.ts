@@ -416,11 +416,10 @@ export default class Api {
     return res;
   }
 
-  async getErrorLog(timeout: number, retry: number = 1): Promise<any> {
-    if (!this.getErrorLogMsgPackSupport) {
+  async getErrorLog(timeout: number, retry: number = 1, allowLegacy: boolean = true): Promise<any> {
+    if (!this.getErrorLogMsgPackSupport && allowLegacy) {
       return this.getErrorLogLegacy(timeout);
     }
-
     try {
       const result = await this.sendAndReceiveMessagePack(
         Buffer.from(''),
@@ -432,22 +431,24 @@ export default class Api {
       );
       this.getErrorLogMsgPackSupport = true;
       if (result.error !== 0) {
-        throw new Error(
-          `Camera returned error on reading error log: ${result.error} ${result.string}`
-        );
+        const msg = `Camera returned error on reading error log: ${result.error} ${result.string}`;
+        this.logger.warn(msg, 'SDK API');
+        throw new Error(msg);
       }
       return result.log;
     } catch (e) {
       if (retry > 0) {
         this.logger.debug('Retrying getErrorLog', 'SDK API');
         return this.getErrorLog(timeout, retry - 1);
-      } else {
+      } else if (allowLegacy) {
         this.getErrorLogMsgPackSupport = false;
         this.logger.debug(
           'ErrorLog MessagePack not supported on this device. Using legacy procedure!',
           'SDK API'
         );
         return this.getErrorLogLegacy(timeout);
+      } else {
+        throw e;
       }
     }
   }
