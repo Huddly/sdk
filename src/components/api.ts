@@ -439,7 +439,7 @@ export default class Api {
     } catch (e) {
       if (retry > 0) {
         this.logger.debug('Retrying getErrorLog', 'SDK API');
-        return this.getErrorLog(timeout, retry - 1);
+        return this.getErrorLog(timeout, retry - 1, allowLegacy);
       } else if (allowLegacy) {
         this.getErrorLogMsgPackSupport = false;
         this.logger.debug(
