@@ -91,7 +91,7 @@
     "webpack-cli": "^3.3.10"
   },
   "dependencies": {
-    "@types/node": "^12.12.22",
+    "@types/node": "^13.9.5",
     "jszip": "^3.2.2",
     "msgpack-lite": "~0.1.26",
     "p-queue": "^6.2.1",
