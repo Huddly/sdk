@@ -2,18 +2,17 @@ import ITransport from './../../interfaces/iTransport';
 import IHuddlyDeviceAPI from './../../interfaces/iHuddlyDeviceAPI';
 import DefaultLogger from './../../utilitis/logger';
 import IDeviceManager from './../../interfaces/iDeviceManager';
+import IDeviceFactory from './../../interfaces/iDeviceFactory';
 import HuddlyGo from './huddlygo';
 import Boxfish from './boxfish';
 import { EventEmitter } from 'events';
 
 export const HUDDLY_GO_PID = 0x11;
 export const HUDDLY_BOXFISH_PID = 0x21;
-export const HUDDLY_BOXFISH_PRODTEST_PID = 0x22;
-export const HUDDLY_CLOWNFISH_PID = 0x31;
-export const HUDDLY_DARTFISH_PID = 0x41;
-export const HUDDLY_DWARFFISH_PID = 0x51;
-export const HUDDLY_DUMMY_PID = 0x61;
 
+export function createFactory(): IDeviceFactory {
+  return DeviceFactory;
+}
 
 export default class DeviceFactory {
 
@@ -168,12 +167,7 @@ export default class DeviceFactory {
         const hidApi = await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis, logger);
         device = new HuddlyGo(devInstance, transport, uvcControlInterface, hidApi, logger, cameraDiscoveryEmitter);
         break;
-      case HUDDLY_CLOWNFISH_PID:
       case HUDDLY_BOXFISH_PID:
-      case HUDDLY_BOXFISH_PRODTEST_PID:
-      case HUDDLY_DARTFISH_PID:
-      case HUDDLY_DWARFFISH_PID:
-      case HUDDLY_DUMMY_PID:
         device = new Boxfish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
       default:
