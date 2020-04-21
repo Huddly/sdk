@@ -10,8 +10,8 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@huddly/device-api-usb": "~0.2",
-    "@huddly/sdk": "~0.4",
+    "@huddly/device-api-usb": "^0.2.14",
+    "@huddly/sdk": "^0.4.2",
     "got": "^10.2.1"
   }
 }
