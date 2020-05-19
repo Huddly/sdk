@@ -4,6 +4,7 @@ import sinonChai from 'sinon-chai';
 import DeviceFactory from './../../../src/components/device/factory';
 import Boxfish from './../../../src/components/device/boxfish';
 import HuddlyGo from './../../../src/components/device/huddlygo';
+import Dwarffish from './../../../src/components/device/dwarffish';
 import IHuddlyDeviceAPI from './../../../src/interfaces/iHuddlyDeviceAPI';
 import IUVCControlAPI from './../../../src/interfaces/iUVCControlApi';
 import { EventEmitter } from 'events';
@@ -195,6 +196,25 @@ describe('DeviceFactory', () => {
           discoveryEmitter,
           false);
         expect(deviceManager).to.be.instanceof(Boxfish);
+      });
+    });
+
+    describe('Dwarffish', () => {
+      it('should initialize boxfish device when product id is 0x21', async () => {
+        const dummyIQDevice = {
+          deviceDescriptor: {
+            idProduct: 0x51
+          }
+        };
+        const deviceManager = await DeviceFactory.getDevice(
+          dummyIQDevice.deviceDescriptor.idProduct,
+          undefined,
+          dummyDeviceApis[0],
+          dummyDeviceApis,
+          dummyIQDevice,
+          discoveryEmitter,
+          false);
+        expect(deviceManager).to.be.instanceof(Dwarffish);
       });
     });
 
