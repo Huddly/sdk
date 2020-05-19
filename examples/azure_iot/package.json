@@ -27,7 +27,7 @@
     "winston": "^3.2.1"
   },
   "devDependencies": {
-    "cpy": "^7.3.0",
+    "cpy": "^8.1.0",
     "execa": "^1.0.0",
     "pkg": "^4.4.2"
   }
