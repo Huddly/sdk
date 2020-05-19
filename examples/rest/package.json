@@ -17,7 +17,7 @@
     "lint": "esw -w src test"
   },
   "dependencies": {
-    "@babel/cli": "^7.7.7",
+    "@babel/cli": "^7.8.4",
     "@babel/core": "^7.7.7",
     "@babel/plugin-proposal-object-rest-spread": "^7.7.7",
     "@babel/preset-env": "^7.7.7",
