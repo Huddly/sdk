@@ -28,6 +28,24 @@ export abstract class DiagnosticsMessage {
   get tip(): string {
     return this._tip;
   }
+
+  get data(): any {
+    return undefined;
+  }
+}
+
+export class DiagnosticsMessageData extends DiagnosticsMessage {
+  protected _data: any;
+  constructor(type: string, message: string, data: any) {
+    super(type);
+
+    this._message = message;
+    this._data = data;
+  }
+
+  get data(): any {
+    return this._data;
+  }
 }
 
 export class MinMaxDiagnosticsMessage extends DiagnosticsMessage {

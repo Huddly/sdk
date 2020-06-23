@@ -12,7 +12,7 @@ import DetectorOpts from './../../interfaces/IDetectorOpts';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
-import { MinMaxDiagnosticsMessage, DiagnosticsMessage  } from '../diagnosticsMessage';
+import { MinMaxDiagnosticsMessage, DiagnosticsMessage, DiagnosticsMessageData } from '../diagnosticsMessage';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import InterpolationParams from './../../interfaces/InterpolationParams';
@@ -124,12 +124,40 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   getPowerMonitorDiagnostics(powerUsage: any): Array<DiagnosticsMessage> {
     const minVoltage = 4.6;
     const maxVoltage = 5.25;
+    const maxCurrent = 0.955;
+    const minCurrent = 0;
     const voltageTip = 'Check your cables';
 
-    const voltage = new MinMaxDiagnosticsMessage('Voltage',
-      minVoltage, maxVoltage, powerUsage.voltage.min,
-      powerUsage.voltage.max, powerUsage.voltage.curr, voltageTip, voltageTip);
-    return [voltage];
+
+    let diagnostics = [];
+    if (powerUsage.voltage) {
+      const voltage = new MinMaxDiagnosticsMessage('Voltage',
+        minVoltage, maxVoltage, powerUsage.voltage.min,
+        powerUsage.voltage.max, powerUsage.voltage.curr, voltageTip, voltageTip);
+
+      diagnostics  = [...diagnostics, voltage];
+    }
+
+    if (powerUsage.current) {
+      const current = new MinMaxDiagnosticsMessage('Current',
+        minCurrent, maxCurrent, powerUsage.current.min,
+        powerUsage.current.max, powerUsage.current.curr, voltageTip, voltageTip);
+
+        diagnostics  = [...diagnostics, current];
+    }
+
+    return diagnostics;
+  }
+
+  async getDiagnosticsInfo(): Promise<Array<DiagnosticsMessage>> {
+    const message = await this.api.sendAndReceiveMessagePack('', {
+      send: 'diagnostics/get_info',
+      receive: 'diagnostics/get_info_reply',
+    }, 3000);
+
+    return [
+      new DiagnosticsMessageData('USBMODE', 'USB Ok', message.usb),
+    ];
   }
 
   async getDiagnostics(): Promise<Array<DiagnosticsMessage>> {
@@ -137,7 +165,9 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
     const powerDiagnostics = this.getPowerMonitorDiagnostics(powerUsage);
 
-    return powerDiagnostics;
+    const infoDiagnostics = await this.getDiagnosticsInfo();
+
+    return [...powerDiagnostics, ...infoDiagnostics];
   }
 
   async reboot(mode: string = 'app'): Promise<void> {
