@@ -6,7 +6,7 @@ import IDetector from './IDetector';
 import UpgradeOpts from './IUpgradeOpts';
 import DetectorOpts from './IDetectorOpts';
 import AutozoomControlOpts from './IAutozoomControlOpts';
-import { DiagnosticsMessage } from '../components/diagnosticsMessage';
+import DiagnosticsMessage from '../components/diagnosticsMessage';
 import ReleaseChannel from './ReleaseChannelEnum';
 
 /**
@@ -147,7 +147,7 @@ export default interface IDeviceManager {
 
   /**
    * Reads data from camera and returns diagnostics information
-   * @ignore
+   * Gives information on what type of usb connection has been established,voltage/current is too high, and tips on how to mitigate
    * @returns an array of DiagnosticsMessages
    */
   getDiagnostics(): Promise<Array<DiagnosticsMessage>>;

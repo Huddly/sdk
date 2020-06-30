@@ -26,6 +26,7 @@
   },
   "include": [
     "./src/interfaces/*",
+    "./src/components/diagnosticsMessage.ts",
     "./src/*",
     "tests/**/*"
   ],

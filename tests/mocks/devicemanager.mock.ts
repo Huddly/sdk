@@ -5,7 +5,7 @@ import IDetector from './../../src/interfaces/IDetector';
 import IAutozoomControl from '../../src/interfaces/IAutozoomControl';
 import AutozoomControlOpts from '../../src/interfaces/IAutozoomControlOpts';
 import DetectorOpts from './../../src//interfaces/IDetectorOpts';
-import { DiagnosticsMessage } from './../../src//components/diagnosticsMessage';
+import DiagnosticsMessage from './../../src//components/diagnosticsMessage';
 
 /**
  * @ignore
