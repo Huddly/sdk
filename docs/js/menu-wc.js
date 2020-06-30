@@ -122,6 +122,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="classes/AttachError.html" data-type="entity-link">AttachError</a>
                             </li>
                             <li class="link">
+                                <a href="classes/DiagnosticsMessage.html" data-type="entity-link">DiagnosticsMessage</a>
+                            </li>
+                            <li class="link">
                                 <a href="classes/HuddlySdk.html" data-type="entity-link">HuddlySdk</a>
                             </li>
                         </ul>
@@ -151,6 +154,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                             </li>
                             <li class="link">
                                 <a href="interfaces/IDeviceUpgrader.html" data-type="entity-link">IDeviceUpgrader</a>
+                            </li>
+                            <li class="link">
+                                <a href="interfaces/ILogger.html" data-type="entity-link">ILogger</a>
                             </li>
                             <li class="link">
                                 <a href="interfaces/SDKOpts.html" data-type="entity-link">SDKOpts</a>

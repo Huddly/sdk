@@ -121,6 +121,9 @@
                                     <a href="#getDetector">getDetector</a>
                                 </li>
                                 <li>
+                                    <a href="#getDiagnostics">getDiagnostics</a>
+                                </li>
+                                <li>
                                     <a href="#getErrorLog">getErrorLog</a>
                                 </li>
                                 <li>
@@ -435,6 +438,54 @@ from the camera.</p>
                     </div>
                     <div class="io-description">
                         <p>Returns a new instance of the <code>Detector</code> class.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDiagnostics"></a>
+                    <span class="name">
+                        <b>
+                            getDiagnostics
+                        </b>
+                        <a href="#getDiagnostics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDiagnostics()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="153"
+                            class="link-to-prism">src/interfaces/iDeviceManager.ts:153</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Reads data from camera and returns diagnostics information
+Gives information on what type of usb connection has been established,voltage/current is too high, and tips on how to mitigate</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/DiagnosticsMessage.html" target="_self" >Promise&lt;Array&lt;DiagnosticsMessage&gt;&gt;</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>an array of DiagnosticsMessages</p>
 
                     </div>
                 </td>
@@ -1104,7 +1155,7 @@ import IDetector from &#x27;./IDetector&#x27;;
 import UpgradeOpts from &#x27;./IUpgradeOpts&#x27;;
 import DetectorOpts from &#x27;./IDetectorOpts&#x27;;
 import AutozoomControlOpts from &#x27;./IAutozoomControlOpts&#x27;;
-import { DiagnosticsMessage } from &#x27;../components/diagnosticsMessage&#x27;;
+import DiagnosticsMessage from &#x27;../components/diagnosticsMessage&#x27;;
 import ReleaseChannel from &#x27;./ReleaseChannelEnum&#x27;;
 
 /**
@@ -1245,7 +1296,7 @@ export default interface IDeviceManager {
 
   /**
    * Reads data from camera and returns diagnostics information
-   * @ignore
+   * Gives information on what type of usb connection has been established,voltage/current is too high, and tips on how to mitigate
    * @returns an array of DiagnosticsMessages
    */
   getDiagnostics(): Promise&lt;Array&lt;DiagnosticsMessage&gt;&gt;;
