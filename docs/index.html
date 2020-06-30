@@ -50,10 +50,11 @@
 <li>8.11.2</li>
 <li>10.15.2</li>
 <li>11.5.0</li>
+<li>12.4.0 (LTS)</li>
 </ul>
 <p>We recommend using nvm as your node version manager <a href="https://github.com/creationix/nvm">https://github.com/creationix/nvm</a>.</p>
 <p>After you&#39;ve setup nvm run</p>
-<div><pre class="line-numbers"><code class="language-none">  nvm use 8.11.2</code></pre></div><h2 id="get-started">Get started</h2>
+<div><pre class="line-numbers"><code class="language-none">  nvm use 12.4.0</code></pre></div><h2 id="get-started">Get started</h2>
 <p>Then you can install and start using the huddly sdk you need first install it and the transport</p>
 <div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/sdk &#64;huddly/device-api-usb</code></pre></div><p>Start by creating the sdk and the transport</p>
 <div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceAPIUSB = require(&#39;&#64;huddly/device-api-usb&#39;).default;
@@ -87,7 +88,7 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 <p>Check out the sdk code on github (<a href="https://github.com/Huddly/sdk">https://github.com/Huddly/sdk</a>)</p>
 <h2 id="faq">FAQ</h2>
 <h3 id="my-detections-are-not-matching-what-i-see-in-the-stream">My detections are not matching what I see in the stream:</h3>
-<p>  Internally the camera always sees full field of view, the coordinates are relative to full field of view by deafault. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.</p>
+<p>  Internally the camera always sees full field of view, the coordinates are relative to full field of view by default. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.</p>
 <div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ convertDetections: &#39;FRAMING&#39; });</code></pre></div><p>  This makes it easy to draw these bbox directly on top of the main stream.</p>
 <h3 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera">How can i disable autoframing and still get detection information from camera?</h3>
 <p>  Another available detector configuration is the <code>shouldAutoFrame</code> option which when set to false, it allows you to configure Genius Framing to send detection data without autoframing.</p>

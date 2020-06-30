@@ -68,12 +68,7 @@ async function init() {
   await sdk.init();
 
   sdk.on(&#39;ATTACH&#39;, async (cameraManager) =&gt; {
-    const autozoomCtl = cameraManager.getAutozoomControl();
-    // Make sure that autozoom (genius framing is started)
-    await autozoomCtl.init();
-    await autozoomCtl.start();
-
-    // Now get the detector instance from sdk
+    // Get the detector instance from sdk
     const detector = cameraManager.getDetector();
 
     // Setup the detection listener
@@ -86,8 +81,7 @@ async function init() {
   });
 }
 
-init();</code></pre></div><p>First we need to setup the sdk and when the camera is attached, get the autozoom controller instance to make sure that autozoom
-is configured and running on the camera.</p>
+init();</code></pre></div><p>First we need to setup the sdk and when the camera is attached, get an instance of te detector class, initialize it and setup the detection listener so we get a detection events.</p>
 <div><pre class="line-numbers"><code class="language-javascript">const usbApi = new HuddlyDeviceAPIUSB();
 
 // Create an instance of the SDK
@@ -95,17 +89,13 @@ const sdk = new HuddlySdk(usbApi, [usbApi]);
 await sdk.init();
 
 sdk.on(&#39;ATTACH&#39;, async (cameraManager) =&gt; {
-  const autozoomCtl = cameraManager.getAutozoomControl();
-  await autozoomCtl.init();
-  await autozoomCtl.start();
-});</code></pre></div><p>Then we get an instance of te detector class, initialize it and setup the detection listener so we get a detection events.</p>
-<div><pre class="line-numbers"><code class="language-javascript">...
-const detector = cameraManager.getDetector();
+  const detector = cameraManager.getDetector();
 
-detector.on(&#39;DETECTIONS&#39;, detections =&gt; {
-  console.log(&#39;Number of people detected&#39;, detections.length);
-});
-...</code></pre></div><p>Finally, calling <code>detector.init()</code> will start the detection engine which generates detection data that is caught
+  detector.on(&#39;DETECTIONS&#39;, detections =&gt; {
+    console.log(&#39;Number of people detected&#39;, detections.length);
+  });
+  ...
+});</code></pre></div><p>Finally, calling <code>detector.init()</code> will start the detection engine which generates detection data that is caught
 by our event listener that we set up in the previous step.</p>
 <div><pre class="line-numbers"><code class="language-javascript">detector.init();</code></pre></div><p>The meeting room name is declared with an environment variable, so this can be configured from machine to machine.</p>
 <div><pre class="line-numbers"><code class="language-none">  export HUDDLY_MEETING_ROOM=&quot;my_meeting_room&quot;</code></pre></div><p>Now that we set up how to track events to google analytics.</p>
@@ -162,12 +152,7 @@ async function init() {
   await sdk.init();
 
   sdk.on(&#39;ATTACH&#39;, async (cameraManager) =&gt; {
-    const autozoomCtl = cameraManager.getAutozoomControl();
-    // Make sure that autozoom (genius framing is started)
-    await autozoomCtl.init();
-    await autozoomCtl.start();
-
-    // Now get the detector instance from sdk
+    // Get the detector instance from sdk
     const detector = cameraManager.getDetector();
 
     // Setup the detection listener

@@ -148,7 +148,15 @@ $ npm run prettier</code></pre></div><h3 id="tests-and-code-coverage">Tests and 
 <h3 id="updating-documentation-pages">Updating documentation pages</h3>
 <p>Updating or generating new content on the documentation pages you are required to install a specific version of <a href="https://compodoc.app/">Compodoc</a> npm module. Run the following command to install compodoc on your machine:</p>
 <div><pre class="line-numbers"><code class="language-none">npm install -g &#64;compodoc/compodoc&#64;1.1.11</code></pre></div><p>After having installed compodoc as a global dependency, you can run our script for generating the @huddly/sdk documentation:</p>
-<div><pre class="line-numbers"><code class="language-none">npm run compodoc</code></pre></div>
+<div><pre class="line-numbers"><code class="language-none">npm run compodoc</code></pre></div><h2 id="releasing">Releasing</h2>
+<p>To release you need to be a verified contributer.</p>
+<p>Run <code>release:major</code>, <code>release:minor</code> or <code>release:patch</code> depending on how big the change is. Followed by <code>npm publish</code> which will publish to the registry.
+After this is done it is important to update <code>test_version</code> file in the camerasw tests so the new version gets tested with the correct camera sw.
+Add</p>
+<p><code>sha-to-cli-with-correct-sdk new-sdk-version</code></p>
+<p>for example.</p>
+<p><code>cbaf87ee9c4a8235e29d2f3f5d297fb504bba7a 0.4.X</code></p>
+
 
 
 
