@@ -1,7 +1,8 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import { DiagnosticsMessage, MinMaxDiagnosticsMessage, DiagnosticsLevel } from './../../src/components/diagnosticsMessage';
+import DiagnosticsMessage, { DiagnosticsLevel } from './../../src/components/diagnosticsMessage';
+import { MinMaxDiagnosticsMessage } from './../../src/components/diagnosticsMessageData';
 
 
 chai.should();

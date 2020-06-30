@@ -4,7 +4,12 @@ export enum DiagnosticsLevel {
   ERROR = 'ERROR',
 }
 
-export abstract class DiagnosticsMessage {
+/**
+ * Provides diagnostic information from the camera.
+ * @export
+ * @class DiagnosticsMessage
+ */
+export default abstract class DiagnosticsMessage {
   protected _type: string;
   protected _level: DiagnosticsLevel = DiagnosticsLevel.INFO;
   protected _message: string = '';
@@ -12,70 +17,48 @@ export abstract class DiagnosticsMessage {
   constructor(type: string) {
     this._type = type;
   }
-
+  /**
+   * Human readable message in english if type is ok, or not
+   * @type {string}
+   * @memberof DiagnosticsMessage
+   */
   get message(): string {
     return this._message;
   }
 
+  /**
+   * Type that indentifies what type of diagnostics message it is e.g USBMODE
+   * @type {string}
+   * @memberof DiagnosticsMessage
+   */
   get type(): string {
     return this._type;
   }
 
+  /**
+   * What type of level is the message, INFO, WARN, ERROR
+   * @type {DiagnosticsLevel}
+   * @memberof DiagnosticsMessage
+   */
   get level(): DiagnosticsLevel {
     return this._level;
   }
 
+  /**
+   * Human readable message how you can mitigate a problem
+   * @type {string}
+   * @memberof DiagnosticsMessage
+   */
   get tip(): string {
     return this._tip;
   }
 
+  /**
+   * Data object can contain more detailed information about the diagnostics information
+   * @type {any}
+   * @memberof DiagnosticsMessage
+   */
   get data(): any {
     return undefined;
-  }
-}
-
-export class DiagnosticsMessageData extends DiagnosticsMessage {
-  protected _data: any;
-  constructor(type: string, message: string, data: any) {
-    super(type);
-
-    this._message = message;
-    this._data = data;
-  }
-
-  get data(): any {
-    return this._data;
-  }
-}
-
-export class MinMaxDiagnosticsMessage extends DiagnosticsMessage {
-  constructor(
-    type: string,
-    minTreshold: Number,
-    maxTreshold: Number,
-    min: Number,
-    max: Number,
-    curr: Number,
-    minTip?: string,
-    maxTip?: string
-  ) {
-    super(type);
-
-    if (min <= minTreshold) {
-      this._level = DiagnosticsLevel.ERROR;
-      this._message = `${type} low.
-        Measured ${min}. Current: ${curr}
-        Minimum ${type} is ${minTreshold}`;
-      this._tip = minTip;
-    } else if (max >= maxTreshold) {
-      this._level = DiagnosticsLevel.ERROR;
-      this._message = `${type} high.
-        Measured ${max}. Current: ${curr}
-        Maximum ${type} is ${maxTreshold}`;
-      this._tip = maxTip;
-    } else {
-      this._level = DiagnosticsLevel.INFO;
-      this._message = `${type} Ok`;
-    }
   }
 }

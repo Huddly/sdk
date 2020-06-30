@@ -12,7 +12,8 @@ import InterpolationParams from './../../interfaces/InterpolationParams';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
-import { DiagnosticsMessage, MinMaxDiagnosticsMessage } from '../diagnosticsMessage';
+import DiagnosticsMessage from '../diagnosticsMessage';
+import { MinMaxDiagnosticsMessage } from '../diagnosticsMessageData';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 
