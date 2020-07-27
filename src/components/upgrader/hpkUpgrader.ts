@@ -11,7 +11,7 @@ import ErrorCodes  from './../../error/errorCodes';
 import HPKUpgradeError from './../../error/hpkUpgradeError';
 
 const MAX_UPLOAD_ATTEMPTS = 5;
-const REBOOT_TIMEOUT = 20000;
+const REBOOT_TIMEOUT = 30000;
 
 
 export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
