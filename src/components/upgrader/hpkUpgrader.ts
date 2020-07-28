@@ -50,16 +50,20 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   onAttach = (devManager: IDeviceManager) => {
+    this._logger.debug('onAttach event for serial: %s', devManager['serialNumber']);
     if (devManager && devManager instanceof Boxfish
       && this._cameraManager['serialNumber'] === devManager['serialNumber']) {
       this._cameraManager = devManager;
+      this._logger.debug('onAttach event for current dev');
       this.emit('UPGRADE_REBOOT_COMPLETE');
     }
   }
 
   onDetach = (deviceSerial) => {
+    this._logger.debug('onDetach event for serial: %s', deviceSerial);
     if (this._cameraManager && deviceSerial === this._cameraManager['serialNumber'] ) {
       try {
+        this._logger.debug('onDetach event current dev, closing transport');
         this._cameraManager.transport.close();
       } catch (e) {
         // Error on close is ok
