@@ -389,68 +389,62 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async upgrade(): Promise<string> {
-    try {
-      const startTime = new Date().getTime();
-      const prodInfo = await this._cameraManager.api.getProductInfo();
-      const boxfishUpgraderFile = createBoxfishUpgraderFile(this.options.file);
-      await boxfishUpgraderFile.init();
-      this.emit(CameraEvents.UPGRADE_PROGRESS);
-      const currentSwVersion = this.extractSofwareVersionFromProdInfo(prodInfo);
-      if (semver.gt(currentSwVersion, '0.0.7')) {
-        await this.locksmith.executeAsyncFunction(async () => {
-          await this._cameraManager.transport.clear();
-          await this._cameraManager.transport.write('streaming/lock');
-        });
-      }
-
-      if (prodInfo.bac_fsbl === false && !this.options.flash_fsbl) {
-        throw new Error('Unable to upgrade without first stage bootloader.\n' +
-          'No first stage bootloader provided');
-      } else if (prodInfo.bac_fsbl === false && this.options.flash_fsbl) {
-        const fsblBuffer = boxfishUpgraderFile.getImage(IMAGE_TYPES.FSBL);
-        await this.initFlash(fsblBuffer, boxfishUpgraderFile);
-        await this._cameraManager.reboot();
-        return 'C';
-      }
-      const bootDecision = this.getBootDecision(prodInfo);
-      this._logger.info(`Current boot decision ${bootDecision}`, 'Boxfish PKG Upgrader');
-      const upgradeSelection = bootDecision === 'A' ? 'B' : 'A';
-
-      /* eslint-disable max-len */
-      this._logger.debug('Flashing SSBL_HEADER', 'Boxfish PKG Upgrader');
-      await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishUpgraderFile, upgradeSelection);
-      this._logger.debug('Flashing SSBL', 'Boxfish PKG Upgrader');
-      await this.flashImage(IMAGE_TYPES.SSBL, boxfishUpgraderFile, upgradeSelection);
-      this._logger.debug('Flashing APPLICATION_HEADER', 'Boxfish PKG Upgrader');
-      await this.flashImage(IMAGE_TYPES.APP_HEADER, boxfishUpgraderFile, upgradeSelection);
-      this._logger.debug('Flashing APPLICATION', 'Boxfish PKG Upgrader');
-      await this.flashImage(IMAGE_TYPES.APP, boxfishUpgraderFile, upgradeSelection);
-      /* eslint-enable max-len */
-      if (semver.gt(currentSwVersion, '0.0.7')) {
-        this._logger.debug('Unlocking UVC stream on camera', 'Boxfish PKG Upgrader');
-        await this.locksmith.executeAsyncFunction(async () => {
-          await this._cameraManager.transport.clear();
-          await this._cameraManager.transport.write('streaming/unlock');
-        });
-      }
-      this._logger.debug(`Setting boot selector to ${upgradeSelection}`, 'Boxfish PKG Upgrader');
-      await this.setRamBootSelector(upgradeSelection);
-      await this.printBootInfo();
-
-      this._logger.debug('Booting the camera and closing communication instances', 'Boxfish PKG Upgrader');
-      await this._cameraManager.reboot();
-      await this._cameraManager.transport.close();
-
-      const finishTime = new Date().getTime();
-      const flashTime = (finishTime - startTime) / 1000;
-      this._logger.info(`Upgrade completed in ${flashTime} seconds`, 'Boxfish PKG Upgrader');
-
-      return upgradeSelection;
-    } catch (e) {
-      this._logger.error('Boxfish camera upgrade failed', e, 'Boxfish PKG Upgrader');
-      this.emit(CameraEvents.UPGRADE_FAILED, e);
-      throw e;
+    const startTime = new Date().getTime();
+    const prodInfo = await this._cameraManager.api.getProductInfo();
+    const boxfishUpgraderFile = createBoxfishUpgraderFile(this.options.file);
+    await boxfishUpgraderFile.init();
+    this.emit(CameraEvents.UPGRADE_PROGRESS);
+    const currentSwVersion = this.extractSofwareVersionFromProdInfo(prodInfo);
+    if (semver.gt(currentSwVersion, '0.0.7')) {
+      await this.locksmith.executeAsyncFunction(async () => {
+        await this._cameraManager.transport.clear();
+        await this._cameraManager.transport.write('streaming/lock');
+      });
     }
+
+    if (prodInfo.bac_fsbl === false && !this.options.flash_fsbl) {
+      throw new Error('Unable to upgrade without first stage bootloader.\n' +
+        'No first stage bootloader provided');
+    } else if (prodInfo.bac_fsbl === false && this.options.flash_fsbl) {
+      const fsblBuffer = boxfishUpgraderFile.getImage(IMAGE_TYPES.FSBL);
+      await this.initFlash(fsblBuffer, boxfishUpgraderFile);
+      await this._cameraManager.reboot();
+      return 'C';
+    }
+    const bootDecision = this.getBootDecision(prodInfo);
+    this._logger.info(`Current boot decision ${bootDecision}`, 'Boxfish PKG Upgrader');
+    const upgradeSelection = bootDecision === 'A' ? 'B' : 'A';
+
+    /* eslint-disable max-len */
+    this._logger.debug('Flashing SSBL_HEADER', 'Boxfish PKG Upgrader');
+    await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishUpgraderFile, upgradeSelection);
+    this._logger.debug('Flashing SSBL', 'Boxfish PKG Upgrader');
+    await this.flashImage(IMAGE_TYPES.SSBL, boxfishUpgraderFile, upgradeSelection);
+    this._logger.debug('Flashing APPLICATION_HEADER', 'Boxfish PKG Upgrader');
+    await this.flashImage(IMAGE_TYPES.APP_HEADER, boxfishUpgraderFile, upgradeSelection);
+    this._logger.debug('Flashing APPLICATION', 'Boxfish PKG Upgrader');
+    await this.flashImage(IMAGE_TYPES.APP, boxfishUpgraderFile, upgradeSelection);
+    /* eslint-enable max-len */
+    if (semver.gt(currentSwVersion, '0.0.7')) {
+      this._logger.debug('Unlocking UVC stream on camera', 'Boxfish PKG Upgrader');
+      await this.locksmith.executeAsyncFunction(async () => {
+        await this._cameraManager.transport.clear();
+        await this._cameraManager.transport.write('streaming/unlock');
+      });
+    }
+    this._logger.debug(`Setting boot selector to ${upgradeSelection}`, 'Boxfish PKG Upgrader');
+    await this.setRamBootSelector(upgradeSelection);
+    await this.printBootInfo();
+
+    this._logger.debug('Booting the camera and closing communication instances', 'Boxfish PKG Upgrader');
+    await this._cameraManager.reboot();
+    await this._cameraManager.transport.close();
+
+    const finishTime = new Date().getTime();
+    const flashTime = (finishTime - startTime) / 1000;
+    this._logger.info(`Upgrade completed in ${flashTime} seconds`, 'Boxfish PKG Upgrader');
+
+    return upgradeSelection;
   }
 
   async upgradeIsValid(): Promise<boolean> {
