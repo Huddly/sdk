@@ -23,7 +23,7 @@
     "azure-iot-provisioning-device-amqp": "^1.7.1",
     "azure-iot-security-symmetric-key": "^1.6.1",
     "crypto": "^1.0.1",
-    "npm": "^6.13.4",
+    "npm": "^6.14.6",
     "winston": "^3.2.1"
   },
   "devDependencies": {
