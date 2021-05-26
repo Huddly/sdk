@@ -42,6 +42,7 @@
     "build": "bash scripts/build.sh",
     "build-web": "npm run build-ts && npm run tslint && yarn webpack -p",
     "build-ts": "tsc --declaration",
+    "watch-ts": "tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "nyc mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\" --check-leaks",
     "test-js": "mocha -r ts-node/register --recursive \"lib/tests/**/*.spec.js\"",
