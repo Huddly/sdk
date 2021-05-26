@@ -1,20 +1,20 @@
 import * as msgpack from 'msgpack-lite';
 import http from 'http';
 
-import ITransport from './../interfaces/iTransport';
 import DefaultLogger from './../utilitis/logger';
 import Locksmith from './locksmith';
 import InterpolationParams from './../interfaces/InterpolationParams';
 import ReleaseChannel from './../interfaces/ReleaseChannelEnum';
+import IUsbTransport from './../interfaces/IUsbTransport';
 
 export default class Api {
-  transport: ITransport;
+  transport: IUsbTransport;
   logger: DefaultLogger;
   locksmith: Locksmith;
   setProdInfoMsgPackSupport: boolean = true;
   getErrorLogMsgPackSupport: boolean = true;
 
-  constructor(transport: ITransport, logger: DefaultLogger, locksmith: Locksmith) {
+  constructor(transport: IUsbTransport, logger: DefaultLogger, locksmith: Locksmith) {
     this.transport = transport;
     this.transport.initEventLoop();
     this.logger = logger;

@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import Api from '../api';
 import DefaultLogger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
-import ITransport from './../../interfaces/iTransport';
+import IUsbTransport from './../../interfaces/IUsbTransport';
 import IDeviceManager from './../../interfaces/iDeviceManager';
 import IDetector from './../../interfaces/IDetector';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
@@ -35,7 +35,7 @@ const parseSoftwareVersion = (versionInfo) => {
   return { mv2_boot: bootVersion, mv2_app: appVersion };
 };
 export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
-  transport: ITransport;
+  transport: IUsbTransport;
   api: Api;
   uvcControlInterface: any;
   hidApi: any;
@@ -46,7 +46,7 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
 
   constructor(
     uvcCameraInstance: any,
-    transport: ITransport,
+    transport: IUsbTransport,
     uvcControlInterface: any,
     hidAPI: any,
     logger: DefaultLogger,

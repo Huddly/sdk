@@ -3,7 +3,6 @@ import { EventEmitter } from 'events';
 import Api from './../api';
 import DefaultLogger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
-import ITransport from './../../interfaces/iTransport';
 import IDeviceManager from './../../interfaces/iDeviceManager';
 import IDetector from './../../interfaces/IDetector';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
@@ -21,11 +20,12 @@ import AutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import AutozoomControl from '../autozoomControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
+import IUsbTransport from './../../interfaces/IUsbTransport';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
-  transport: ITransport;
+  transport: IUsbTransport;
   _api: Api;
   uvcControlInterface: any;
   logger: DefaultLogger;
@@ -35,7 +35,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   constructor(
     uvcCameraInstance: any,
-    transport: ITransport,
+    transport: IUsbTransport,
     uvcControlInterface: any,
     logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
