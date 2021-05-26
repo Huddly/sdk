@@ -195,7 +195,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     const mvusbFile = opts.file;
     const timeoutMs = opts.bootTimeout * 1000;
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const bootTimeout = setTimeout(() => {
         clearTimeout(bootTimeout);
         reject('Fsbl upgrade timed out');
@@ -215,7 +215,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     }
     upgrader.init(opts);
     upgrader.start();
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       upgrader.once(CameraEvents.UPGRADE_COMPLETE, async deviceManager => {
         const upgradeIsOk = await upgrader.upgradeIsValid();
         if (upgradeIsOk) {
@@ -241,7 +241,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   async upgrade(opts: UpgradeOpts): Promise<any> {
     let upgradeAttempts = 0;
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const tryRunAgainOnFailure = async (deviceManager: IDeviceManager) => {
         try {
           await this.createAndRunUpgrade(opts, deviceManager, upgradeAttempts > 0);

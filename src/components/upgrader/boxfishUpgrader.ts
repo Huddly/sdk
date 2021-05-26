@@ -129,7 +129,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async doUpgrade(): Promise<any> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       this.once(CameraEvents.UPGRADE_COMPLETE, () => resolve());
       this.once(CameraEvents.UPGRADE_FAILED, (e) => reject(e));
       this.start();
