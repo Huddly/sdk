@@ -2,12 +2,12 @@ import { EventEmitter } from 'events';
 
 import Api from './../api';
 import DefaultLogger from './../../utilitis/logger';
-import ITransport from './../../interfaces/iTransport';
 import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
+import IUsbTransport from './../../interfaces/IUsbTransport';
 
 export default class ClownFish extends Boxfish {
-  transport: ITransport;
+  transport: IUsbTransport;
   _api: Api;
   uvcControlInterface: any;
   logger: DefaultLogger;
@@ -17,7 +17,7 @@ export default class ClownFish extends Boxfish {
 
   constructor(
     uvcCameraInstance: any,
-    transport: ITransport,
+    transport: IUsbTransport,
     uvcControlInterface: any,
     logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {

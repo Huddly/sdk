@@ -1,0 +1,237 @@
+// TODO: import the protofile from falcon-interface???
+syntax = "proto3";
+import "google/protobuf/empty.proto";
+import "google/protobuf/timestamp.proto";
+package huddly;
+
+service HuddlyService {
+  rpc UpgradeDevice(stream Chunk) returns (DeviceStatus) {}
+  rpc UpgradeVerify(stream Chunk) returns (DeviceStatus) {}
+  rpc Reset(google.protobuf.Empty) returns (DeviceStatus) {}
+  rpc GetDeviceName(google.protobuf.Empty) returns (DeviceName) {}
+  rpc GetDeviceVersion(google.protobuf.Empty) returns (DeviceVersion) {}
+  rpc GetBootloaderVersion(google.protobuf.Empty) returns (DeviceVersion) {}
+  rpc GetDevicePackages(google.protobuf.Empty) returns (DeviceVersion) {}
+  rpc GetBootSlot(google.protobuf.Empty) returns (BootSlot) {}
+  rpc SetBootSlot(BootSlot) returns (DeviceStatus) {}
+  rpc UpgradeBootLoader(stream Chunk) returns (DeviceStatus) {}
+  rpc SetIpv4(Ipv4Config) returns (DeviceStatus) {}
+  rpc SetPTZ(PTZ) returns (DeviceStatus) {}
+  rpc GetPTZ(google.protobuf.Empty) returns (PTZ) {}
+  rpc GetLogFiles(LogFile) returns (stream Chunk) {}
+  rpc EraseLogFile(LogFile) returns (DeviceStatus) {}
+  rpc GetTemperatures(google.protobuf.Empty) returns (Temperatures) {}
+  rpc ResetPtzTransition(google.protobuf.Empty) returns (DeviceStatus) {}
+  rpc GetCropIndex(google.protobuf.Empty) returns (CropIndexStatusResponse) {}
+  rpc PtzTransition(IndexedTransitions) returns (IndexedTransitionsResponse) {}
+  rpc GetCurrentPtzCrop(google.protobuf.Empty) returns (CurrentPtzCrop) {}
+  rpc SetCnnFeature(CnnFeature) returns (DeviceStatus) {}
+  // @HuddlyOnly-NextLine
+  rpc GetCnnFeatureStatus(CnnFeature) returns (CNNStatus) {}
+  rpc GetUptime(google.protobuf.Empty) returns (Uptime) {}
+  rpc SetTimezone(Timezone) returns (DeviceStatus) {}
+  rpc GetTimezone(google.protobuf.Empty) returns (Timezone) {}
+  rpc SetTime(google.protobuf.Timestamp) returns (DeviceStatus) {}
+  rpc GetTime(google.protobuf.Empty) returns (google.protobuf.Timestamp) {}
+  rpc SetBrightness(Brightness) returns (DeviceStatus) {}
+  rpc GetBrightness(google.protobuf.Empty) returns (Brightness) {}
+  rpc GetRawBuffer(google.protobuf.Empty) returns (stream Chunk) {}
+  rpc GetVideoFormats(google.protobuf.Empty) returns (VideoFormats) {}
+}
+
+/* Smooth ptz transition api calls */
+message CropIndexStatusRequest {
+}
+
+message CropIndexStatusResponse {
+  int32 crop_index = 1;
+}
+
+message Rect {
+  float x_center = 1; // (0.125 - 0.875) On max Zoom
+  float y_center = 2; // (0.125 - 0.875) On max Zoom
+  float zoom_factor = 3; // (1 - 4)
+}
+
+
+enum VideoType {
+ Main=0;
+ Preview=1;
+}
+
+message Range {
+  int32 Min=1;
+  int32 Max=2;
+}
+
+message VideoFormats {
+  //List of Formats
+  message Format {
+    int32 Width=1;
+    int32 Height=2;
+    Range Zoom=3; //max min zoom lossless for the format
+    Range Dzoom=4; //max min zoom normal + digital zoom range
+    Range Pan=5; //max min pan
+    Range Tilt=6; //max min tilt
+    VideoType Type=7;
+    string Uri=8; // eg main-video or main-video?width=1920&height=1080
+    int32 Fps=9; //frames per second
+  }
+  repeated Format formats = 1;
+}
+
+message IndexedTransitions {
+  // List of Crops.
+  message Transition {
+    message Crop {
+      Rect rect = 1;
+      int32 crop_index = 2;  // (or timestamp)
+    }
+    repeated Crop crops = 1;
+  }
+
+  repeated int32 starting_index = 1; // (or timestamp)
+  // Transitions are associated with the starting indices above.
+  repeated Transition transition = 2;
+}
+
+message IndexedTransitionsResponse {
+  /* -1 can be returned to indicate an error, in which case the camera should stop moving and
+   * return the current rect.
+   */
+  int32 chosen_starting_index = 1;  // (or timestamp)
+  // In the case that there is some error, the camera should return it's current crop.
+  Rect current_position = 2;
+}
+
+message CurrentPtzCrop {
+  Rect current_crop = 1;
+}
+
+/* Smooth ptz transition api calls */
+
+message Chunk {
+  bytes Content = 1;
+}
+
+enum VersionState {
+  UnknownVersionState = 0;
+  Verified = 1;
+  Unverified = 2;
+  Recovery = 3;
+}
+
+//if a version can not be found the value is empty
+message DeviceVersion {
+  string version = 1;
+  VersionState version_state = 2;
+}
+
+message PTZ {
+  int32 Pan = 1;   // (-216000, 216000)
+  int32 Tilt  = 2; // (-162000, 163000)
+  int32 Zoom = 3;  // (1000, 4000)
+  int32 Trans = 4; // (0,1)
+}
+
+
+//if no devicename can be found value is empty
+message DeviceName {
+  string name=1;
+}
+
+enum StatusCode {
+  Unknown = 0;
+  Ok = 1;
+  Failed = 2;
+}
+//Boot slot definition
+enum Slot {
+  A = 0;
+  B = 1;
+  C = 2;
+  UnknownSlot = 3;
+}
+
+message BootSlot {
+  Slot slot = 3;
+}
+
+message DeviceStatus {
+  string Message = 1;
+  StatusCode Code = 2;
+}
+
+message Ipv4Config {
+  fixed32 Address = 1;
+  int32 Bits = 2;
+}
+
+message Temperature {
+  string Name = 1;
+  float Value = 2;
+}
+
+message Temperatures {
+  repeated Temperature temperatures = 1;
+}
+
+// @HuddlyOnly-NextBlock
+message CNNStatus {
+  StatusCode Code = 1;
+  FBEStatus fbe_status = 2;
+  AZStatus az_status = 3;
+}
+
+// @HuddlyOnly-NextBlock
+message FBEStatus {
+  bool fbe_enabled = 1;
+  uint64 num_iterations = 2;
+  uint64 num_weights_calculated = 3;
+  float current_face_weight = 4;
+  repeated float per_face_weight = 5;
+}
+
+// @HuddlyOnly-NextBlock
+message AZStatus {
+  bool az_enabled = 1;
+}
+
+enum LogFiles {
+  App = 0;
+  Myriad = 1;
+  Dmesg = 2;
+}
+
+message LogFile {
+  LogFiles file = 1;
+  bool keep_log = 2;
+}
+
+enum Mode {
+  Start = 0;
+  Stop = 1;
+}
+
+enum Feature {
+  FaceBasedExposure = 0;
+  // @HuddlyOnly-NextLine
+  Autozoom = 1;
+}
+
+message CnnFeature {
+  Mode mode = 1;
+  Feature feature = 2;
+}
+
+message Uptime {
+  float uptime = 1;
+}
+
+message Timezone {
+  string timezone = 1;
+}
+
+message Brightness {
+  int32 brightness = 1;
+}
