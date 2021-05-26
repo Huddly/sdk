@@ -16,6 +16,7 @@ import DiagnosticsMessage from './../../src//components/diagnosticsMessage';
  */
 export default class DeviceManagerMock implements IDeviceManager {
   transport: any = {
+    read: (msg, timeout) => { },
     write: (msg) => { },
     receiveMessage: (msg, timeout) => { },
     on: (msg, listener) => { },
