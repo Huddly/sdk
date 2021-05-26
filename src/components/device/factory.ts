@@ -1,4 +1,5 @@
 import ITransport from './../../interfaces/iTransport';
+import IUsbTransport from './../../interfaces/IUsbTransport';
 import IHuddlyDeviceAPI from './../../interfaces/iHuddlyDeviceAPI';
 import DefaultLogger from './../../utilitis/logger';
 import IDeviceManager from './../../interfaces/iDeviceManager';
@@ -169,16 +170,16 @@ export default class DeviceFactory {
     switch (productId) {
       case HUDDLY_GO_PID:
         const hidApi = await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis, logger);
-        device = new HuddlyGo(devInstance, transport, uvcControlInterface, hidApi, logger, cameraDiscoveryEmitter);
+        device = new HuddlyGo(devInstance, <IUsbTransport>transport, uvcControlInterface, hidApi, logger, cameraDiscoveryEmitter);
         break;
       case HUDDLY_CLOWNFISH_PID:
-        device = new Clownfish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
+        device = new Clownfish(devInstance, <IUsbTransport>transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
       case HUDDLY_BOXFISH_PID:
-        device = new Boxfish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
+        device = new Boxfish(devInstance, <IUsbTransport>transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
       case HUDDLY_DWARFFISH_PID:
-        device = new Dwarffish(devInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
+        device = new Dwarffish(devInstance, <IUsbTransport>transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
         break;
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${productId}`);

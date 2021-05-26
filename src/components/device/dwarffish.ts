@@ -2,7 +2,7 @@ import { EventEmitter } from 'events';
 
 import Api from '../api';
 import DefaultLogger from '../../utilitis/logger';
-import ITransport from '../../interfaces/iTransport';
+import IUsbTransport from '../../interfaces/IUsbTransport';
 import Locksmith from '../locksmith';
 import Boxfish from './boxfish';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
@@ -12,7 +12,7 @@ import InterpolationParams from '../../interfaces/InterpolationParams';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 
 export default class Dwarffish extends Boxfish {
-  transport: ITransport;
+  transport: IUsbTransport;
   _api: Api;
   uvcControlInterface: any;
   logger: DefaultLogger;
@@ -22,7 +22,7 @@ export default class Dwarffish extends Boxfish {
 
   constructor(
     uvcCameraInstance: any,
-    transport: ITransport,
+    transport: IUsbTransport,
     uvcControlInterface: any,
     logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
