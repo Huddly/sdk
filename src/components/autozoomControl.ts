@@ -69,7 +69,7 @@ export default class AutozoomControl implements IAutozoomControl {
      * info. It is necessary to query the isEnabled more
      * than once to have a legitimate assertion.
      */
-    const promise = new Promise(async (resolve, reject) => {
+    const promise = new Promise<void>(async (resolve, reject) => {
       let retry = 3;
       while (retry) {
         const isEnabled = await this.isEnabled();
@@ -111,7 +111,7 @@ export default class AutozoomControl implements IAutozoomControl {
      * info. It is necessary to query the isEnabled more
      * than once to have a legitimate assertion.
      */
-    const promise = new Promise(async (resolve, reject) => {
+    const promise = new Promise<void>(async (resolve, reject) => {
       let retry = 3;
       while (retry) {
         const isEnabled = await this.isEnabled();
