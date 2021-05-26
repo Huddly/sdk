@@ -68,7 +68,7 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     const hidEventEmitter = new EventEmitter();
     let bootTimeout;
     this._hidApi.registerForHotplugEvents(hidEventEmitter);
-    const upgradePromise = new Promise(async (resolve, reject) => {
+    const upgradePromise = new Promise<void>(async (resolve, reject) => {
       const binaries = await getBinaries(this.options.file);
       hidEventEmitter.on('HID_ATTACH', () => {
         this.logger.debug('HID Device attached', 'HuddlyGO Upgrader');

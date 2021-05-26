@@ -199,7 +199,7 @@ class HuddlySdk extends EventEmitter {
       if (d && (!this.targetSerial || (this.targetSerial === d.serialNumber)) ) {
         await this.locksmith.executeAsyncFunction(
           () =>
-            new Promise(async resolve => {
+            new Promise<void>(async resolve => {
               try {
                 const cameraManager = await this._deviceFactory.getDevice(
                   d.productId,
@@ -223,7 +223,7 @@ class HuddlySdk extends EventEmitter {
 
     this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
       if (d !== undefined  && (!this.targetSerial || (this.targetSerial === d))) {
-        await this.locksmith.executeAsyncFunction(() => new Promise((resolve) => {
+        await this.locksmith.executeAsyncFunction(() => new Promise<void>((resolve) => {
           this.emitter.emit(CameraEvents.DETACH, d);
           resolve();
         }));

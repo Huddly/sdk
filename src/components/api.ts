@@ -460,7 +460,7 @@ export default class Api {
       await this.withSubscribe(
         ['error_logger/erase_done'],
         async () =>
-          new Promise(async (resolve, reject) => {
+          new Promise<void>(async (resolve, reject) => {
             this.transport
               .receiveMessage('error_logger/erase_done', timeout)
               .then(reply => {

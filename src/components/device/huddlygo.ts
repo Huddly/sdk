@@ -268,7 +268,7 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     const upgrader = await this.getUpgrader();
     upgrader.init(opts);
     upgrader.start();
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       upgrader.once(CameraEvents.UPGRADE_COMPLETE, () => {
         resolve();
       });
