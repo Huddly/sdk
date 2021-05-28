@@ -1,0 +1,15 @@
+{
+    "name": "huddly_l1_example",
+    "version": "1.0.0",
+    "description": "",
+    "main": "index.js",
+    "scripts": {
+        "test": "echo \"Error: no test specified\" && exit 1"
+    },
+    "author": "",
+    "license": "ISC",
+    "dependencies": {
+        "@huddly/sdk": "git+ssh://git@github.com/Huddly/sdk.git#l1-sdk-support",
+        "@huddly/device-api-ip": "git+ssh://git@github.com/Huddly/device-api-ip.git#first-iteration"
+    }
+}
