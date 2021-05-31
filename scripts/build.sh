@@ -24,10 +24,10 @@ protoc \
 protoc \
     --plugin="protoc-gen-ts=${PROTOC_GEN_TS_PATH}" \
     --plugin="protoc-gen-grpc=${PROTOC_GEN_GRPC_PATH}" \
+    --js_out="import_style=commonjs,binary:./src" \
     --ts_out="service=grpc-node,mode=grpc-js:./src" \
     --grpc_out="grpc_js:./src" \
     proto/huddly.proto
 
 npm run build-ts
 npm run tslint
-npm run test
