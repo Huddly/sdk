@@ -58,7 +58,8 @@
   },
   "pre-commit": [
     "prettier-check",
-    "build"
+    "build",
+    "test"
   ],
   "bugs": {
     "url": "https://github.com/Huddly/sdk/issues"
