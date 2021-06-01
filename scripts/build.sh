@@ -8,6 +8,7 @@ cd ${BASEDIR}/../
 rm -rf ./src/proto ./lib
 mkdir -p ./src/proto ./lib/src/proto
 
+
 # Path to this plugin, Note this must be an abolsute path on Windows (see #15)
 PROTOC_GEN_TS_PATH="./node_modules/.bin/protoc-gen-ts"
 # Path to the grpc_node_plugin
