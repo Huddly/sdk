@@ -13,6 +13,7 @@ import diagnosticsMessage from '../diagnosticsMessage';
 import DefaultLogger from './../../utilitis/logger';
 import Locksmith from './../locksmith';
 import IDeviceManager from './../../interfaces/iDeviceManager';
+import AceUpgrader from './../upgrader/aceUpgrader';
 
 import { HuddlyServiceClient } from './../../proto/huddly_grpc_pb';
 import * as huddly from './../../proto/huddly_pb';
@@ -44,12 +45,12 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
 
   constructor(
-    wsdDevuce: any,
+    wsdDevice: any,
     transport: IGrpcTransport,
     logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
 
-    this.wsdDevice = wsdDevuce;
+    this.wsdDevice = wsdDevice;
     this.transport = transport;
     this.logger = logger;
     this.locksmith = new Locksmith();
@@ -109,11 +110,19 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
 
   getUpgrader(): Promise<IDeviceUpgrader> {
-    throw new Error('Method not implemented.');
+    return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter, this.logger));
   }
 
   upgrade(opts: IUpgradeOpts): Promise<any> {
-    throw new Error('Method not implemented.');
+    return new Promise((resolve, reject) => {
+      this.getUpgrader()
+      .then((upgrader: AceUpgrader) => {
+        upgrader.init(opts);
+        upgrader.doUpgrade()
+        .then(() => resolve(undefined))
+        .catch((e) => reject(e));
+      }).catch((e) => reject(e));
+    });
   }
 
   getAutozoomControl(opts: IAutozoomControlOpts): IAutozoomControl {
@@ -207,5 +216,13 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
   isAlive(): Boolean {
     throw new Error('Method not implemented.');
+  }
+
+  equals(manager: IDeviceManager) {
+    if (manager instanceof Ace) {
+      const otherAce = <Ace>manager;
+      return otherAce.wsdDevice.equals(this.wsdDevice);
+    }
+    return false;
   }
 }
