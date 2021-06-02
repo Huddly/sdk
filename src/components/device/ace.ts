@@ -191,7 +191,23 @@ export default class Ace implements IDeviceManager, IUVCControls {
     throw new Error('Method not implemented.');
   }
   getSettings(forceRefresh?: Boolean): Promise<Object> {
-    throw new Error('Method not implemented.');
+    return Promise.resolve({
+      zoom: {
+        min: 1000,
+        max: 4000,
+        value: 1000,
+      },
+      pan: {
+        min: -216000,
+        max: 216000,
+        value: 0,
+      },
+      tilt: {
+        min: -162000,
+        max: 163000,
+        value: 0,
+      },
+    });
   }
   resetSettings(excludeList: String[]): Promise<void> {
     throw new Error('Method not implemented.');
