@@ -28,7 +28,8 @@
   "files": [
     "lib",
     "README.md",
-    "bundle"
+    "bundle",
+    "proto"
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
