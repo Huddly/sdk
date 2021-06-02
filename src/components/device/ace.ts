@@ -47,8 +47,8 @@ export default class Ace implements IDeviceManager, IUVCControls {
     wsdDevuce: any,
     transport: IGrpcTransport,
     logger: DefaultLogger,
-    cameraDiscoveryEmitter: EventEmitter) {
-
+    cameraDiscoveryEmitter: EventEmitter
+  ) {
     this.wsdDevice = wsdDevuce;
     this.transport = transport;
     this.logger = logger;
@@ -56,7 +56,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
     this.discoveryEmitter = cameraDiscoveryEmitter;
   }
 
-  handleError(msg: String, error: { message: String, stack?: String }, reject: any) {
+  handleError(msg: String, error: { message: String; stack?: String }, reject: any) {
     this.logger.error(msg, error.message, Ace.name);
     this.logger.warn(error.stack, Ace.name);
     reject(error.message);
@@ -73,30 +73,33 @@ export default class Ace implements IDeviceManager, IUVCControls {
   getInfo(): Promise<any> {
     return new Promise((resolve, reject) => {
       const infoData = {
-        ...this.wsdDevice.infoObject()
+        ...this.wsdDevice.infoObject(),
       };
       // Get devive version
-      this.grpcClient.getDeviceVersion(this.GoogleProtoEmpty, (err, deviceVersion: huddly.DeviceVersion) => {
-        if (err != undefined) {
-          this.handleError('Unable to get device version!', err, reject);
-          return;
+      this.grpcClient.getDeviceVersion(
+        this.GoogleProtoEmpty,
+        (err, deviceVersion: huddly.DeviceVersion) => {
+          if (err != undefined) {
+            this.handleError('Unable to get device version!', err, reject);
+            return;
+          }
+          infoData.version = deviceVersion.toObject().version;
+          this.getUptime()
+            .then(uptime => {
+              infoData.uptime = Number(uptime.toFixed(2));
+            })
+            .then(() => this.getSlot())
+            .then(bootSlot => {
+              infoData.slot = bootSlot;
+              resolve(infoData);
+            })
+            .catch(uptimeErr => {
+              this.logger.error('Unable to get device uptime!', uptimeErr.message, Ace.name);
+              this.logger.warn(uptimeErr.stack, Ace.name);
+              reject(uptimeErr.message);
+            });
         }
-        infoData.version = deviceVersion.toObject().version;
-        this.getUptime()
-          .then((uptime) => {
-            infoData.uptime = Number((uptime).toFixed(2));
-          })
-          .then(() => this.getSlot())
-          .then((bootSlot) => {
-            infoData.slot = bootSlot;
-            resolve(infoData);
-          })
-          .catch((uptimeErr) => {
-            this.logger.error('Unable to get device uptime!', uptimeErr.message, Ace.name);
-            this.logger.warn(uptimeErr.stack, Ace.name);
-            reject(uptimeErr.message);
-          });
-      });
+      );
     });
   }
 
@@ -166,7 +169,9 @@ export default class Ace implements IDeviceManager, IUVCControls {
           reject(err.message);
           return;
         }
-        const SlotStr: string = Object.keys(huddly.Slot).find(key => huddly.Slot[key] === slot.getSlot());
+        const SlotStr: string = Object.keys(huddly.Slot).find(
+          key => huddly.Slot[key] === slot.getSlot()
+        );
         resolve(SlotStr);
       });
     });
@@ -207,7 +212,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
     return new Promise(async (resolve, reject) => {
       try {
         const brightness = await this.getBrightness();
-        // const saturation = await this.getSaturation();
+        const saturation = await this.getSaturation();
         const ptz = await this.getPanTiltZoom();
         resolve({
           brightness,
@@ -217,7 +222,6 @@ export default class Ace implements IDeviceManager, IUVCControls {
       } catch (err) {
         reject(err);
       }
-
     });
     /* const settings = {
       brightness:
@@ -284,36 +288,35 @@ export default class Ace implements IDeviceManager, IUVCControls {
         resolution: 1
       }
     } */
-
   }
 
-
-  /*   getSaturation(): Promise<Object> {
-      return new Promise((resolve, reject) => {
-        this.grpcClient.getSaturation(this.GoogleProtoEmpty, (err, saturation: huddly.Saturation) => {
-          if (err !== undefined) {
-            this.handleError('Unable to get saturation value', err, reject);
-            return;
-          };
-          resolve(saturation.toOject());
-        });
+  getSaturation(): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      this.grpcClient.getSaturation(this.GoogleProtoEmpty, (err, saturation: huddly.Saturation) => {
+        if (err !== undefined) {
+          this.handleError('Unable to get saturation value', err, reject);
+          return;
+        }
+        resolve(saturation.toObject());
       });
-    }
+    });
+  }
 
-    setSaturation(value: number): Promise<void> {
-      return new Promise((resolve, reject) => {
-        const saturation = new huddly.Saturation();
-        saturation.setSaturation(value);
+  setSaturation(value: number): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const saturation = new huddly.Saturation();
+      saturation.setSaturation(value);
 
-        this.grpcClient.setSaturation(saturation, (err, deviceStatus: huddly.DeviceStatus) => {
-          if (err != undefined) {
-            this.handleError('Unable to set saturation', err, reject);
-          }
-          this.logger.info(deviceStatus);
-          resolve();
-        });
+      this.grpcClient.setSaturation(saturation, (err, deviceStatus: huddly.DeviceStatus) => {
+        if (err != undefined) {
+          this.handleError('Unable to set saturation', err, reject);
+          return;
+        }
+        this.logger.info(deviceStatus);
+        resolve();
       });
-    }; */
+    });
+  }
 
   getBrightness(): Promise<Object> {
     return new Promise((resolve, reject) => {
@@ -367,7 +370,6 @@ export default class Ace implements IDeviceManager, IUVCControls {
         resolve({
           pan: ptz['pan'],
           tilt: ptz['tilt'],
-
         });
       } catch (err) {
         reject(err);
@@ -396,7 +398,6 @@ export default class Ace implements IDeviceManager, IUVCControls {
         }
         resolve();
       }
-
     });
   }
 
