@@ -1,6 +1,7 @@
 import ITransport from './iTransport';
 import { HuddlyServiceClient } from './../proto/huddly_grpc_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+import * as huddly from './../proto/huddly_pb';
 
 /**
  * Interface used to communicate with huddly network devices.
@@ -27,4 +28,6 @@ export default interface IGrpcTransport extends ITransport {
 
   // Workaround until the google.protobuf.Empty class is same from sdk and device-api-ip
   empty: Empty;
+
+  chunk: huddly.Chunk;
 }
