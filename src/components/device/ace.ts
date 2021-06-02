@@ -79,19 +79,19 @@ export default class Ace implements IDeviceManager, IUVCControls {
         }
         infoData.version = deviceVersion.toObject().version;
         this.getUptime()
-        .then((uptime) => {
-          infoData.uptime = Number((uptime).toFixed(2));
-        })
-        .then(() => this.getSlot())
-        .then((bootSlot) => {
-          infoData.slot = bootSlot;
-          resolve(infoData);
-        })
-        .catch((uptimeErr) => {
-          this.logger.error('Unable to get device uptime!', uptimeErr.message, Ace.name);
+          .then((uptime) => {
+            infoData.uptime = Number((uptime).toFixed(2));
+          })
+          .then(() => this.getSlot())
+          .then((bootSlot) => {
+            infoData.slot = bootSlot;
+            resolve(infoData);
+          })
+          .catch((uptimeErr) => {
+            this.logger.error('Unable to get device uptime!', uptimeErr.message, Ace.name);
             this.logger.warn(uptimeErr.stack, Ace.name);
             reject(uptimeErr.message);
-        });
+          });
       });
     });
   }
@@ -196,12 +196,84 @@ export default class Ace implements IDeviceManager, IUVCControls {
   resetSettings(excludeList: String[]): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
+  getPanTiltZoom(): Promise<Object> {
+    return new Promise((resolve, reject) => {
+      this.grpcClient.getPTZ(this.GoogleProtoEmpty, (err, ptz: huddly.PTZ) => {
+        if (err != undefined) {
+          this.logger.error('Unable to get ptz values!', err.message, Ace.name);
+          this.logger.warn(err.stack, Ace.name);
+          reject(err.message);
+          return;
+        }
+        resolve({
+          pan: ptz.getPan(),
+          tilt: ptz.getTilt(),
+          zoom: ptz.getZoom(),
+        });
+      });
+    });
+  }
+
   getPanTilt(): Promise<Object> {
-    throw new Error('Method not implemented.');
+    return new Promise(async (resolve, reject) => {
+      try {
+        const ptz = await this.getPanTiltZoom();
+        resolve({
+          pan: ptz['pan'],
+          tilt: ptz['tilt'],
+
+        });
+      } catch (err) {
+        reject(err);
+      }
+    });
   }
   setPanTilt(panTilt: Object): Promise<void> {
-    throw new Error('Method not implemented.');
+    return new Promise(async (resolve, reject) => {
+      let zoom: Number;
+      try {
+        const currentPtz = await this.getPanTiltZoom();
+        zoom = currentPtz['zoom'];
+      } catch (err) {
+        zoom = 0;
+      } finally {
+        const ptz = {
+          pan: panTilt['pan'],
+          tilt: panTilt['tilt'],
+          zoom,
+        };
+
+        try {
+          await this.setPanTiltZoom(ptz);
+        } catch (err) {
+          reject(err);
+        }
+        resolve();
+      }
+
+    });
   }
+
+  setPanTiltZoom(panTiltZoom: Object): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      const ptz = new huddly.PTZ();
+      ptz.setPan(panTiltZoom['pan']);
+      ptz.setTilt(panTiltZoom['tilt']);
+      ptz.setZoom(panTiltZoom['zoom']);
+      this.grpcClient.setPTZ(ptz, (err, status: huddly.DeviceStatus) => {
+        if (err != undefined) {
+          this.logger.error('Unable to set ptz values!', err.message, Ace.name);
+          this.logger.warn(err.stack, Ace.name);
+          reject(err.message);
+          return;
+        }
+        this.logger.info(status);
+      });
+      resolve();
+    });
+  }
+
   usbReEnumerate(): Promise<void> {
     throw new Error('Method not implemented.');
   }
