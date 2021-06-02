@@ -7,4 +7,3 @@ packages
 bundle/
 coverage
 .nyc_output
-src/proto
