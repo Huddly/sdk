@@ -32,6 +32,8 @@ service HuddlyService {
   rpc SetTime(google.protobuf.Timestamp) returns (DeviceStatus) {}
   rpc GetTime(google.protobuf.Empty) returns (google.protobuf.Timestamp) {}
   rpc SetBrightness(Brightness) returns (DeviceStatus) {}
+  rpc SetSaturation(Saturation) returns (DeviceStatus) {}
+  rpc GetSaturation(google.protobuf.Empty) returns (Saturation) {}
   rpc GetBrightness(google.protobuf.Empty) returns (Brightness) {}
   rpc GetRawBuffer(google.protobuf.Empty) returns (stream Chunk) {}
   rpc GetVideoFormats(google.protobuf.Empty) returns (VideoFormats) {}
@@ -228,4 +230,10 @@ message Timezone {
 
 message Brightness {
   int32 brightness = 1;
+  Range range = 2; // Applicable only for GetBrightness
+}
+
+message Saturation {
+  int32 saturation = 1;
+  Range range = 2; // Applicable only for GetSaturation
 }
