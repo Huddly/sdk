@@ -18,6 +18,11 @@ import { HuddlyServiceClient } from './../../proto/huddly_grpc_pb';
 import * as huddly from './../../proto/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
+interface ErrorInterface {
+  message: String;
+  stack?: String;
+}
+
 export default class Ace implements IDeviceManager, IUVCControls {
   transport: IGrpcTransport;
   logger: any;
@@ -56,10 +61,17 @@ export default class Ace implements IDeviceManager, IUVCControls {
     this.discoveryEmitter = cameraDiscoveryEmitter;
   }
 
-  handleError(msg: String, error: { message: String; stack?: String }, reject: any) {
-    this.logger.error(msg, error.message, Ace.name);
-    this.logger.warn(error.stack, Ace.name);
-    reject(error.message);
+  handleError(msg: String, error: ErrorInterface, reject: any) {
+    if (!error) {
+      this.logger.error('Unknown error');
+      reject('Unknown error');
+    }
+    if (error.message) {
+      this.logger.error(msg, error.message, Ace.name);
+    }
+    if (error.stack) this.logger.warn(error.stack, Ace.name);
+
+    reject(error.message ? error.message : 'Uknown error');
   }
 
   async initialize(): Promise<void> {
@@ -122,6 +134,14 @@ export default class Ace implements IDeviceManager, IUVCControls {
         resolve();
       });
     });
+  }
+
+  _getDefaultParams(): Object {
+    return {
+      suported: true,
+      default: 0,
+      resolution: 1,
+    };
   }
 
   getUpgrader(): Promise<IDeviceUpgrader> {
@@ -206,8 +226,34 @@ export default class Ace implements IDeviceManager, IUVCControls {
     throw new Error('Method not implemented.');
   }
   setSettingValue(key: string, value: any): Promise<void> {
-    throw new Error('Method not implemented.');
+    return new Promise(async (resolve, reject) => {
+      try {
+        switch (key) {
+          case 'pan':
+            this.setPanTiltZoom({ pan: value });
+            break;
+          case 'tilt':
+            this.setPanTiltZoom({ tilt: value });
+            break;
+          case 'zoom':
+            this.setPanTiltZoom({ zoom: value });
+            break;
+          case 'brightness':
+            this.setBrightness(value);
+            break;
+          case 'saturation':
+            this.setSaturation(value);
+            break;
+          default:
+            this.logger.warn(`Value of type ${key} is not supported.`);
+            break;
+        }
+      } catch (e) {
+        reject(e);
+      }
+    });
   }
+
   getSettings(forceRefresh?: Boolean): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -215,124 +261,99 @@ export default class Ace implements IDeviceManager, IUVCControls {
         const saturation = await this.getSaturation();
         const ptz = await this.getPanTiltZoom();
         resolve({
-          brightness,
-          // saturation,
+          ...brightness,
+          ...saturation,
           ...ptz,
         });
       } catch (err) {
         reject(err);
       }
     });
-    /* const settings = {
-      brightness:
-      {
-        supported: true,
-        value: 0,
-        min: -600,
-        max: 600,
-        default: 0,
-        resolution: 1
-      },
-      gain:
-      {
-        supported: true,
-        value: 100,
-        min: 100,
-        max: 1200,
-        default: 100,
-        resolution: 1
-      },
-      pan:
-      {
-        supported: true,
-        value: -14183,
-        min: -216000,
-        max: 216000,
-        default: -14183,
-        resolution: 1
-      },
-      powerLine:
-      {
-        supported: true,
-        value: 1,
-        min: 0,
-        max: 2,
-        default: 1,
-        resolution: 1
-      },
-      saturation:
-      {
-        supported: true,
-        value: 230,
-        min: 1,
-        max: 255,
-        default: 230,
-        resolution: 1
-      },
-      tilt:
-      {
-        supported: true,
-        value: -18820,
-        min: -162000,
-        max: 162000,
-        default: -18820,
-        resolution: 1
-      },
-      zoom:
-      {
-        supported: true,
-        value: 2127,
-        min: 1000,
-        max: 4000,
-        default: 2127,
-        resolution: 1
-      }
-    } */
+  }
+
+  _getSaturation(): Promise<huddly.Saturation> {
+    return new Promise((resolve, reject) => {
+      this.grpcClient.getSaturation(
+        this.GoogleProtoEmpty,
+        (err: ErrorInterface, saturation: huddly.Saturation) => {
+          if (err != undefined) {
+            reject(err);
+          }
+          resolve(saturation);
+        }
+      );
+    });
   }
 
   getSaturation(): Promise<Object> {
-    return new Promise((resolve, reject) => {
-      this.grpcClient.getSaturation(this.GoogleProtoEmpty, (err, saturation: huddly.Saturation) => {
-        if (err !== undefined) {
-          this.handleError('Unable to get saturation value', err, reject);
-          return;
-        }
-        resolve(saturation.toObject());
-      });
+    return new Promise(async (resolve, reject) => {
+      try {
+        const saturation = await this._getSaturation();
+        resolve({
+          saturation: {
+            ...this._getDefaultParams(),
+            value: saturation.getSaturation(),
+            min: saturation.getRange().getMin(),
+            max: saturation.getRange().getMax(),
+          },
+        });
+      } catch (e) {
+        this.handleError('Unable to get saturation value', e, reject);
+      }
     });
   }
 
   setSaturation(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      const saturation = new huddly.Saturation();
+      const saturation = this.transport.saturation;
       saturation.setSaturation(value);
 
-      this.grpcClient.setSaturation(saturation, (err, deviceStatus: huddly.DeviceStatus) => {
-        if (err != undefined) {
-          this.handleError('Unable to set saturation', err, reject);
-          return;
+      this.grpcClient.setSaturation(
+        saturation,
+        (err: ErrorInterface, deviceStatus: huddly.DeviceStatus) => {
+          if (err != undefined) {
+            this.handleError('Unable to set saturation', err, reject);
+            return;
+          }
+          this.logger.info(deviceStatus);
+          resolve();
         }
-        this.logger.info(deviceStatus);
-        resolve();
+      );
+    });
+  }
+
+  _getBrightness(): Promise<huddly.Brightness> {
+    return new Promise((resolve, reject) => {
+      this.grpcClient.getBrightness(this.GoogleProtoEmpty, (err, brightness: huddly.Brightness) => {
+        if (err != undefined) {
+          reject(err);
+        }
+        resolve(brightness);
       });
     });
   }
 
   getBrightness(): Promise<Object> {
-    return new Promise((resolve, reject) => {
-      this.grpcClient.getBrightness(this.GoogleProtoEmpty, (err, brightness: huddly.Brightness) => {
-        if (err != undefined) {
-          this.handleError('Unable to get brightness value', err, reject);
-          return;
-        }
-        resolve(brightness.toObject());
-      });
+    return new Promise(async (resolve, reject) => {
+      try {
+        const brightness = await this._getBrightness();
+        resolve({
+          brightness: {
+            ...this._getDefaultParams(),
+            value: brightness.getBrightness(),
+            min: brightness.getRange().getMin(),
+            max: brightness.getRange().getMax(),
+          },
+        });
+      } catch (e) {
+        this.handleError('Unable to get brightness value', e, reject);
+      }
     });
   }
 
   setBrightness(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      const brightness = new huddly.Brightness();
+      const brightness = this.transport.brightness;
       brightness.setBrightness(value);
       this.grpcClient.setBrightness(brightness, (err, deviceStatus: huddly.DeviceStatus) => {
         if (err != undefined) {
@@ -349,17 +370,46 @@ export default class Ace implements IDeviceManager, IUVCControls {
     throw new Error('Method not implemented.');
   }
 
-  getPanTiltZoom(): Promise<Object> {
+  _getPanTiltZoom(): Promise<huddly.PTZ> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getPTZ(this.GoogleProtoEmpty, (err, ptz: huddly.PTZ) => {
         if (err != undefined) {
-          this.logger.error('Unable to get ptz values!', err.message, Ace.name);
-          this.logger.warn(err.stack, Ace.name);
-          reject(err.message);
+          this.handleError('Unable to get ptz values!', err, reject);
           return;
         }
-        resolve(ptz.toObject());
+        resolve(ptz);
       });
+    });
+  }
+
+  getPanTiltZoom(): Promise<Object> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const ptz = await this._getPanTiltZoom();
+        resolve({
+          pan: {
+            ...this._getDefaultParams(),
+            value: ptz.getPan(),
+            min: -216000,
+            max: 216000,
+          },
+          tilt: {
+            ...this._getDefaultParams(),
+            value: ptz.getTilt(),
+            min: -162000,
+            max: 162000,
+          },
+          zoom: {
+            ...this._getDefaultParams(),
+            value: ptz.getZoom(),
+            min: 1000,
+            max: 4000,
+            default: 2127,
+          },
+        });
+      } catch (e) {
+        this.handleError('Unable to get ptz values', e, reject);
+      }
     });
   }
 
@@ -378,45 +428,39 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
   setPanTilt(panTilt: Object): Promise<void> {
     return new Promise(async (resolve, reject) => {
-      let zoom: number;
       try {
-        const currentPtz = await this.getPanTiltZoom();
-        zoom = currentPtz['zoom'];
+        await this.setPanTiltZoom(panTilt);
       } catch (err) {
-        zoom = 0;
-      } finally {
-        const ptz = {
-          pan: panTilt['pan'],
-          tilt: panTilt['tilt'],
-          zoom,
-        };
-
-        try {
-          await this.setPanTiltZoom(ptz);
-        } catch (err) {
-          reject(err);
-        }
-        resolve();
+        reject(err);
       }
+      resolve();
     });
   }
 
   setPanTiltZoom(panTiltZoom: Object): Promise<void> {
+    let ptz;
     return new Promise(async (resolve, reject) => {
-      const ptz = new huddly.PTZ();
-      ptz.setPan(panTiltZoom['pan']);
-      ptz.setTilt(panTiltZoom['tilt']);
-      ptz.setZoom(panTiltZoom['zoom']);
-      this.grpcClient.setPTZ(ptz, (err, status: huddly.DeviceStatus) => {
-        if (err != undefined) {
-          this.logger.error('Unable to set ptz values!', err.message, Ace.name);
-          this.logger.warn(err.stack, Ace.name);
-          reject(err.message);
-          return;
-        }
-        this.logger.info(status);
-      });
-      resolve();
+      try {
+        ptz = await this._getPanTiltZoom();
+      } catch (e) {
+        ptz = new huddly.PTZ();
+        this.logger.error(e);
+      } finally {
+        const paramKeys = Object.keys(panTiltZoom);
+        if (paramKeys.includes('pan')) ptz.setPan(panTiltZoom['pan']);
+        if (paramKeys.includes('tilt')) ptz.setTilt(panTiltZoom['tilt']);
+        if (paramKeys.includes('zoom')) ptz.setZoom(panTiltZoom['zoom']);
+        this.grpcClient.setPTZ(ptz, (err, status: huddly.DeviceStatus) => {
+          if (err != undefined) {
+            this.logger.error('Unable to set ptz values!', err.message, Ace.name);
+            this.logger.warn(err.stack, Ace.name);
+            reject(err.message);
+            return;
+          }
+          this.logger.info(status);
+        });
+        resolve();
+      }
     });
   }
 
