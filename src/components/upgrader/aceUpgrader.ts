@@ -9,13 +9,17 @@ import IGrpcTransport from './../../interfaces/IGrpcTransport';
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 import AceUpgraderError from './../../error/AceUpgraderError';
 import TypeHelper from './../../utilitis/typehelper';
-import CpioReader from './cpio';
 import CameraEvents from './../../utilitis/events';
 import Ace from './../../components/device/ace';
 import * as huddly from './../../proto/huddly_pb';
 import * as grpc from '@grpc/grpc-js';
 import ErrorCodes from './../../../src/error/errorCodes';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+
+enum UpgradeSteps {
+  FLASH = 0,
+  COMMIT = 1,
+}
 
 export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader {
   _cameraManager: IDeviceManager;
@@ -25,7 +29,6 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   bootTimeout: number = (30 * 1000); // 30 seconds
   verboseStatusLog: boolean = true;
   private _upgradeStatus: UpgradeStatus;
-  private _cpioReader: CpioReader;
   private readonly GRPC_STREAM_CHUNK_SIZE = 1024;
 
   get transport(): IGrpcTransport {
@@ -101,6 +104,9 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
     ]);
 
     try {
+      // Check that camera is running in Normal/Verified state
+      await this.verifyVersionState(huddly.VersionState.VERIFIED);
+
       this._logger.debug('Starting Upgrade', AceUpgrader.name);
       this.emitProgressStatus('Starting upgrade');
       this.emit(CameraEvents.UPGRADE_START);
@@ -128,23 +134,19 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
           rebootStep.progress = 100;
           this.emitProgressStatus();
 
-          const versionState: number = await new Promise((resolve) => {
-            this.transport.grpcClient.getDeviceVersion(this.transport.empty, (err, deviceVersion: huddly.DeviceVersion) => {
-              resolve(deviceVersion.getVersionState());
-            });
-          });
-          if (versionState !== huddly.VersionState.UNVERIFIED) {
-            const versionStateStr: string = Object.keys(huddly.VersionState).find(key => huddly.VersionState[key] === versionState);
-            const errMsg = `Device did not come up with expected version state. Expected UNVERIFIED | Got ${versionStateStr}`;
-            this._logger.error(errMsg, AceUpgrader.name);
-            this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
-            throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_FAILED);
-          }
-          verificationStep.progress = 1;
+          // Check that camera comes up in Unverified state
+          await this.verifyVersionState(huddly.VersionState.UNVERIFIED);
 
+          // Check that the camera comes up with expected version
+          await this.verifyVersion();
+
+          verificationStep.progress = 1;
           this._logger.debug('Verifying new software', AceUpgrader.name);
           this.emitProgressStatus('Verifying new software');
           await this.commit();
+
+          // Check that camera comes up in Committed state
+          await this.verifyVersionState(huddly.VersionState.VERIFIED);
           verificationStep.progress = 100;
 
           this._logger.debug('Upgrade Completed', AceUpgrader.name);
@@ -161,21 +163,124 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
-  private peformUpgradeStep(upgradeFunc: (callback: any) => grpc.ClientWritableStream<huddly.Chunk>, stepName: string): Promise<string> {
+  private async verifyVersionState(expectedState: number): Promise<void> {
+    const currentState: number = await this.getVersionState();
+    if (currentState !== expectedState) {
+      const currentStateStr: string = Object.keys(huddly.VersionState).find(key => huddly.VersionState[key] === currentState);
+      const expectedStateStr: string = Object.keys(huddly.VersionState).find(key => huddly.VersionState[key] === expectedState);
+      const errMsg = `Device not running in expected state. Expected ${expectedStateStr} | Got ${currentStateStr}`;
+      this._logger.error(errMsg, AceUpgrader.name);
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_FAILED);
+    }
+  }
+  private async verifyVersion(): Promise<void> {
+    const extract = cpio.extract();
+    const currentVersion: string = await this.getVersion();
+    const expcetedVersion: string = await new Promise((resolve) => {
+      let expcetedVersion: string = 'N/A';
+      const readTimeout: NodeJS.Timeout = setTimeout(() => {
+        this._logger.warn('Unable to read version string from cpio file within 1s time frame', Ace.name);
+        resolve('N/A');
+      }, 1000);
+      extract.on('entry', (header: any, stream: any, cb: any) => {
+        stream.on('end', () => cb());
+        if (header.name == 'version') {
+          stream.on('data', (verionStr: any) => {
+            expcetedVersion = verionStr;
+          });
+        }
+        stream.resume();
+      });
+      extract.on('finish', () => {
+        extract.destroy();
+        clearTimeout(readTimeout);
+        resolve(expcetedVersion);
+      });
+      fs.createReadStream(this.options.cpioFilePath).pipe(extract);
+    });
+
+    if (currentVersion.toString() != expcetedVersion.toString()) {
+      const errMsg: string = `Camera running wrong version! Expected ${expcetedVersion} but got ${currentVersion}`;
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      this._logger.error(errMsg, undefined, AceUpgrader.name);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_VERSION_MISMATCH);
+    }
+  }
+
+  private calculateExpectedSlot(curretSlot: string): string {
+    if (!['A', 'B', 'C'].includes(curretSlot)) {
+      throw new AceUpgraderError(`Unexpected slot: ${curretSlot}`, 1);
+    }
+
+    if (['B', 'C'].includes(curretSlot)) {
+      return 'A';
+    }
+
+    if (curretSlot === 'A') {
+      return 'B';
+    }
+  }
+
+  private async verifySlot(slotBeforeUpgrade: string): Promise<void> {
+    const expectedSlot: string = this.calculateExpectedSlot(slotBeforeUpgrade);
+    const currentSlot: string = await (<Ace>this._cameraManager).getSlot();
+    if (expectedSlot !== currentSlot) {
+      const errMsg: string = `Camera booted from wrong slot! Expected ${expectedSlot} but got ${currentSlot}`;
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      this._logger.error(errMsg, undefined, AceUpgrader.name);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_WRONG_BOOT_SLOT);
+    }
+  }
+
+  private getVersionState(): Promise<number> {
+    return new Promise((resolve) => {
+      this.transport.grpcClient.getDeviceVersion(this.transport.empty, (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+        if (err) {
+          this._logger.warn(`Unable to get device version state! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
+          resolve(undefined);
+        }
+        resolve(deviceVersion.getVersionState());
+      });
+    });
+  }
+  private getVersion(): Promise<string> {
+    return new Promise((resolve) => {
+      this.transport.grpcClient.getDeviceVersion(this.transport.empty, (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+        if (err) {
+          this._logger.warn(`Unable to get device version! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
+          resolve(undefined);
+        }
+        resolve(deviceVersion.getVersion());
+      });
+    });
+  }
+
+  private peformUpgradeStep(step: UpgradeSteps, stepName: string): Promise<string> {
     const extract = cpio.extract();
 
     return new Promise((resolve, reject) => {
-      console.log(upgradeFunc);
-      const stream: grpc.ClientWritableStream<huddly.Chunk> = upgradeFunc((err: grpc.ServiceError, deviceStatus: huddly.DeviceStatus) => {
-       if (err !== null) {
-        this._logger.error(`Unable to perform ${stepName} step on device!`, err.message, AceUpgrader.name);
-        this._logger.warn(err.stack, AceUpgrader.name);
-        reject(err.details);
-        return;
-       }
-       this._logger.debug(`${stepName} step completed! Status ${JSON.stringify(deviceStatus.toObject())}`);
-       resolve(`${stepName} step completed`);
-      });
+      const upgradeStepCompleteCb = (err: grpc.ServiceError, deviceStatus: huddly.DeviceStatus) => {
+        if (err !== null) {
+          this.emit(CameraEvents.UPGRADE_FAILED, err);
+          this._logger.error(`Unable to perform ${stepName} step on device!`, err.message, AceUpgrader.name);
+          reject(err.details);
+          return;
+         }
+         resolve(`${stepName} step completed`);
+      };
+
+      let stream: grpc.ClientWritableStream<huddly.Chunk>;
+      switch (step) {
+        case UpgradeSteps.FLASH:
+          stream = this.transport.grpcClient.upgradeDevice(upgradeStepCompleteCb);
+          break;
+        case UpgradeSteps.COMMIT:
+          stream = this.transport.grpcClient.upgradeVerify(upgradeStepCompleteCb);
+          break;
+        default:
+          throw new AceUpgraderError(`Unknown upgrade step ${step}`, ErrorCodes.UPGRADE_FAILED);
+      }
 
       extract.on('entry', (header: any, cpioStream: any, cb: any) => {
         if (header.name !== 'image.itb') {
@@ -196,13 +301,9 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
       fs.createReadStream(this.options.cpioFilePath).pipe(extract);
      });
   }
-  private async flash(): Promise<void> {
-    await this.peformUpgradeStep(this.transport.grpcClient.upgradeDevice, 'FLASH')
-    .catch((err) => {
-      this.emit(CameraEvents.UPGRADE_FAILED, err);
-      this._logger.error('Flashing device failed!', err, AceUpgrader.name);
-      throw new AceUpgraderError(err, ErrorCodes.UPGRADE_FAILED);
-    });
+
+  private async flash(): Promise<string> {
+    return this.peformUpgradeStep(UpgradeSteps.FLASH, 'FLASH');
   }
 
   private reboot(): Promise<void> {
@@ -221,13 +322,8 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
     });
   }
 
-  private async commit(): Promise<void> {
-    await this.peformUpgradeStep(this.transport.grpcClient.upgradeDevice, 'COMMIT')
-    .catch((err) => {
-      this.emit(CameraEvents.UPGRADE_FAILED, err);
-      this._logger.error(`Committing device failed!`, err, AceUpgrader.name);
-      throw new AceUpgraderError(err, ErrorCodes.UPGRADE_FAILED);
-    });
+  private async commit(): Promise<string> {
+    return this.peformUpgradeStep(UpgradeSteps.COMMIT, 'FLASH');
   }
 
   upgradeIsValid(): Promise<boolean> {

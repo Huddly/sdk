@@ -9,10 +9,12 @@ aceDevice = undefined;
 
 sdk.once('ATTACH', async (cameraManager) => {
     aceDevice = cameraManager;
-    cameraManager.upgrade({
+    aceDevice.upgrade({
         cpioFilePath: 'image.cpio'
-    }).then(() => {
+    }).then(async () => {
         console.log('---- APP ----- upgrade completed!');
+        await aceDevice.closeConnection();
+        process.exit();
     }).catch((e) => {
         console.error(e);
         console.error('---- APP ----- upgrade failed!');
