@@ -432,11 +432,14 @@ export default class Ace implements IDeviceManager, IUVCControls {
         if (err != undefined) {
           this.handleError('Unable to get ptz values!', err, reject);
         }
+<<<<<<< HEAD
         resolve({
           pan: ptz.getPan(),
           tilt: ptz.getTilt(),
           zoom: ptz.getZoom(),
         });
+=======
+>>>>>>> More cleanup
         const ptz = this.PTZ;
         ptz.setPan(_ptz.getPan());
         ptz.setTilt(_ptz.getTilt());
