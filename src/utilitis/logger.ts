@@ -23,7 +23,7 @@ export default class Logger {
     }
   }
 
-  error(message: string, stackTrace: string, component: string = 'Generic Component'): void {
+  error(message: string, stackTrace: any, component: string = 'Generic Component'): void {
     if (this.verbose) {
       console.error(this.formatLogMsg('ERROR', component, message));
       console.error(stackTrace);
