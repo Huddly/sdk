@@ -202,7 +202,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
     return new Promise(async (resolve, reject) => {
       try {
         const temperatures = await this._getTemperatures();
-        resolve(temperatures.toObject);
+        resolve(temperatures.toObject());
       } catch (e) {
         this.handleError('Unable to get temperatures!', e, reject);
         return;
@@ -253,7 +253,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
   getSetting(key: string, forceRefresh?: Boolean): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
-        switch (key) {
+        switch (key.toLowerCase()) {
           case 'pan':
             resolve((await this.getPanTiltZoom())['pan']);
             break;
@@ -282,7 +282,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
   setSettingValue(key: string, value: any): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
-        switch (key) {
+        switch (key.toLowerCase()) {
           case 'pan':
             this.setPanTiltZoom({ pan: value });
             break;
