@@ -4,13 +4,13 @@ const HuddlySdk = require('@huddly/sdk').default;
 const ipApi = new HuddlyDeviceApiIp();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(ipApi, [ipApi], { serial: '12101A0029' });
+const sdk = new HuddlySdk(ipApi, [ipApi], { serial: '12101A0029', developmentMode: true });
 aceDevice = undefined;
 
 sdk.once('ATTACH', async (cameraManager) => {
     aceDevice = cameraManager;
     aceDevice.upgrade({
-        cpioFilePath: 'image.cpio'
+        cpioFilePath: '/home/brikend/Downloads/falcon-firmware-1.2.3.cpio'
     }).then(async () => {
         console.log('---- APP ----- upgrade completed!');
         await aceDevice.closeConnection();
