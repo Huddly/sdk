@@ -4,7 +4,7 @@ const HuddlySdk = require('@huddly/sdk').default;
 const ipApi = new HuddlyDeviceApiIp();
 
 // Create an instance of the SDK
-const sdk = new HuddlySdk(ipApi, [ipApi]);
+const sdk = new HuddlySdk(ipApi, [ipApi], { developmentMode: true });
 aceDevice = undefined;
 
 sdk.on('ATTACH', async (cameraManager) => {
