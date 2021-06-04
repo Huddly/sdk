@@ -1,4 +1,3 @@
-// TODO: import the protofile from falcon-interface???
 syntax = "proto3";
 import "google/protobuf/empty.proto";
 import "google/protobuf/timestamp.proto";
@@ -26,7 +25,6 @@ service HuddlyService {
   rpc PtzTransition(IndexedTransitions) returns (IndexedTransitionsResponse) {}
   rpc GetCurrentPtzCrop(google.protobuf.Empty) returns (CurrentPtzCrop) {}
   rpc SetCnnFeature(CnnFeature) returns (DeviceStatus) {}
-  // @HuddlyOnly-NextLine
   rpc GetCnnFeatureStatus(CnnFeature) returns (CNNStatus) {}
   rpc GetUptime(google.protobuf.Empty) returns (Uptime) {}
   rpc SetTimezone(Timezone) returns (DeviceStatus) {}
@@ -176,14 +174,12 @@ message Temperatures {
   repeated Temperature temperatures = 1;
 }
 
-// @HuddlyOnly-NextBlock
 message CNNStatus {
   StatusCode Code = 1;
   FBEStatus fbe_status = 2;
   AZStatus az_status = 3;
 }
 
-// @HuddlyOnly-NextBlock
 message FBEStatus {
   bool fbe_enabled = 1;
   uint64 num_iterations = 2;
@@ -192,7 +188,6 @@ message FBEStatus {
   repeated float per_face_weight = 5;
 }
 
-// @HuddlyOnly-NextBlock
 message AZStatus {
   bool az_enabled = 1;
 }
@@ -215,7 +210,6 @@ enum Mode {
 
 enum Feature {
   FaceBasedExposure = 0;
-  // @HuddlyOnly-NextLine
   Autozoom = 1;
 }
 
