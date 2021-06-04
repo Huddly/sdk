@@ -1,7 +1,8 @@
 import { EventEmitter } from 'events';
 import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
 import IHuddlyDeviceDiscoveryAPI from './interfaces/IHuddlyDeviceDiscoveryAPI';
-import iDeviceFactory from './interfaces/iDeviceFactory';
+import IDeviceFactory from './interfaces/iDeviceFactory';
+import IDeviceManager from './interfaces/iDeviceManager';
 import iLogger from './interfaces/iLogger';
 import DefaultLogger from './utilitis/logger';
 import { createFactory } from './components/device/factory';
@@ -47,6 +48,13 @@ interface SDKOpts {
 
   /**
    * @ignore
+   * @type {boolean}
+   * @memberof SDKOpts
+   */
+  developmentMode?: boolean;
+
+  /**
+   * @ignore
    *
    * @type {EventEmitter}
    * @memberof SDKOpts
@@ -67,7 +75,7 @@ interface SDKOpts {
    * @returns {iDeviceFactory}
    * @memberof SDKOpts
    */
-  createFactory?(): iDeviceFactory;
+  createFactory?(): IDeviceFactory;
 }
 
 /**
@@ -137,6 +145,7 @@ class HuddlySdk extends EventEmitter {
 
   private locksmith: Locksmith;
   private targetSerial: string;
+  private devMode: boolean;
 
   /**
    * Creates an instance of HuddlySdk.
@@ -189,6 +198,7 @@ class HuddlySdk extends EventEmitter {
     this.logger = options.logger;
     this.targetSerial = options.serial;
     this._deviceFactory = options.createFactory();
+    this.devMode = options.developmentMode;
 
     this.setupDeviceDiscoveryListeners();
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
@@ -208,7 +218,7 @@ class HuddlySdk extends EventEmitter {
           () =>
             new Promise<void>(async resolve => {
               try {
-                const cameraManager = await this._deviceFactory.getDevice(
+                const cameraManager: IDeviceManager = await this._deviceFactory.getDevice(
                   d.productId,
                   this.logger,
                   this.mainDeviceApi,
@@ -216,7 +226,7 @@ class HuddlySdk extends EventEmitter {
                   d,
                   this.emitter
                 );
-
+                await cameraManager.initialize(this.devMode);
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
