@@ -343,7 +343,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    */
   private getVersionState(): Promise<number> {
     return new Promise((resolve) => {
-      this.transport.grpcClient.getDeviceVersion(this.transport.empty, (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+      this.transport.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
         if (err) {
           this._logger.error(`Unable to get device version state! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
           resolve(undefined);
@@ -360,7 +360,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    */
   private getVersion(): Promise<string> {
     return new Promise((resolve) => {
-      this.transport.grpcClient.getDeviceVersion(this.transport.empty, (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+      this.transport.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
         if (err) {
           this._logger.error(`Unable to get device version! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
           resolve(undefined);
@@ -414,7 +414,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
           stream.end();
         });
         cpioStream.on('data', (chunk: Buffer) => {
-          const huddlyChunk = this.transport.chunk; // Workaround
+          const huddlyChunk = new huddly.Chunk();
           huddlyChunk.setContent(chunk);
           stream.write(huddlyChunk);
         });
@@ -441,7 +441,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   private reboot(): Promise<void> {
     return new Promise((resolve, reject) => {
       this._logger.debug('Rebooting camera....', AceUpgrader.name);
-      this.transport.grpcClient.reset(this.transport.empty, (err: grpc.ServiceError, status: huddly.DeviceStatus) => {
+      this.transport.grpcClient.reset(new Empty(), (err: grpc.ServiceError, status: huddly.DeviceStatus) => {
         if (err || status.getCode() !== huddly.StatusCode.OK) {
           this.emit(CameraEvents.UPGRADE_FAILED, err);
           this._logger.error(`Reboot failed!`, err, AceUpgrader.name);
