@@ -155,8 +155,7 @@ export default class DeviceFactory {
     preferredDeviceApi: IHuddlyDeviceAPI,
     secondaryDeviceApis: Array<IHuddlyDeviceAPI>,
     devInstance: any,
-    cameraDiscoveryEmitter: EventEmitter,
-    doInitialize: boolean = true): Promise<IDeviceManager> {
+    cameraDiscoveryEmitter: EventEmitter): Promise<IDeviceManager> {
     const transport = await this.getTransportImplementation(
       devInstance,
       preferredDeviceApi,
@@ -190,7 +189,6 @@ export default class DeviceFactory {
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${productId}`);
     }
-    if (doInitialize) await device.initialize();
     return device;
   }
 }

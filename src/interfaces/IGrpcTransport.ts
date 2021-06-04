@@ -23,4 +23,6 @@ export default interface IGrpcTransport extends ITransport {
    * @memberof IGrpcTransport
    */
   grpcClient: HuddlyServiceClient;
+
+  overrideGrpcClient(client: HuddlyServiceClient): void;
 }

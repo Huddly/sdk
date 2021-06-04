@@ -29,7 +29,6 @@ export default interface IDeviceFactory {
     preferredDeviceApi: IHuddlyDeviceAPI,
     secondaryDeviceApis: Array<IHuddlyDeviceAPI>,
     devInstance: any,
-    cameraDiscoveryEmitter: EventEmitter,
-    doInitialize: boolean
+    cameraDiscoveryEmitter: EventEmitter
   ): Promise<IDeviceManager>;
 }

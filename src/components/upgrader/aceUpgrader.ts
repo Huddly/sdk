@@ -81,20 +81,6 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   private _upgradeStatus: UpgradeStatus;
 
   /**
-   * Helper getter that typecasts the transport instance from the device manager implementation into a
-   * concrete transport tailored to ACE which in this case is GrpcTransport
-   *
-   * @type {IGrpcTransport}
-   * @memberof AceUpgrader
-   */
-  get transport(): IGrpcTransport {
-    if (TypeHelper.instanceOfGrpcTransport(this._cameraManager.transport)) {
-      return <IGrpcTransport>this._cameraManager.transport;
-    }
-    throw new Error('Unable to talk to device. Tarnsport must be GrpcTransport compatible');
-  }
-
-  /**
    * Helper getter that typecasts the _cameraManager member which is of type IDeviceManager into its
    * concrete implementation Ace
    *
@@ -156,7 +142,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
 
     this._sdkDeviceDiscoveryEmitter.on(CameraEvents.DETACH, async (d) => {
       if (d && this.aceManager.wsdDevice.serialNumber === d.serialNumber) {
-        this.transport.close();
+        this.aceManager.closeConnection();
         this.emit('UPGRADE_REBOOT');
       }
     });
@@ -343,7 +329,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    */
   private getVersionState(): Promise<number> {
     return new Promise((resolve) => {
-      this.transport.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+      this.aceManager.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
         if (err) {
           this._logger.error(`Unable to get device version state! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
           resolve(undefined);
@@ -360,7 +346,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    */
   private getVersion(): Promise<string> {
     return new Promise((resolve) => {
-      this.transport.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+      this.aceManager.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
         if (err) {
           this._logger.error(`Unable to get device version! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
           resolve(undefined);
@@ -395,10 +381,10 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
       let stream: grpc.ClientWritableStream<huddly.Chunk>;
       switch (step) {
         case UpgradeSteps.FLASH:
-          stream = this.transport.grpcClient.upgradeDevice(upgradeStepCompleteCb);
+          stream = this.aceManager.grpcClient.upgradeDevice(upgradeStepCompleteCb);
           break;
         case UpgradeSteps.COMMIT:
-          stream = this.transport.grpcClient.upgradeVerify(upgradeStepCompleteCb);
+          stream = this.aceManager.grpcClient.upgradeVerify(upgradeStepCompleteCb);
           break;
         default:
           throw new AceUpgraderError(`Unknown upgrade step ${step}`, ErrorCodes.UPGRADE_FAILED);
@@ -441,14 +427,14 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   private reboot(): Promise<void> {
     return new Promise((resolve, reject) => {
       this._logger.debug('Rebooting camera....', AceUpgrader.name);
-      this.transport.grpcClient.reset(new Empty(), (err: grpc.ServiceError, status: huddly.DeviceStatus) => {
+      this.aceManager.grpcClient.reset(new Empty(), (err: grpc.ServiceError, status: huddly.DeviceStatus) => {
         if (err || status.getCode() !== huddly.StatusCode.OK) {
           this.emit(CameraEvents.UPGRADE_FAILED, err);
           this._logger.error(`Reboot failed!`, err, AceUpgrader.name);
           reject(`Reboot failed! DeviceStatus: code [${status.getCode()}] msg [${status.getMessage()}]`);
           return;
         }
-        this.transport.close();
+        this.aceManager.closeConnection();
         resolve();
       });
     });
