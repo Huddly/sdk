@@ -25,9 +25,4 @@ export default interface IGrpcTransport extends ITransport {
    * @memberof IGrpcTransport
    */
   grpcClient: HuddlyServiceClient;
-
-  // Workaround until the google.protobuf.Empty class is same from sdk and device-api-ip
-  empty: Empty;
-
-  chunk: huddly.Chunk;
 }
