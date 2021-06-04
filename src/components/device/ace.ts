@@ -38,12 +38,6 @@ export default class Ace implements IDeviceManager, IUVCControls {
     return this.transport.grpcClient;
   }
 
-  get GoogleProtoEmpty(): Empty {
-    // TODO: make sure the sdk google.protobuf.Empty is the same as device-api-ip google.protobuf.Empty
-    // This is a temporary workaround
-    return this.transport.empty;
-  }
-
   constructor(
     wsdDevice: any,
     transport: IGrpcTransport,
@@ -71,7 +65,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
         ...this.wsdDevice.infoObject()
       };
       // Get devive version
-      this.grpcClient.getDeviceVersion(this.GoogleProtoEmpty, (err, deviceVersion: huddly.DeviceVersion) => {
+      this.grpcClient.getDeviceVersion(new Empty(), (err, deviceVersion: huddly.DeviceVersion) => {
         if (err != undefined) {
           this.logger.error('Unable to get device version!', err.message, Ace.name);
           this.logger.warn(err.stack, Ace.name);
@@ -155,7 +149,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   getSlot(): Promise<string> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getBootSlot(this.GoogleProtoEmpty, (err, slot: huddly.BootSlot) => {
+      this.grpcClient.getBootSlot(new Empty(), (err, slot: huddly.BootSlot) => {
         if (err != undefined) {
           this.logger.error('Unable to get device boot slot', err.message);
           this.logger.warn(err.stack);
@@ -170,7 +164,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   getUptime(): Promise<number> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getUptime(this.GoogleProtoEmpty, (err, uptime: huddly.Uptime) => {
+      this.grpcClient.getUptime(new Empty(), (err, uptime: huddly.Uptime) => {
         if (err != undefined) {
           this.logger.error('Unable to get device uptime!', err.message, Ace.name);
           this.logger.warn(err.stack, Ace.name);
