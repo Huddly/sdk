@@ -194,8 +194,7 @@ describe('DeviceFactory', () => {
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyIQDevice,
-          discoveryEmitter,
-          false);
+          discoveryEmitter);
         expect(deviceManager).to.be.instanceof(Boxfish);
       });
     });
@@ -213,8 +212,7 @@ describe('DeviceFactory', () => {
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyDwarffishDevice,
-          discoveryEmitter,
-          false);
+          discoveryEmitter);
         expect(deviceManager).to.be.instanceof(Dwarffish);
       });
     });
@@ -231,8 +229,7 @@ describe('DeviceFactory', () => {
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyClownfishDevice,
-          discoveryEmitter,
-          false);
+          discoveryEmitter);
         expect(deviceManager).to.be.instanceof(Clownfish);
       });
     });
@@ -250,8 +247,7 @@ describe('DeviceFactory', () => {
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyGODevice,
-          discoveryEmitter,
-          false);
+          discoveryEmitter);
         expect(deviceManager).to.be.instanceof(HuddlyGo);
       });
     });
