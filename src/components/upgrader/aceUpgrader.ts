@@ -12,9 +12,10 @@ import AceUpgraderError from './../../error/AceUpgraderError';
 import TypeHelper from './../../utilitis/typehelper';
 import CameraEvents from './../../utilitis/events';
 import Ace from './../../components/device/ace';
-import * as huddly from './../../proto/huddly_pb';
 import * as grpc from '@grpc/grpc-js';
 import ErrorCodes from './../../../src/error/errorCodes';
+
+import * as huddly from '@huddly/huddlyproto/lib/proto/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 /**
