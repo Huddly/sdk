@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "es6",
+    "module": "commonjs",
+    "sourceMap": true,
+    "esModuleInterop": true,
+    "strictNullChecks": false,
+    "lib": [
+      "es6"
+    ],
+    "baseUrl": ".",
+  },
+  "include": [
+    "./lib/proto/*",
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}
