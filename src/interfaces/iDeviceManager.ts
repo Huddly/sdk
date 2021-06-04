@@ -57,7 +57,7 @@ export default interface IDeviceManager {
    * @returns {Promise<void>}
    * @memberof IDeviceManager
    */
-  initialize(): Promise<void>;
+  initialize(developmentMode?: boolean): Promise<void>;
 
   /**
    * Closes the communication channels with the camera in use.
