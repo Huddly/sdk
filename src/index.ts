@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
+import IHuddlyDeviceDiscoveryAPI from './interfaces/IHuddlyDeviceDiscoveryAPI';
 import iDeviceFactory from './interfaces/iDeviceFactory';
 import iLogger from './interfaces/iLogger';
 import DefaultLogger from './utilitis/logger';
@@ -9,6 +10,7 @@ import Locksmith from './components/locksmith';
 import Api from './components/api';
 import sourceMapSupport from 'source-map-support';
 import ErrorCodes from './error/errorCodes';
+import AllDeviceDiscovery from './components/allDeviceDiscovery';
 
 sourceMapSupport.install();
 
@@ -119,10 +121,10 @@ class HuddlySdk extends EventEmitter {
   /**
    * @ignore
    *
-   * @type {IHuddlyDeviceAPI}
+   * @type {IHuddlyDeviceDiscoveryAPI}
    * @memberof HuddlySdk
    */
-  _deviceDiscoveryApi: IHuddlyDeviceAPI;
+  _deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI;
 
 
   /**
@@ -145,7 +147,7 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   constructor(
-    deviceDiscoveryApi: IHuddlyDeviceAPI,
+    deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI | Array<IHuddlyDeviceDiscoveryAPI>,
     deviceApis?: Array<IHuddlyDeviceAPI>,
     opts?: SDKOpts
   ) {
@@ -154,10 +156,16 @@ class HuddlySdk extends EventEmitter {
       throw new Error('A default device api should be provided to the sdk!');
     }
 
+    if (Array.isArray(deviceDiscoveryApi)) {
+      this._deviceDiscoveryApi = new AllDeviceDiscovery(deviceDiscoveryApi);
+    } else {
+      this._deviceDiscoveryApi = deviceDiscoveryApi;
+    }
+
     if (!deviceApis || deviceApis.length === 0) {
-      this.mainDeviceApi = deviceDiscoveryApi;
+      this.mainDeviceApi = deviceDiscoveryApi as IHuddlyDeviceAPI;
       this._deviceApis = new Array<IHuddlyDeviceAPI>();
-      this._deviceApis.push(deviceDiscoveryApi);
+      this._deviceApis.push(this.mainDeviceApi);
 
     } else {
       this._mainDeviceApi = deviceApis[0];
@@ -178,7 +186,6 @@ class HuddlySdk extends EventEmitter {
 
     this.deviceDiscovery = options.apiDiscoveryEmitter;
     this.emitter = options.emitter;
-    this._deviceDiscoveryApi = deviceDiscoveryApi;
     this.logger = options.logger;
     this.targetSerial = options.serial;
     this._deviceFactory = options.createFactory();
@@ -281,7 +288,7 @@ class HuddlySdk extends EventEmitter {
    *
    * @memberof HuddlySdk
    */
-  set deviceDiscoveryApi(api: IHuddlyDeviceAPI) {
+  set deviceDiscoveryApi(api: IHuddlyDeviceDiscoveryAPI) {
     this._deviceDiscoveryApi = api;
     this.deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
   }
@@ -290,10 +297,10 @@ class HuddlySdk extends EventEmitter {
    * Convenience function for getting the device api
    * instance used for camera discovery.
    *
-   * @type {IHuddlyDeviceAPI}
+   * @type { IHuddlyDeviceDiscoveryAPI}
    * @memberof HuddlySdk
    */
-  get deviceDiscoveryApi(): IHuddlyDeviceAPI {
+  get deviceDiscoveryApi(): IHuddlyDeviceDiscoveryAPI {
     return this._deviceDiscoveryApi;
   }
 
