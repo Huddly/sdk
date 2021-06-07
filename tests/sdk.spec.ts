@@ -59,6 +59,13 @@ describe('HuddlySDK', () => {
       expect(nodeusbDeviceApi.registerForHotplugEvents.firstCall.args[0]).to.be.instanceof(EventEmitter);
     });
 
+    it('should setup hotplug events for all device discovery api', () => {
+      nodeusbDeviceApi.registerForHotplugEvents.returns({});
+      const sdk = new HuddlySdk([nodeusbDeviceApi, nodeusbDeviceApi], [nodeusbDeviceApi]);
+      expect(nodeusbDeviceApi.registerForHotplugEvents.callCount).to.equals(2);
+      expect(nodeusbDeviceApi.registerForHotplugEvents.firstCall.args[0]).to.be.instanceof(EventEmitter);
+    });
+
     it('should throw error if no device apis are provided', () => {
       try {
         new HuddlySdk(undefined);
