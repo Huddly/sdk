@@ -248,20 +248,22 @@ export default class Ace implements IDeviceManager, IUVCControls {
     throw new Error('Method not implemented.');
   }
   getSupportedSettings(): Promise<Object> {
-    throw new Error('Method not implemented.');
+    return new Promise(async (resolve, reject) => {
+      ['pan', 'tilt', 'zoom', 'brightness', 'saturation'];
+    });
   }
   getSetting(key: string, forceRefresh?: Boolean): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
         switch (key.toLowerCase()) {
           case 'pan':
-            resolve((await this.getPanTiltZoom())['pan']);
+            resolve({ ...(await this.getPanTiltZoom())['pan'] });
             break;
           case 'tilt':
-            resolve((await this.getPanTiltZoom())['tilt']);
+            resolve({ ...(await this.getPanTiltZoom())['tilt'] });
             break;
           case 'zoom':
-            resolve((await this.getPanTiltZoom())['zoom']);
+            resolve({ ...(await this.getPanTiltZoom())['zoom'] });
             break;
           case 'brightness':
             resolve(await this.getBrightness());
@@ -316,9 +318,9 @@ export default class Ace implements IDeviceManager, IUVCControls {
         const saturation = await this.getSaturation();
         const ptz = await this.getPanTiltZoom();
         resolve({
-          ...brightness,
-          ...saturation,
-          ...ptz,
+          brightness,
+          saturation,
+          ptz,
         });
       } catch (err) {
         reject(err);
@@ -346,12 +348,10 @@ export default class Ace implements IDeviceManager, IUVCControls {
       try {
         const saturation = await this._getSaturation();
         resolve({
-          saturation: {
-            ...this._getDefaultParams(),
-            value: saturation.getSaturation(),
-            min: saturation.getRange().getMin(),
-            max: saturation.getRange().getMax(),
-          },
+          ...this._getDefaultParams(),
+          value: saturation.getSaturation(),
+          min: saturation.getRange().getMin(),
+          max: saturation.getRange().getMax(),
         });
       } catch (e) {
         this.handleError('Unable to get saturation value', e, reject);
@@ -394,12 +394,10 @@ export default class Ace implements IDeviceManager, IUVCControls {
       try {
         const brightness = await this._getBrightness();
         resolve({
-          brightness: {
-            ...this._getDefaultParams(),
-            value: brightness.getBrightness(),
-            min: brightness.getRange().getMin(),
-            max: brightness.getRange().getMax(),
-          },
+          ...this._getDefaultParams(),
+          value: brightness.getBrightness(),
+          min: brightness.getRange().getMin(),
+          max: brightness.getRange().getMax(),
         });
       } catch (e) {
         this.handleError('Unable to get brightness value', e, reject);
