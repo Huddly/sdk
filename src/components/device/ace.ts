@@ -25,6 +25,22 @@ interface ErrorInterface {
   stack?: String;
 }
 
+export const minMax = {
+  pan: {
+    min: -216000,
+    max: 216000,
+  },
+  tilt: {
+    min: -162000,
+    max: 162000,
+  },
+  zoom: {
+    min: 1000,
+    max: 4000,
+    default: 2127,
+  },
+};
+
 export default class Ace implements IDeviceManager, IUVCControls {
   transport: IGrpcTransport;
   logger: any;
@@ -56,8 +72,8 @@ export default class Ace implements IDeviceManager, IUVCControls {
     wsdDevice: any,
     transport: IGrpcTransport,
     logger: DefaultLogger,
-    cameraDiscoveryEmitter: EventEmitter) {
-
+    cameraDiscoveryEmitter: EventEmitter
+  ) {
     this.wsdDevice = wsdDevice;
     this.transport = transport;
     this.logger = logger;
@@ -75,18 +91,23 @@ export default class Ace implements IDeviceManager, IUVCControls {
         grpc.credentials.createInsecure()
       );
 
-      return new Promise<void>((resolve, reject) => this.devModeGrpcClient.waitForReady(deadline, error => {
-        if (error) {
-          this.logger.error(`Connection failed with GPRC server on ACE. Reason: ${error}`, Ace.name);
-          reject(error);
-        } else {
-          this.logger.debug(`Connection established`, Ace.name);
-          // Override transport service client
-          this.transport.overrideGrpcClient(this.devModeGrpcClient);
-          this.logger.debug('Ace development initialization completed!', Ace.name);
-          resolve();
-        }
-      }));
+      return new Promise<void>((resolve, reject) =>
+        this.devModeGrpcClient.waitForReady(deadline, error => {
+          if (error) {
+            this.logger.error(
+              `Connection failed with GPRC server on ACE. Reason: ${error}`,
+              Ace.name
+            );
+            reject(error);
+          } else {
+            this.logger.debug(`Connection established`, Ace.name);
+            // Override transport service client
+            this.transport.overrideGrpcClient(this.devModeGrpcClient);
+            this.logger.debug('Ace development initialization completed!', Ace.name);
+            resolve();
+          }
+        })
+      );
     }
 
     this.logger.debug('Ace will run in production mode', Ace.name);
@@ -96,6 +117,19 @@ export default class Ace implements IDeviceManager, IUVCControls {
   async closeConnection(): Promise<any> {
     this.grpcClient.close();
     return this.transport.close();
+  }
+
+  handleError(msg: String, error: ErrorInterface, reject: any) {
+    if (!error) {
+      this.logger.error('Unknown error');
+      reject('Unknown error');
+    }
+    if (error.message) {
+      this.logger.error(msg, error.message, Ace.name);
+    }
+    if (error.stack) this.logger.warn(error.stack, Ace.name);
+
+    reject(error.message ? error.message : 'Uknown error');
   }
 
   getInfo(): Promise<any> {
@@ -111,7 +145,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
           reject(err.message);
           return;
         }
-      );
+      });
     });
   }
 
@@ -125,7 +159,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   reboot(mode?: string): Promise<void> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.reset(this.GoogleProtoEmpty, (err, status: huddly.DeviceStatus) => {
+      this.grpcClient.reset(new Empty(), (err, status: huddly.DeviceStatus) => {
         if (err != undefined) {
           this.handleError('Unable to reset camera', err, reject);
           return;
@@ -151,12 +185,14 @@ export default class Ace implements IDeviceManager, IUVCControls {
   upgrade(opts: IUpgradeOpts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getUpgrader()
-      .then((upgrader: AceUpgrader) => {
-        upgrader.init(opts);
-        upgrader.doUpgrade()
-        .then(() => resolve(undefined))
-        .catch((e) => reject(e));
-      }).catch((e) => reject(e));
+        .then((upgrader: AceUpgrader) => {
+          upgrader.init(opts);
+          upgrader
+            .doUpgrade()
+            .then(() => resolve(undefined))
+            .catch(e => reject(e));
+        })
+        .catch(e => reject(e));
     });
   }
 
@@ -180,21 +216,35 @@ export default class Ace implements IDeviceManager, IUVCControls {
     throw new Error('Method not implemented.');
   }
 
-  getTemperature(): Promise<any> {
-    throw new Error('Method not implemented.');
+  getTemperature(key?: string): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const _temperatures = await this._getTemperatures();
+        const tempList = _temperatures.getTemperaturesList();
+        if (key != undefined) {
+          tempList.forEach(temp => {
+            if (temp.getName() === key) {
+              resolve(temp.toObject());
+            }
+          });
+        }
+        const tempListSorted = tempList.sort((a, b) => a.getValue() - b.getValue());
+        resolve(tempListSorted.pop().toObject());
+      } catch (err) {
+        this.handleError('Unable to get temperature!', err, reject);
+        return;
+      }
+    });
   }
 
   _getTemperatures(): Promise<huddly.Temperatures> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getTemperatures(
-        this.GoogleProtoEmpty,
-        (err, temperature: huddly.Temperatures) => {
-          if (err != undefined) {
-            reject(err);
-          }
-          resolve(temperature);
+      this.grpcClient.getTemperatures(new Empty(), (err, temperatures: huddly.Temperatures) => {
+        if (err != undefined) {
+          reject(err);
         }
-      );
+        resolve(temperatures);
+      });
     });
   }
 
@@ -202,7 +252,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
     return new Promise(async (resolve, reject) => {
       try {
         const temperatures = await this._getTemperatures();
-        resolve(temperatures.toObject());
+        resolve(temperatures.toObject()['temperaturesList']);
       } catch (e) {
         this.handleError('Unable to get temperatures!', e, reject);
         return;
@@ -320,7 +370,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
         resolve({
           brightness,
           saturation,
-          ptz,
+          ...ptz,
         });
       } catch (err) {
         reject(err);
@@ -332,7 +382,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
   _getSaturation(): Promise<huddly.Saturation> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getSaturation(
-        this.GoogleProtoEmpty,
+        new Empty(),
         (err: ErrorInterface, saturation: huddly.Saturation) => {
           if (err != undefined) {
             reject(err);
@@ -355,14 +405,13 @@ export default class Ace implements IDeviceManager, IUVCControls {
         });
       } catch (e) {
         this.handleError('Unable to get saturation value', e, reject);
-        return;
       }
     });
   }
 
   setSaturation(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      const saturation = this.Saturation;
+      const saturation = new huddly.Saturation();
       saturation.setSaturation(value);
 
       this.grpcClient.setSaturation(
@@ -380,7 +429,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   _getBrightness(): Promise<huddly.Brightness> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getBrightness(this.GoogleProtoEmpty, (err, brightness: huddly.Brightness) => {
+      this.grpcClient.getBrightness(new Empty(), (err, brightness: huddly.Brightness) => {
         if (err != undefined) {
           reject(err);
         }
@@ -408,7 +457,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   setBrightness(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
-      const brightness = this.Brightness;
+      const brightness = new huddly.Brightness();
       brightness.setBrightness(value);
       this.grpcClient.setBrightness(brightness, (err, deviceStatus: huddly.DeviceStatus) => {
         if (err != undefined) {
@@ -426,19 +475,11 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   _getPanTiltZoom(): Promise<huddly.PTZ> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getPTZ(this.GoogleProtoEmpty, (err, _ptz: huddly.PTZ) => {
+      this.grpcClient.getPTZ(new Empty(), (err, _ptz: huddly.PTZ) => {
         if (err != undefined) {
-          this.handleError('Unable to get ptz values!', err, reject);
+          reject(err);
         }
-<<<<<<< HEAD
-        resolve({
-          pan: ptz.getPan(),
-          tilt: ptz.getTilt(),
-          zoom: ptz.getZoom(),
-        });
-=======
->>>>>>> More cleanup
-        const ptz = this.PTZ;
+        const ptz = new huddly.PTZ();
         ptz.setPan(_ptz.getPan());
         ptz.setTilt(_ptz.getTilt());
         ptz.setZoom(_ptz.getZoom());
@@ -455,20 +496,17 @@ export default class Ace implements IDeviceManager, IUVCControls {
           pan: {
             ...this._getDefaultParams(),
             value: ptz.getPan(),
-            min: -216000,
-            max: 216000,
+            ...minMax['pan'],
           },
           tilt: {
             ...this._getDefaultParams(),
             value: ptz.getTilt(),
-            min: -162000,
-            max: 162000,
+            ...minMax['tilt'],
           },
           zoom: {
             ...this._getDefaultParams(),
             value: ptz.getZoom(),
-            min: 1000,
-            max: 4000,
+            ...minMax['zoom'],
             default: 2127,
           },
         });
@@ -511,7 +549,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
       try {
         ptz = await this._getPanTiltZoom();
       } catch (e) {
-        ptz = this.PTZ;
+        ptz = new huddly.PTZ();
         this.logger.error(e);
       } finally {
         const paramKeys = Object.keys(panTiltZoom);
