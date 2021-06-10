@@ -8,6 +8,7 @@ import DetectorOpts from './IDetectorOpts';
 import AutozoomControlOpts from './IAutozoomControlOpts';
 import DiagnosticsMessage from '../components/diagnosticsMessage';
 import ReleaseChannel from './ReleaseChannelEnum';
+import ICnnControl from './ICnnControl';
 
 /**
  * Interface used for performing actions on the camera.
@@ -133,6 +134,15 @@ export default interface IDeviceManager {
    * @memberof IDeviceManager
    */
   getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl;
+
+  /**
+   * Get a new instance of `CnnControl` controller class which allows
+   * you to configure the face based on the camera.
+   *
+   * @returns {ICnnControl} Returns a new instance of `ICnnControl` class.
+   * @memberof IDeviceManager
+   */
+  getFaceBasedExposureControl(): ICnnControl;
 
   /**
    * Get a new instance of the `Detector` class which allows

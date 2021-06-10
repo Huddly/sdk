@@ -13,6 +13,7 @@ import diagnosticsMessage from '../diagnosticsMessage';
 import DefaultLogger from './../../utilitis/logger';
 import Locksmith from './../locksmith';
 import IDeviceManager from './../../interfaces/iDeviceManager';
+import ICnnControl from '../../interfaces/ICnnControl';
 import AceUpgrader from './../upgrader/aceUpgrader';
 
 import { HuddlyServiceClient } from '@huddly/huddlyproto/lib/proto/huddly_grpc_pb';
@@ -154,6 +155,10 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
 
   getAutozoomControl(opts: IAutozoomControlOpts): IAutozoomControl {
+    throw new Error('Method not implemented.');
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
     throw new Error('Method not implemented.');
   }
 
