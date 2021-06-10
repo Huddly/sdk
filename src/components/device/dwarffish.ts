@@ -8,6 +8,7 @@ import Boxfish from './boxfish';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import IDetector from '../../interfaces/IDetector';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import ICnnControl from '../../interfaces/ICnnControl';
 import InterpolationParams from '../../interfaces/InterpolationParams';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 
@@ -35,6 +36,10 @@ export default class Dwarffish extends Boxfish {
 
   getAutozoomControl(): IAutozoomControl {
     throw new Error('getAutozoomControl not implemented');
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    throw new Error('Method not implemented.');
   }
 
   getDetector(): IDetector {
