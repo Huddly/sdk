@@ -1,6 +1,6 @@
 {
   "name": "@huddly/huddlyproto",
-  "version": "0.0.1",
+  "version": "0.0.3",
   "description": "An npm package describing and bundling all the huddly proto files",
   "keywords": [
     "SDK",
