@@ -6,6 +6,7 @@ import IAutozoomControl from '../../src/interfaces/IAutozoomControl';
 import AutozoomControlOpts from '../../src/interfaces/IAutozoomControlOpts';
 import DetectorOpts from './../../src//interfaces/IDetectorOpts';
 import DiagnosticsMessage from './../../src//components/diagnosticsMessage';
+import ICnnControl from '../../src/interfaces/ICnnControl';
 
 /**
  * @ignore
@@ -29,7 +30,8 @@ export default class DeviceManagerMock implements IDeviceManager {
     sendAndReceiveMessagePack: (message, commands, timeout) => { },
     getAutozoomStatus: () => { },
     encode: (msg) => { },
-    getProductInfo: () => { }
+    getProductInfo: () => { },
+    transport: this.transport,
   };
   uvcControlInterface: any;
   logger: any;
@@ -42,6 +44,7 @@ export default class DeviceManagerMock implements IDeviceManager {
   getUpgrader(): Promise<IDeviceUpgrader> { return Promise.resolve(undefined); }
   upgrade(opts: UpgradeOpts): Promise<any> { return Promise.resolve({}); }
   getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl { return undefined; }
+  getFaceBasedExposureControl(): ICnnControl { return undefined; }
   getDetector(opts: DetectorOpts): IDetector { return undefined; }
   getDiagnostics(): Promise<Array<DiagnosticsMessage>> { return Promise.resolve([]); }
   getState(): Promise<any> { return Promise.resolve(); }

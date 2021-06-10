@@ -6,6 +6,7 @@ import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
 import IDetector from '../../interfaces/IDetector';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import ICnnControl from '../../interfaces/ICnnControl';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 import IUsbTransport from './../../interfaces/IUsbTransport';
 
@@ -29,6 +30,10 @@ export default class DartFish extends Boxfish {
 
   async ensureAppMode() {
     throw new Error('ensureAppMode not implemented');
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    throw new Error('Method not implemented.');
   }
 
   getAutozoomControl(): IAutozoomControl {
