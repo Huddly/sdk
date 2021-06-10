@@ -21,6 +21,8 @@ import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import AutozoomControl from '../autozoomControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 import IUsbTransport from './../../interfaces/IUsbTransport';
+import ICnnControl from '../../interfaces/ICnnControl';
+import FaceBasedExposureControl from '../faceBasedExposureControl';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
@@ -273,6 +275,10 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl {
     return new AutozoomControl(this, this.logger, opts);
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    return new FaceBasedExposureControl(this, this.logger);
   }
 
   getDetector(opts?: DetectorOpts): IDetector {

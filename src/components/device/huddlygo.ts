@@ -15,6 +15,7 @@ import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
 import DiagnosticsMessage from '../diagnosticsMessage';
 import { MinMaxDiagnosticsMessage } from '../diagnosticsMessageData';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import ICnnControl from '../../interfaces/ICnnControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;
@@ -286,6 +287,11 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   getAutozoomControl(): IAutozoomControl {
     this.logger.warn('Attempting to call method [getAutozoomControl] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Autozoom is not supported on Huddly GO cameras!');
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    this.logger.warn('Attempting to call method [getFaceBasedExposureControl] on HuddlyGO', 'HuddlyGO API');
+    throw new Error('FaceBased  is not supported on Huddly GO cameras!');
   }
 
   getDetector(): IDetector {
