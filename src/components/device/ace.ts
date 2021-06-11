@@ -121,7 +121,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   handleError(msg: String, error: ErrorInterface, reject: any) {
     if (!error) {
-      this.logger.error('Unknown error');
+      this.logger.error('Unknown error', '', Ace.name);
       reject('Unknown error');
     }
     if (error.message) {
@@ -299,7 +299,8 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
   getSupportedSettings(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
-      ['pan', 'tilt', 'zoom', 'brightness', 'saturation'];
+      // TODO: Get camera to report this
+      resolve(['pan', 'tilt', 'zoom', 'brightness', 'saturation']);
     });
   }
   getSetting(key: string, forceRefresh?: Boolean): Promise<Object> {
@@ -322,7 +323,9 @@ export default class Ace implements IDeviceManager, IUVCControls {
             resolve(await this.getSaturation());
             break;
           default:
-            this.logger.warn(`Value of type ${key} is not supported.`);
+            const noSupportMsg = `Value of type ${key} is not supported.`;
+            this.logger.warn(noSupportMsg);
+            reject(noSupportMsg);
             break;
         }
       } catch (e) {
@@ -336,22 +339,29 @@ export default class Ace implements IDeviceManager, IUVCControls {
       try {
         switch (key.toLowerCase()) {
           case 'pan':
-            this.setPanTiltZoom({ pan: value });
+            await this.setPanTiltZoom({ pan: value });
+            resolve();
             break;
           case 'tilt':
-            this.setPanTiltZoom({ tilt: value });
+            await this.setPanTiltZoom({ tilt: value });
+            resolve();
             break;
           case 'zoom':
-            this.setPanTiltZoom({ zoom: value });
+            await this.setPanTiltZoom({ zoom: value });
+            resolve();
             break;
           case 'brightness':
-            this.setBrightness(value);
+            await this.setBrightness(value);
+            resolve();
             break;
           case 'saturation':
-            this.setSaturation(value);
+            await this.setSaturation(value);
+            resolve();
             break;
           default:
-            this.logger.warn(`Value of type ${key} is not supported.`);
+            const noSupportMsg = `Value of type ${key} is not supported.`;
+            this.logger.warn(noSupportMsg, Ace.name);
+            reject(noSupportMsg);
             break;
         }
       } catch (e) {
@@ -544,13 +554,13 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
 
   setPanTiltZoom(panTiltZoom: Object): Promise<void> {
-    let ptz;
+    let ptz: huddly.PTZ;
     return new Promise(async (resolve, reject) => {
       try {
         ptz = await this._getPanTiltZoom();
       } catch (e) {
         ptz = new huddly.PTZ();
-        this.logger.error(e);
+        this.logger.error('Unable to get PTZ values from camera', e, 'L1 API');
       } finally {
         const paramKeys = Object.keys(panTiltZoom);
         if (paramKeys.includes('pan')) ptz.setPan(panTiltZoom['pan']);

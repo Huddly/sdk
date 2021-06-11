@@ -14,14 +14,6 @@ import { status } from '@grpc/grpc-js';
 chai.should();
 chai.use(sinonChai);
 
-let dummyRange = new huddly.Range();
-dummyRange.setMin(0);
-dummyRange.setMax(1000);
-
-const dummyError = {
-  message: 'Error',
-};
-
 class DummyTransport extends EventEmitter implements IGrpcTransport {
   device: any;
   grpcConnectionDeadlineSeconds: number;
@@ -38,6 +30,17 @@ class DummyTransport extends EventEmitter implements IGrpcTransport {
 }
 
 describe.only('Ace', () => {
+  const statusDummy = new huddly.DeviceStatus();
+  statusDummy.setMessage('status');
+
+  const dummyRange = new huddly.Range();
+  dummyRange.setMin(0);
+  dummyRange.setMax(1000);
+
+  const dummyError = {
+    message: 'Error',
+  };
+
   const saturationDummy = new huddly.Saturation();
   saturationDummy.setSaturation(10);
   saturationDummy.setRange(dummyRange);
@@ -60,26 +63,26 @@ describe.only('Ace', () => {
   const temperaturesDummy = new huddly.Temperatures();
   temperaturesDummy.setTemperaturesList([tempDummy1, tempDummy2]);
 
-  const statusDummy = new huddly.DeviceStatus();
-  statusDummy.setMessage('status');
-
   let device: Ace;
   const dummyTransport = new DummyTransport();
   dummyTransport.grpcClient = {
     getSaturation: (empty: Empty, cb: any) => {
       cb(undefined, saturationDummy);
     },
-    setSaturation: (empty: Empty, cb: any) => {
+    setSaturation: (saturation: huddly.Saturation, cb: any) => {
       cb(undefined, statusDummy);
     },
     getBrightness: (empty: Empty, cb: any) => {
       cb(undefined, brightnessDummy);
     },
-    setBrightness: (empty: Empty, cb: any) => {
+    setBrightness: (brightness: huddly.Brightness, cb: any) => {
       cb(undefined, statusDummy);
     },
     getPTZ: (empty: Empty, cb: any) => {
       cb(undefined, ptzDummy);
+    },
+    setPTZ: (ptz: huddly.PTZ, cb: any) => {
+      cb(undefined, statusDummy);
     },
     getTemperatures: (empty: Empty, cb: any) => {
       cb(undefined, temperaturesDummy);
@@ -89,6 +92,9 @@ describe.only('Ace', () => {
   beforeEach(() => {
     device = new Ace({}, dummyTransport, new DefaultLogger(false), new EventEmitter());
     sinon.spy(device, 'handleError');
+    sinon.stub(device.logger, 'warn');
+    sinon.stub(device.logger, 'error');
+    sinon.stub(device.logger, 'info');
   });
 
   describe('#_getTemperatures', () => {
@@ -181,13 +187,10 @@ describe.only('Ace', () => {
   });
   describe('#setSaturation', () => {
     it('should attempt to set saturation with correct type', async () => {
-      sinon.stub(device.logger, 'info');
       sinon.spy(dummyTransport.grpcClient, 'setSaturation');
       await device.setSaturation(99);
       const arg = dummyTransport.grpcClient.setSaturation.args[0][0];
-      expect(arg).to.be.instanceof(
-        huddly.Saturation
-      );
+      expect(arg).to.be.instanceof(huddly.Saturation);
       expect(arg.getSaturation()).to.equal(99);
       expect(device.logger.info).to.have.been.calledWith(statusDummy);
     });
@@ -240,13 +243,10 @@ describe.only('Ace', () => {
   });
   describe('#setBrightness', () => {
     it('should attempt to set brightness with correct type', async () => {
-      sinon.stub(device.logger, 'info');
       sinon.spy(dummyTransport.grpcClient, 'setBrightness');
       await device.setBrightness(5);
       const arg = dummyTransport.grpcClient.setBrightness.args[0][0];
-      expect(arg).to.be.instanceof(
-        huddly.Brightness
-      );
+      expect(arg).to.be.instanceof(huddly.Brightness);
       expect(arg.getBrightness()).to.equal(5);
       expect(device.logger.info).to.have.been.calledWith(statusDummy);
     });
@@ -298,26 +298,60 @@ describe.only('Ace', () => {
     });
   });
   describe('#setPanTiltZoom', () => {
-    it('should attempt to set ptz values with correct type', async () => {
-      sinon.stub(device.logger, 'info');
-      sinon.spy(dummyTransport.grpcClient, 'setPanTiltZoom');
-      await device.setPanTiltZoom();
-      expect(dummyTransport.grpcClient.setSaturation.args[0][0]).to.be.instanceof(
-        huddly.Saturation
-      );
+    beforeEach(() => {
+      sinon.stub(device, '_getPanTiltZoom').resolves(ptzDummy);
+    });
+    it('should attempt to set ptz values with correct type and log status appropriately', async () => {
+      sinon.spy(dummyTransport.grpcClient, 'setPTZ');
+      await device.setPanTiltZoom({
+        pan: 1,
+        tilt: 2,
+        zoom: 3,
+      });
+      expect(dummyTransport.grpcClient.setPTZ).to.be.called;
+      expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
       expect(device.logger.info).to.have.been.calledWith(statusDummy);
     });
     it('should handle error if there is an issue', async () => {
-      dummyTransport.grpcClient.setSaturation = (empty: Empty, cb: any) => {
+      dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
         cb(dummyError, undefined);
       };
       try {
-        await device.setSaturation(10);
+        await device.setPanTiltZoom({ pan: 1 });
       } catch (err) {
         expect(err).to.equal(dummyError.message);
       } finally {
         expect(device.handleError).to.have.been.calledOnce;
       }
+    });
+    describe('function should handle individual params', () => {
+      beforeEach(() => {
+        dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
+          cb(undefined, dummyTransport);
+        };
+        sinon.spy(dummyTransport.grpcClient, 'setPTZ');
+      });
+      it('should not fail when setting only pan', async () => {
+        await device.setPanTiltZoom({
+          pan: 1,
+        });
+        expect(dummyTransport.grpcClient.setPTZ).to.be.called;
+        expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
+      });
+      it('should not fail when setting only tilt', async () => {
+        await device.setPanTiltZoom({
+          tilt: 1,
+        });
+        expect(dummyTransport.grpcClient.setPTZ).to.be.called;
+        expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
+      });
+      it('should not fail when setting only zoom', async () => {
+        await device.setPanTiltZoom({
+          zoom: 1,
+        });
+        expect(dummyTransport.grpcClient.setPTZ).to.be.called;
+        expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
+      });
     });
   });
   describe('#_getPanTiltZoom', () => {
@@ -383,6 +417,79 @@ describe.only('Ace', () => {
         expect(err).to.equal(dummyError.message);
       } finally {
         expect(device.handleError).to.have.been.calledOnce;
+      }
+    });
+  });
+  describe('#getSupportedSettings', () => {
+    it('should resolve a list of supported  params', async () => {
+      const supported = await device.getSupportedSettings();
+      expect(supported).to.deep.equal(['pan', 'tilt', 'zoom', 'brightness', 'saturation']);
+    });
+  });
+  describe('#getSetting', () => {
+    it('should return a given setting when giving a correct key', async () => {
+      sinon.stub(device, '_getPanTiltZoom').resolves(ptzDummy);
+      sinon.stub(device, '_getBrightness').resolves(brightnessDummy);
+      sinon.stub(device, '_getSaturation').resolves(saturationDummy);
+
+      const pan = await device.getSetting('pan');
+      const tilt = await device.getSetting('tilt');
+      const zoom = await device.getSetting('zoom');
+      const brightness = await device.getSetting('brightness');
+      const saturation = await device.getSetting('saturation');
+
+      expect(pan['value']).to.equal(ptzDummy.getPan());
+      expect(tilt['value']).to.equal(ptzDummy.getTilt());
+      expect(zoom['value']).to.equal(ptzDummy.getZoom());
+      expect(brightness['value']).to.equal(brightnessDummy.getBrightness());
+      expect(saturation['value']).to.equal(saturationDummy.getSaturation());
+    });
+    it("should log a warning if value key isn't supported", async () => {
+      try {
+        await device.getSetting('dummy');
+      } catch (err) {
+        expect(device.logger.warn).to.have.been.calledOnce;
+      }
+    });
+    it('should throw a rejection if something happens', async () => {
+      sinon.stub(device, '_getBrightness').rejects(dummyError);
+      try {
+        await device.getSetting('brightness');
+      } catch (err) {
+        expect(err).to.equal(dummyError.message);
+      }
+    });
+  });
+  describe('#setSetting', () => {
+    it('should attempt to set the given setting', async () => {
+      sinon.stub(device, 'setPanTiltZoom');
+      sinon.stub(device, 'setBrightness');
+      sinon.stub(device, 'setSaturation');
+
+      await device.setSettingValue('pan', 1);
+      expect(device.setPanTiltZoom).to.have.been.calledWith({ pan: 1 });
+      await device.setSettingValue('tilt', 1);
+      expect(device.setPanTiltZoom).to.have.been.calledWith({ tilt: 1 });
+      await device.setSettingValue('zoom', 1);
+      expect(device.setPanTiltZoom).to.have.been.calledWith({ zoom: 1 });
+      await device.setSettingValue('brightness', 1);
+      expect(device.setBrightness).to.have.been.calledWith(1);
+      await device.setSettingValue('saturation', 1);
+      expect(device.setSaturation).to.have.been.calledWith(1);
+    });
+    it("should log a warning if value key isn't supported", async () => {
+      try {
+        await device.setSettingValue('dummy', 1);
+      } catch (err) {
+        expect(device.logger.warn).to.have.been.calledOnce;
+      }
+    });
+    it('should throw a rejection if something happens', async () => {
+      sinon.stub(device, 'setBrightness').rejects('error');
+      try {
+        await device.setSettingValue('brightness', 2);
+      } catch (err) {
+        expect(err.name).to.equal('error');
       }
     });
   });
