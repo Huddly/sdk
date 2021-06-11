@@ -12,6 +12,9 @@ import Api from './components/api';
 import sourceMapSupport from 'source-map-support';
 import ErrorCodes from './error/errorCodes';
 import AllDeviceDiscovery from './components/allDeviceDiscovery';
+import IHuddlyService from './interfaces/IHuddlyService';
+import IServiceOpts from './interfaces/IServiceOpts';
+import ServiceFactory from './components/service/factory';
 
 sourceMapSupport.install();
 
@@ -134,7 +137,6 @@ class HuddlySdk extends EventEmitter {
    */
   _deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI;
 
-
   /**
    * @ignore
    *
@@ -175,7 +177,6 @@ class HuddlySdk extends EventEmitter {
       this.mainDeviceApi = deviceDiscoveryApi as IHuddlyDeviceAPI;
       this._deviceApis = new Array<IHuddlyDeviceAPI>();
       this._deviceApis.push(this.mainDeviceApi);
-
     } else {
       this._mainDeviceApi = deviceApis[0];
       this._deviceApis = deviceApis;
@@ -213,7 +214,7 @@ class HuddlySdk extends EventEmitter {
    */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async d => {
-      if (d && (!this.targetSerial || (this.targetSerial === d.serialNumber)) ) {
+      if (d && (!this.targetSerial || this.targetSerial === d.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
           () =>
             new Promise<void>(async resolve => {
@@ -231,19 +232,25 @@ class HuddlySdk extends EventEmitter {
                 resolve();
               } catch (e) {
                 this.logger.error('Could not get device!', e, HuddlySdk.name);
-                this.emitter.emit(CameraEvents.ERROR, new AttachError('No transport supported', ErrorCodes.NO_TRANSPORT));
+                this.emitter.emit(
+                  CameraEvents.ERROR,
+                  new AttachError('No transport supported', ErrorCodes.NO_TRANSPORT)
+                );
               }
             })
         );
       }
     });
 
-    this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
-      if (d !== undefined  && (!this.targetSerial || (this.targetSerial === d))) {
-        await this.locksmith.executeAsyncFunction(() => new Promise<void>((resolve) => {
-          this.emitter.emit(CameraEvents.DETACH, d);
-          resolve();
-        }));
+    this.deviceDiscovery.on(CameraEvents.DETACH, async d => {
+      if (d !== undefined && (!this.targetSerial || this.targetSerial === d)) {
+        await this.locksmith.executeAsyncFunction(
+          () =>
+            new Promise<void>(resolve => {
+              this.emitter.emit(CameraEvents.DETACH, d);
+              resolve();
+            })
+        );
       }
     });
   }
@@ -324,6 +331,15 @@ class HuddlySdk extends EventEmitter {
    */
   async init(): Promise<any> {
     await this.deviceDiscoveryApi.initialize();
+  }
+
+  static async getService(
+    logger: iLogger = new DefaultLogger(true),
+    serviceOpts: IServiceOpts = {}
+  ): Promise<IHuddlyService> {
+    const service: IHuddlyService = ServiceFactory.getService(logger, serviceOpts);
+    await service.init();
+    return service;
   }
 }
 export { CameraEvents, Api };
