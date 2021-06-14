@@ -333,6 +333,13 @@ class HuddlySdk extends EventEmitter {
     await this.deviceDiscoveryApi.initialize();
   }
 
+  /**
+   * Get a huddly service implementation class instance with communication channels already established and ready
+   * to start sending and receiving information to/from.
+   * @param {iLogger} [logger] - Logger instance
+   * @param {IServiceOpts} [serviceOpts] - Service options for initializing and setting up the service communication
+   * @returns A the new instance of the huddly service implementation after the setup stage has been completed
+   */
   static async getService(
     logger: iLogger = new DefaultLogger(true),
     serviceOpts: IServiceOpts = {}
@@ -342,6 +349,7 @@ class HuddlySdk extends EventEmitter {
     return service;
   }
 }
+
 export { CameraEvents, Api };
 
 export default HuddlySdk;

@@ -8,24 +8,70 @@ import { HuddlyCameraServiceClient } from '@huddly/huddlyproto/lib/proto/win_ser
 import * as grpc from '@grpc/grpc-js';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
+/**
+ * Local enum describing service camera actions used to simplify api calls
+ * towards the service through GRPC
+ */
 export enum ServiceCameraActions {
   ACTIVE = 0,
   DEFAULT = 1,
 }
 
+/**
+ * IHuddlyService class implementation for sdk consumers running on a Windows host machine. All the functionality of this
+ * service is described in the proto file from @huddly/huddlyproto npm package with the name win_service.proto
+ */
 export default class WinIpCameraService implements IHuddlyService {
+  /**
+   * Service options for initializing and seting up the service communication
+   * @type {IServiceOpts}
+   * @memberof WinIpCameraService
+   */
+
   options: IServiceOpts;
+  /**
+   * Service client derived from the proto file
+   * @type {HuddlyCameraServiceClient}
+   * @memberof WinIpCameraService
+   */
   grpcClient: HuddlyCameraServiceClient;
+
+  /**
+   * Logger instance for logging useful information, logs and traces
+   * @type {ILogger}
+   * @memberof WinIpCameraService
+   */
   logger: ILogger;
 
+  /**
+   * @ignore
+   * @type {number}
+   * @memberof WinIpCameraService
+   */
   private readonly GRPC_DEFAULT_CONNECT_TIMEOUT: number = 1; // Seconds
+
+  /**
+   * @ignore
+   * @type {number}
+   * @memberof WinIpCameraService
+   */
   private readonly GRPC_PORT: number = 30051;
 
+  /**
+   * Creates a new instance of WinUpCameraService and initializes the necessary class attributes
+   * @param  {ILogger} logger Logger instance for logging information
+   * @param  {IServiceOpts} opts? Service options for initializing and setting up the service communication
+   */
   constructor(logger: ILogger, opts?: IServiceOpts) {
     this.options = opts;
     this.logger = logger;
   }
 
+  /**
+   * Connect to the service gprc server
+   * @returns A promise that completes when the init is successful
+   * or rejects if not.
+   */
   init(): Promise<void> {
     this.logger.debug('Initializing Windows Ip Camera Service!', WinIpCameraService.name);
     const deadline = new Date();
@@ -54,6 +100,13 @@ export default class WinIpCameraService implements IHuddlyService {
     );
   }
 
+  /**
+   * Helper function for properly formatting the mac address being sent over to the
+   * service grpc server
+   * @param {mac} Mac address in string fromat
+   * @returns Mac address in a format that is satisfactory for the service when sending it
+   * over gprc
+   */
   formatMacAddress(mac: string): string {
     if (mac.indexOf(':') == -1 && mac.indexOf('-') == -1) {
       throw new Error(
@@ -66,6 +119,16 @@ export default class WinIpCameraService implements IHuddlyService {
     return mac;
   }
 
+  /**
+   * Helper function for calling a setter command on the service grpc server. Using the
+   * parameter "action" to determine which specific setter to invoke.
+   * @param  {ServiceCameraActions} action Determine which setter should be called on
+   * the service gprc server
+   * @param  {CameraInfo} camInfo The camera information required to send in as data
+   * when calling the service gprc setter command
+   * @returns A promse that resolves if the setter execution is successful or rejects
+   * otherwise.
+   */
   serviceCameraSetter(action: ServiceCameraActions, camInfo: CameraInfo): Promise<void> {
     const serviceCamInfo: winservice.CameraInfo = new winservice.CameraInfo();
     serviceCamInfo.setMac(this.formatMacAddress(camInfo.mac));
@@ -102,6 +165,14 @@ export default class WinIpCameraService implements IHuddlyService {
     });
   }
 
+  /**
+   * Helper function for calling a getter command on the service grpc server. Using the
+   * parameter "action" to determine which specific getter to invoke.
+   * @param  {ServiceCameraActions} action Determine which getter should be called on
+   * the service grpc seerver
+   * @returns A promise that resolves if the getter execution is successful or rejects
+   * otherwise.
+   */
   serviceCameraGetter(action: ServiceCameraActions): Promise<CameraInfo> {
     const getterActionStr: string = Object.keys(ServiceCameraActions).find(
       key => ServiceCameraActions[key] === action
@@ -133,22 +204,55 @@ export default class WinIpCameraService implements IHuddlyService {
     });
   }
 
+  /**
+   * Set default camera on the huddly windows service. Note: this action is boot persistent.
+   * @param  {CameraInfo} camInfo The camera information required to send in as data
+   * when setting the default camera on the service
+   * @returns A promise that resolves if default camera is set successfully or rejects
+   * otherwise.
+   */
   setDefaultCamera(camInfo: CameraInfo): Promise<void> {
     return this.serviceCameraSetter(ServiceCameraActions.DEFAULT, camInfo);
   }
 
+  /**
+   * Get default camera from the huddly windows service.
+   * @returns A promise which contains data of type `CamerInfo` detailing the information
+   * about the current default camera on the huddly windows service.
+   */
   getDefaultCamera(): Promise<CameraInfo> {
     return this.serviceCameraGetter(ServiceCameraActions.DEFAULT);
   }
 
+  /**
+   * Set active camear on the huddly windows service. Note: this action is not boot persistent.
+   * @param  {CameraInfo} camInfo The camera information reqyuired to send in as data
+   * when setting the activve camera on the service
+   * @returns A promise that resolves if the active camera is set successfully or rejects
+   * otherwise.
+   */
   setActiveCamera(camInfo: CameraInfo): Promise<void> {
     return this.serviceCameraSetter(ServiceCameraActions.ACTIVE, camInfo);
   }
 
+  /**
+   * Get active camera from the huddly windows service.
+   * @returns A promise which contains data of type `CameraInfo` detailing the information
+   * about the current active camera on the huddly windows service.
+   */
   getActiveCamera(): Promise<CameraInfo> {
     return this.serviceCameraGetter(ServiceCameraActions.ACTIVE);
   }
 
+  /**
+   * Set user pan tilt zoom control setting on the huddly windows service. This feature
+   * makes sure you allow or block custom user ptz to the camera comming from third party
+   * applications such as Windows Camera App, Zoom, Meet etc.
+   * @param  {boolean} isAllowed A boolean parameter specifying whether the service should
+   * allow or block incoming user ptz actions from third part apps.
+   * @returns A promise that resolves if the setting was changed successfully or rejects
+   * otherwise.
+   */
   setUserPtz(isAllowed: boolean): Promise<void> {
     const allowed = new winservice.UserPtz();
     allowed.setEnabled(isAllowed);
@@ -168,6 +272,11 @@ export default class WinIpCameraService implements IHuddlyService {
     });
   }
 
+  /**
+   * Check if the user ptz is allowed on the huddly windows service.
+   * @returns A promise which after completion it contains information if
+   * user ptz is allowed or not. Rejects if retreiving the setting fails.
+   */
   isUserPtzAllowed(): Promise<boolean> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getUserPTZ(
@@ -187,17 +296,27 @@ export default class WinIpCameraService implements IHuddlyService {
       );
     });
   }
-
-  // Alias of #setUserPtz
+  /**
+   * Update the user ptz setting on the huddly windows service to allow user ptz.
+   * @returns Promise
+   */
   allowUserPtz(): Promise<void> {
     return this.setUserPtz(true);
   }
 
-  // Alias of #setUserPtz
+  /**
+   * Update the user ptz setting on the huddly windows service to block user ptz.
+   * @returns Promise
+   */
   blokUserPtz(): Promise<void> {
     return this.setUserPtz(false);
   }
 
+  /**
+   * Close grpc connection with the service gprc server.
+   * @returns A promise that resolves if closing the connection is successful or rejects
+   * otherwise.
+   */
   close(): Promise<void> {
     if (this.grpcClient) {
       this.grpcClient.close();
