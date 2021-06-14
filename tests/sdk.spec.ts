@@ -10,6 +10,7 @@ import IUVCControlAPI from '../src/interfaces/iUVCControlApi';
 import ITransport from '../src/interfaces/iTransport';
 import IDeviceDiscovery from '../src/interfaces/iDeviceDiscovery';
 import DeviceFactory from '../src/components/device/factory';
+import ServiceFactory from '../src/components/service/factory';
 
 chai.should();
 chai.use(sinonChai);
@@ -227,6 +228,25 @@ describe('HuddlySDK', () => {
       const sdk = new HuddlySdk(nodeusbDeviceApi, [nodeusbDeviceApi], {});
       await sdk.init();
       expect(nodeusbDeviceApi.initialize.callCount).to.equals(1);
+    });
+  });
+
+  describe('#getService', () => {
+    let serviceFactoryMock;
+    const serviceStub = {
+      init: sinon.stub(),
+    };
+    beforeEach(() => {
+      serviceFactoryMock = sinon.stub(ServiceFactory, 'getService').returns(serviceStub);
+    });
+    afterEach(() => {
+      serviceFactoryMock.restore();
+    });
+    it('should use service factory to create and initialize a huddly service supported for curent os', async () => {
+      serviceStub.init.resolves();
+      const myService = await HuddlySdk.getService();
+      expect(myService).to.deep.equal(serviceStub);
+      expect(serviceStub.init.called).to.equal(true);
     });
   });
 });
