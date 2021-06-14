@@ -1,6 +1,8 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
+import { PassThrough } from 'stream';
+import { TextEncoder } from 'util';
 
 import IGrpcTransport from './../../../src/interfaces/IGrpcTransport';
 import { HuddlyServiceClient } from '@huddly/huddlyproto/lib/proto/huddly_grpc_pb';
@@ -9,7 +11,6 @@ import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import Ace, { minMax } from './../../../src/components/device/ace';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-import { status } from '@grpc/grpc-js';
 
 chai.should();
 chai.use(sinonChai);
@@ -63,6 +64,9 @@ describe('Ace', () => {
   const temperaturesDummy = new huddly.Temperatures();
   temperaturesDummy.setTemperaturesList([tempDummy1, tempDummy2]);
 
+  let mockedStream;
+  mockedStream = new PassThrough();
+
   let device: Ace;
   const dummyTransport = new DummyTransport();
   dummyTransport.grpcClient = {
@@ -86,6 +90,10 @@ describe('Ace', () => {
     },
     getTemperatures: (empty: Empty, cb: any) => {
       cb(undefined, temperaturesDummy);
+    },
+    getLogFiles: () => mockedStream,
+    eraseLogFile: (logFile: huddly.LogFile, cb: any) => {
+      cb(undefined, statusDummy);
     },
   };
 
@@ -316,6 +324,7 @@ describe('Ace', () => {
       });
       expect(dummyTransport.grpcClient.setPTZ).to.be.called;
       expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
+      expect(Logger.info).to.have.been.calledOnce;
     });
     it('should handle error if there is an issue', async () => {
       dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
@@ -495,6 +504,94 @@ describe('Ace', () => {
         await device.setSettingValue('brightness', 2);
       } catch (err) {
         expect(err.name).to.equal('error');
+      }
+    });
+  });
+  describe('#getLogFiles', () => {
+    let resolver;
+    const appLog = new huddly.LogFile();
+    appLog.setFile(huddly.LogFiles.APP);
+
+    it('should attempt to retrieve the log of the given type', async () => {
+      sinon.spy(dummyTransport.grpcClient, 'getLogFiles');
+      device.getLogFiles(appLog).then(log => {
+        expect(device.grpcClient.getLogFiles).to.have.been.calledWith(appLog);
+        expect(log).to.equal('test');
+        resolver();
+      });
+
+      const mockedChunk = new huddly.Chunk();
+      const enc = new TextEncoder();
+      mockedChunk.setContent(enc.encode('test'));
+      mockedStream.emit('data', mockedChunk);
+      mockedStream.end();
+
+      await new Promise((res, rej) => (resolver = res));
+    });
+    it('should reject with error message if error occurs', async () => {
+      device.getLogFiles(appLog).catch(error => {
+        expect(error).to.equal('error');
+        resolver();
+      });
+      mockedStream.emit('error', 'error');
+      await new Promise((res, rej) => (resolver = res));
+    });
+  });
+  describe('#getErrorLog', () => {
+    it('should try to get the app log', async () => {
+      const stub = sinon.stub(device, 'getLogFiles').resolves('log');
+      const log = await device.getErrorLog();
+      const args = stub.firstCall.args[0];
+      expect(args.getFile()).to.equal(huddly.LogFiles.APP);
+      expect(log).to.equal('log');
+    });
+    it('should handle error and reject with error message if something happens', async () => {
+      sinon.stub(device, 'getLogFiles').rejects(dummyError);
+      try {
+        await device.getErrorLog();
+      } catch (err) {
+        expect(err).to.equal(dummyError.message);
+      } finally {
+        expect(device.handleError).to.have.been.calledOnce;
+      }
+    });
+  });
+  describe('#eraseLogFile', () => {
+    const logFile = new huddly.LogFile();
+    logFile.setFile(huddly.LogFiles.APP);
+    it('should attempt to erease log', async () => {
+      sinon.spy(dummyTransport.grpcClient, 'eraseLogFile');
+      await device.eraseLogFile(logFile);
+      const arg = dummyTransport.grpcClient.eraseLogFile.args[0][0];
+      expect(arg).to.be.instanceof(huddly.LogFile);
+      expect(arg.getFile()).to.equal(huddly.LogFiles.APP);
+    });
+    it('should reject error if there is an issue', async () => {
+      dummyTransport.grpcClient.eraseLogFile = (empty: Empty, cb: any) => {
+        cb(dummyError, undefined);
+      };
+      try {
+        await device.eraseLogFile(logFile);
+      } catch (err) {
+        expect(err.message).to.equal(dummyError.message);
+      }
+    });
+  });
+  describe('#eraseErrorLog', () => {
+    it('should try to get the app log', async () => {
+      const stub = sinon.stub(device, 'eraseLogFile').resolves('');
+      await device.eraseErrorLog();
+      const args = stub.firstCall.args[0];
+      expect(args.getFile()).to.equal(huddly.LogFiles.APP);
+    });
+    it('should handle error and reject with error message if something happens', async () => {
+      sinon.stub(device, 'eraseLogFile').rejects(dummyError);
+      try {
+        await device.eraseErrorLog();
+      } catch (err) {
+        expect(err).to.equal(dummyError.message);
+      } finally {
+        expect(device.handleError).to.have.been.calledOnce;
       }
     });
   });
