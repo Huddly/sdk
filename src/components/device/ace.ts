@@ -1,4 +1,6 @@
 import { EventEmitter } from 'events';
+import { TextDecoder } from 'util';
+
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import IAutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
 import IDetector from '../../interfaces/IDetector';
@@ -21,6 +23,7 @@ import * as huddly from '@huddly/huddlyproto/lib/proto/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as grpc from '@grpc/grpc-js';
 
+// TODO: Not just log status. Instead getMessage() etc.
 interface ErrorInterface {
   message: String;
   stack?: String;
@@ -68,11 +71,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
     return this.transport.grpcClient;
   }
 
-  constructor(
-    wsdDevice: any,
-    transport: IGrpcTransport,
-    cameraDiscoveryEmitter: EventEmitter
-  ) {
+  constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
     this.wsdDevice = wsdDevice;
     this.transport = transport;
     this.locksmith = new Locksmith();
@@ -92,10 +91,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
       return new Promise<void>((resolve, reject) =>
         this.devModeGrpcClient.waitForReady(deadline, error => {
           if (error) {
-            Logger.error(
-              `Connection failed with GPRC server on ACE. Reason: ${error}`,
-              Ace.name
-            );
+            Logger.error(`Connection failed with GPRC server on ACE. Reason: ${error}`, Ace.name);
             reject(error);
           } else {
             Logger.debug(`Connection established`, Ace.name);
@@ -117,13 +113,13 @@ export default class Ace implements IDeviceManager, IUVCControls {
     return this.transport.close();
   }
 
-  handleError(msg: String, error: ErrorInterface, reject: any) {
+  handleError(msg: string, error: ErrorInterface, reject: any) {
     if (!error) {
-      Logger.error('Unknown error', '', Ace.name);
-      reject('Unknown error');
+      Logger.error(msg, '', Ace.name);
+      reject(msg);
     }
     if (error.message) {
-      Logger.error(msg.toString(), error.message, Ace.name);
+      Logger.error(msg, error.message, Ace.name);
     }
     if (error.stack) Logger.warn(error.stack.toString(), Ace.name);
 
@@ -162,12 +158,56 @@ export default class Ace implements IDeviceManager, IUVCControls {
     });
   }
 
-  getErrorLog(timeout: number): Promise<any> {
-    throw new Error('Method not implemented.');
+  getErrorLog(timeout?: number): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      const logFile = new huddly.LogFile();
+      logFile.setFile(huddly.LogFiles.APP);
+      try {
+        resolve(await this.getLogFiles(logFile));
+      } catch (err) {
+        this.handleError('Unable to get error log', err, reject);
+      }
+    });
   }
 
-  eraseErrorLog(timeout: number): Promise<void> {
-    throw new Error('Method not implemented.');
+  getLogFiles(logFile: huddly.LogFile): Promise<any> {
+    return new Promise((resolve, reject) => {
+      logFile.setKeepLog(true);
+      let data = '';
+
+      const stream = this.grpcClient.getLogFiles(logFile);
+      stream.on('data', (comment: huddly.Chunk) => {
+        const string = new TextDecoder().decode(comment.getContent_asU8());
+        data += string;
+      });
+      stream.on('end', () => resolve(data));
+      stream.on('error', reject);
+    });
+  }
+
+  eraseErrorLog(timeout?: number): Promise<void> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const logFile = new huddly.LogFile();
+        logFile.setFile(huddly.LogFiles.APP);
+        resolve(await this.eraseLogFile(logFile));
+      } catch (err) {
+        this.handleError(`Unable to erase log file`, err, reject);
+      }
+    });
+  }
+
+  eraseLogFile(logFile: huddly.LogFile): Promise<void> {
+    return new Promise((resolve, reject) => {
+      this.grpcClient.eraseLogFile(logFile, (err, status: huddly.DeviceStatus) => {
+        if (err != undefined) {
+          reject(err);
+          return;
+        }
+        Logger.info(status.toString());
+        resolve();
+      });
+    });
   }
 
   reboot(mode?: string): Promise<void> {
@@ -504,14 +544,10 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   _getPanTiltZoom(): Promise<huddly.PTZ> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getPTZ(new Empty(), (err, _ptz: huddly.PTZ) => {
+      this.grpcClient.getPTZ(new Empty(), (err, ptz: huddly.PTZ) => {
         if (err != undefined) {
           reject(err);
         }
-        const ptz = new huddly.PTZ();
-        ptz.setPan(_ptz.getPan());
-        ptz.setTilt(_ptz.getTilt());
-        ptz.setZoom(_ptz.getZoom());
         resolve(ptz);
       });
     });
@@ -579,6 +615,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
         ptz = await this._getPanTiltZoom();
       } catch (e) {
         ptz = new huddly.PTZ();
+        ptz.setTrans(0);
         Logger.error('Unable to get PTZ values from camera', e, 'L1 API');
       } finally {
         const paramKeys = Object.keys(panTiltZoom);
@@ -610,8 +647,5 @@ export default class Ace implements IDeviceManager, IUVCControls {
       return otherAce.wsdDevice.equals(this.wsdDevice);
     }
     return false;
-  }
-  setUVCParam(key, val): void {
-    this.setSettingValue(key, val);
   }
 }
