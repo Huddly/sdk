@@ -1,30 +1,50 @@
+import fs from 'fs';
+
 /**
- * Huddly Logger class. Use HUDDLY_LOG_LEVEL env variable
- * to configure the log level on the SDK.
+ * Huddly Logger class.
  *
- * Use the following
- * values:
+ * Use HUDDLY_LOG_LEVEL env variable to configure the log level on the SDK. The following values apply
  * - DEBUG - log all gRPC messages
  * - INFO - log INFO and ERROR message
  * - ERROR - log only errors (default)
  * - NONE - won't log any
+ *
+ * Use HUDDLY_LOG_CHANNEL env variable to configure where the logs will be directed to. The following
+ * values apply:
+ * - CONSOLE - Write logs to system console
+ * - FILE - Write logs to a dedicated file provided by HUDDLY_LOG_FILE
+ *
+ * USE HUDDLY_LOG_FILE env variable to specify the file where the logs will be directed to.
+ *
+ * @example
+ * // Print all logs and redirect them to a file
+ * export HUDDLY_LOG_LEVEL=DEBUG && HUDDLY_LOG_CHANNEL=FILE && HUDDLY_LOG_FILE=/users/johndoe/huddlysdk.log
+ * node sdkexample.js
+ *
+ * // Print INFO && ERROR logs and redirect them to console out
+ * export HUDDLY_LOG_LEVEL=INFO
+ * node sdkexample.js
+ *
+ * // Disable all log output
+ * export HUDDLY_LOG_LEVEL=NONE
+ * node sdkexample.js
  */
 export default class Logger {
   static warn(message: string, component: string = 'Generic Component'): void {
     if (['DEBUG'].indexOf(process.env.HUDDLY_LOG_LEVEL) > -1) {
-      console.warn(this.formatLogMsg('WARN', component, message));
+      this.redirectLogMsg(this.formatLogMsg('WARN', component, message));
     }
   }
 
   static info(message: string, component: string = 'Generic Component'): void {
-    if (['INFO'].indexOf(process.env.HUDDLY_LOG_LEVEL) > -1) {
-      console.log(this.formatLogMsg('INFO', component, message));
+    if (['INFO', 'DEBUG'].indexOf(process.env.HUDDLY_LOG_LEVEL) > -1) {
+      this.redirectLogMsg(this.formatLogMsg('INFO', component, message));
     }
   }
 
   static debug(message: string, component: string = 'Generic Component'): void {
     if (['DEBUG'].indexOf(process.env.HUDDLY_LOG_LEVEL) > -1) {
-      console.log(this.formatLogMsg('DEBUG', component, message));
+      this.redirectLogMsg(this.formatLogMsg('DEBUG', component, message));
     }
   }
 
