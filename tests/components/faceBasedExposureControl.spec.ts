@@ -2,12 +2,7 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import FaceBasedExposureControl from '../../src/components/faceBasedExposureControl';
 import IDeviceManager from '../../src/interfaces/iDeviceManager';
-import DefaultLogger from '../../src/utilitis/logger';
 import DeviceManagerMock from '../mocks/devicemanager.mock';
-
-const createDummyLogger = (): DefaultLogger => {
-  return sinon.createStubInstance(DefaultLogger);
-};
 
 describe('FaceBasedExposureControl', () => {
   let faceBasedExposureControl: FaceBasedExposureControl;
@@ -15,7 +10,7 @@ describe('FaceBasedExposureControl', () => {
 
   beforeEach(() => {
     deviceManager = new DeviceManagerMock();
-    faceBasedExposureControl = new FaceBasedExposureControl(deviceManager, createDummyLogger());
+    faceBasedExposureControl = new FaceBasedExposureControl(deviceManager);
   });
 
   describe('autozoom enable/disable', () => {

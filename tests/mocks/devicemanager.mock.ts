@@ -34,7 +34,6 @@ export default class DeviceManagerMock implements IDeviceManager {
     transport: this.transport,
   };
   uvcControlInterface: any;
-  logger: any;
   initialize(): Promise<void> { return Promise.resolve(); }
   closeConnection(): Promise<void> { return Promise.resolve(); }
   getInfo(): Promise<object> { return Promise.resolve({ version: '99.99.99' }); }

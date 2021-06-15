@@ -6,7 +6,6 @@ import nock from 'nock';
 import Api from './../../src/components/api';
 import Locksmith from './../../src/components/locksmith';
 import ITransport from './../../src/interfaces/iTransport';
-import DefaultLogger from './../../src/utilitis/logger';
 import ReleaseChannel from './../../src/interfaces/ReleaseChannelEnum';
 
 chai.should();
@@ -35,9 +34,7 @@ class NodeUsbTransport implements ITransport {
 const createDummyTransport = () => {
   return sinon.createStubInstance(NodeUsbTransport);
 };
-const createDummyLogger = (): DefaultLogger => {
-  return sinon.createStubInstance(DefaultLogger);
-};
+
 describe('API', () => {
   let transport;
   let api;
@@ -47,7 +44,7 @@ describe('API', () => {
     transport.write.returns(Promise.resolve());
     transport.subscribe.returns(Promise.resolve());
     transport.unsubscribe.returns(Promise.resolve());
-    api = new Api(transport, createDummyLogger(), new Locksmith());
+    api = new Api(transport, new Locksmith());
   });
   describe('#sendAndReceiveMessagePack', () => {
     it('should encode message, perform sendAndRecieve and decode received message', async () => {

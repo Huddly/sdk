@@ -6,7 +6,6 @@ import Logger from './../../../src/utilitis/logger';
 import WinIpCameraService, { ServiceCameraActions } from './../../../src/components/service/winIpCameraService';
 import { HuddlyCameraServiceClient } from '@huddly/huddlyproto/lib/proto/win_service_grpc_pb';
 import * as winservice from '@huddly/huddlyproto/lib/proto/win_service_pb';
-import iLogger from './../../../src/interfaces/iLogger';
 
 
 chai.should();
@@ -16,8 +15,8 @@ const stubLogger = () => {
   return sinon.createStubInstance(Logger);
 };
 
-const createServiceInstance = (dummyLogger: iLogger): WinIpCameraService => {
-  const service = new WinIpCameraService(dummyLogger, {});
+const createServiceInstance = (): WinIpCameraService => {
+  const service = new WinIpCameraService({});
   const grpcClientMock = sinon.createStubInstance(HuddlyCameraServiceClient, {
     setActiveCamera: sinon.stub(),
     setDefaultCamera: sinon.stub(),
@@ -32,11 +31,9 @@ const createServiceInstance = (dummyLogger: iLogger): WinIpCameraService => {
 
 describe('WinIpCameraService', () => {
   let service: WinIpCameraService;
-  let dummyLogger;
 
   beforeEach(() => {
-    dummyLogger = stubLogger();
-    service = createServiceInstance(dummyLogger);
+    service = createServiceInstance();
   });
 
   describe('#init', () => {

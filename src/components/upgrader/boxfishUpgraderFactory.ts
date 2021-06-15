@@ -4,6 +4,7 @@ import IDeviceManager from './../../interfaces/iDeviceManager';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import HPKUpgrader from './../upgrader/hpkUpgrader';
+import Logger from './../../utilitis/logger';
 
 import BoxfishPkg from './boxfishpkg';
 import BoxfishHpk from './boxfishhpk';
@@ -15,15 +16,14 @@ export const HPK_SUPPORT_VERSION = process.env.HPK_SUPPORT_VERSION || '1.2.1-0';
 export async function createBoxfishUpgrader(
   manager: IDeviceManager,
   sdkDeviceDiscoveryEmitter: EventEmitter,
-  logger: any
 ): Promise<IDeviceUpgrader> {
   const info = await manager.getInfo();
   if (semver.gte(info.version, HPK_SUPPORT_VERSION)) {
-    logger.warn('Initializing HPKUpgrader', 'Boxfish Upgrader Factory');
-    return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
+    Logger.warn('Initializing HPKUpgrader', 'Boxfish Upgrader Factory');
+    return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter);
   }
-  logger.warn(`Camera version is ${info.version} which is not supported by HPK Upgrader. Using BoxfishUpgrader as fallback.`, 'Boxfish Upgrader Factory');
-  return new BoxfishUpgrader(manager, sdkDeviceDiscoveryEmitter, logger);
+  Logger.warn(`Camera version is ${info.version} which is not supported by HPK Upgrader. Using BoxfishUpgrader as fallback.`, 'Boxfish Upgrader Factory');
+  return new BoxfishUpgrader(manager, sdkDeviceDiscoveryEmitter);
 }
 
 export function createBoxfishUpgraderFile(file: Buffer) {

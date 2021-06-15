@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 
 import ITransport from './../../../src/interfaces/iTransport';
 import HuddlyGo from './../../../src/components/device/huddlygo';
-import DefaultLogger from './../../../src/utilitis/logger';
+import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 
 chai.should();
@@ -58,7 +58,6 @@ describe('HuddlyGO', () => {
       sinon.createStubInstance(DummyTransport),
       {},
       {},
-      new DefaultLogger(false),
       new EventEmitter(),
     );
 

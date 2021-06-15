@@ -8,6 +8,7 @@
  */
 export default interface DeviceApiOpts {
   /**
+   * @deprecated
    * Logger class used for logging varius levels of messages
    * like: warn, info or error!
    *
