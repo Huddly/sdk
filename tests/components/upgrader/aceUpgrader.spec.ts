@@ -8,7 +8,6 @@ import fs from 'fs';
 import AceUpgrader, { UpgradeSteps } from './../../../src/components/upgrader/aceUpgrader';
 import Ace from './../../../src/components/device/ace';
 import Boxfish from './../../../src/components/device/boxfish';
-import DefaultLogger from './../../../src/utilitis/logger';
 import { CameraEvents } from './../../../src';
 import AceUpgraderError from './../../../src/error/AceUpgraderError';
 
@@ -36,8 +35,6 @@ const createDummyManager = () => {
   return dummyManager;
 };
 
-
-const dummyLogger = sinon.createStubInstance(DefaultLogger);
 const dummyEmitter = new EventEmitter();
 
 describe('AceUpgrader', () => {
@@ -45,7 +42,7 @@ describe('AceUpgrader', () => {
   let dummyManager;
   beforeEach(() => {
     dummyManager = createDummyManager();
-    upgrader = new AceUpgrader(dummyManager, dummyEmitter, dummyLogger);
+    upgrader = new AceUpgrader(dummyManager, dummyEmitter);
   });
 
   describe('getters', () => {
@@ -55,7 +52,7 @@ describe('AceUpgrader', () => {
         expect(manager).to.be.an.instanceof(Ace);
       });
       it('should throw error if instance is not Ace', () => {
-        upgrader = new AceUpgrader(sinon.createStubInstance(Boxfish), dummyEmitter, dummyLogger);
+        upgrader = new AceUpgrader(sinon.createStubInstance(Boxfish), dummyEmitter);
         const badFn = () => { upgrader.aceManager; };
         expect(badFn).to.throw('Ace upgrader initialized with wrong camera manager! Manager is not instance of Ace but => Boxfish');
       });

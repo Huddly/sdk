@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 
 import Api from './../api';
-import DefaultLogger from './../../utilitis/logger';
 import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
 import IDetector from '../../interfaces/IDetector';
@@ -14,7 +13,6 @@ export default class DartFish extends Boxfish {
   transport: IUsbTransport;
   _api: Api;
   uvcControlInterface: any;
-  logger: DefaultLogger;
   locksmith: Locksmith;
   discoveryEmitter: EventEmitter;
   productName: string = 'Huddly Canvas';
@@ -23,9 +21,8 @@ export default class DartFish extends Boxfish {
     uvcCameraInstance: any,
     transport: IUsbTransport,
     uvcControlInterface: any,
-    logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
-    super(uvcCameraInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
+    super(uvcCameraInstance, transport, uvcControlInterface, cameraDiscoveryEmitter);
   }
 
   async ensureAppMode() {

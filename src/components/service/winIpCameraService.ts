@@ -1,7 +1,7 @@
 import IHuddlyService from './../../interfaces/IHuddlyService';
 import IServiceOpts from './../../interfaces/IServiceOpts';
-import ILogger from './../../interfaces/iLogger';
 import { CameraInfo } from './../../interfaces/IWinServiceModels';
+import Logger from './../../../src/utilitis/logger';
 
 import * as winservice from '@huddly/huddlyproto/lib/proto/win_service_pb';
 import { HuddlyCameraServiceClient } from '@huddly/huddlyproto/lib/proto/win_service_grpc_pb';
@@ -37,13 +37,6 @@ export default class WinIpCameraService implements IHuddlyService {
   grpcClient: HuddlyCameraServiceClient;
 
   /**
-   * Logger instance for logging useful information, logs and traces
-   * @type {ILogger}
-   * @memberof WinIpCameraService
-   */
-  logger: ILogger;
-
-  /**
    * @ignore
    * @type {number}
    * @memberof WinIpCameraService
@@ -59,12 +52,10 @@ export default class WinIpCameraService implements IHuddlyService {
 
   /**
    * Creates a new instance of WinUpCameraService and initializes the necessary class attributes
-   * @param  {ILogger} logger Logger instance for logging information
    * @param  {IServiceOpts} opts? Service options for initializing and setting up the service communication
    */
-  constructor(logger: ILogger, opts?: IServiceOpts) {
+  constructor(opts?: IServiceOpts) {
     this.options = opts;
-    this.logger = logger;
   }
 
   /**
@@ -73,7 +64,7 @@ export default class WinIpCameraService implements IHuddlyService {
    * or rejects if not.
    */
   init(): Promise<void> {
-    this.logger.debug('Initializing Windows Ip Camera Service!', WinIpCameraService.name);
+    Logger.debug('Initializing Windows Ip Camera Service!', WinIpCameraService.name);
     const deadline = new Date();
     deadline.setSeconds(
       deadline.getSeconds() + (this.options.connectionDeadline || this.GRPC_DEFAULT_CONNECT_TIMEOUT)
@@ -86,14 +77,14 @@ export default class WinIpCameraService implements IHuddlyService {
     return new Promise<void>((resolve, reject) =>
       this.grpcClient.waitForReady(deadline, error => {
         if (error) {
-          this.logger.error(
+          Logger.error(
             `Connection failed with GPRC server on ACE!`,
             error,
             WinIpCameraService.name
           );
           reject(error);
         } else {
-          this.logger.debug(`Connection established`, WinIpCameraService.name);
+          Logger.debug(`Connection established`, WinIpCameraService.name);
           resolve();
         }
       })
@@ -141,7 +132,7 @@ export default class WinIpCameraService implements IHuddlyService {
     return new Promise((resolve, reject) => {
       const setterCallback = (err: grpc.ServiceError) => {
         if (err) {
-          this.logger.error(
+          Logger.error(
             `Unable to set ${setterActionStr} camera on service. Error: ${err.details}`,
             err.stack,
             WinIpCameraService.name
@@ -180,7 +171,7 @@ export default class WinIpCameraService implements IHuddlyService {
     return new Promise((resolve, reject) => {
       const getterCallback = (err: grpc.ServiceError, cameraInfo: winservice.CameraInfo) => {
         if (err) {
-          this.logger.error(
+          Logger.error(
             `Unable to get ${getterActionStr} camera from service. Error: ${err.details}`,
             err.stack,
             WinIpCameraService.name
@@ -259,7 +250,7 @@ export default class WinIpCameraService implements IHuddlyService {
     return new Promise((resolve, reject) => {
       this.grpcClient.setUserPTZ(allowed, (err: grpc.ServiceError) => {
         if (err) {
-          this.logger.error(
+          Logger.error(
             `Unable to set user ptz on service. Error: ${err.details}`,
             err.stack,
             WinIpCameraService.name
@@ -283,7 +274,7 @@ export default class WinIpCameraService implements IHuddlyService {
         new Empty(),
         (err: grpc.ServiceError, isAllowed: winservice.UserPtz) => {
           if (err) {
-            this.logger.error(
+            Logger.error(
               `Unable to get information whether user ptz is allowed or not on the service. Error: ${err.details}`,
               err.stack,
               WinIpCameraService.name

@@ -10,7 +10,7 @@ import ReleaseChannel from '../../interfaces/ReleaseChannelEnum';
 import IUVCControls from './../../interfaces/iUVCControlApi';
 import Api from '../api';
 import diagnosticsMessage from '../diagnosticsMessage';
-import DefaultLogger from './../../utilitis/logger';
+import Logger from './../../utilitis/logger';
 import Locksmith from './../locksmith';
 import IDeviceManager from './../../interfaces/iDeviceManager';
 import ICnnControl from '../../interfaces/ICnnControl';
@@ -44,7 +44,6 @@ export const minMax = {
 
 export default class Ace implements IDeviceManager, IUVCControls {
   transport: IGrpcTransport;
-  logger: any;
   locksmith: Locksmith;
   productName: string = 'Huddly L1';
   discoveryEmitter: EventEmitter;
@@ -72,19 +71,17 @@ export default class Ace implements IDeviceManager, IUVCControls {
   constructor(
     wsdDevice: any,
     transport: IGrpcTransport,
-    logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter
   ) {
     this.wsdDevice = wsdDevice;
     this.transport = transport;
-    this.logger = logger;
     this.locksmith = new Locksmith();
     this.discoveryEmitter = cameraDiscoveryEmitter;
   }
 
   async initialize(developmentMode: boolean = false): Promise<void> {
     if (developmentMode) {
-      this.logger.debug('Initializing ACE in development mode!', Ace.name);
+      Logger.debug('Initializing ACE in development mode!', Ace.name);
       const deadline = new Date();
       deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
       this.devModeGrpcClient = new HuddlyServiceClient(
@@ -95,23 +92,23 @@ export default class Ace implements IDeviceManager, IUVCControls {
       return new Promise<void>((resolve, reject) =>
         this.devModeGrpcClient.waitForReady(deadline, error => {
           if (error) {
-            this.logger.error(
+            Logger.error(
               `Connection failed with GPRC server on ACE. Reason: ${error}`,
               Ace.name
             );
             reject(error);
           } else {
-            this.logger.debug(`Connection established`, Ace.name);
+            Logger.debug(`Connection established`, Ace.name);
             // Override transport service client
             this.transport.overrideGrpcClient(this.devModeGrpcClient);
-            this.logger.debug('Ace development initialization completed!', Ace.name);
+            Logger.debug('Ace development initialization completed!', Ace.name);
             resolve();
           }
         })
       );
     }
 
-    this.logger.debug('Ace will run in production mode', Ace.name);
+    Logger.debug('Ace will run in production mode', Ace.name);
     return Promise.resolve();
   }
 
@@ -122,13 +119,13 @@ export default class Ace implements IDeviceManager, IUVCControls {
 
   handleError(msg: String, error: ErrorInterface, reject: any) {
     if (!error) {
-      this.logger.error('Unknown error', '', Ace.name);
+      Logger.error('Unknown error', '', Ace.name);
       reject('Unknown error');
     }
     if (error.message) {
-      this.logger.error(msg, error.message, Ace.name);
+      Logger.error(msg.toString(), error.message, Ace.name);
     }
-    if (error.stack) this.logger.warn(error.stack, Ace.name);
+    if (error.stack) Logger.warn(error.stack.toString(), Ace.name);
 
     reject(error.message ? error.message : 'Uknown error');
   }
@@ -141,8 +138,8 @@ export default class Ace implements IDeviceManager, IUVCControls {
       // Get devive version
       this.grpcClient.getDeviceVersion(new Empty(), (err, deviceVersion: huddly.DeviceVersion) => {
         if (err != undefined) {
-          this.logger.error('Unable to get device version!', err.message, Ace.name);
-          this.logger.warn(err.stack, Ace.name);
+          Logger.error('Unable to get device version!', err.message, Ace.name);
+          Logger.warn(err.stack, Ace.name);
           reject(err.message);
           return;
         }
@@ -157,8 +154,8 @@ export default class Ace implements IDeviceManager, IUVCControls {
             resolve(infoData);
           })
           .catch(uptimeErr => {
-            this.logger.error('Unable to get device uptime!', uptimeErr.message, Ace.name);
-            this.logger.warn(uptimeErr.stack, Ace.name);
+            Logger.error('Unable to get device uptime!', uptimeErr.message, Ace.name);
+            Logger.warn(uptimeErr.stack, Ace.name);
             reject(uptimeErr.message);
           });
       });
@@ -180,7 +177,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
           this.handleError('Unable to reset camera', err, reject);
           return;
         }
-        this.logger.info(status);
+        Logger.info(status.toString());
         resolve();
       });
     });
@@ -195,7 +192,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
 
   getUpgrader(): Promise<IDeviceUpgrader> {
-    return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter, this.logger));
+    return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter));
   }
 
   upgrade(opts: IUpgradeOpts): Promise<any> {
@@ -347,7 +344,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
             break;
           default:
             const noSupportMsg = `Value of type ${key} is not supported.`;
-            this.logger.warn(noSupportMsg);
+            Logger.warn(noSupportMsg);
             reject(noSupportMsg);
             break;
         }
@@ -383,7 +380,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
             break;
           default:
             const noSupportMsg = `Value of type ${key} is not supported.`;
-            this.logger.warn(noSupportMsg, Ace.name);
+            Logger.warn(noSupportMsg, Ace.name);
             reject(noSupportMsg);
             break;
         }
@@ -452,7 +449,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
           if (err != undefined) {
             this.handleError('Unable to set saturation', err, reject);
           }
-          this.logger.info(deviceStatus);
+          Logger.info(deviceStatus.toString());
           resolve();
         }
       );
@@ -495,7 +492,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
         if (err != undefined) {
           this.handleError('Unable to set brightness', err, reject);
         }
-        this.logger.info(deviceStatus);
+        Logger.info(deviceStatus.toString());
         resolve();
       });
     });
@@ -582,7 +579,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
         ptz = await this._getPanTiltZoom();
       } catch (e) {
         ptz = new huddly.PTZ();
-        this.logger.error('Unable to get PTZ values from camera', e, 'L1 API');
+        Logger.error('Unable to get PTZ values from camera', e, 'L1 API');
       } finally {
         const paramKeys = Object.keys(panTiltZoom);
         if (paramKeys.includes('pan')) ptz.setPan(panTiltZoom['pan']);
@@ -593,7 +590,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
             this.handleError('Unable to set PTZ values!', err, reject);
             return;
           }
-          this.logger.info(status);
+          Logger.info(status.toString());
         });
         resolve();
       }

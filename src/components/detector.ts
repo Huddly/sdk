@@ -7,6 +7,7 @@ import CameraEvents from './../utilitis/events';
 import semver from 'semver';
 import IUsbTransport from './../interfaces/IUsbTransport';
 import TypeHelper from './../utilitis/typehelper';
+import Logger from './../utilitis/logger';
 
 const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
 const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
@@ -21,7 +22,6 @@ const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
  */
 export default class Detector extends EventEmitter implements IDetector {
   _deviceManager: IDeviceManager;
-  _logger: any;
   _detectionHandler: any;
   _framingHandler: any;
   _frame: any;
@@ -40,10 +40,9 @@ export default class Detector extends EventEmitter implements IDetector {
    * @param {DetectorOpts} options options detector.
    * @memberof Detector
    */
-  constructor(manager: IDeviceManager, logger: any, options?: DetectorOpts) {
+  constructor(manager: IDeviceManager, options?: DetectorOpts) {
     super();
     this._deviceManager = manager;
-    this._logger = logger;
     this._options = {};
     this.validateOptions(options);
     this.setMaxListeners(50);
@@ -74,7 +73,7 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async init(): Promise<any> {
     if (this._detectorInitialized) {
-      this._logger.warn('Detector already initialized', 'IQ Detector');
+      Logger.warn('Detector already initialized', 'IQ Detector');
       return;
     }
 
@@ -82,11 +81,11 @@ export default class Detector extends EventEmitter implements IDetector {
     try {
       this._usePeopleCount = semver.gt(cameraInfo.version, LATEST_WITHOUT_PEOPLE_COUNT);
     } catch (err) {
-      this._logger.warn('Unable to test camera version with semver.');
+      Logger.warn('Unable to test camera version with semver.');
       this._usePeopleCount = false;
     }
 
-    this._logger.debug('Initializing detector class', 'IQ Detector');
+    Logger.debug('Initializing detector class', 'IQ Detector');
     if (!this._detectionHandler) {
       this._detectionHandler = detectionBuffer => {
         const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
@@ -105,10 +104,10 @@ export default class Detector extends EventEmitter implements IDetector {
 
     if (!this._options.DOWS) {
       if (this._usePeopleCount) {
-        this._logger.debug('Sending people_count start command', 'IQ Detector');
+        Logger.debug('Sending people_count start command', 'IQ Detector');
         await this.transport.write('people_count/start', Api.encode({ STREAMING_ONLY: false }));
       } else {
-        this._logger.debug('Sending detector start command', 'IQ Detector');
+        Logger.debug('Sending detector start command', 'IQ Detector');
         await await this.transport.write('detector/start');
       }
       await this.setupDetectorSubscriptions({
@@ -117,7 +116,7 @@ export default class Detector extends EventEmitter implements IDetector {
       });
       this._previewStreamStarted = true;
     } else {
-      this._logger.debug(
+      Logger.debug(
         'Setting up detection event listeners. \n\n** NB ** Host application must stream main in order to get detection events',
         'IQ Detector'
       );
@@ -129,7 +128,7 @@ export default class Detector extends EventEmitter implements IDetector {
       await this.setupDetectorSubscriptions();
     }
     this._detectorInitialized = true;
-    this._logger.debug('Detector class initialized and ready', 'IQ Detector');
+    Logger.debug('Detector class initialized and ready', 'IQ Detector');
   }
 
   async updateOpts(options: DetectorOpts): Promise<any> {
@@ -141,7 +140,7 @@ export default class Detector extends EventEmitter implements IDetector {
 
   async destroy(): Promise<void> {
     if (!this._detectorInitialized) {
-      this._logger.warn('Detector already destroyed', 'IQ Detector');
+      Logger.warn('Detector already destroyed', 'IQ Detector');
       return;
     }
 
@@ -150,7 +149,7 @@ export default class Detector extends EventEmitter implements IDetector {
     }
 
     if (!this._options.DOWS && this._previewStreamStarted) {
-      this._logger.debug(
+      Logger.debug(
         'IQ Detector teardown by stopping detection generation on previewstream, unsubscribing to events and unregistering listeners',
         'IQ Detector'
       );
@@ -165,11 +164,11 @@ export default class Detector extends EventEmitter implements IDetector {
       });
     } else {
       if (this._usePeopleCount) {
-        this._logger.debug(
+        Logger.debug(
           'IQ Detector teardown by  unsubscribing to events and unregistering listeners'
         );
       }
-      this._logger.debug(
+      Logger.debug(
         `IQ Detector teardown by ${
           this._usePeopleCount ? 'stopping detection generation on previewstream,' : ''
         } unsubscribing to events and unregistering listeners`
@@ -212,7 +211,7 @@ export default class Detector extends EventEmitter implements IDetector {
     } catch (e) {
       await this.transport.unsubscribe('autozoom/predictions');
       await this.transport.unsubscribe('autozoom/framing');
-      this._logger.error('Something went wrong getting predictions!', e, 'IQ Detector');
+      Logger.error('Something went wrong getting predictions!', e, 'IQ Detector');
       this._subscriptionsSetup = false;
     }
   }

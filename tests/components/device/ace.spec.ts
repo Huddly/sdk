@@ -5,7 +5,7 @@ import sinonChai from 'sinon-chai';
 import IGrpcTransport from './../../../src/interfaces/IGrpcTransport';
 import { HuddlyServiceClient } from '@huddly/huddlyproto/lib/proto/huddly_grpc_pb';
 import * as huddly from '@huddly/huddlyproto/lib/proto/huddly_pb';
-import DefaultLogger from './../../../src/utilitis/logger';
+import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import Ace, { minMax } from './../../../src/components/device/ace';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
@@ -89,12 +89,20 @@ describe('Ace', () => {
     },
   };
 
+  let warnStub, errorStub, infoStub;
+
   beforeEach(() => {
-    device = new Ace({}, dummyTransport, new DefaultLogger(false), new EventEmitter());
+    device = new Ace({}, dummyTransport, new EventEmitter());
     sinon.spy(device, 'handleError');
-    sinon.stub(device.logger, 'warn');
-    sinon.stub(device.logger, 'error');
-    sinon.stub(device.logger, 'info');
+    warnStub = sinon.stub(Logger, 'warn');
+    errorStub = sinon.stub(Logger, 'error');
+    infoStub = sinon.stub(Logger, 'info');
+  });
+
+  afterEach(() => {
+    warnStub.restore();
+    errorStub.restore();
+    infoStub.restore();
   });
 
   describe('#_getTemperatures', () => {
@@ -192,7 +200,6 @@ describe('Ace', () => {
       const arg = dummyTransport.grpcClient.setSaturation.args[0][0];
       expect(arg).to.be.instanceof(huddly.Saturation);
       expect(arg.getSaturation()).to.equal(99);
-      expect(device.logger.info).to.have.been.calledWith(statusDummy);
     });
     it('should handle error if there is an issue', async () => {
       dummyTransport.grpcClient.setSaturation = (empty: Empty, cb: any) => {
@@ -248,7 +255,6 @@ describe('Ace', () => {
       const arg = dummyTransport.grpcClient.setBrightness.args[0][0];
       expect(arg).to.be.instanceof(huddly.Brightness);
       expect(arg.getBrightness()).to.equal(5);
-      expect(device.logger.info).to.have.been.calledWith(statusDummy);
     });
     it('should handle error if there is an issue', async () => {
       dummyTransport.grpcClient.setSaturation = (empty: Empty, cb: any) => {
@@ -310,7 +316,6 @@ describe('Ace', () => {
       });
       expect(dummyTransport.grpcClient.setPTZ).to.be.called;
       expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
-      expect(device.logger.info).to.have.been.calledWith(statusDummy);
     });
     it('should handle error if there is an issue', async () => {
       dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
@@ -448,7 +453,7 @@ describe('Ace', () => {
       try {
         await device.getSetting('dummy');
       } catch (err) {
-        expect(device.logger.warn).to.have.been.calledOnce;
+        expect(Logger.warn).to.have.been.calledOnce;
       }
     });
     it('should throw a rejection if something happens', async () => {
@@ -481,7 +486,7 @@ describe('Ace', () => {
       try {
         await device.setSettingValue('dummy', 1);
       } catch (err) {
-        expect(device.logger.warn).to.have.been.calledOnce;
+        expect(Logger.warn).to.have.been.calledOnce;
       }
     });
     it('should throw a rejection if something happens', async () => {

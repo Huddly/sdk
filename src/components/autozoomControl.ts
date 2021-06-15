@@ -2,15 +2,14 @@ import IAutozoomControl from '../interfaces/IAutozoomControl';
 import AutozoomControlOpts from '../interfaces/IAutozoomControlOpts';
 import IDeviceManager from '../interfaces/iDeviceManager';
 import Api from './api';
+import Logger from './../utilitis/logger';
 
 export default class AutozoomControl implements IAutozoomControl {
   _deviceManager: IDeviceManager;
-  _logger: any;
   _options: AutozoomControlOpts;
 
-  constructor(manager: IDeviceManager, logger: any, options?: AutozoomControlOpts) {
+  constructor(manager: IDeviceManager, options?: AutozoomControlOpts) {
     this._deviceManager = manager;
-    this._logger = logger;
     this._options = options || {
       shouldAutoFrame: true,
     };
@@ -23,7 +22,7 @@ export default class AutozoomControl implements IAutozoomControl {
    */
   async init(): Promise<any> {
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
-      this._logger.debug(
+      Logger.debug(
         `Initializing autozoom with framing config option AUTO_PTZ: ${this._options.shouldAutoFrame}`,
         'Autozoom Control'
       );
@@ -52,7 +51,7 @@ export default class AutozoomControl implements IAutozoomControl {
    * @memberof AutozoomControl
    */
   async enable(idleTimeMs: number = 2000): Promise<void> {
-    this._logger.debug('Enabling autozoom persistently', 'Autozoom Control');
+    Logger.debug('Enabling autozoom persistently', 'Autozoom Control');
 
     await this._deviceManager.api.sendAndReceive(
       Buffer.alloc(0),
@@ -85,7 +84,7 @@ export default class AutozoomControl implements IAutozoomControl {
     });
 
     await promise;
-    this._logger.debug('Autozoom enabled persistently', 'Autozoom Control');
+    Logger.debug('Autozoom enabled persistently', 'Autozoom Control');
   }
 
   /**
@@ -94,7 +93,7 @@ export default class AutozoomControl implements IAutozoomControl {
    * @memberof AutozoomControl
    */
   async disable(idleTimeMs: number = 2000): Promise<void> {
-    this._logger.debug('Disabling autozoom persistently', 'Autozoom Control');
+    Logger.debug('Disabling autozoom persistently', 'Autozoom Control');
 
     await this._deviceManager.api.sendAndReceive(
       Buffer.alloc(0),
@@ -127,7 +126,7 @@ export default class AutozoomControl implements IAutozoomControl {
     });
 
     await promise;
-    this._logger.debug('Autozoom disabled persistently', 'Autozoom Control');
+    Logger.debug('Autozoom disabled persistently', 'Autozoom Control');
   }
 
   /**
@@ -148,7 +147,7 @@ export default class AutozoomControl implements IAutozoomControl {
   async start(): Promise<void> {
     if (!(await this.isRunning())) {
       // Only start if not already started
-      this._logger.debug('Starting Autozoom', 'Autozoom Control');
+      Logger.debug('Starting Autozoom', 'Autozoom Control');
       await this._deviceManager.api.sendAndReceive(
         Buffer.alloc(0),
         {
@@ -168,7 +167,7 @@ export default class AutozoomControl implements IAutozoomControl {
   async stop(): Promise<void> {
     if (await this.isRunning()) {
       // Only stop if az is running
-      this._logger.debug('Stopping Autozoom', 'Autozoom Control');
+      Logger.debug('Stopping Autozoom', 'Autozoom Control');
       await this._deviceManager.api.sendAndReceive(
         Buffer.alloc(0),
         {
@@ -201,7 +200,7 @@ export default class AutozoomControl implements IAutozoomControl {
   async uploadBlob(blobBuffer: Buffer): Promise<void> {
     const status = await this._deviceManager.api.getAutozoomStatus();
     if (!status['network-configured']) {
-      this._logger.debug('Uploading cnn blob', 'Autozoom Control');
+      Logger.debug('Uploading cnn blob', 'Autozoom Control');
       await this._deviceManager.api.sendAndReceive(
         blobBuffer,
         {
@@ -210,9 +209,9 @@ export default class AutozoomControl implements IAutozoomControl {
         },
         60000
       );
-      this._logger.debug('Cnn blob has been uploaded. Unlocking the stream!', 'Autozoom Control');
+      Logger.debug('Cnn blob has been uploaded. Unlocking the stream!', 'Autozoom Control');
     } else {
-      this._logger.debug('Cnn blob already configured on the camera', 'Autozoom Control');
+      Logger.debug('Cnn blob already configured on the camera', 'Autozoom Control');
     }
   }
 
@@ -225,7 +224,7 @@ export default class AutozoomControl implements IAutozoomControl {
    * @memberof AutozoomControl
    */
   async setDetectorConfig(config: JSON): Promise<void> {
-    this._logger.debug('Sending detector config!', 'Autozoom Control');
+    Logger.debug('Sending detector config!', 'Autozoom Control');
     await this._deviceManager.api.sendAndReceive(
       Api.encode(config),
       {
@@ -234,7 +233,7 @@ export default class AutozoomControl implements IAutozoomControl {
       },
       6000
     );
-    this._logger.debug('Detector config sent!', 'Autozoom Control');
+    Logger.debug('Detector config sent!', 'Autozoom Control');
   }
 
   /**
@@ -247,7 +246,7 @@ export default class AutozoomControl implements IAutozoomControl {
    * @memberof AutozoomControl
    */
   async uploadFramingConfig(config: any): Promise<void> {
-    this._logger.debug('Uploading new framing config', 'Autozoom Control');
+    Logger.debug('Uploading new framing config', 'Autozoom Control');
     await this._deviceManager.api.sendAndReceive(
       Api.encode(config),
       {
@@ -256,6 +255,6 @@ export default class AutozoomControl implements IAutozoomControl {
       },
       60000
     );
-    this._logger.debug('New framing config uploaded on the camera.', 'Autozoom Control');
+    Logger.debug('New framing config uploaded on the camera.', 'Autozoom Control');
   }
 }
