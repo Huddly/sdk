@@ -43,16 +43,6 @@ export default interface IDeviceManager {
   uvcControlInterface: any;
 
   /**
-   * Utility class used to log messages (used for debugging purposes). Required
-   * class/object methods are "info", "warn" and "error" with each method
-   * having a string parameter that describes the log message!
-   *
-   * @type {any}
-   * @memberof IDeviceManager
-   */
-  logger: any;
-
-  /**
    * Class initialization function.
    *
    * @returns {Promise<void>}

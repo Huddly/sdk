@@ -1,13 +1,12 @@
 import ICnnControl from '../interfaces/ICnnControl';
 import IDeviceManager from '../interfaces/iDeviceManager';
+import Logger from './../utilitis/logger';
 
 export default class FaseBasedExposureControl implements ICnnControl {
   _deviceManager: IDeviceManager;
-  _logger: any;
 
-  constructor(manager: IDeviceManager, logger: any) {
+  constructor(manager: IDeviceManager) {
     this._deviceManager = manager;
-    this._logger = logger;
   }
 
   /**
@@ -20,7 +19,7 @@ export default class FaseBasedExposureControl implements ICnnControl {
       const r = await this._deviceManager.api.transport.write('face-based-exposure/enable');
       return r;
     } catch (e) {
-      this._logger.error('Could enable face based exposure', e.message);
+      Logger.error('Could enable face based exposure', e.message);
       throw new Error('Could not enable face based exposure');
     }
   }
@@ -35,7 +34,7 @@ export default class FaseBasedExposureControl implements ICnnControl {
       const r = await this._deviceManager.api.transport.write('face-based-exposure/disable');
       return r;
     } catch (e) {
-      this._logger.error('Could disable face based exposure', e.message);
+      Logger.error('Could disable face based exposure', e.message);
       throw new Error('Could not disable face based exposure');
     }
   }
@@ -57,7 +56,7 @@ export default class FaseBasedExposureControl implements ICnnControl {
       );
       return message['fbe-enabled'];
     } catch (e) {
-      this._logger.error('Could disable face based exposure', e.message);
+      Logger.error('Could disable face based exposure', e.message);
       throw new Error('Could not get face based exposure status');
     }
   }

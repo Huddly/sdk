@@ -11,7 +11,6 @@ import IUVCControlAPI from './../../../src/interfaces/iUVCControlApi';
 import { EventEmitter } from 'events';
 import ITransport from './../../../src/interfaces/iTransport';
 import IDeviceDiscovery from './../../../src/interfaces/iDeviceDiscovery';
-import Logger from './../../../src/utilitis/logger';
 
 chai.should();
 chai.use(sinonChai);
@@ -33,10 +32,6 @@ class DummyDeviceApi implements IHuddlyDeviceAPI {
   initialize(): void { }
 }
 
-const stubLogger = () => {
-  return sinon.createStubInstance(Logger);
-};
-
 const createNewDummyDeviceApis = () => {
   return [
     sinon.createStubInstance(DummyDeviceApi),
@@ -46,17 +41,15 @@ const createNewDummyDeviceApis = () => {
 
 describe('DeviceFactory', () => {
   let dummyDeviceApis;
-  let dummyLogger;
   beforeEach(() => {
     dummyDeviceApis = createNewDummyDeviceApis();
-    dummyLogger = stubLogger();
   });
   describe('#getTransportImplementation', () => {
     describe('is supported preferred device-api', () => {
       it('should return the transport of the preferred device api', async () => {
         const preferredDeviceApi = dummyDeviceApis[0];
         preferredDeviceApi.getValidatedTransport.resolves({});
-        await DeviceFactory.getTransportImplementation(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+        await DeviceFactory.getTransportImplementation(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
         expect(preferredDeviceApi.getValidatedTransport.callCount).to.be.equal(1);
         expect(preferredDeviceApi.getValidatedTransport.firstCall.args[0]).to.deep.equal(dummyDevice);
       });
@@ -65,7 +58,7 @@ describe('DeviceFactory', () => {
       it('should return the transport of the secondary device api', async () => {
         dummyDeviceApis[0].getValidatedTransport.resolves(undefined);
         dummyDeviceApis[1].getValidatedTransport.resolves({});
-        await DeviceFactory.getTransportImplementation(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+        await DeviceFactory.getTransportImplementation(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
         expect(dummyDeviceApis[0].getValidatedTransport.callCount).to.be.equal(2);
         expect(dummyDeviceApis[1].getValidatedTransport.callCount).to.be.equal(1);
         expect(dummyDeviceApis[1].getValidatedTransport.firstCall.args[0]).to.deep.equal(dummyDevice);
@@ -74,7 +67,7 @@ describe('DeviceFactory', () => {
         dummyDeviceApis[0].getValidatedTransport.returns(Promise.resolve(false));
         dummyDeviceApis[1].getValidatedTransport.returns(Promise.resolve(false));
         try {
-          await DeviceFactory.getTransportImplementation(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+          await DeviceFactory.getTransportImplementation(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
           expect(true).to.equal(false);
         } catch (e) {
           expect(e.message).to.equal('Unable to find appropriate transport implementation for device: {"serial":"123456","productName":"Huddly IQ"}');
@@ -88,7 +81,7 @@ describe('DeviceFactory', () => {
       it('should return the transport of the preferred device api', async () => {
         const preferredDeviceApi = dummyDeviceApis[0];
         preferredDeviceApi.isUVCControlsSupported.returns(Promise.resolve(true));
-        await DeviceFactory.getUVCControlInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+        await DeviceFactory.getUVCControlInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
         expect(preferredDeviceApi.getUVCControlAPIForDevice.callCount).to.be.equal(1);
         expect(preferredDeviceApi.getUVCControlAPIForDevice.firstCall.args[0]).to.deep.equal(dummyDevice);
       });
@@ -97,7 +90,7 @@ describe('DeviceFactory', () => {
       it('should return the transport of the secondary device api', async () => {
         dummyDeviceApis[0].isUVCControlsSupported.returns(Promise.resolve(false));
         dummyDeviceApis[1].isUVCControlsSupported.returns(Promise.resolve(true));
-        await DeviceFactory.getUVCControlInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+        await DeviceFactory.getUVCControlInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
         expect(dummyDeviceApis[0].getUVCControlAPIForDevice.callCount).to.be.equal(0);
         expect(dummyDeviceApis[1].getUVCControlAPIForDevice.callCount).to.be.equal(1);
         expect(dummyDeviceApis[1].getUVCControlAPIForDevice.firstCall.args[0]).to.deep.equal(dummyDevice);
@@ -105,7 +98,7 @@ describe('DeviceFactory', () => {
       it('should return undefined when none of the device-apis support uvc controls', async () => {
         dummyDeviceApis[0].isUVCControlsSupported.returns(Promise.resolve(false));
         dummyDeviceApis[1].isUVCControlsSupported.returns(Promise.resolve(false));
-        const uvcImplementation = await DeviceFactory.getUVCControlInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+        const uvcImplementation = await DeviceFactory.getUVCControlInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
         expect(uvcImplementation).to.be.undefined;
       });
     });
@@ -116,7 +109,7 @@ describe('DeviceFactory', () => {
       it('should return the transport of the preferred device api', async () => {
         const preferredDeviceApi = dummyDeviceApis[0];
         preferredDeviceApi.isHIDSupported.returns(Promise.resolve(true));
-        await DeviceFactory.getHIDInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+        await DeviceFactory.getHIDInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
         expect(preferredDeviceApi.getHIDAPIForDevice.callCount).to.be.equal(1);
         expect(preferredDeviceApi.getHIDAPIForDevice.firstCall.args[0]).to.deep.equal(dummyDevice);
       });
@@ -125,7 +118,7 @@ describe('DeviceFactory', () => {
       it('should return the transport of the secondary device api', async () => {
         dummyDeviceApis[0].isHIDSupported.returns(Promise.resolve(false));
         dummyDeviceApis[1].isHIDSupported.returns(Promise.resolve(true));
-        await DeviceFactory.getHIDInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+        await DeviceFactory.getHIDInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
         expect(dummyDeviceApis[0].getHIDAPIForDevice.callCount).to.be.equal(0);
         expect(dummyDeviceApis[1].getHIDAPIForDevice.callCount).to.be.equal(1);
         expect(dummyDeviceApis[1].getHIDAPIForDevice.firstCall.args[0]).to.deep.equal(dummyDevice);
@@ -134,7 +127,7 @@ describe('DeviceFactory', () => {
         dummyDeviceApis[0].isHIDSupported.returns(Promise.resolve(false));
         dummyDeviceApis[1].isHIDSupported.returns(Promise.resolve(false));
         try {
-          await DeviceFactory.getHIDInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis, dummyLogger);
+          await DeviceFactory.getHIDInterface(dummyDevice, dummyDeviceApis[0], dummyDeviceApis);
           expect(true).to.equal(false);
         } catch (e) {
           expect(e.message).to.equal('Unable to find appropriate HID interface for device: {"serial":"123456","productName":"Huddly IQ"}');
@@ -171,7 +164,6 @@ describe('DeviceFactory', () => {
         getUvcCtrl.returns(Promise.resolve());
         await DeviceFactory.getDevice(
           1231232,
-          undefined,
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyNonHuddlyDevice,
@@ -190,7 +182,6 @@ describe('DeviceFactory', () => {
         };
         const deviceManager = await DeviceFactory.getDevice(
           dummyIQDevice.deviceDescriptor.idProduct,
-          undefined,
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyIQDevice,
@@ -208,7 +199,6 @@ describe('DeviceFactory', () => {
         };
         const deviceManager = await DeviceFactory.getDevice(
           dummyDwarffishDevice.deviceDescriptor.idProduct,
-          undefined,
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyDwarffishDevice,
@@ -225,7 +215,6 @@ describe('DeviceFactory', () => {
         };
         const deviceManager = await DeviceFactory.getDevice(
           dummyClownfishDevice.deviceDescriptor.idProduct,
-          undefined,
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyClownfishDevice,
@@ -243,7 +232,6 @@ describe('DeviceFactory', () => {
         };
         const deviceManager = await DeviceFactory.getDevice(
           dummyGODevice.deviceDescriptor.idProduct,
-          undefined,
           dummyDeviceApis[0],
           dummyDeviceApis,
           dummyGODevice,
