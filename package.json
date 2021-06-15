@@ -99,7 +99,7 @@
   },
   "dependencies": {
     "@grpc/grpc-js": "^1.3.2",
-    "@huddly/huddlyproto": "0.0.1",
+    "@huddly/huddlyproto": "0.0.3",
     "cpio-stream": "^1.4.1",
     "google-protobuf": "^3.17.3",
     "jszip": "^3.2.2",
