@@ -9,7 +9,6 @@ When you create an instance of the SDK, you provide some options on the construc
 ```javascript
 const usbApi = new DeviceApiUSB();
 const opts = {
-  logger: new DefaultLogger(),
   //emitter: new EventEmitter(), <- this is an optional parameter
 };
 const sdk = new SDK(usbApi, [usbApi], opts);

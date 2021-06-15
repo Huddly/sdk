@@ -1,7 +1,7 @@
 import * as msgpack from 'msgpack-lite';
 import http from 'http';
 
-import DefaultLogger from './../utilitis/logger';
+import Logger from './../utilitis/logger';
 import Locksmith from './locksmith';
 import InterpolationParams from './../interfaces/InterpolationParams';
 import ReleaseChannel from './../interfaces/ReleaseChannelEnum';
@@ -9,15 +9,13 @@ import IUsbTransport from './../interfaces/IUsbTransport';
 
 export default class Api {
   transport: IUsbTransport;
-  logger: DefaultLogger;
   locksmith: Locksmith;
   setProdInfoMsgPackSupport: boolean = true;
   getErrorLogMsgPackSupport: boolean = true;
 
-  constructor(transport: IUsbTransport, logger: DefaultLogger, locksmith: Locksmith) {
+  constructor(transport: IUsbTransport, locksmith: Locksmith) {
     this.transport = transport;
     this.transport.initEventLoop();
-    this.logger = logger;
     this.locksmith = locksmith;
   }
 
@@ -116,14 +114,14 @@ export default class Api {
       subscribedMessages.forEach(msg => {
         this.transport.removeAllListeners(msg);
         this.transport.setEventLoopReadSpeed();
-        this.logger.debug('Clearing out all file transfer listeners', 'SDK API');
+        Logger.debug('Clearing out all file transfer listeners', 'SDK API');
       });
     };
 
     return new Promise((resolve, reject) => {
       const timeoutTimer = setTimeout(() => {
         clearListeners();
-        this.logger.error(
+        Logger.error(
           `Timing out since file transfer did not resolve after ${timeout} ms`,
           '',
           'SDK API'
@@ -131,7 +129,7 @@ export default class Api {
         reject(new Error('Timeout'));
       }, timeout);
 
-      this.logger.debug('Setting up async_file_transfer/* listeners', 'SDK API');
+      Logger.debug('Setting up async_file_transfer/* listeners', 'SDK API');
       if (subscribedMessages.indexOf('async_file_transfer/data') >= 0) {
         this.transport.on('async_file_transfer/data', async msgPacket => {
           this.transport.setEventLoopReadSpeed(1);
@@ -169,7 +167,7 @@ export default class Api {
         this.transport.on('async_file_transfer/timeout', async buffer => {
           clearListeners();
           clearTimeout(timeoutTimer);
-          this.logger.debug(
+          Logger.debug(
             'Received a async_file_transfer/timeout message from camera. Timing out!',
             'SDK API'
           );
@@ -247,7 +245,7 @@ export default class Api {
       return info;
     } catch (e) {
       this.setProdInfoMsgPackSupport = false;
-      this.logger.debug(
+      Logger.debug(
         'Prodinfo MessagePack not supported on this device. Using legacy procedure!',
         'SDK API'
       );
@@ -318,7 +316,7 @@ export default class Api {
       return Promise.resolve();
     } catch (e) {
       this.setProdInfoMsgPackSupport = false;
-      this.logger.debug(
+      Logger.debug(
         'SetProdinfo MessagePack not supported on this device. Using legacy procedure!',
         'SDK API'
       );
@@ -386,9 +384,9 @@ export default class Api {
   }
 
   async getErrorLogLegacy(timeout: number): Promise<any> {
-    this.logger.debug('Start retrieving the error log', 'SDK API');
+    Logger.debug('Start retrieving the error log', 'SDK API');
     const res = await this.locksmith.executeAsyncFunction(async () => {
-      this.logger.debug('Clearing transport pipes', 'SDK API');
+      Logger.debug('Clearing transport pipes', 'SDK API');
       await this.transport.clear();
       const subscribeMsgs = [
         'async_file_transfer/data',
@@ -405,7 +403,7 @@ export default class Api {
                 resolve(result.toString('ascii'));
               })
               .catch(reason => reject(reason));
-            this.logger.debug('Sending "error_logger/read" message', 'SDK API');
+            Logger.debug('Sending "error_logger/read" message', 'SDK API');
             this.transport.write('error_logger/read');
           });
         },
@@ -432,17 +430,17 @@ export default class Api {
       this.getErrorLogMsgPackSupport = true;
       if (result.error !== 0) {
         const msg = `Camera returned error on reading error log: ${result.error} ${result.string}`;
-        this.logger.warn(msg, 'SDK API');
+        Logger.warn(msg, 'SDK API');
         throw new Error(msg);
       }
       return result.log;
     } catch (e) {
       if (retry > 0) {
-        this.logger.debug('Retrying getErrorLog', 'SDK API');
+        Logger.debug('Retrying getErrorLog', 'SDK API');
         return this.getErrorLog(timeout, retry - 1, allowLegacy);
       } else if (allowLegacy) {
         this.getErrorLogMsgPackSupport = false;
-        this.logger.debug(
+        Logger.debug(
           'ErrorLog MessagePack not supported on this device. Using legacy procedure!',
           'SDK API'
         );
@@ -454,7 +452,7 @@ export default class Api {
   }
 
   async eraseErrorLog(timeout: number): Promise<void> {
-    this.logger.debug('Start erasing the log', 'SDK API');
+    Logger.debug('Start erasing the log', 'SDK API');
     await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
       await this.withSubscribe(
@@ -464,7 +462,7 @@ export default class Api {
             this.transport
               .receiveMessage('error_logger/erase_done', timeout)
               .then(reply => {
-                this.logger.debug('Done erasing error log', 'SDK API');
+                Logger.debug('Done erasing error log', 'SDK API');
                 resolve();
               })
               .catch(e => reject(e));

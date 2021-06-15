@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 
 import Api from '../api';
-import DefaultLogger from './../../utilitis/logger';
+import Logger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
 import IUsbTransport from './../../interfaces/IUsbTransport';
 import IDeviceManager from './../../interfaces/iDeviceManager';
@@ -40,7 +40,6 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   api: Api;
   uvcControlInterface: any;
   hidApi: any;
-  logger: DefaultLogger;
   locksmith: Locksmith;
   softwareVersion: any;
   discoveryEmitter: EventEmitter;
@@ -50,20 +49,18 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     transport: IUsbTransport,
     uvcControlInterface: any,
     hidAPI: any,
-    logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
     super(uvcCameraInstance, uvcControlInterface);
 
     this.transport = transport;
     this.uvcControlInterface = uvcControlInterface;
     this.hidApi = hidAPI;
-    this.logger = logger;
     this.locksmith = new Locksmith();
     this.discoveryEmitter = cameraDiscoveryEmitter;
   }
 
   async initialize(): Promise<void> {
-    this.api = new Api(this.transport, this.logger, this.locksmith);
+    this.api = new Api(this.transport, this.locksmith);
     this.softwareVersion = await this.getSoftwareVersion();
   }
 
@@ -82,13 +79,13 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
         return softwareVersion;
       } catch (e) {
         err = e;
-        this.logger.error(
+        Logger.error(
           `Failed parsing/reading the software version on GO! Retry Attempts left: ${fetchAttemts - retryAttempts}`,
           e,
           'HuddlyGO API');
       }
     } while (fetchAttemts < retryAttempts);
-    this.logger.error('Unable to retrieve software version from camera!', err, 'HuddlyGO API');
+    Logger.error('Unable to retrieve software version from camera!', err, 'HuddlyGO API');
     throw new Error('Failed to retrieve software version from camera');
   }
 
@@ -262,7 +259,7 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   }
 
   async getUpgrader(): Promise<IDeviceUpgrader> {
-    return new HuddlyGoUpgrader(this, this.discoveryEmitter, this.hidApi, this.logger);
+    return new HuddlyGoUpgrader(this, this.discoveryEmitter, this.hidApi);
   }
 
   async upgrade(opts: UpgradeOpts): Promise<any> {
@@ -274,43 +271,43 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
         resolve();
       });
       upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
-        this.logger.error('Upgrade Failed', reason, 'HuddlyGO API');
+        Logger.error('Upgrade Failed', reason, 'HuddlyGO API');
         reject(reason);
       });
       upgrader.once(CameraEvents.TIMEOUT, (reason) => {
-        this.logger.error('Upgrader returned a timeout event', reason, 'HuddlyGO API');
+        Logger.error('Upgrader returned a timeout event', reason, 'HuddlyGO API');
         reject(reason);
       });
     });
   }
 
   getAutozoomControl(): IAutozoomControl {
-    this.logger.warn('Attempting to call method [getAutozoomControl] on HuddlyGO', 'HuddlyGO API');
+    Logger.warn('Attempting to call method [getAutozoomControl] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Autozoom is not supported on Huddly GO cameras!');
   }
 
   getFaceBasedExposureControl(): ICnnControl {
-    this.logger.warn('Attempting to call method [getFaceBasedExposureControl] on HuddlyGO', 'HuddlyGO API');
+    Logger.warn('Attempting to call method [getFaceBasedExposureControl] on HuddlyGO', 'HuddlyGO API');
     throw new Error('FaceBased  is not supported on Huddly GO cameras!');
   }
 
   getDetector(): IDetector {
-    this.logger.warn('Attempting to call method [getDetector] on HuddlyGO', 'HuddlyGO API');
+    Logger.warn('Attempting to call method [getDetector] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Detections are not supported on Huddly GO camera!');
   }
 
   getState(): Promise<any> {
-    this.logger.warn('Attempting to call method [getState] on HuddlyGO', 'HuddlyGO API');
+    Logger.warn('Attempting to call method [getState] on HuddlyGO', 'HuddlyGO API');
     throw new Error('State is not supported on Huddly GO camera');
   }
 
   async setInterpolationParams(params: InterpolationParams): Promise<any> {
-    this.logger.warn('Attempting to call method [setInterpolationParams] on HuddlyGO', 'HuddlyGO API');
+    Logger.warn('Attempting to call method [setInterpolationParams] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Interpolation parameters are not supported on Huddly GO camera');
   }
 
   async getInterpolationParams(): Promise<InterpolationParams> {
-    this.logger.warn('Attempting to call method [getInterpolationParams] on HuddlyGO', 'HuddlyGO API');
+    Logger.warn('Attempting to call method [getInterpolationParams] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Interpolation parameters are not supported on Huddly GO camera');
   }
 

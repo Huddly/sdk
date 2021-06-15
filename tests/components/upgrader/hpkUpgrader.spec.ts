@@ -7,7 +7,6 @@ import fs from 'fs';
 import path from 'path';
 
 import HPKUpgrader from './../../../src/components/upgrader/hpkUpgrader';
-import DefaultLogger from './../../../src/utilitis/logger';
 import Boxfish from './../../../src/components/device/boxfish';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
@@ -33,7 +32,7 @@ describe('HPKUpgrader', () => {
     dummyCameraManager.transport = new EventEmitter();
     dummyCameraManager.transport.close = () => {};
     dummyCameraManager.transport.stopEventLoop = () => {};
-    hpkUpgrader = new HPKUpgrader(dummyCameraManager, dummyEmitter, new DefaultLogger(false));
+    hpkUpgrader = new HPKUpgrader(dummyCameraManager, dummyEmitter);
   });
 
   describe('#init', () => {
