@@ -14,6 +14,7 @@ import AllDeviceDiscovery from './components/allDeviceDiscovery';
 import IHuddlyService from './interfaces/IHuddlyService';
 import IServiceOpts from './interfaces/IServiceOpts';
 import ServiceFactory from './components/service/factory';
+import ILogger from './interfaces/ILogger';
 
 sourceMapSupport.install();
 
@@ -32,13 +33,12 @@ class AttachError extends Error {
  */
 interface SDKOpts {
   /**
-   * @deprecated
    * Logger instance used to log messages from the SDK.
    *
-   * @type {*}
+   * @type {ILogger}
    * @memberof SDKOpts
    */
-  logger?: any;
+  logger?: ILogger;
   /**
    * Optional event emitter instance used to catch
    * SDK events!
@@ -97,15 +97,6 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   emitter: EventEmitter;
-
-  /**
-   * @deprecated
-   * Logger instance used to log messages from the SDK.
-   *
-   * @type {*}
-   * @memberof HuddlySdk
-   */
-  logger: any;
 
   /**
    * @ignore
@@ -193,6 +184,10 @@ class HuddlySdk extends EventEmitter {
       },
       ...opts,
     };
+
+    if (options.logger) {
+      Logger.setLogger(options.logger);
+    }
 
     this.deviceDiscovery = options.apiDiscoveryEmitter;
     this.emitter = options.emitter;
