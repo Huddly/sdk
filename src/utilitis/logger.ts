@@ -1,4 +1,5 @@
 import fs from 'fs';
+import ILogger from './../interfaces/ILogger';
 
 /**
  * Huddly Logger class.
@@ -30,26 +31,52 @@ import fs from 'fs';
  * node sdkexample.js
  */
 export default class Logger {
+  static customLogger: ILogger = undefined;
+
+  static setLogger(logger: ILogger): void {
+    Logger.customLogger = logger;
+  }
+
   static warn(message: string, component: string = 'Generic Component'): void {
     if (['DEBUG'].indexOf(process.env.HUDDLY_LOG_LEVEL) > -1) {
+      if (Logger.customLogger) {
+        Logger.customLogger.warn(message);
+        return;
+      }
+
       this.redirectLogMsg(this.formatLogMsg('WARN', component, message));
     }
   }
 
   static info(message: string, component: string = 'Generic Component'): void {
     if (['INFO', 'DEBUG'].indexOf(process.env.HUDDLY_LOG_LEVEL) > -1) {
+      if (Logger.customLogger) {
+        Logger.customLogger.info(message);
+        return;
+      }
+
       this.redirectLogMsg(this.formatLogMsg('INFO', component, message));
     }
   }
 
   static debug(message: string, component: string = 'Generic Component'): void {
     if (['DEBUG'].indexOf(process.env.HUDDLY_LOG_LEVEL) > -1) {
+      if (Logger.customLogger) {
+        Logger.customLogger.debug(message);
+        return;
+      }
+
       this.redirectLogMsg(this.formatLogMsg('DEBUG', component, message));
     }
   }
 
   static error(message: string, stackTrace: any, component: string = 'Generic Component'): void {
     if (['NONE'].indexOf(process.env.HUDDLY_LOG_LEVEL) == -1) {
+      if (Logger.customLogger) {
+        Logger.customLogger.error(message, stackTrace);
+        return;
+      }
+
       this.redirectLogMsg(this.formatLogMsg('ERROR', component, message));
       this.redirectLogMsg(stackTrace);
     }
