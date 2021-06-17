@@ -267,7 +267,32 @@ export default class Ace implements IDeviceManager, IUVCControls {
   }
 
   getState(): Promise<any> {
-    throw new Error('Method not implemented.');
+    return new Promise(async (resolve, reject) => {
+      try {
+        const cnnFeature = new huddly.CnnFeature();
+        cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
+        const azStatus = await this.getCnnFeatureStatus(cnnFeature);
+
+        if (azStatus.hasAzStatus()) {
+          resolve({
+            autozoom_enabled: azStatus.getAzStatus().getAzEnabled(),
+          });
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  getCnnFeatureStatus(cnnFeature: huddly.CnnFeature): Promise<huddly.CNNStatus> {
+    return new Promise(async (resolve, reject) => {
+      this.grpcClient.getCnnFeatureStatus(cnnFeature, (err, cnnStatus: huddly.CNNStatus) => {
+        if (err != undefined) {
+          this.handleError('Unable to get cnn feature status', err, reject);
+        }
+        resolve(cnnStatus);
+      });
+    });
   }
 
   getPowerUsage(): Promise<any> {
@@ -456,6 +481,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
         (err: ErrorInterface, saturation: huddly.Saturation) => {
           if (err != undefined) {
             reject(err);
+            return;
           }
           resolve(saturation);
         }
