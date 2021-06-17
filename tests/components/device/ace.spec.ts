@@ -64,6 +64,11 @@ describe('Ace', () => {
   const temperaturesDummy = new huddly.Temperatures();
   temperaturesDummy.setTemperaturesList([tempDummy1, tempDummy2]);
 
+  const cnnStatusDummy = new huddly.CNNStatus();
+  const autozoomStatus = new huddly.AZStatus();
+  autozoomStatus.setAzEnabled(true);
+  cnnStatusDummy.setAzStatus(autozoomStatus);
+
   let mockedStream;
   mockedStream = new PassThrough();
 
@@ -94,6 +99,9 @@ describe('Ace', () => {
     getLogFiles: () => mockedStream,
     eraseLogFile: (logFile: huddly.LogFile, cb: any) => {
       cb(undefined, statusDummy);
+    },
+    getCnnFeatureStatus: (empty: Empty, cb: any) => {
+      cb(undefined, cnnStatusDummy);
     },
   };
 
@@ -556,10 +564,52 @@ describe('Ace', () => {
       }
     });
   });
+  describe('#getCnnFeatureStatus', () => {
+    let cnnFeature ;
+    beforeEach(() => {
+      cnnFeature = new huddly.CnnFeature();
+      cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
+    });
+    it('should attempt to get a given cnn feature', async () => {
+      sinon.spy(dummyTransport.grpcClient, 'getCnnFeatureStatus');
+      const cnnFeatureStatus = await device.getCnnFeatureStatus(cnnFeature);
+      const arg = dummyTransport.grpcClient.getCnnFeatureStatus.args[0][0];
+      expect(arg).to.be.instanceof(huddly.CnnFeature);
+      expect(arg.getFeature()).to.equal(huddly.Feature.AUTOZOOM);
+      expect(cnnFeatureStatus).to.be.instanceof(huddly.CNNStatus);
+    });
+    it('should handle error if something happens', async () => {
+      dummyTransport.grpcClient.getCnnFeatureStatus = (empty: Empty, cb: any) => {
+        cb(dummyError, undefined);
+      };
+      try {
+        await device.getCnnFeatureStatus(cnnFeature);
+      } catch (err) {
+        expect(err).to.equal(dummyError.message);
+      } finally {
+        expect(device.handleError).to.have.been.calledOnce;
+      }
+    });
+  });
+  describe('#getState', () => {
+    it('should return a object containing autozoom status (for the time being)', async () => {
+      sinon.stub(device, 'getCnnFeatureStatus').resolves(cnnStatusDummy);
+      const azStatus = await device.getState();
+      expect(azStatus).to.deep.equal({ autozoom_enabled: true });
+    });
+    it('should reject error if there is an issue', async () => {
+      sinon.stub(device, 'getCnnFeatureStatus').rejects('error');
+      try {
+        await device.getState();
+      } catch (err) {
+        expect(err.name).to.equal('error');
+      }
+    });
+  });
   describe('#eraseLogFile', () => {
     const logFile = new huddly.LogFile();
     logFile.setFile(huddly.LogFiles.APP);
-    it('should attempt to erease log', async () => {
+    it('should attempt to erease a given log', async () => {
       sinon.spy(dummyTransport.grpcClient, 'eraseLogFile');
       await device.eraseLogFile(logFile);
       const arg = dummyTransport.grpcClient.eraseLogFile.args[0][0];
@@ -578,7 +628,7 @@ describe('Ace', () => {
     });
   });
   describe('#eraseErrorLog', () => {
-    it('should try to get the app log', async () => {
+    it('should try to erase the app log', async () => {
       const stub = sinon.stub(device, 'eraseLogFile').resolves('');
       await device.eraseErrorLog();
       const args = stub.firstCall.args[0];
