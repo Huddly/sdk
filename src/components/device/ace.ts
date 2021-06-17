@@ -76,6 +76,7 @@ export default class Ace implements IDeviceManager, IUVCControls {
     this.transport = transport;
     this.locksmith = new Locksmith();
     this.discoveryEmitter = cameraDiscoveryEmitter;
+    Object.assign(this, wsdDevice);
   }
 
   async initialize(developmentMode: boolean = false): Promise<void> {
