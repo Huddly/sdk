@@ -15,66 +15,45 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 chai.should();
 chai.use(sinonChai);
 
+const statusDummy = new huddly.DeviceStatus();
+statusDummy.setMessage('status');
+
+const dummyRange = new huddly.Range();
+dummyRange.setMin(0);
+dummyRange.setMax(1000);
+
+const saturationDummy = new huddly.Saturation();
+saturationDummy.setSaturation(10);
+saturationDummy.setRange(dummyRange);
+
+const brightnessDummy = new huddly.Brightness();
+brightnessDummy.setBrightness(10);
+brightnessDummy.setRange(dummyRange);
+
+const ptzDummy = new huddly.PTZ();
+ptzDummy.setPan(1);
+ptzDummy.setTilt(2);
+ptzDummy.setZoom(3);
+
+const tempDummy1 = new huddly.Temperature();
+tempDummy1.setName('temp1');
+tempDummy1.setValue(888);
+const tempDummy2 = new huddly.Temperature();
+tempDummy2.setName('temp2');
+tempDummy2.setValue(5);
+const temperaturesDummy = new huddly.Temperatures();
+temperaturesDummy.setTemperaturesList([tempDummy1, tempDummy2]);
+
+const cnnStatusDummy = new huddly.CNNStatus();
+const autozoomStatus = new huddly.AZStatus();
+autozoomStatus.setAzEnabled(true);
+cnnStatusDummy.setAzStatus(autozoomStatus);
+
+const mockedStream = new PassThrough();
 class DummyTransport extends EventEmitter implements IGrpcTransport {
   device: any;
   grpcConnectionDeadlineSeconds: number;
-  grpcClient: any;
-  overrideGrpcClient(client: HuddlyServiceClient): void {
-    throw new Error('Method not implemented.');
-  }
-  init(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  close(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-}
-
-describe('Ace', () => {
-  const statusDummy = new huddly.DeviceStatus();
-  statusDummy.setMessage('status');
-
-  const dummyRange = new huddly.Range();
-  dummyRange.setMin(0);
-  dummyRange.setMax(1000);
-
-  const dummyError = {
-    message: 'Error',
-  };
-
-  const saturationDummy = new huddly.Saturation();
-  saturationDummy.setSaturation(10);
-  saturationDummy.setRange(dummyRange);
-
-  const brightnessDummy = new huddly.Brightness();
-  brightnessDummy.setBrightness(10);
-  brightnessDummy.setRange(dummyRange);
-
-  const ptzDummy = new huddly.PTZ();
-  ptzDummy.setPan(1);
-  ptzDummy.setTilt(2);
-  ptzDummy.setZoom(3);
-
-  const tempDummy1 = new huddly.Temperature();
-  tempDummy1.setName('temp1');
-  tempDummy1.setValue(888);
-  const tempDummy2 = new huddly.Temperature();
-  tempDummy2.setName('temp2');
-  tempDummy2.setValue(5);
-  const temperaturesDummy = new huddly.Temperatures();
-  temperaturesDummy.setTemperaturesList([tempDummy1, tempDummy2]);
-
-  const cnnStatusDummy = new huddly.CNNStatus();
-  const autozoomStatus = new huddly.AZStatus();
-  autozoomStatus.setAzEnabled(true);
-  cnnStatusDummy.setAzStatus(autozoomStatus);
-
-  let mockedStream;
-  mockedStream = new PassThrough();
-
-  let device: Ace;
-  const dummyTransport = new DummyTransport();
-  dummyTransport.grpcClient = {
+  grpcClient: any = {
     getSaturation: (empty: Empty, cb: any) => {
       cb(undefined, saturationDummy);
     },
@@ -104,6 +83,24 @@ describe('Ace', () => {
       cb(undefined, cnnStatusDummy);
     },
   };
+  overrideGrpcClient(client: HuddlyServiceClient): void {
+    throw new Error('Method not implemented.');
+  }
+  init(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+  close(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+}
+
+describe('Ace', () => {
+  const dummyError = {
+    message: 'Error',
+  };
+
+  let device: Ace;
+  const dummyTransport = new DummyTransport();
 
   let warnStub, errorStub, infoStub;
 
@@ -136,11 +133,7 @@ describe('Ace', () => {
       dummyTransport.grpcClient.getTemperatures = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      try {
-        await device._getTemperatures();
-      } catch (err) {
-        expect(err).to.equal('error');
-      }
+      device._getTemperatures().catch(err => expect(err).to.equal('error'));
     });
   });
   describe('#getTemperatures', () => {
@@ -156,13 +149,10 @@ describe('Ace', () => {
     });
     it('should handle error if there is an issue', async () => {
       sinon.stub(device, '_getTemperatures').rejects(dummyError);
-      try {
-        await device.getTemperatures();
-      } catch (err) {
+      device.getTemperatures().catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
   describe('#getTemperature', () => {
@@ -178,13 +168,10 @@ describe('Ace', () => {
     });
     it('should handle error if there is an issue', async () => {
       sinon.stub(device, '_getTemperatures').rejects(dummyError);
-      try {
-        await device.getTemperature();
-      } catch (err) {
+      device.getTemperature().catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
   describe('#getSettings', () => {
@@ -202,11 +189,7 @@ describe('Ace', () => {
     });
     it('should reject error if there is an issue', async () => {
       sinon.stub(device, 'getPanTiltZoom').rejects(dummyError);
-      try {
-        await device.getSettings();
-      } catch (err) {
-        expect(err.message).to.equal(dummyError.message);
-      }
+      device.getSettings().catch(err => expect(err.message).to.equal(dummyError.message));
     });
   });
   describe('#setSaturation', () => {
@@ -221,13 +204,7 @@ describe('Ace', () => {
       dummyTransport.grpcClient.setSaturation = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      try {
-        await device.setSaturation(10);
-      } catch (err) {
-        expect(err).to.equal(dummyError.message);
-      } finally {
-        expect(device.handleError).to.have.been.calledOnce;
-      }
+      device.setSaturation(10).catch(err => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#_getSaturation', () => {
@@ -240,11 +217,7 @@ describe('Ace', () => {
       dummyTransport.grpcClient.getSaturation = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      try {
-        await device._getSaturation();
-      } catch (err) {
-        expect(err).to.equal('error');
-      }
+      device._getSaturation().catch(err => expect(err).to.equal('error'));
     });
   });
   describe('#getSaturation', () => {
@@ -255,13 +228,7 @@ describe('Ace', () => {
     });
     it('should handle error if something happens', async () => {
       sinon.stub(device, '_getSaturation').rejects(dummyError);
-      try {
-        await device.getSaturation();
-      } catch (err) {
-        expect(err).to.equal(dummyError.message);
-      } finally {
-        expect(device.handleError).to.have.been.calledOnce;
-      }
+      device.getSaturation().catch(err => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#setBrightness', () => {
@@ -276,13 +243,7 @@ describe('Ace', () => {
       dummyTransport.grpcClient.setSaturation = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      try {
-        await device.setSaturation(10);
-      } catch (err) {
-        expect(err).to.equal(dummyError.message);
-      } finally {
-        expect(device.handleError).to.have.been.calledOnce;
-      }
+      device.setSaturation(10).catch(err => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#_getBrightness', () => {
@@ -295,11 +256,7 @@ describe('Ace', () => {
       dummyTransport.grpcClient.getBrightness = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      try {
-        await device._getBrightness();
-      } catch (err) {
-        expect(err).to.equal('error');
-      }
+      device._getBrightness().catch(err => expect(err).to.equal('error'));
     });
   });
   describe('#getBrightness', () => {
@@ -310,13 +267,10 @@ describe('Ace', () => {
     });
     it('should handle error if something happens', async () => {
       sinon.stub(device, '_getBrightness').rejects(dummyError);
-      try {
-        await device.getBrightness();
-      } catch (err) {
+      device.getBrightness().catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
   describe('#setPanTiltZoom', () => {
@@ -338,13 +292,13 @@ describe('Ace', () => {
       dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
         cb(dummyError, undefined);
       };
-      try {
-        await device.setPanTiltZoom({ pan: 1 });
-      } catch (err) {
-        expect(err).to.equal(dummyError.message);
-      } finally {
-        expect(device.handleError).to.have.been.calledOnce;
-      }
+      device
+        .setPanTiltZoom({ pan: 1 })
+        .then()
+        .catch(err => {
+          expect(err).to.equal(dummyError.message);
+          expect(device.handleError).to.have.been.calledOnce;
+        });
     });
     describe('function should handle individual params', () => {
       beforeEach(() => {
@@ -388,11 +342,7 @@ describe('Ace', () => {
       dummyTransport.grpcClient.getPTZ = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      try {
-        await device._getPanTiltZoom();
-      } catch (err) {
-        expect(err).to.equal('error');
-      }
+      device._getPanTiltZoom().catch(err => expect(err).to.equal('error'));
     });
   });
   describe('#getPanTiltZoom', () => {
@@ -414,13 +364,10 @@ describe('Ace', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, '_getPanTiltZoom').rejects(dummyError);
-      try {
-        await device.getPanTiltZoom();
-      } catch (err) {
+      device.getPanTiltZoom().catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
   describe('#getPanTilt', () => {
@@ -433,13 +380,10 @@ describe('Ace', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, '_getPanTiltZoom').rejects(dummyError);
-      try {
-        await device.getPanTilt();
-      } catch (err) {
+      device.getPanTilt().catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
   describe('#getSupportedSettings', () => {
@@ -467,19 +411,11 @@ describe('Ace', () => {
       expect(saturation['value']).to.equal(saturationDummy.getSaturation());
     });
     it("should log a warning if value key isn't supported", async () => {
-      try {
-        await device.getSetting('dummy');
-      } catch (err) {
-        expect(Logger.warn).to.have.been.calledOnce;
-      }
+      device.getSetting('dummy').catch(err => expect(Logger.warn).to.have.been.calledOnce);
     });
     it('should throw a rejection if something happens', async () => {
       sinon.stub(device, '_getBrightness').rejects(dummyError);
-      try {
-        await device.getSetting('brightness');
-      } catch (err) {
-        expect(err).to.equal(dummyError.message);
-      }
+      device.getSetting('brightness').catch(err => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#setSetting', () => {
@@ -500,19 +436,11 @@ describe('Ace', () => {
       expect(device.setSaturation).to.have.been.calledWith(1);
     });
     it("should log a warning if value key isn't supported", async () => {
-      try {
-        await device.setSettingValue('dummy', 1);
-      } catch (err) {
-        expect(Logger.warn).to.have.been.calledOnce;
-      }
+      device.setSettingValue('dummy', 1).catch(err => expect(Logger.warn).to.have.been.calledOnce);
     });
     it('should throw a rejection if something happens', async () => {
       sinon.stub(device, 'setBrightness').rejects('error');
-      try {
-        await device.setSettingValue('brightness', 2);
-      } catch (err) {
-        expect(err.name).to.equal('error');
-      }
+      device.setSettingValue('brightness', 2).catch(err => expect(err.name).to.equal('error'));
     });
   });
   describe('#getLogFiles', () => {
@@ -555,17 +483,14 @@ describe('Ace', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, 'getLogFiles').rejects(dummyError);
-      try {
-        await device.getErrorLog();
-      } catch (err) {
+      device.getErrorLog().catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
   describe('#getCnnFeatureStatus', () => {
-    let cnnFeature ;
+    let cnnFeature;
     beforeEach(() => {
       cnnFeature = new huddly.CnnFeature();
       cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
@@ -582,13 +507,10 @@ describe('Ace', () => {
       dummyTransport.grpcClient.getCnnFeatureStatus = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      try {
-        await device.getCnnFeatureStatus(cnnFeature);
-      } catch (err) {
+      device.getCnnFeatureStatus(cnnFeature).catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
   describe('#getState', () => {
@@ -599,11 +521,7 @@ describe('Ace', () => {
     });
     it('should reject error if there is an issue', async () => {
       sinon.stub(device, 'getCnnFeatureStatus').rejects('error');
-      try {
-        await device.getState();
-      } catch (err) {
-        expect(err.name).to.equal('error');
-      }
+      device.getState().catch(err => expect(err.name).to.equal('error'));
     });
   });
   describe('#eraseLogFile', () => {
@@ -620,11 +538,7 @@ describe('Ace', () => {
       dummyTransport.grpcClient.eraseLogFile = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      try {
-        await device.eraseLogFile(logFile);
-      } catch (err) {
-        expect(err.message).to.equal(dummyError.message);
-      }
+      device.eraseLogFile(logFile).catch(err => expect(err.meessage).to.equal(dummyError.message));
     });
   });
   describe('#eraseErrorLog', () => {
@@ -636,13 +550,10 @@ describe('Ace', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, 'eraseLogFile').rejects(dummyError);
-      try {
-        await device.eraseErrorLog();
-      } catch (err) {
+      device.eraseErrorLog().catch(err => {
         expect(err).to.equal(dummyError.message);
-      } finally {
         expect(device.handleError).to.have.been.calledOnce;
-      }
+      });
     });
   });
 });
