@@ -1,4 +1,4 @@
-import WinIpCameraService from './winIpCameraService';
+import CameraSwitchService from './cameraSwitchService';
 import IServiceOpts from '../../interfaces/IServiceOpts';
 import IHuddlyService from './../../interfaces/IHuddlyService';
 
@@ -11,8 +11,8 @@ export default class ServiceFactory {
    */
   static getService(serviceOpts: IServiceOpts): IHuddlyService {
     switch (process.platform) {
-      case 'win32':
-        return new WinIpCameraService(serviceOpts);
+      case 'win32': // Currently supported only on windows platforms
+        return new CameraSwitchService(serviceOpts);
       default:
         throw new Error(
           `Currently there is no Huddly Service support for platform ${process.platform}`

@@ -2,10 +2,10 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 
-import Logger from './../../../src/utilitis/logger';
-import WinIpCameraService, { ServiceCameraActions } from './../../../src/components/service/winIpCameraService';
-import { HuddlyCameraServiceClient } from '@huddly/huddlyproto/lib/proto/win_service_grpc_pb';
-import * as winservice from '@huddly/huddlyproto/lib/proto/win_service_pb';
+import Logger from '../../../src/utilitis/logger';
+import CameraSwitchService, { ServiceCameraActions } from '../../../src/components/service/cameraSwitchService';
+import { HuddlyCameraServiceClient } from '@huddly/camera-switch-proto/lib/api/service_grpc_pb';
+import * as switchservice from '@huddly/camera-switch-proto/lib/api/service_pb';
 
 
 chai.should();
@@ -15,8 +15,8 @@ const stubLogger = () => {
   return sinon.createStubInstance(Logger);
 };
 
-const createServiceInstance = (): WinIpCameraService => {
-  const service = new WinIpCameraService({});
+const createServiceInstance = (): CameraSwitchService => {
+  const service = new CameraSwitchService({});
   const grpcClientMock = sinon.createStubInstance(HuddlyCameraServiceClient, {
     setActiveCamera: sinon.stub(),
     setDefaultCamera: sinon.stub(),
@@ -29,8 +29,8 @@ const createServiceInstance = (): WinIpCameraService => {
   return service;
 };
 
-describe('WinIpCameraService', () => {
-  let service: WinIpCameraService;
+describe('CameraSwitchService', () => {
+  let service: CameraSwitchService;
 
   beforeEach(() => {
     service = createServiceInstance();
@@ -109,7 +109,7 @@ describe('WinIpCameraService', () => {
   });
 
   describe('#serviceCameraGetter', () => {
-    const serviceCamInfo: winservice.CameraInfo = new winservice.CameraInfo();
+    const serviceCamInfo: switchservice.CameraInfo = new switchservice.CameraInfo();
     before(() => {
       serviceCamInfo.setMac('FFFFFFF');
       serviceCamInfo.setName('L1');
@@ -201,7 +201,7 @@ describe('WinIpCameraService', () => {
 
   describe('#isUserPtzAllowed', () => {
     it('should allow user ptz', () => {
-      const userPtz: winservice.UserPtz = new winservice.UserPtz();
+      const userPtz: switchservice.UserPtz = new switchservice.UserPtz();
       userPtz.setEnabled(true);
 
       (service.grpcClient.getUserPTZ as any).yields(undefined, userPtz);
@@ -211,7 +211,7 @@ describe('WinIpCameraService', () => {
       });
     });
     it('should not allow user ptz', () => {
-      const userPtz: winservice.UserPtz = new winservice.UserPtz();
+      const userPtz: switchservice.UserPtz = new switchservice.UserPtz();
       userPtz.setEnabled(false);
 
       (service.grpcClient.getUserPTZ as any).yields(undefined, userPtz);
