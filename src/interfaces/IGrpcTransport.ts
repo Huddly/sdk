@@ -1,5 +1,5 @@
 import ITransport from './iTransport';
-import { HuddlyServiceClient } from '@huddly/huddlyproto/lib/proto/huddly_grpc_pb';
+import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
 
 /**
  * Interface used to communicate with huddly network devices.

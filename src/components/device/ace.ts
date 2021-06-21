@@ -18,8 +18,8 @@ import IDeviceManager from './../../interfaces/iDeviceManager';
 import ICnnControl from '../../interfaces/ICnnControl';
 import AceUpgrader from './../upgrader/aceUpgrader';
 
-import { HuddlyServiceClient } from '@huddly/huddlyproto/lib/proto/huddly_grpc_pb';
-import * as huddly from '@huddly/huddlyproto/lib/proto/huddly_pb';
+import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as grpc from '@grpc/grpc-js';
 
