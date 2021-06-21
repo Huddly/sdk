@@ -1,10 +1,10 @@
-import IHuddlyService from './../../interfaces/IHuddlyService';
-import IServiceOpts from './../../interfaces/IServiceOpts';
-import { CameraInfo } from './../../interfaces/IWinServiceModels';
-import Logger from './../../../src/utilitis/logger';
+import IHuddlyService from '../../interfaces/IHuddlyService';
+import IServiceOpts from '../../interfaces/IServiceOpts';
+import { CameraInfo } from '../../interfaces/ICameraSwitchModels';
+import Logger from '../../utilitis/logger';
 
-import * as winservice from '@huddly/huddlyproto/lib/proto/win_service_pb';
-import { HuddlyCameraServiceClient } from '@huddly/huddlyproto/lib/proto/win_service_grpc_pb';
+import * as switchservice from '@huddly/camera-switch-proto/lib/api/service_pb';
+import { HuddlyCameraServiceClient } from '@huddly/camera-switch-proto/lib/api/service_grpc_pb';
 import * as grpc from '@grpc/grpc-js';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
@@ -18,40 +18,41 @@ export enum ServiceCameraActions {
 }
 
 /**
- * IHuddlyService class implementation for sdk consumers running on a Windows host machine. All the functionality of this
- * service is described in the proto file from @huddly/huddlyproto npm package with the name win_service.proto
+ * IHuddlyService class implementation for sdk consumers running on a Windows host machine. The service can be used
+ * to switch which huddly network camera is used to stream on the host machine. All the functionality of this
+ * service is described in the proto file from @huddly/camera-switch npm package with the name service.proto
  */
-export default class WinIpCameraService implements IHuddlyService {
+export default class CameraSwitchService implements IHuddlyService {
   /**
    * Service options for initializing and seting up the service communication
    * @type {IServiceOpts}
-   * @memberof WinIpCameraService
+   * @memberof CameraSwitchService
    */
 
   options: IServiceOpts;
   /**
    * Service client derived from the proto file
    * @type {HuddlyCameraServiceClient}
-   * @memberof WinIpCameraService
+   * @memberof CameraSwitchService
    */
   grpcClient: HuddlyCameraServiceClient;
 
   /**
    * @ignore
    * @type {number}
-   * @memberof WinIpCameraService
+   * @memberof CameraSwitchService
    */
   private readonly GRPC_DEFAULT_CONNECT_TIMEOUT: number = 1; // Seconds
 
   /**
    * @ignore
    * @type {number}
-   * @memberof WinIpCameraService
+   * @memberof CameraSwitchService
    */
   private readonly GRPC_PORT: number = 30051;
 
   /**
-   * Creates a new instance of WinUpCameraService and initializes the necessary class attributes
+   * Creates a new instance of CameraSwitchService and initializes the necessary class attributes
    * @param  {IServiceOpts} opts? Service options for initializing and setting up the service communication
    */
   constructor(opts?: IServiceOpts) {
@@ -64,7 +65,7 @@ export default class WinIpCameraService implements IHuddlyService {
    * or rejects if not.
    */
   init(): Promise<void> {
-    Logger.debug('Initializing Windows Ip Camera Service!', WinIpCameraService.name);
+    Logger.debug('Initializing Windows Ip Camera Service!', CameraSwitchService.name);
     const deadline = new Date();
     deadline.setSeconds(
       deadline.getSeconds() + (this.options.connectionDeadline || this.GRPC_DEFAULT_CONNECT_TIMEOUT)
@@ -80,11 +81,11 @@ export default class WinIpCameraService implements IHuddlyService {
           Logger.error(
             `Connection failed with GPRC server on ACE!`,
             error,
-            WinIpCameraService.name
+            CameraSwitchService.name
           );
           reject(error);
         } else {
-          Logger.debug(`Connection established`, WinIpCameraService.name);
+          Logger.debug(`Connection established`, CameraSwitchService.name);
           resolve();
         }
       })
@@ -121,7 +122,7 @@ export default class WinIpCameraService implements IHuddlyService {
    * otherwise.
    */
   serviceCameraSetter(action: ServiceCameraActions, camInfo: CameraInfo): Promise<void> {
-    const serviceCamInfo: winservice.CameraInfo = new winservice.CameraInfo();
+    const serviceCamInfo: switchservice.CameraInfo = new switchservice.CameraInfo();
     serviceCamInfo.setMac(this.formatMacAddress(camInfo.mac));
     serviceCamInfo.setName(camInfo.name);
     serviceCamInfo.setIp(camInfo.ip);
@@ -135,7 +136,7 @@ export default class WinIpCameraService implements IHuddlyService {
           Logger.error(
             `Unable to set ${setterActionStr} camera on service. Error: ${err.details}`,
             err.stack,
-            WinIpCameraService.name
+            CameraSwitchService.name
           );
           reject(err.details);
           return;
@@ -169,12 +170,12 @@ export default class WinIpCameraService implements IHuddlyService {
       key => ServiceCameraActions[key] === action
     );
     return new Promise((resolve, reject) => {
-      const getterCallback = (err: grpc.ServiceError, cameraInfo: winservice.CameraInfo) => {
+      const getterCallback = (err: grpc.ServiceError, cameraInfo: switchservice.CameraInfo) => {
         if (err) {
           Logger.error(
             `Unable to get ${getterActionStr} camera from service. Error: ${err.details}`,
             err.stack,
-            WinIpCameraService.name
+            CameraSwitchService.name
           );
           reject(err.details);
           return;
@@ -196,7 +197,7 @@ export default class WinIpCameraService implements IHuddlyService {
   }
 
   /**
-   * Set default camera on the huddly windows service. Note: this action is boot persistent.
+   * Set default camera on the huddly camera switch service. Note: this action is boot persistent.
    * @param  {CameraInfo} camInfo The camera information required to send in as data
    * when setting the default camera on the service
    * @returns A promise that resolves if default camera is set successfully or rejects
@@ -207,16 +208,16 @@ export default class WinIpCameraService implements IHuddlyService {
   }
 
   /**
-   * Get default camera from the huddly windows service.
+   * Get default camera from the huddly camera switch service.
    * @returns A promise which contains data of type `CamerInfo` detailing the information
-   * about the current default camera on the huddly windows service.
+   * about the current default camera on the huddly camera switch service.
    */
   getDefaultCamera(): Promise<CameraInfo> {
     return this.serviceCameraGetter(ServiceCameraActions.DEFAULT);
   }
 
   /**
-   * Set active camear on the huddly windows service. Note: this action is not boot persistent.
+   * Set active camear on the huddly camera switch service. Note: this action is not boot persistent.
    * @param  {CameraInfo} camInfo The camera information reqyuired to send in as data
    * when setting the activve camera on the service
    * @returns A promise that resolves if the active camera is set successfully or rejects
@@ -227,16 +228,16 @@ export default class WinIpCameraService implements IHuddlyService {
   }
 
   /**
-   * Get active camera from the huddly windows service.
+   * Get active camera from the huddly camera switch service.
    * @returns A promise which contains data of type `CameraInfo` detailing the information
-   * about the current active camera on the huddly windows service.
+   * about the current active camera on the huddly camera switch service.
    */
   getActiveCamera(): Promise<CameraInfo> {
     return this.serviceCameraGetter(ServiceCameraActions.ACTIVE);
   }
 
   /**
-   * Set user pan tilt zoom control setting on the huddly windows service. This feature
+   * Set user pan tilt zoom control setting on the huddly camera switch service. This feature
    * makes sure you allow or block custom user ptz to the camera comming from third party
    * applications such as Windows Camera App, Zoom, Meet etc.
    * @param  {boolean} isAllowed A boolean parameter specifying whether the service should
@@ -245,7 +246,7 @@ export default class WinIpCameraService implements IHuddlyService {
    * otherwise.
    */
   setUserPtz(isAllowed: boolean): Promise<void> {
-    const allowed = new winservice.UserPtz();
+    const allowed = new switchservice.UserPtz();
     allowed.setEnabled(isAllowed);
     return new Promise((resolve, reject) => {
       this.grpcClient.setUserPTZ(allowed, (err: grpc.ServiceError) => {
@@ -253,7 +254,7 @@ export default class WinIpCameraService implements IHuddlyService {
           Logger.error(
             `Unable to set user ptz on service. Error: ${err.details}`,
             err.stack,
-            WinIpCameraService.name
+            CameraSwitchService.name
           );
           reject(err.details);
           return;
@@ -264,7 +265,7 @@ export default class WinIpCameraService implements IHuddlyService {
   }
 
   /**
-   * Check if the user ptz is allowed on the huddly windows service.
+   * Check if the user ptz is allowed on the huddly camera switch service.
    * @returns A promise which after completion it contains information if
    * user ptz is allowed or not. Rejects if retreiving the setting fails.
    */
@@ -272,12 +273,12 @@ export default class WinIpCameraService implements IHuddlyService {
     return new Promise((resolve, reject) => {
       this.grpcClient.getUserPTZ(
         new Empty(),
-        (err: grpc.ServiceError, isAllowed: winservice.UserPtz) => {
+        (err: grpc.ServiceError, isAllowed: switchservice.UserPtz) => {
           if (err) {
             Logger.error(
               `Unable to get information whether user ptz is allowed or not on the service. Error: ${err.details}`,
               err.stack,
-              WinIpCameraService.name
+              CameraSwitchService.name
             );
             reject(err.details);
             return;
@@ -288,7 +289,7 @@ export default class WinIpCameraService implements IHuddlyService {
     });
   }
   /**
-   * Update the user ptz setting on the huddly windows service to allow user ptz.
+   * Update the user ptz setting on the huddly camera switch service to allow user ptz.
    * @returns Promise
    */
   allowUserPtz(): Promise<void> {
@@ -296,7 +297,7 @@ export default class WinIpCameraService implements IHuddlyService {
   }
 
   /**
-   * Update the user ptz setting on the huddly windows service to block user ptz.
+   * Update the user ptz setting on the huddly camera switch service to block user ptz.
    * @returns Promise
    */
   blokUserPtz(): Promise<void> {

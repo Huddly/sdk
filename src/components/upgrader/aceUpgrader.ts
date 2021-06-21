@@ -15,7 +15,7 @@ import Ace from './../../components/device/ace';
 import * as grpc from '@grpc/grpc-js';
 import ErrorCodes from './../../../src/error/errorCodes';
 
-import * as huddly from '@huddly/huddlyproto/lib/proto/huddly_pb';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 /**

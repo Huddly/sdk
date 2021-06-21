@@ -11,7 +11,7 @@ import Boxfish from './../../../src/components/device/boxfish';
 import { CameraEvents } from './../../../src';
 import AceUpgraderError from './../../../src/error/AceUpgraderError';
 
-import * as huddly from '@huddly/huddlyproto/lib/proto/huddly_pb';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
 chai.should();
 chai.use(sinonChai);
