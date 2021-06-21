@@ -5,8 +5,8 @@ import { PassThrough } from 'stream';
 import { TextEncoder } from 'util';
 
 import IGrpcTransport from './../../../src/interfaces/IGrpcTransport';
-import { HuddlyServiceClient } from '@huddly/huddlyproto/lib/proto/huddly_grpc_pb';
-import * as huddly from '@huddly/huddlyproto/lib/proto/huddly_pb';
+import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import Ace, { minMax } from './../../../src/components/device/ace';

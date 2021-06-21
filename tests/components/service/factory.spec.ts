@@ -4,7 +4,7 @@ import sinonChai from 'sinon-chai';
 
 import IHuddlyService from './../../../src/interfaces/IHuddlyService';
 import ServiceFactory from './../../../src/components/service/factory';
-import WinIpCameraService from './../../../src/components/service/winIpCameraService';
+import CameraSwitchService from '../../../src/components/service/cameraSwitchService';
 
 chai.should();
 chai.use(sinonChai);
@@ -21,10 +21,10 @@ describe('ServiceFactory', () => {
   });
 
   describe('#getService', () => {
-    it('should create new instance of WinIpCameraService when on Windows os', () => {
+    it('should create new instance of CameraSwitchService when on Windows os', () => {
       platformMock.value('win32');
       const service: IHuddlyService = ServiceFactory.getService({});
-      expect(service).to.be.instanceof(WinIpCameraService);
+      expect(service).to.be.instanceof(CameraSwitchService);
     });
 
     it('should throw error when running on ubuntu', () => {
