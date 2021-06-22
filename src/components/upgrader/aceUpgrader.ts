@@ -1,19 +1,17 @@
 import { EventEmitter } from 'events';
 import cpio from 'cpio-stream';
-import fs from 'fs';
 
 import IUpgradeOpts from './../../interfaces/IUpgradeOpts';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import IDeviceManager from './../../interfaces/iDeviceManager';
-import IGrpcTransport from './../../interfaces/IGrpcTransport';
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 import AceUpgraderError from './../../error/AceUpgraderError';
-import TypeHelper from './../../utilitis/typehelper';
 import Logger from './../../utilitis/logger';
 import CameraEvents from './../../utilitis/events';
 import Ace from './../../components/device/ace';
 import * as grpc from '@grpc/grpc-js';
 import ErrorCodes from './../../../src/error/errorCodes';
+import BufferStream from './../../utilitis/bufferStream';
 
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
@@ -103,12 +101,6 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    * @param opts Options required to carry out and facilitate the upgrade process
    */
   init(opts: IUpgradeOpts): void {
-    if (!opts.cpioFilePath) {
-      throw new Error('UpgraderOpts parameter [cpioFilePath] was not provided');
-    }
-    if (!fs.existsSync(opts.cpioFilePath)) {
-      throw new Error(`Path to the cpio file is invalid! File at location ${opts.cpioFilePath} does not exist!`);
-    }
     this.options = opts;
 
     if (opts.bootTimeout) {
@@ -258,7 +250,12 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
         resolve('N/A');
       }, 1000);
       extract.on('entry', (header: any, stream: any, cb: any) => {
-        stream.on('end', () => cb());
+        stream.on('end', () => {
+          cb();
+          if (header.name === 'version') {
+            extract.emit('finish');
+          }
+        });
         if (header.name == 'version') {
           stream.on('data', (verionStr: any) => {
             expcetedVersion = verionStr;
@@ -271,7 +268,8 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
         clearTimeout(readTimeout);
         resolve(expcetedVersion);
       });
-      fs.createReadStream(this.options.cpioFilePath).pipe(extract);
+
+      new BufferStream(this.options.file).pipe(extract);
     });
 
     if (currentVersion.toString() != expcetedVersion.toString()) {
@@ -362,14 +360,22 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
     const extract = cpio.extract();
 
     return new Promise((resolve, reject) => {
+      const readTimeout: NodeJS.Timeout = setTimeout(() => {
+        const errMsg = `Unable to perform upgrade step ${step} within given time of 10 seconds`;
+        Logger.warn(errMsg, Ace.name);
+        this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+        reject(errMsg);
+      }, 10000);
+
       const upgradeStepCompleteCb = (err: grpc.ServiceError, deviceStatus: huddly.DeviceStatus) => {
+        clearTimeout(readTimeout);
         if (err != undefined) {
           this.emit(CameraEvents.UPGRADE_FAILED, err);
           Logger.error(`Unable to perform ${stepName} step on device!`, err.message, AceUpgrader.name);
           reject(err.details);
           return;
-         }
-         resolve(`${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}`);
+        }
+        resolve(`${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}`);
       };
 
       let stream: grpc.ClientWritableStream<huddly.Chunk>;
@@ -382,6 +388,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
           break;
         default:
           const upgradeStepStr: string = Object.keys(UpgradeSteps).find(key => UpgradeSteps[key] === step);
+          clearTimeout(readTimeout);
           throw new AceUpgraderError(`Unknown upgrade step ${upgradeStepStr}`, ErrorCodes.UPGRADE_FAILED);
       }
 
@@ -401,7 +408,8 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
         });
         cpioStream.resume(); // auto drain
       });
-      fs.createReadStream(this.options.cpioFilePath).pipe(extract);
+
+      new BufferStream(this.options.file).pipe(extract);
      });
   }
 
