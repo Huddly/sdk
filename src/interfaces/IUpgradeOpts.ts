@@ -15,12 +15,6 @@ export default interface UpgradeOpts {
   file: Buffer;
 
   /**
-   * Path to the cpio file. The ace upgrader cannot be completed by sending in a buffer from fs.readFileSync,
-   * so make sure you just provide the file path instead
-   */
-  cpioFilePath?: string;
-
-  /**
    * A timeout number which restricts the upgrader on
    * how long it should wait until the camera comes back
    * up after being rebooted during the upgrade process.

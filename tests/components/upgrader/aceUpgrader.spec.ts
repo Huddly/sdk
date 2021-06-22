@@ -3,7 +3,6 @@ import sinon from 'sinon';
 import sinonChai from 'sinon-chai';
 import { EventEmitter } from 'events';
 import cpio from 'cpio-stream';
-import fs from 'fs';
 
 import AceUpgrader, { UpgradeSteps } from './../../../src/components/upgrader/aceUpgrader';
 import Ace from './../../../src/components/device/ace';
@@ -60,34 +59,16 @@ describe('AceUpgrader', () => {
   });
 
   describe('#init', () => {
-    it('should throw error if opts.cpioFilePath does not exist', () => {
-      const badFn = () => { upgrader.init({file: Buffer.alloc(0)}); };
-      expect(badFn).to.throw('UpgraderOpts parameter [cpioFilePath] was not provided');
-    });
+    describe('upgrader file exists', () => {
 
-    it('should throw error if opts.cpioFilePath is invalid', () => {
-      const badFn = () => { upgrader.init({file: Buffer.alloc(0), cpioFilePath: '/this/does/not/work'}); };
-      expect(badFn).to.throw('Path to the cpio file is invalid! File at location /this/does/not/work does not exist!');
-    });
-
-    describe('cpioFile exists', () => {
-      let fsExistsStub: { restore: () => void; };
-      beforeEach(() => {
-        fsExistsStub = sinon.stub(fs, 'existsSync' as any).returns(true);
-      });
-      afterEach(() => {
-        fsExistsStub.restore();
-      });
-
-      it('should not throw any error if opts.cpioFilePath is correct', () => {
-        const goodFn = () => { upgrader.init({file: Buffer.alloc(0), cpioFilePath: '/this/works'}); };
+      it('should not throw any error if opts.file is correct', () => {
+        const goodFn = () => { upgrader.init({file: Buffer.alloc(0)}); };
         expect(goodFn).to.not.throw();
       });
 
       it('should update bootTimeout if ops.bootTimeout is provided', () => {
         upgrader.init({
           file: Buffer.alloc(0),
-          cpioFilePath: '/this/works',
           bootTimeout: 5
         });
         expect(upgrader.bootTimeout).to.equal(5000);
@@ -97,7 +78,6 @@ describe('AceUpgrader', () => {
         const spy = sinon.spy(upgrader, 'registerHotPlugEvents');
         upgrader.init({
           file: Buffer.alloc(0),
-          cpioFilePath: '/this/works',
         });
         expect(spy.called).to.equal(true);
       });
@@ -257,24 +237,20 @@ describe('AceUpgrader', () => {
   });
 
   describe('#verifyVersion', () => {
-    let fsStub, cpioStub, getVersionSub, streamStub, extractOnStub, extractDestroyStub;
+    let cpioStub, getVersionSub, streamStub, extractOnStub, extractDestroyStub;
     const extractEmitter: EventEmitter = cpio.extract();
     beforeEach(() => {
-      fsStub = sinon.stub(fs, 'createReadStream').returns({
-        pipe: (extract) => {}
-      });
       cpioStub = sinon.stub(cpio, 'extract').returns(extractEmitter);
-      upgrader.options = { cpioFilePath: '/a/b/c', file: Buffer.alloc(0) };
+      upgrader.options = {file: Buffer.alloc(0) };
       getVersionSub = sinon.stub(upgrader, 'getVersion').resolves('1.2.3');
       streamStub = sinon.stub({ resume: () => {}, on: (msg, cb) => {}});
     });
 
     afterEach(() => {
-      fsStub.restore();
-      cpioStub.restore();
-      getVersionSub.restore();
-      extractOnStub.restore();
-      extractDestroyStub.restore();
+      cpioStub?.restore();
+      getVersionSub?.restore();
+      extractOnStub?.restore();
+      extractDestroyStub?.restore();
     });
 
     it('should successfully extract version from cpio and compare with current version', () => {
@@ -315,9 +291,25 @@ describe('AceUpgrader', () => {
       return expect(upgrader.verifyVersion()).to.eventually.be.rejectedWith(AceUpgraderError, errMsg);
     });
 
-    it('should timeout reading version from cpio and reject the call', () => {
-      const errMsg = 'Camera running wrong version! Expected N/A but got 1.2.3';
-      return expect(upgrader.verifyVersion()).to.eventually.be.rejectedWith(AceUpgraderError, errMsg);
+    describe('onTimeout', () => {
+      let clock;
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+      afterEach(() => {
+        clock.restore();
+      });
+
+      it('should timeout reading version from cpio and reject the call', () => {
+        const errMsg = 'Camera running wrong version! Expected N/A but got 1.2.3';
+        try {
+          upgrader.verifyVersion();
+          clock.tick(1000);
+        } catch (e) {
+          expect(e).to.be.instanceOf(AceUpgraderError);
+          expect(e.message).to.equal(errMsg);
+        }
+      });
     });
   });
 
@@ -385,20 +377,16 @@ describe('AceUpgrader', () => {
     });
   });
 
-  describe('#peformUpgradeStep', () => {
-    let fsStub, cpioStub, streamStub, extractOnStub;
+  describe('#performUpgradeStep', () => {
+    let cpioStub, streamStub, extractOnStub;
     const extractEmitter: EventEmitter = cpio.extract();
     beforeEach(() => {
-      fsStub = sinon.stub(fs, 'createReadStream').returns({
-        pipe: (extract) => {}
-      });
       cpioStub = sinon.stub(cpio, 'extract').returns(extractEmitter);
-      upgrader.options = { cpioFilePath: '/a/b/c', file: Buffer.alloc(0) };
+      upgrader.options = { file: Buffer.alloc(0) };
       streamStub = sinon.stub({ resume: () => {}, on: (msg, cb) => {}});
     });
 
     afterEach(() => {
-      fsStub.restore();
       cpioStub.restore();
       extractOnStub.restore();
     });
@@ -459,6 +447,14 @@ describe('AceUpgrader', () => {
     });
 
     describe('onFailure', () => {
+      let clock;
+      beforeEach(() => {
+        clock = sinon.useFakeTimers();
+      });
+      afterEach(() => {
+        clock.restore();
+      });
+
       it('should throw AceUpgradeError when upgrade step is unknown', () => {
         const errMsg = 'Unknown upgrade step REBOOT';
         const upgradeStepPromise = upgrader.performUpgradeStep(UpgradeSteps.REBOOT, 'REBOOT');
@@ -473,6 +469,16 @@ describe('AceUpgrader', () => {
         dummyManager.grpcClient.upgradeVerify.yields(callbackErr, undefined);
         const upgradeStepPromise = upgrader.performUpgradeStep(UpgradeSteps.COMMIT, 'Commit');
         return expect(upgradeStepPromise).to.eventually.be.rejectedWith('Something went wrong!');
+      });
+      it('should reject if the read time exceeds 10 seconds', () => {
+        const errMsg = 'Unable to perform upgrade step FLASH within given time of 10 seconds';
+        try {
+          upgrader.performUpgradeStep(UpgradeSteps.FLASH, 'FLASH');
+          clock.tick(10000);
+        } catch (e) {
+          expect(e).to.be.instanceOf(AceUpgraderError);
+          expect(e.message).to.equal(errMsg);
+        }
       });
     });
   });
