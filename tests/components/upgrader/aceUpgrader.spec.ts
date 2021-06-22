@@ -146,11 +146,11 @@ describe('AceUpgrader', () => {
       expect(spy.getCall(0).args[0].status).to.equal('Starting upgrade');
       expect(spy.getCall(0).args[0].progress).to.equal(0);
       // Flash completed
-      expect(spy.getCall(1).args[0].progress).to.equal(40);
+      expect(spy.getCall(1).args[0].progress).to.equal(15);
 
       // Reboot step
       expect(spy.getCall(2).args[0].status).to.equal('Rebooting camera');
-      expect(spy.getCall(2).args[0].progress).to.equal(40);
+      expect(spy.getCall(2).args[0].progress).to.equal(31);
     });
 
     it('should check version state, version, commit and finish upgrade', async () => {
@@ -171,11 +171,11 @@ describe('AceUpgrader', () => {
             expect(spy.callCount).to.equal(6);
 
             // Reboot step completed
-            expect(spy.getCall(3).args[0].progress).to.equal(60);
+            expect(spy.getCall(3).args[0].progress).to.equal(90);
 
             // Commit step started
             expect(spy.getCall(4).args[0].status).to.equal('Verifying new software');
-            expect(spy.getCall(4).args[0].progress).to.equal(60);
+            expect(spy.getCall(4).args[0].progress).to.equal(95);
 
             expect(commitStub.called).to.equal(true);
 

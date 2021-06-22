@@ -147,9 +147,9 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    * Performs the complete upgrade process synchronously
    */
   async start(): Promise<void> {
-    const firstUploadStatusStep = new UpgradeStatusStep('Executing software upgrade', 40);
-    const rebootStep = new UpgradeStatusStep('Rebooting camera', 20);
-    const verificationStep = new UpgradeStatusStep('Verifying new software', 40);
+    const firstUploadStatusStep = new UpgradeStatusStep('Executing software upgrade', 30);
+    const rebootStep = new UpgradeStatusStep('Rebooting camera', 60);
+    const verificationStep = new UpgradeStatusStep('Verifying new software', 10);
 
     this._upgradeStatus = new UpgradeStatus([
       firstUploadStatusStep,
@@ -165,25 +165,38 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
       this.emitProgressStatus('Starting upgrade');
       this.emit(CameraEvents.UPGRADE_START);
 
-      firstUploadStatusStep.progress = 1;
+      firstUploadStatusStep.progress = 50;
+      this.emitProgressStatus();
       Logger.debug('Flashing firmware ...', AceUpgrader.name);
       await this.flash();
       firstUploadStatusStep.progress = 100;
-      this.emitProgressStatus();
       Logger.debug('Flash completed!', AceUpgrader.name);
 
       rebootStep.progress = 1;
       this.emitProgressStatus('Rebooting camera');
       await this.reboot();
 
+      // Start interval for emitting upgrade progress events while camera is booting up
+      const rebootUpgradeProgress = setInterval(() => {
+        if (rebootStep.progress >= 95) { // Last 5% will be completed upon camera coming up after reboot
+          clearInterval(rebootUpgradeProgress);
+          return;
+        }
+        rebootStep.progress += 5;
+        this.emitProgressStatus();
+      }, 1000);
+
       // Timeout if the camera does not come back up after bootTimeout seconds have passed!
       const bootTimeout = setTimeout(() => {
         clearTimeout(bootTimeout);
+        clearInterval(rebootUpgradeProgress);
         this.emit(CameraEvents.TIMEOUT, 'Camera did not come back up after upgrade!');
       }, this.bootTimeout);
 
+
       this.once('UPGRADE_REBOOT_COMPLETE', async () => {
         Logger.debug('Camera successfully booted after upgrade', AceUpgrader.name);
+        clearInterval(rebootUpgradeProgress);
         try {
           rebootStep.progress = 100;
           this.emitProgressStatus();
@@ -194,7 +207,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
           // Check that the camera comes up with expected version
           await this.verifyVersion();
 
-          verificationStep.progress = 1;
+          verificationStep.progress = 50;
           Logger.debug('Verifying new software', AceUpgrader.name);
           this.emitProgressStatus('Verifying new software');
           await this.commit();
