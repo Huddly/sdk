@@ -123,7 +123,7 @@ export default interface IDeviceManager {
    * @returns {IAutozoomControl} Returns a new instance of `IAutozoomControl` class.
    * @memberof IDeviceManager
    */
-  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl;
+  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl | ICnnControl;
 
   /**
    * Get a new instance of `CnnControl` controller class which allows
