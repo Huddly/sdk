@@ -1,0 +1,107 @@
+import sinon from 'sinon';
+import { expect } from 'chai';
+import IpAutozoomControl from '../../src/components/ipAutozoomControl';
+import IIPDeviceManager from '../../src/interfaces/iIpDeviceManager';
+import Logger from './../../src/utilitis/logger';
+import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
+
+describe('IpAutozoomControl', () => {
+  let autozoomControl: IpAutozoomControl;
+  let deviceManager: IIPDeviceManager;
+  let errorStub, infoStub, isEnabledStub;
+  const dummyError = {
+    message: 'Error',
+  };
+
+  beforeEach(() => {
+    deviceManager = new DeviceManagerMock();
+    autozoomControl = new IpAutozoomControl(deviceManager);
+    errorStub = sinon.stub(Logger, 'error');
+    infoStub = sinon.stub(Logger, 'info');
+  });
+
+  afterEach(() => {
+    errorStub.restore();
+    infoStub.restore();
+  });
+
+  describe('#init', () => {
+    it('should await for the autozoom status to be returned', async () => {
+      await autozoomControl.init();
+      expect(infoStub).to.have.been.calledOnce;
+    });
+    it('should log an error if something happens', async () => {
+      sinon.stub(deviceManager, 'getCnnFeatureStatus').rejects('error');
+      await autozoomControl.init();
+      expect(errorStub).to.have.been.calledOnce;
+    });
+  });
+  describe('#enable', () => {
+    describe('autozoom is disabled', () => {
+      beforeEach(() => {
+        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(false);
+      });
+      afterEach(() => {
+        isEnabledStub.restore();
+      });
+      it('should enable without issues and log status', async () => {
+        await autozoomControl.enable();
+        expect(infoStub).to.have.been.calledOnce;
+      });
+      it('should log error and reject with error message if something happens', async () => {
+        sinon.stub(deviceManager.grpcClient, 'setCnnFeature').rejects(dummyError);
+        autozoomControl.enable().catch(err => {
+          expect(errorStub).to.have.been.calledOnce;
+          expect(err).to.equal(dummyError.message);
+        });
+      });
+    });
+    describe('autozoom is enabled', () => {
+      beforeEach(() => {
+        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(true);
+      });
+      afterEach(() => {
+        isEnabledStub.restore();
+      });
+      it('should not do anything', async () => {
+        // Having neither Logger.error or Logger.info called
+        expect(infoStub).to.have.callCount(0);
+        expect(errorStub).to.have.callCount(0);
+      });
+    });
+  });
+  describe('#disable', () => {
+    describe('autozoom is enabled', () => {
+      beforeEach(() => {
+        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(true);
+      });
+      afterEach(() => {
+        isEnabledStub.restore();
+      });
+      it('should enable without issues and log status', async () => {
+        await autozoomControl.disable();
+        expect(infoStub).to.have.been.calledOnce;
+      });
+      it('should log error and reject with error message if something happens', async () => {
+        sinon.stub(deviceManager.grpcClient, 'setCnnFeature').rejects(dummyError);
+        autozoomControl.disable().catch(err => {
+          expect(errorStub).to.have.been.calledOnce;
+          expect(err).to.equal(dummyError.message);
+        });
+      });
+    });
+    describe('autozoom is disabled', () => {
+      beforeEach(() => {
+        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(false);
+      });
+      afterEach(() => {
+        isEnabledStub.restore();
+      });
+      it('should not do anything', async () => {
+        // Having neither Logger.error or Logger.info called
+        expect(infoStub).to.have.callCount(0);
+        expect(errorStub).to.have.callCount(0);
+      });
+    });
+  });
+});

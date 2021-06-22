@@ -1,7 +1,6 @@
 import { EventEmitter } from 'events';
 import { TextDecoder } from 'util';
 
-import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import IAutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
 import IDetector from '../../interfaces/IDetector';
 import IDetectorOpts from '../../interfaces/IDetectorOpts';
@@ -14,9 +13,11 @@ import Api from '../api';
 import diagnosticsMessage from '../diagnosticsMessage';
 import Logger from './../../utilitis/logger';
 import Locksmith from './../locksmith';
+import IIpDeviceManager from './../../interfaces/iIpDeviceManager';
 import IDeviceManager from './../../interfaces/iDeviceManager';
 import ICnnControl from '../../interfaces/ICnnControl';
 import AceUpgrader from './../upgrader/aceUpgrader';
+import IpAutozoomControl from '../ipAutozoomControl';
 
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
@@ -45,7 +46,7 @@ export const minMax = {
   },
 };
 
-export default class Ace implements IDeviceManager, IUVCControls {
+export default class Ace implements IIpDeviceManager, IUVCControls {
   transport: IGrpcTransport;
   locksmith: Locksmith;
   productName: string = 'Huddly L1';
@@ -250,8 +251,8 @@ export default class Ace implements IDeviceManager, IUVCControls {
     });
   }
 
-  getAutozoomControl(opts: IAutozoomControlOpts): IAutozoomControl {
-    throw new Error('Method not implemented.');
+  getAutozoomControl(opts: IAutozoomControlOpts): ICnnControl {
+    return new IpAutozoomControl(this, opts);
   }
 
   getFaceBasedExposureControl(): ICnnControl {
