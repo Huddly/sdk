@@ -95,28 +95,20 @@ describe('Boxfish', () => {
       expect(upgrader.start).to.have.been.calledOnce;
     });
 
-    it('should cerate a new upgrader if it fails on first attempt', async () => {
-      await device.initialize();
-      sinon.stub(device.api, 'sendAndReceiveMessagePack').resolves({});
-      sinon.stub(device.api, 'getCameraInfo').resolves({
-        softwareVersion: 'HuddlyIQ-9.9.9',
+    describe('onFailure', () => {
+      let createAndRunUpgradeStub;
+      beforeEach(() => {
+        createAndRunUpgradeStub = sinon.stub(Boxfish.prototype, 'createAndRunUpgrade');
       });
-      try {
-        device.upgrade({
-          file: validBuffer,
-          upgrader,
-        });
-      } catch (e)  {
-        // Will eventually fail which is ok
-      }
-
-      upgrader.emit(CameraEvents.UPGRADE_FAILED, {
-        runAgain: true,
-        deviceManager: device,
+      afterEach(() => {
+        createAndRunUpgradeStub?.restore();
       });
-
-      await new Promise(resolve => setTimeout(resolve, 100));
-      expect(upgrader.start).to.have.been.calledOnce;
+      it('should create a new upgrader if it fails on first attempt', async () => {
+        await device.initialize();
+        createAndRunUpgradeStub.onCall(0).throws({ runAgain: true });
+        createAndRunUpgradeStub.onCall(1).resolves('Second time works for me');
+        return expect(device.upgrade({file: validBuffer, })).to.be.fulfilled;
+      });
     });
   });
 

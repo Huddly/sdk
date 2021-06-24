@@ -535,10 +535,10 @@ describe('Ace', () => {
       expect(arg.getFile()).to.equal(huddly.LogFiles.APP);
     });
     it('should reject error if there is an issue', async () => {
-      dummyTransport.grpcClient.eraseLogFile = (empty: Empty, cb: any) => {
+      dummyTransport.grpcClient.eraseLogFile = (logfile: huddly.LogFile, cb: any) => {
         cb(dummyError, undefined);
       };
-      device.eraseLogFile(logFile).catch(err => expect(err.meessage).to.equal(dummyError.message));
+      device.eraseLogFile(logFile).catch(err => expect(err.message).to.equal(dummyError.message));
     });
   });
   describe('#eraseErrorLog', () => {

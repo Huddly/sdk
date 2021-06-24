@@ -471,14 +471,15 @@ describe('AceUpgrader', () => {
         return expect(upgradeStepPromise).to.eventually.be.rejectedWith('Something went wrong!');
       });
       it('should reject if the read time exceeds 10 seconds', () => {
-        const errMsg = 'Unable to perform upgrade step FLASH within given time of 10 seconds';
-        try {
-          upgrader.performUpgradeStep(UpgradeSteps.FLASH, 'FLASH');
-          clock.tick(10000);
-        } catch (e) {
-          expect(e).to.be.instanceOf(AceUpgraderError);
-          expect(e.message).to.equal(errMsg);
-        }
+        const errMsg = `Unable to perform upgrade step ${UpgradeSteps.FLASH} within given time of 10 seconds`;
+
+        upgrader.performUpgradeStep(UpgradeSteps.FLASH, 'FLASH')
+        .then(() => {
+          expect('This line should not be reached').to.equal('');
+        }).catch((err) => {
+          expect(err).to.equal(errMsg);
+        });
+        clock.tick(10000);
       });
     });
   });
