@@ -18,6 +18,7 @@ import IDeviceManager from './../../interfaces/iDeviceManager';
 import ICnnControl from '../../interfaces/ICnnControl';
 import AceUpgrader from './../upgrader/aceUpgrader';
 import IpAutozoomControl from '../ipAutozoomControl';
+import IpFaceBasedExposureControl from '../ipFaceBasedExposureControl';
 
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
@@ -256,7 +257,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
   }
 
   getFaceBasedExposureControl(): ICnnControl {
-    throw new Error('Method not implemented.');
+    return new IpFaceBasedExposureControl(this);
   }
 
   getDetector(opts: IDetectorOpts): IDetector {
