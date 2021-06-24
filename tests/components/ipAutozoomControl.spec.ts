@@ -4,6 +4,7 @@ import IpAutozoomControl from '../../src/components/ipAutozoomControl';
 import IIPDeviceManager from '../../src/interfaces/iIpDeviceManager';
 import Logger from './../../src/utilitis/logger';
 import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
 describe('IpAutozoomControl', () => {
   let autozoomControl: IpAutozoomControl;
@@ -45,7 +46,11 @@ describe('IpAutozoomControl', () => {
         isEnabledStub.restore();
       });
       it('should enable without issues and log status', async () => {
+        const spy = sinon.spy(deviceManager.grpcClient, 'setCnnFeature');
         await autozoomControl.enable();
+        const arg = spy.firstCall.args[0];
+        expect(arg.getFeature()).to.equal(huddly.Feature.AUTOZOOM);
+        expect(arg.getMode()).to.equal(huddly.Mode.START);
         expect(infoStub).to.have.been.calledOnce;
       });
       it('should log error and reject with error message if something happens', async () => {
@@ -79,7 +84,11 @@ describe('IpAutozoomControl', () => {
         isEnabledStub.restore();
       });
       it('should enable without issues and log status', async () => {
+        const spy = sinon.spy(deviceManager.grpcClient, 'setCnnFeature');
         await autozoomControl.disable();
+        const arg = spy.firstCall.args[0];
+        expect(arg.getFeature()).to.equal(huddly.Feature.AUTOZOOM);
+        expect(arg.getMode()).to.equal(huddly.Mode.STOP);
         expect(infoStub).to.have.been.calledOnce;
       });
       it('should log error and reject with error message if something happens', async () => {
