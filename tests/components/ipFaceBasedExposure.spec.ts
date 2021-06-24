@@ -4,6 +4,7 @@ import IpFaceBasedExposureControl from '../../src/components/ipFaceBasedExposure
 import IIPDeviceManager from '../../src/interfaces/iIpDeviceManager';
 import Logger from './../../src/utilitis/logger';
 import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
 describe('IpFaceBasedExposureControl', () => {
   let fbeControl: IpFaceBasedExposureControl;
@@ -34,7 +35,11 @@ describe('IpFaceBasedExposureControl', () => {
         isEnabledStub.restore();
       });
       it('should enable without issues and log status', async () => {
+        const spy = sinon.spy(deviceManager.grpcClient, 'setCnnFeature');
         await fbeControl.enable();
+        const arg = spy.firstCall.args[0];
+        expect(arg.getFeature()).to.equal(huddly.Feature.FACEBASEDEXPOSURE);
+        expect(arg.getMode()).to.equal(huddly.Mode.START);
         expect(infoStub).to.have.been.calledOnce;
       });
       it('should log error and reject with error message if something happens', async () => {
@@ -68,7 +73,11 @@ describe('IpFaceBasedExposureControl', () => {
         isEnabledStub.restore();
       });
       it('should enable without issues and log status', async () => {
+        const spy = sinon.spy(deviceManager.grpcClient, 'setCnnFeature');
         await fbeControl.disable();
+        const arg = spy.firstCall.args[0];
+        expect(arg.getFeature()).to.equal(huddly.Feature.FACEBASEDEXPOSURE);
+        expect(arg.getMode()).to.equal(huddly.Mode.STOP);
         expect(infoStub).to.have.been.calledOnce;
       });
       it('should log error and reject with error message if something happens', async () => {
