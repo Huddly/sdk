@@ -21,7 +21,7 @@ export default class IpAutozoomControl implements ICnnControl {
         Logger.debug('Enabling Face Based Exposure', IpAutozoomControl.name);
         const cnnFeature = new huddly.CnnFeature();
         cnnFeature.setFeature(huddly.Feature.FACEBASEDEXPOSURE);
-        cnnFeature.setMode(0);
+        cnnFeature.setMode(huddly.Mode.START);
         this._deviceManager.grpcClient.setCnnFeature(
           cnnFeature,
           (err, status: huddly.DeviceStatus) => {
@@ -54,7 +54,7 @@ export default class IpAutozoomControl implements ICnnControl {
         Logger.debug('Stopping Face Based Exposure', IpAutozoomControl.name);
         const cnnFeature = new huddly.CnnFeature();
         cnnFeature.setFeature(huddly.Feature.FACEBASEDEXPOSURE);
-        cnnFeature.setMode(1);
+        cnnFeature.setMode(huddly.Mode.STOP);
         this._deviceManager.grpcClient.setCnnFeature(
           cnnFeature,
           (err, status: huddly.DeviceStatus) => {
