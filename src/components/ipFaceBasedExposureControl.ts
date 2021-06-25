@@ -84,6 +84,6 @@ export default class IpAutozoomControl implements ICnnControl {
     const cnnFeature = new huddly.CnnFeature();
     cnnFeature.setFeature(huddly.Feature.FACEBASEDEXPOSURE);
     const azStatus = await this._deviceManager.getCnnFeatureStatus(cnnFeature);
-    return azStatus.getAzStatus().getAzEnabled();
+    return azStatus.getFbeStatus().getFbeEnabled();
   }
 }
