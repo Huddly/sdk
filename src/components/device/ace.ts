@@ -31,22 +31,6 @@ interface ErrorInterface {
   stack?: String;
 }
 
-export const minMax = {
-  pan: {
-    min: -216000,
-    max: 216000,
-  },
-  tilt: {
-    min: -162000,
-    max: 162000,
-  },
-  zoom: {
-    min: 1000,
-    max: 4000,
-    default: 2127,
-  },
-};
-
 export default class Ace implements IIpDeviceManager, IUVCControls {
   transport: IGrpcTransport;
   locksmith: Locksmith;
@@ -88,7 +72,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
       this.devModeGrpcClient = new HuddlyServiceClient(
         `${this.wsdDevice.ip}:${this.GRPC_PORT}`,
-        grpc.credentials.createInsecure()
+        grpc.ChannelCredentials.createInsecure()
       );
 
       return new Promise<void>((resolve, reject) =>
@@ -121,11 +105,8 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       Logger.error(msg, '', Ace.name);
       reject(msg);
     }
-    if (error.message) {
-      Logger.error(msg, error.message, Ace.name);
-    }
-    if (error.stack) Logger.warn(error.stack.toString(), Ace.name);
 
+    Logger.error(msg, error.stack, Ace.name);
     reject(error.message ? error.message : 'Uknown error');
   }
 
@@ -229,7 +210,6 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
   _getDefaultParams(): Object {
     return {
       suported: true,
-      default: 0,
       resolution: 1,
     };
   }
@@ -465,6 +445,8 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         const brightness = await this.getBrightness();
         const saturation = await this.getSaturation();
         const ptz = await this.getPanTiltZoom();
+        console.log('PTZ IS: ' + JSON.stringify(ptz));
+        console.log('Default zoom is ' +  JSON.stringify(ptz['zoom']));
         resolve({
           brightness,
           saturation,
@@ -497,6 +479,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         const saturation = await this._getSaturation();
         resolve({
           ...this._getDefaultParams(),
+          default: saturation.getDefaultSaturation(),
           value: saturation.getSaturation(),
           min: saturation.getRange().getMin(),
           max: saturation.getRange().getMax(),
@@ -542,6 +525,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         const brightness = await this._getBrightness();
         resolve({
           ...this._getDefaultParams(),
+          default: brightness.getDefaultBrightness(),
           value: brightness.getBrightness(),
           min: brightness.getRange().getMin(),
           max: brightness.getRange().getMax(),
@@ -567,8 +551,65 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
-  resetSettings(excludeList: String[]): Promise<void> {
-    throw new Error('Method not implemented.');
+  resetSettings(excludeList: String[] = []): Promise<any> {
+    // Reset brightness
+    const promises: Array<Promise<any>> = [];
+    if (excludeList.indexOf('brightness') === -1) {
+      promises.push(new Promise((resolve, reject) => {
+        this._getBrightness().then((brightness: huddly.Brightness) => {
+          console.log('Setting brightness to ',  brightness.getDefaultBrightness());
+          this.setBrightness(brightness.getDefaultBrightness())
+          .then(resolve)
+          .catch(e => reject(e));
+        }).catch(e => reject(e));
+      }));
+    }
+
+    if (excludeList.indexOf('saturation') === -1) {
+      promises.push(new Promise((resolve, reject) => {
+        this._getSaturation().then((saturation: huddly.Saturation) => {
+          console.log('Setting saturation to ',  saturation.getDefaultSaturation());
+          this.setSaturation(saturation.getDefaultSaturation()).
+          then(resolve)
+          .catch(e => reject(e));
+        }).catch(e => reject(e));
+      }));
+    }
+
+    if (excludeList.indexOf('pan') === -1) {
+      promises.push(new Promise((resolve, reject) => {
+        this.getSetting('pan').then((pan: Object) => {
+          console.log('Setting pan to ',  pan['default']);
+          this.setPanTiltZoom({ pan:  pan['default'] })
+          .then(resolve)
+          .catch(e => reject(e));
+        }).catch(e => reject(e));
+      }));
+    }
+
+    if (excludeList.indexOf('tilt') === -1) {
+      promises.push(new Promise((resolve, reject) => {
+        this.getSetting('tilt').then((tilt: Object) => {
+          console.log('Setting tilt to ',  tilt['default']);
+          this.setPanTiltZoom({ tilt:  tilt['default'] })
+          .then(resolve)
+          .catch(e => reject(e));
+        }).catch(e => reject(e));
+      }));
+    }
+
+    if (excludeList.indexOf('zoom') === -1) {
+      promises.push(new Promise((resolve, reject) => {
+        this.getSetting('zoom').then((zoom: Object) => {
+          console.log('Setting zoom to ',  zoom['default']);
+          this.setPanTiltZoom({ zoom:  zoom['default'] })
+          .then(resolve)
+          .catch(e => reject(e));
+        }).catch(e => reject(e));
+      }));
+    }
+
+    return Promise.all(promises);
   }
 
   _getPanTiltZoom(): Promise<huddly.PTZ> {
@@ -586,24 +627,30 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     return new Promise(async (resolve, reject) => {
       try {
         const ptz = await this._getPanTiltZoom();
-        resolve({
+        const ptzObj = {
           pan: {
             ...this._getDefaultParams(),
+            default: ptz.getDefaultpan(),
             value: ptz.getPan(),
-            ...minMax['pan'],
+            min: ptz.getRangepan().getMin(),
+            max: ptz.getRangepan().getMax()
           },
           tilt: {
             ...this._getDefaultParams(),
+            default: ptz.getDefaulttilt(),
             value: ptz.getTilt(),
-            ...minMax['tilt'],
+            min: ptz.getRangetilt().getMin(),
+            max: ptz.getRangetilt().getMax()
           },
           zoom: {
             ...this._getDefaultParams(),
+            default: ptz.getDefaultzoom(),
             value: ptz.getZoom(),
-            ...minMax['zoom'],
-            default: 2127,
+            min: ptz.getRangedzoom().getMin(),
+            max: ptz.getRangedzoom().getMax()
           },
-        });
+        };
+        resolve(ptzObj);
       } catch (e) {
         this.handleError('Unable to get ptz values', e, reject);
         return;
