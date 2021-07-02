@@ -555,55 +555,61 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     // Reset brightness
     const promises: Array<Promise<any>> = [];
     if (excludeList.indexOf('brightness') === -1) {
-      promises.push(new Promise((resolve, reject) => {
+      promises.push(new Promise<void>((resolve, reject) => {
         this._getBrightness().then((brightness: huddly.Brightness) => {
           console.log('Setting brightness to ',  brightness.getDefaultBrightness());
-          this.setBrightness(brightness.getDefaultBrightness())
-          .then(resolve)
+          this.setBrightness(brightness.getDefaultBrightness() + 1)
+          .then(() => resolve())
           .catch(e => reject(e));
         }).catch(e => reject(e));
       }));
     }
 
     if (excludeList.indexOf('saturation') === -1) {
-      promises.push(new Promise((resolve, reject) => {
+      promises.push(new Promise<void>((resolve, reject) => {
         this._getSaturation().then((saturation: huddly.Saturation) => {
           console.log('Setting saturation to ',  saturation.getDefaultSaturation());
-          this.setSaturation(saturation.getDefaultSaturation()).
-          then(resolve)
+          this.setSaturation(saturation.getDefaultSaturation())
+          .then(() => resolve())
           .catch(e => reject(e));
         }).catch(e => reject(e));
       }));
     }
 
     if (excludeList.indexOf('pan') === -1) {
-      promises.push(new Promise((resolve, reject) => {
+      promises.push(new Promise<void>((resolve, reject) => {
         this.getSetting('pan').then((pan: Object) => {
           console.log('Setting pan to ',  pan['default']);
           this.setPanTiltZoom({ pan:  pan['default'] })
-          .then(resolve)
+          .then(() => {
+            console.log('Pan setting completed to ' + pan['default'])
+            resolve();
+          })
           .catch(e => reject(e));
         }).catch(e => reject(e));
       }));
     }
 
     if (excludeList.indexOf('tilt') === -1) {
-      promises.push(new Promise((resolve, reject) => {
+      promises.push(new Promise<void>((resolve, reject) => {
         this.getSetting('tilt').then((tilt: Object) => {
           console.log('Setting tilt to ',  tilt['default']);
           this.setPanTiltZoom({ tilt:  tilt['default'] })
-          .then(resolve)
+          .then(() => resolve())
           .catch(e => reject(e));
         }).catch(e => reject(e));
       }));
     }
 
     if (excludeList.indexOf('zoom') === -1) {
-      promises.push(new Promise((resolve, reject) => {
+      promises.push(new Promise<void>((resolve, reject) => {
         this.getSetting('zoom').then((zoom: Object) => {
           console.log('Setting zoom to ',  zoom['default']);
-          this.setPanTiltZoom({ zoom:  zoom['default'] })
-          .then(resolve)
+          this.setPanTiltZoom({ dzoom:  zoom['default'], zoom:  zoom['default'] })
+          .then(() => {
+            console.log('Zoom setting completed to ' + zoom['default'])
+            resolve();
+          })
           .catch(e => reject(e));
         }).catch(e => reject(e));
       }));
@@ -685,28 +691,21 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
   }
 
   setPanTiltZoom(panTiltZoom: Object): Promise<void> {
-    let ptz: huddly.PTZ;
+    const ptz: huddly.PTZ = new huddly.PTZ();
     return new Promise(async (resolve, reject) => {
-      try {
-        ptz = await this._getPanTiltZoom();
-      } catch (e) {
-        ptz = new huddly.PTZ();
-        ptz.setTrans(0);
-        Logger.error('Unable to get PTZ values from camera', e, 'L1 API');
-      } finally {
-        const paramKeys = Object.keys(panTiltZoom);
-        if (paramKeys.includes('pan')) ptz.setPan(panTiltZoom['pan']);
-        if (paramKeys.includes('tilt')) ptz.setTilt(panTiltZoom['tilt']);
-        if (paramKeys.includes('zoom')) ptz.setZoom(panTiltZoom['zoom']);
-        this.grpcClient.setPTZ(ptz, (err, status: huddly.DeviceStatus) => {
-          if (err != undefined) {
-            this.handleError('Unable to set PTZ values!', err, reject);
-            return;
-          }
-          Logger.info(status.toString());
-        });
+      ptz.setPan(panTiltZoom['pan']);
+      ptz.setTilt(panTiltZoom['tilt']);
+      ptz.setZoom(panTiltZoom['zoom']);
+      ptz.setTrans(0);
+      this.grpcClient.setPTZ(ptz, (err, status: huddly.DeviceStatus) => {
+        if (err != undefined) {
+          this.handleError('Unable to set PTZ values!', err, reject);
+          reject(err);
+          return;
+        }
+        Logger.info(status.toString());
         resolve();
-      }
+      });
     });
   }
 
