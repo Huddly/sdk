@@ -62,11 +62,14 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     this.transport = transport;
     this.locksmith = new Locksmith();
     this.discoveryEmitter = cameraDiscoveryEmitter;
-    Object.assign(this, wsdDevice);
+
+    const { equals, ...wsdDeviceProps } = wsdDevice; // Copy all wsdDevice props except "equals"
+    Object.assign(this, wsdDeviceProps);
   }
 
   async initialize(developmentMode: boolean = false): Promise<void> {
     if (developmentMode) {
+      this.devMode = true;
       Logger.debug('Initializing ACE in development mode!', Ace.name);
       const deadline = new Date();
       deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
@@ -90,7 +93,6 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         })
       );
     }
-
     Logger.debug('Ace will run in production mode', Ace.name);
     return Promise.resolve();
   }
@@ -104,10 +106,11 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     if (!error) {
       Logger.error(msg, '', Ace.name);
       reject(msg);
+      return;
     }
 
     Logger.error(msg, error.stack, Ace.name);
-    reject(error.message ? error.message : 'Uknown error');
+    reject(error.message ? error.message : 'Unknown error');
   }
 
   getInfo(): Promise<any> {
@@ -445,8 +448,6 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         const brightness = await this.getBrightness();
         const saturation = await this.getSaturation();
         const ptz = await this.getPanTiltZoom();
-        console.log('PTZ IS: ' + JSON.stringify(ptz));
-        console.log('Default zoom is ' +  JSON.stringify(ptz['zoom']));
         resolve({
           brightness,
           saturation,
@@ -557,8 +558,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     if (excludeList.indexOf('brightness') === -1) {
       promises.push(new Promise<void>((resolve, reject) => {
         this._getBrightness().then((brightness: huddly.Brightness) => {
-          console.log('Setting brightness to ',  brightness.getDefaultBrightness());
-          this.setBrightness(brightness.getDefaultBrightness() + 1)
+          this.setBrightness(brightness.getDefaultBrightness())
           .then(() => resolve())
           .catch(e => reject(e));
         }).catch(e => reject(e));
@@ -568,7 +568,6 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     if (excludeList.indexOf('saturation') === -1) {
       promises.push(new Promise<void>((resolve, reject) => {
         this._getSaturation().then((saturation: huddly.Saturation) => {
-          console.log('Setting saturation to ',  saturation.getDefaultSaturation());
           this.setSaturation(saturation.getDefaultSaturation())
           .then(() => resolve())
           .catch(e => reject(e));
@@ -579,12 +578,8 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     if (excludeList.indexOf('pan') === -1) {
       promises.push(new Promise<void>((resolve, reject) => {
         this.getSetting('pan').then((pan: Object) => {
-          console.log('Setting pan to ',  pan['default']);
           this.setPanTiltZoom({ pan:  pan['default'] })
-          .then(() => {
-            console.log('Pan setting completed to ' + pan['default'])
-            resolve();
-          })
+          .then(() => resolve())
           .catch(e => reject(e));
         }).catch(e => reject(e));
       }));
@@ -593,7 +588,6 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     if (excludeList.indexOf('tilt') === -1) {
       promises.push(new Promise<void>((resolve, reject) => {
         this.getSetting('tilt').then((tilt: Object) => {
-          console.log('Setting tilt to ',  tilt['default']);
           this.setPanTiltZoom({ tilt:  tilt['default'] })
           .then(() => resolve())
           .catch(e => reject(e));
@@ -604,12 +598,8 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     if (excludeList.indexOf('zoom') === -1) {
       promises.push(new Promise<void>((resolve, reject) => {
         this.getSetting('zoom').then((zoom: Object) => {
-          console.log('Setting zoom to ',  zoom['default']);
-          this.setPanTiltZoom({ dzoom:  zoom['default'], zoom:  zoom['default'] })
-          .then(() => {
-            console.log('Zoom setting completed to ' + zoom['default'])
-            resolve();
-          })
+          this.setPanTiltZoom({ zoom:  zoom['default'] })
+          .then(() => resolve())
           .catch(e => reject(e));
         }).catch(e => reject(e));
       }));
