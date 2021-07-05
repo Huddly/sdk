@@ -10,7 +10,12 @@ import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import Ace from './../../../src/components/device/ace';
+import Boxfish from './../../../src/components/device/boxfish';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+import AceUpgrader from './../../../src/components/upgrader/aceUpgrader';
+import IpAutozoomControl from './../../../src/components/ipAutozoomControl';
+import IpFaceBasedExposureControl from './../../../src/components/ipFaceBasedExposureControl';
+import ReleaseChannel from './../../../src/interfaces/ReleaseChannelEnum';
 
 chai.should();
 chai.use(sinonChai);
@@ -32,8 +37,19 @@ brightnessDummy.setRange(dummyRange);
 
 const ptzDummy = new huddly.PTZ();
 ptzDummy.setPan(1);
+ptzDummy.setDefaultpan(0);
+const customRange = new huddly.Range();
+customRange.setMax(100);
+customRange.setMin(-100);
+ptzDummy.setRangepan(customRange);
 ptzDummy.setTilt(2);
+ptzDummy.setDefaulttilt(0);
+ptzDummy.setRangetilt(customRange);
 ptzDummy.setZoom(3);
+ptzDummy.setDefaultzoom(0);
+ptzDummy.setRangezoom(customRange);
+ptzDummy.setRangedzoom(customRange);
+
 
 const tempDummy1 = new huddly.Temperature();
 tempDummy1.setName('temp1');
@@ -82,22 +98,21 @@ class DummyTransport extends EventEmitter implements IGrpcTransport {
     getCnnFeatureStatus: (empty: Empty, cb: any) => {
       cb(undefined, cnnStatusDummy);
     },
+    close: () => {}
   };
   overrideGrpcClient(client: HuddlyServiceClient): void {
-    throw new Error('Method not implemented.');
+    // Ignore call
   }
   init(): Promise<void> {
     throw new Error('Method not implemented.');
   }
   close(): Promise<void> {
-    throw new Error('Method not implemented.');
+    return Promise.resolve();
   }
 }
 
 describe('Ace', () => {
-  const dummyError = {
-    message: 'Error',
-  };
+  const dummyError = { message: 'Bad', stack: 'Line33' };
 
   let device: Ace;
   const dummyTransport = new DummyTransport();
@@ -116,6 +131,177 @@ describe('Ace', () => {
     warnStub.restore();
     errorStub.restore();
     infoStub.restore();
+  });
+
+  describe('getters', () => {
+    describe('api', () => {
+      it('Ace manager should not support legacy API object', () => {
+        const badFn = () => { device.api; };
+        expect(badFn).to.throw(Error, 'Not Supported');
+      });
+    });
+    describe('uvcControlInterface', () => {
+      it('Ace manager should not support uvcControlInterface getter', () => {
+        const badFn = () => { device.uvcControlInterface; };
+        expect(badFn).to.throw(Error, 'Not Supported');
+      });
+    });
+
+    describe('grpcClient', () => {
+      let waitForReadyStub;
+      let overrideClientSpy;
+      afterEach(() => {
+        waitForReadyStub?.restore();
+        overrideClientSpy?.restore();
+      });
+
+      it('should return development grpc client when in development mode', async () => {
+        waitForReadyStub = sinon
+          .stub(HuddlyServiceClient.prototype, 'waitForReady')
+          .callsFake((deadline, cb) => {
+            cb(undefined);
+          });
+        overrideClientSpy = sinon.spy(DummyTransport.prototype, 'overrideGrpcClient');
+        await device.initialize(true);
+        const client = device.grpcClient;
+        expect(client).to.not.be.undefined;
+        expect(overrideClientSpy.called).to.equal(true);
+      });
+      it('should return transport grpc client implementation when not in dev mode', () => {
+        const client = device.grpcClient;
+        expect(client).to.deep.equal(dummyTransport.grpcClient);
+      });
+    });
+  });
+
+  describe('#initialize', () => {
+    describe('devMode = True', () => {
+      let waitForReadyStub;
+      afterEach(() => {
+        waitForReadyStub?.restore();
+      });
+      it('should resolve when grpcclinet connects successfully', () => {
+        waitForReadyStub = sinon
+          .stub(HuddlyServiceClient.prototype, 'waitForReady')
+          .callsFake((deadline, cb) => {
+            cb(undefined);
+          });
+        const initPromise = device.initialize(true);
+        return expect(initPromise).to.be.fulfilled;
+      });
+      it('should reject when grpc client is unable to connect', () => {
+        waitForReadyStub = sinon
+          .stub(HuddlyServiceClient.prototype, 'waitForReady')
+          .callsFake((deadline, cb) => {
+            cb('Uuups, could not connect!');
+          });
+        const initPromise = device.initialize(true);
+        return expect(initPromise).to.eventually.be.rejectedWith('Uuups, could not connect!');
+      });
+    });
+    describe('devMode = False', () => {
+      it('should just resolve', async () => {
+        const initPromise = device.initialize();
+        return expect(initPromise).to.be.fulfilled;
+      });
+    });
+  });
+
+  describe('#closeConnection', () => {
+    let grpcCloseSpy;
+    let transportCloseSpy;
+    beforeEach(() => {
+      grpcCloseSpy = sinon.spy(dummyTransport.grpcClient, 'close');
+      transportCloseSpy = sinon.spy(dummyTransport, 'close');
+    });
+    afterEach(() => {
+      grpcCloseSpy.restore();
+      transportCloseSpy.restore();
+    });
+    it('should close grpc client and transport', () => {
+      device.closeConnection();
+      expect(grpcCloseSpy.called).to.equal(true);
+      expect(transportCloseSpy.called).to.equal(true);
+    });
+  });
+
+  describe('#handleError', () => {
+    it('should reject with message when error not provided', () => {
+      const spy = sinon.spy();
+      device.handleError('Hello World', undefined, spy);
+      expect(spy.called).to.equal(true);
+      expect(spy.getCall(0).args[0]).to.equal('Hello World');
+    });
+    it('should reject error message when error provided', () => {
+      const spy = sinon.spy();
+      device.handleError('Hello World', new Error('Something fishy'), spy);
+      expect(spy.called).to.equal(true);
+      expect(spy.getCall(0).args[0]).to.equal('Something fishy');
+    });
+    it('should reject with unknown message when error message is not given', () => {
+      const spy = sinon.spy();
+      device.handleError('Hello World', new Error(), spy);
+      expect(spy.called).to.equal(true);
+      expect(spy.getCall(0).args[0]).to.equal('Unknown error');
+    });
+  });
+
+  describe('#getInfo', () => {
+    describe('on success', () => {
+      it('should return available device information', async () => {
+        const wsddDeviceObj = {
+          infoObject: () => {
+            return {
+              name: 'L1',
+              serial: '1234HA',
+              mac: 'AA:BB:CC:DD:EE'
+            };
+          }
+        };
+        device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
+        dummyTransport.grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
+          const deviceVersion = new huddly.DeviceVersion();
+          deviceVersion.setVersion('1.2.3-abc');
+          cb(undefined, deviceVersion);
+        };
+        sinon.stub(device, 'getUptime').resolves(123);
+        sinon.stub(device, 'getSlot').resolves('C');
+        const info = await device.getInfo();
+        expect(info).to.deep.equal({
+          ...wsddDeviceObj.infoObject(),
+          slot: 'C',
+          uptime: 123,
+          version: '1.2.3-abc'
+        });
+      });
+    });
+    describe('on Error', () => {
+      it('should reject when device version cant be fetched', () => {
+        const wsddDeviceObj = {
+          infoObject: () => {}
+        };
+        device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
+        dummyTransport.grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
+          cb(dummyError);
+        };
+        const infoPromise = device.getInfo();
+        return expect(infoPromise).to.eventually.be.rejectedWith(dummyError.message);
+      });
+      it('should reject when device uptime cant be fetched', () => {
+        const wsddDeviceObj = {
+          infoObject: () => {}
+        };
+        device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
+        dummyTransport.grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
+          const deviceVersion = new huddly.DeviceVersion();
+          deviceVersion.setVersion('1.2.3-abc');
+          cb(undefined, deviceVersion);
+        };
+        sinon.stub(device, 'getUptime').rejects(dummyError);
+        const infoPromise = device.getInfo();
+        return expect(infoPromise).to.eventually.be.rejectedWith(dummyError.message);
+      });
+    });
   });
 
   describe('#_getTemperatures', () => {
@@ -240,10 +426,10 @@ describe('Ace', () => {
       expect(arg.getBrightness()).to.equal(5);
     });
     it('should handle error if there is an issue', async () => {
-      dummyTransport.grpcClient.setSaturation = (empty: Empty, cb: any) => {
+      dummyTransport.grpcClient.setBrightness = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      device.setSaturation(10).catch(err => expect(err).to.equal(dummyError.message));
+      device.setBrightness(10).catch(err => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#_getBrightness', () => {
@@ -345,31 +531,33 @@ describe('Ace', () => {
       device._getPanTiltZoom().catch(err => expect(err).to.equal('error'));
     });
   });
-  // describe('#getPanTiltZoom', () => {
-  //   it('should return an object containing ptz values with correct ranges', async () => {
-  //     sinon.stub(device, '_getPanTiltZoom').resolves(ptzDummy);
-  //     const ptz = await device.getPanTiltZoom();
+  describe('#getPanTiltZoom', () => {
+    it('should return an object containing ptz values with correct ranges', async () => {
+      sinon.stub(device, '_getPanTiltZoom').resolves(ptzDummy);
+      const ptz = await device.getPanTiltZoom();
+      expect(ptz['pan']['value']).to.equal(ptzDummy.getPan());
+      expect(ptz['pan']['max']).to.equal(ptzDummy.getRangepan().getMax());
+      expect(ptz['pan']['min']).to.equal(ptzDummy.getRangepan().getMin());
+      expect(ptz['pan']['default']).to.equal(ptzDummy.getDefaultpan());
 
-  //     expect(ptz['pan']['value']).to.equal(ptzDummy.getPan());
-  //     expect(ptz['pan']['max']).to.equal(minMax['pan']['max']);
-  //     expect(ptz['pan']['min']).to.equal(minMax['pan']['min']);
+      expect(ptz['zoom']['value']).to.equal(ptzDummy.getZoom());
+      expect(ptz['zoom']['max']).to.equal(ptzDummy.getRangezoom().getMax());
+      expect(ptz['zoom']['min']).to.equal(ptzDummy.getRangezoom().getMin());
+      expect(ptz['zoom']['default']).to.equal(ptzDummy.getDefaultzoom());
 
-  //     expect(ptz['zoom']['value']).to.equal(ptzDummy.getZoom());
-  //     expect(ptz['zoom']['max']).to.equal(minMax['zoom']['max']);
-  //     expect(ptz['zoom']['min']).to.equal(minMax['zoom']['min']);
-
-  //     expect(ptz['tilt']['value']).to.equal(ptzDummy.getTilt());
-  //     expect(ptz['tilt']['max']).to.equal(minMax['tilt']['max']);
-  //     expect(ptz['tilt']['min']).to.equal(minMax['tilt']['min']);
-  //   });
-  //   it('should handle error and reject with error message if something happens', async () => {
-  //     sinon.stub(device, '_getPanTiltZoom').rejects(dummyError);
-  //     device.getPanTiltZoom().catch(err => {
-  //       expect(err).to.equal(dummyError.message);
-  //       expect(device.handleError).to.have.been.calledOnce;
-  //     });
-  //   });
-  // });
+      expect(ptz['tilt']['value']).to.equal(ptzDummy.getTilt());
+      expect(ptz['tilt']['max']).to.equal(ptzDummy.getRangetilt().getMax());
+      expect(ptz['tilt']['min']).to.equal(ptzDummy.getRangetilt().getMin());
+      expect(ptz['tilt']['default']).to.equal(ptzDummy.getDefaulttilt());
+    });
+    it('should handle error and reject with error message if something happens', async () => {
+      sinon.stub(device, '_getPanTiltZoom').rejects(dummyError);
+      device.getPanTiltZoom().catch(err => {
+        expect(err).to.equal(dummyError.message);
+        expect(device.handleError).to.have.been.calledOnce;
+      });
+    });
+  });
   describe('#getPanTilt', () => {
     it('should return an object containing pan tilt values', async () => {
       sinon.stub(device, '_getPanTiltZoom').resolves(ptzDummy);
@@ -554,6 +742,386 @@ describe('Ace', () => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
+    });
+  });
+
+  describe('#reboot', () => {
+    describe('on success', () => {
+      it('should request device reboot', () => {
+        dummyTransport.grpcClient.reset = (empty: Empty, cb: any) => {
+          const deviceStatus = new huddly.DeviceStatus();
+          deviceStatus.setCode(huddly.StatusCode.OK);
+          deviceStatus.setMessage('All Good');
+          cb(undefined, deviceStatus);
+        };
+        const resetPromise = device.reboot();
+        return expect(resetPromise).to.be.fulfilled;
+      });
+    });
+    describe('on error', () => {
+      it('should reject when device cannot be rebooted', () => {
+        dummyTransport.grpcClient.reset = (empty: Empty, cb: any) => {
+          cb(dummyError);
+        };
+        const resetPromise = device.reboot();
+        expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+      });
+    });
+  });
+
+  describe('#getUpgrader', () => {
+    it('should return an instance of the AceUpgrader', async () => {
+      const upgrader = await device.getUpgrader();
+      expect(upgrader).to.be.instanceOf(AceUpgrader);
+    });
+  });
+
+  describe('#upgrade', () => {
+    let upgraderStub;
+    let getUpgradeStub;
+    beforeEach(() => {
+      upgraderStub = sinon.createStubInstance(AceUpgrader);
+    });
+    afterEach(() => {
+      getUpgradeStub?.restore();
+    });
+    it('should resolve when upgrade completes', () => {
+      upgraderStub.init.resolves();
+      upgraderStub.doUpgrade.resolves();
+      getUpgradeStub = sinon.stub(device, 'getUpgrader').resolves(upgraderStub);
+      const upgradePromise = device.upgrade({file: Buffer.alloc(0)});
+      return expect(upgradePromise).to.be.fulfilled;
+    });
+    it('should reject when upgrade fails', () => {
+      upgraderStub.init.resolves();
+      getUpgradeStub = sinon.stub(device, 'getUpgrader').resolves(upgraderStub);
+      upgraderStub.doUpgrade.rejects(dummyError);
+      const upgradePromise = device.upgrade({file: Buffer.alloc(0)});
+      return expect(upgradePromise).to.eventually.be.rejectedWith(dummyError.message);
+    });
+    it('should reject when we cant get upgrader instance', () => {
+      getUpgradeStub = sinon.stub(device, 'getUpgrader').rejects(dummyError);
+      const upgradePromise = device.upgrade({file: Buffer.alloc(0)});
+      return expect(upgradePromise).to.eventually.be.rejectedWith(dummyError.message);
+    });
+  });
+
+  describe('#getAutozoomControl', () => {
+    it('should return an instance of IpAutozoomControl', () => {
+      const AzControl = device.getAutozoomControl({});
+      expect(AzControl).to.be.instanceOf(IpAutozoomControl);
+    });
+  });
+  describe('#getFaceBasedExposureControl', () => {
+    it('should return an instance of IpFaceBasedExposureControl', () => {
+      const fbeCtrl = device.getFaceBasedExposureControl();
+      expect(fbeCtrl).to.be.instanceOf(IpFaceBasedExposureControl);
+    });
+  });
+  describe('#getDetector', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.getDetector({}); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#getDiagnostics', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.getDiagnostics(); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#getPowerUsage', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.getPowerUsage(); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#getLatestFirmwareUrl', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.getLatestFirmwareUrl(ReleaseChannel.STABLE); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#getSlot', () => {
+    describe('on success', () => {
+      it('should request device slot', () => {
+        dummyTransport.grpcClient.getBootSlot = (empty: Empty, cb: any) => {
+          const bootSlot = new huddly.BootSlot();
+          bootSlot.setSlot(huddly.Slot.A);
+          cb(undefined, bootSlot);
+        };
+        const resetPromise = device.getSlot();
+        return expect(resetPromise).to.be.fulfilled;
+      });
+    });
+    describe('on error', () => {
+      it('should reject when device slot cannot be fetched', () => {
+        dummyTransport.grpcClient.getBootSlot = (empty: Empty, cb: any) => {
+          cb(dummyError);
+        };
+        const resetPromise = device.getSlot();
+        expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+      });
+    });
+  });
+  describe('#getUptime', () => {
+    describe('on success', () => {
+      it('should request device uptime', () => {
+        dummyTransport.grpcClient.getUptime = (empty: Empty, cb: any) => {
+          const uptime = new huddly.Uptime();
+          uptime.setUptime(200);
+          cb(undefined, uptime);
+        };
+        const resetPromise = device.getUptime();
+        return expect(resetPromise).to.be.fulfilled;
+      });
+    });
+    describe('on error', () => {
+      it('should reject when device uptime cannot be fetched', () => {
+        dummyTransport.grpcClient.getUptime = (empty: Empty, cb: any) => {
+          cb(dummyError);
+        };
+        const resetPromise = device.getUptime();
+        expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+      });
+    });
+  });
+  describe('#getXUControl', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.getXUControl(0); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#setXUControl', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.setXUControl(0, 0); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#resetSettings', () => {
+    let getBrightnessStub;
+    let getSaturationStub;
+    let getSettingStub;
+    let setBrightnessStub;
+    let setSaturationStub;
+    let setSettingStub;
+
+    beforeEach(() => {
+      getBrightnessStub = sinon.stub(device, '_getBrightness');
+      getSaturationStub = sinon.stub(device, '_getSaturation');
+      getSettingStub = sinon.stub(device, 'getSetting');
+      setBrightnessStub = sinon.stub(device, 'setBrightness');
+      setSaturationStub = sinon.stub(device, 'setSaturation');
+      setSettingStub = sinon.stub(device, 'setPanTiltZoom');
+    });
+    afterEach(() => {
+      getBrightnessStub?.restore();
+      getSaturationStub?.restore();
+      getSettingStub?.restore();
+      setBrightnessStub?.restore();
+      setSaturationStub?.restore();
+      setSettingStub?.restore();
+
+    });
+    describe('on succeess', () => {
+      it('should reset brightness, saturation and ptz', async () => {
+        const brightness = new huddly.Brightness();
+        brightness.setDefaultBrightness(100);
+        const saturation = new huddly.Saturation();
+        saturation.setDefaultSaturation(200);
+        getBrightnessStub.resolves(brightness);
+        getSaturationStub.resolves(saturation);
+        getSettingStub.withArgs('pan').resolves({'default': 150});
+        getSettingStub.withArgs('tilt').resolves({'default': -150});
+        getSettingStub.withArgs('zoom').resolves({'default': 250});
+        setBrightnessStub.resolves();
+        setSaturationStub.resolves();
+        setSettingStub.resolves();
+
+        await device.resetSettings();
+
+        expect(setBrightnessStub.getCall(0).args[0]).to.equal(100);
+        expect(setSaturationStub.getCall(0).args[0]).to.equal(200);
+        expect(setSettingStub.getCall(0).args[0]).to.deep.equal({ pan: 150 });
+        expect(setSettingStub.getCall(1).args[0]).to.deep.equal({ tilt: -150 });
+        expect(setSettingStub.getCall(2).args[0]).to.deep.equal({ zoom: 250 });
+      });
+      it('should reset only brightness', async () => {
+        const brightness = new huddly.Brightness();
+        brightness.setDefaultBrightness(100);
+        getBrightnessStub.resolves(brightness);
+        setBrightnessStub.resolves();
+        setSaturationStub.resolves();
+        setSettingStub.resolves();
+
+        await device.resetSettings(['saturation', 'pan', 'tilt', 'zoom']);
+        expect(setBrightnessStub.getCall(0).args[0]).to.equal(100);
+        expect(setSaturationStub.called).to.equal(false);
+        expect(setSettingStub.called).to.equal(false);
+      });
+      it('should reset only saturation', async () => {
+        const saturation = new huddly.Saturation();
+        saturation.setDefaultSaturation(200);
+        getSaturationStub.resolves(saturation);
+        setBrightnessStub.resolves();
+        setSaturationStub.resolves();
+        setSettingStub.resolves();
+
+        await device.resetSettings(['brightness', 'pan', 'tilt', 'zoom']);
+        expect(setSaturationStub.getCall(0).args[0]).to.equal(200);
+        expect(setBrightnessStub.called).to.equal(false);
+        expect(setSettingStub.called).to.equal(false);
+      });
+      it('should reset only ptz', async () => {
+        getSettingStub.withArgs('pan').resolves({'default': 150});
+        getSettingStub.withArgs('tilt').resolves({'default': -150});
+        getSettingStub.withArgs('zoom').resolves({'default': 250});
+        setBrightnessStub.resolves();
+        setSaturationStub.resolves();
+        setSettingStub.resolves();
+
+        await device.resetSettings(['brightness', 'saturation']);
+
+        expect(setSettingStub.getCall(0).args[0]).to.deep.equal({ pan: 150 });
+        expect(setSettingStub.getCall(1).args[0]).to.deep.equal({ tilt: -150 });
+        expect(setSettingStub.getCall(2).args[0]).to.deep.equal({ zoom: 250 });
+        expect(setBrightnessStub.called).to.equal(false);
+        expect(setSaturationStub.called).to.equal(false);
+      });
+    });
+    describe('on error', () => {
+      describe('brightness', () => {
+        it('should reject when get brightness fails', () => {
+          getBrightnessStub.rejects(dummyError);
+          const resetPromise = device.resetSettings(['saturation', 'pan', 'tilt', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+        it('should reject when set brightness fails', () => {
+          const brightness = new huddly.Brightness();
+          brightness.setDefaultBrightness(100);
+          getBrightnessStub.resolves(brightness);
+          setBrightnessStub.rejects(dummyError);
+          const resetPromise = device.resetSettings(['saturation', 'pan', 'tilt', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+      });
+      describe('saturation', () => {
+        it('should reject when get saturation fails', () => {
+          getSaturationStub.rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'pan', 'tilt', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+        it('should reject when set brightness fails', () => {
+          const saturation = new huddly.Saturation();
+          saturation.setDefaultSaturation(200);
+          getSaturationStub.resolves(saturation);
+          setSaturationStub.rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'pan', 'tilt', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+      });
+      describe('pan', () => {
+        it('should reject when get pan setting fails', () => {
+          getSettingStub.withArgs('pan').rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'saturation', 'tilt', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+        it('should reject when set pan setting fails', () => {
+          getSettingStub.withArgs('pan').resolves({'default': 150});
+          setSettingStub.rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'saturation', 'tilt', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+      });
+      describe('tilt', () => {
+        it('should reject when get tilt setting fails', () => {
+          getSettingStub.withArgs('tilt').rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'saturation', 'pan', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+        it('should reject when set tilt setting fails', () => {
+          getSettingStub.withArgs('tilt').resolves({'default': 150});
+          setSettingStub.rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'saturation', 'pan', 'zoom']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+      });
+      describe('zoom', () => {
+        it('should reject when get zoom setting fails', () => {
+          getSettingStub.withArgs('zoom').rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'saturation', 'pan', 'tilt']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+        it('should reject when set zoom setting fails', () => {
+          getSettingStub.withArgs('zoom').resolves({'default': 150});
+          setSettingStub.rejects(dummyError);
+          const resetPromise = device.resetSettings(['brightness', 'saturation', 'pan', 'tilt']);
+          return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
+        });
+      });
+    });
+  });
+  describe('#setPanTilt', () => {
+    let setPanTiltZoomStub;
+    afterEach(() => {
+      setPanTiltZoomStub?.restore();
+    });
+    describe('on success', () => {
+      it('should set pan tilt zoom values on device', () => {
+        setPanTiltZoomStub = sinon.stub(device, 'setPanTiltZoom').resolves();
+        const promise = device.setPanTilt({});
+        return expect(promise).to.be.fulfilled;
+      });
+    });
+    describe('on error', () => {
+      it('should reject when device uptime cannot be fetched', () => {
+        setPanTiltZoomStub = sinon.stub(device, 'setPanTiltZoom').rejects(dummyError);
+        const promise = device.setPanTilt({});
+        expect(promise).to.eventually.be.rejectedWith(dummyError.message);
+      });
+    });
+  });
+
+  describe('#usbReEnumerate', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.usbReEnumerate(); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#isAlive', () => {
+    it('should not be implemented', () => {
+      const badFn = () => { device.isAlive(); };
+      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    });
+  });
+  describe('#equals', () => {
+    const wsddDeviceObj = {
+      infoObject: () => {
+        return {
+          name: 'L1',
+          serial: '1234HA',
+          mac: 'AA:BB:CC:DD:EE'
+        };
+      },
+      equals: () => { return true; }
+    };
+
+    it('should be equals when testing same device instance', () => {
+      device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
+      expect(device.equals(device)).to.equal(true);
+    });
+    it('should not be equals when testing different device instances', () => {
+      device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
+      const newDeviceStub = sinon.createStubInstance(Ace);
+      newDeviceStub.wsdDevice = {
+        equals: () => { return false; }
+      };
+      expect(device.equals(newDeviceStub)).to.equal(false);
+    });
+    it('should not be equals when testing a non-ace instance', () => {
+      device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
+      const boxfishStub = sinon.createStubInstance(Boxfish);
+      expect(device.equals(boxfishStub)).to.equal(false);
     });
   });
 });
