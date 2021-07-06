@@ -460,59 +460,110 @@ describe('Ace', () => {
     });
   });
   describe('#setPanTiltZoom', () => {
+    let getPtzStub;
+    let setPtzSpy;
     beforeEach(() => {
-      sinon.stub(device, '_getPanTiltZoom').resolves(ptzDummy);
+      getPtzStub = sinon.stub(device, '_getPanTiltZoom');
+      setPtzSpy = sinon.spy(dummyTransport.grpcClient, 'setPTZ');
     });
-    it('should attempt to set ptz values with correct type and log status appropriately', async () => {
-      sinon.spy(dummyTransport.grpcClient, 'setPTZ');
-      await device.setPanTiltZoom({
-        pan: 1,
-        tilt: 2,
-        zoom: 3,
+    afterEach(() => {
+      getPtzStub.restore();
+      setPtzSpy.restore();
+    });
+
+    describe('on getPTZ Success', () => {
+      it('should update pan and use rest from current ptz data', async () => {
+        getPtzStub.resolves(ptzDummy);
+        const data = { pan: 12 };
+        await device.setPanTiltZoom(data);
+
+        expect(getPtzStub.called).to.equal(true);
+        expect(setPtzSpy.callCount).to.equal(1);
+        const sentPtzObj = setPtzSpy.getCall(0).args[0];
+        expect(sentPtzObj).to.be.instanceof(huddly.PTZ);
+        expect((<huddly.PTZ>sentPtzObj).getPan()).to.equal(data.pan);
+        expect((<huddly.PTZ>sentPtzObj).getTilt()).to.equal(ptzDummy.getTilt());
+        expect((<huddly.PTZ>sentPtzObj).getZoom()).to.equal(ptzDummy.getZoom());
       });
-      expect(dummyTransport.grpcClient.setPTZ).to.be.called;
-      expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
-      expect(Logger.info).to.have.been.calledOnce;
+      it('should update tilt and use rest from current ptz data', async () => {
+        getPtzStub.resolves(ptzDummy);
+        const data = { tilt: 25 };
+        await device.setPanTiltZoom(data);
+
+        expect(getPtzStub.called).to.equal(true);
+        expect(setPtzSpy.callCount).to.equal(1);
+        const sentPtzObj = setPtzSpy.getCall(0).args[0];
+        expect(sentPtzObj).to.be.instanceof(huddly.PTZ);
+        expect((<huddly.PTZ>sentPtzObj).getTilt()).to.equal(data.tilt);
+        expect((<huddly.PTZ>sentPtzObj).getPan()).to.equal(ptzDummy.getPan());
+        expect((<huddly.PTZ>sentPtzObj).getZoom()).to.equal(ptzDummy.getZoom());
+      });
+      it('should update zoom and use rest from current ptz data', async () => {
+        getPtzStub.resolves(ptzDummy);
+        const data = { zoom: 1200 };
+        await device.setPanTiltZoom(data);
+
+        expect(getPtzStub.called).to.equal(true);
+        expect(setPtzSpy.callCount).to.equal(1);
+        const sentPtzObj = setPtzSpy.getCall(0).args[0];
+        expect(sentPtzObj).to.be.instanceof(huddly.PTZ);
+        expect((<huddly.PTZ>sentPtzObj).getZoom()).to.equal(data.zoom);
+        expect((<huddly.PTZ>sentPtzObj).getTilt()).to.equal(ptzDummy.getTilt());
+        expect((<huddly.PTZ>sentPtzObj).getPan()).to.equal(ptzDummy.getPan());
+      });
     });
-    it('should handle error if there is an issue', async () => {
-      dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
-        cb(dummyError, undefined);
-      };
-      device
-        .setPanTiltZoom({ pan: 1 })
-        .then()
-        .catch(err => {
-          expect(err).to.equal(dummyError.message);
-          expect(device.handleError).to.have.been.calledOnce;
-        });
+    describe('on getPTZ Failure', () => {
+      it('should update pan and use defalt values for rest of ptz data', async () => {
+        getPtzStub.rejects('Cant perform this action');
+        const data = { pan: 10 };
+        await device.setPanTiltZoom(data);
+
+        expect(getPtzStub.called).to.equal(true);
+        expect(setPtzSpy.callCount).to.equal(1);
+        const sentPtzObj = setPtzSpy.getCall(0).args[0];
+        expect(sentPtzObj).to.be.instanceof(huddly.PTZ);
+        expect((<huddly.PTZ>sentPtzObj).getPan()).to.equal(data.pan);
+        expect((<huddly.PTZ>sentPtzObj).getTilt()).to.equal(new huddly.PTZ().getDefaulttilt());
+        expect((<huddly.PTZ>sentPtzObj).getZoom()).to.equal(new huddly.PTZ().getDefaultzoom());
+        expect((<huddly.PTZ>sentPtzObj).getTrans()).to.equal(0);
+      });
+      it('should update tilt and use defalt values for rest of ptz data', async () => {
+        getPtzStub.rejects('Cant perform this action');
+        const data = { tilt: -10 };
+        await device.setPanTiltZoom(data);
+
+        expect(getPtzStub.called).to.equal(true);
+        expect(setPtzSpy.callCount).to.equal(1);
+        const sentPtzObj = setPtzSpy.getCall(0).args[0];
+        expect(sentPtzObj).to.be.instanceof(huddly.PTZ);
+        expect((<huddly.PTZ>sentPtzObj).getTilt()).to.equal(data.tilt);
+        expect((<huddly.PTZ>sentPtzObj).getPan()).to.equal(new huddly.PTZ().getDefaultpan());
+        expect((<huddly.PTZ>sentPtzObj).getZoom()).to.equal(new huddly.PTZ().getDefaultzoom());
+        expect((<huddly.PTZ>sentPtzObj).getTrans()).to.equal(0);
+      });
+      it('should update zoom and use defalt values for rest of ptz data', async () => {
+        getPtzStub.rejects('Cant perform this action');
+        const data = { zoom: 2300 };
+        await device.setPanTiltZoom(data);
+
+        expect(getPtzStub.called).to.equal(true);
+        expect(setPtzSpy.callCount).to.equal(1);
+        const sentPtzObj = setPtzSpy.getCall(0).args[0];
+        expect(sentPtzObj).to.be.instanceof(huddly.PTZ);
+        expect((<huddly.PTZ>sentPtzObj).getZoom()).to.equal(data.zoom);
+        expect((<huddly.PTZ>sentPtzObj).getTilt()).to.equal(new huddly.PTZ().getDefaulttilt());
+        expect((<huddly.PTZ>sentPtzObj).getPan()).to.equal(new huddly.PTZ().getDefaultpan());
+        expect((<huddly.PTZ>sentPtzObj).getTrans()).to.equal(0);
+      });
     });
-    describe('function should handle individual params', () => {
-      beforeEach(() => {
+    describe('on grpc failure', () => {
+      it('should handle error if there is an issue', async () => {
+        getPtzStub.resolves(ptzDummy);
         dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
-          cb(undefined, dummyTransport);
+          cb(dummyError, undefined);
         };
-        sinon.spy(dummyTransport.grpcClient, 'setPTZ');
-      });
-      it('should not fail when setting only pan', async () => {
-        await device.setPanTiltZoom({
-          pan: 1,
-        });
-        expect(dummyTransport.grpcClient.setPTZ).to.be.called;
-        expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
-      });
-      it('should not fail when setting only tilt', async () => {
-        await device.setPanTiltZoom({
-          tilt: 1,
-        });
-        expect(dummyTransport.grpcClient.setPTZ).to.be.called;
-        expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
-      });
-      it('should not fail when setting only zoom', async () => {
-        await device.setPanTiltZoom({
-          zoom: 1,
-        });
-        expect(dummyTransport.grpcClient.setPTZ).to.be.called;
-        expect(dummyTransport.grpcClient.setPTZ.args[0][0]).to.be.instanceof(huddly.PTZ);
+        const badPromise = device.setPanTiltZoom({ pan: 1});
+        return expect(badPromise).to.eventually.be.rejectedWith(dummyError.message);
       });
     });
   });
