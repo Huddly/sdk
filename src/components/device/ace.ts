@@ -681,20 +681,36 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
   }
 
   setPanTiltZoom(panTiltZoom: Object): Promise<void> {
-    const ptz: huddly.PTZ = new huddly.PTZ();
-    return new Promise(async (resolve, reject) => {
-      ptz.setPan(panTiltZoom['pan']);
-      ptz.setTilt(panTiltZoom['tilt']);
-      ptz.setZoom(panTiltZoom['zoom']);
-      ptz.setTrans(0);
-      this.grpcClient.setPTZ(ptz, (err, status: huddly.DeviceStatus) => {
-        if (err != undefined) {
-          this.handleError('Unable to set PTZ values!', err, reject);
-          reject(err);
-          return;
+    let newPtz: huddly.PTZ;
+    return new Promise((resolve, reject) => {
+      this._getPanTiltZoom()
+      .then((currentPtz: huddly.PTZ) => {
+        newPtz = currentPtz;
+      }).catch((e) => {
+        newPtz = new huddly.PTZ();
+        newPtz.setPan(newPtz.getDefaultpan());
+        newPtz.setTilt(newPtz.getDefaulttilt());
+        newPtz.setZoom(newPtz.getDefaultzoom());
+        newPtz.setTrans(0);
+      }).finally(() => {
+        const paramKeys = Object.keys(panTiltZoom);
+        if (paramKeys.includes('pan')) {
+          newPtz.setPan(panTiltZoom['pan']);
         }
-        Logger.info(status.toString());
-        resolve();
+        if (paramKeys.includes('tilt')) {
+          newPtz.setTilt(panTiltZoom['tilt']);
+        }
+        if (paramKeys.includes('zoom')) {
+          newPtz.setZoom(panTiltZoom['zoom']);
+        }
+        this.grpcClient.setPTZ(newPtz, (err, status: huddly.DeviceStatus) => {
+          if (err != undefined) {
+            this.handleError('Unable to set PTZ values!', err, reject);
+            return;
+          }
+          Logger.info(status.toString());
+          resolve();
+        });
       });
     });
   }
