@@ -554,58 +554,64 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
 
   resetSettings(excludeList: String[] = []): Promise<any> {
     // Reset brightness
-    const promises: Array<Promise<any>> = [];
-    if (excludeList.indexOf('brightness') === -1) {
-      promises.push(new Promise<void>((resolve, reject) => {
-        this._getBrightness().then((brightness: huddly.Brightness) => {
-          this.setBrightness(brightness.getDefaultBrightness())
-          .then(() => resolve())
-          .catch(e => reject(e));
-        }).catch(e => reject(e));
-      }));
-    }
+    return new Promise<void>(async (res, rej) => {
+      try {
 
-    if (excludeList.indexOf('saturation') === -1) {
-      promises.push(new Promise<void>((resolve, reject) => {
-        this._getSaturation().then((saturation: huddly.Saturation) => {
-          this.setSaturation(saturation.getDefaultSaturation())
-          .then(() => resolve())
-          .catch(e => reject(e));
-        }).catch(e => reject(e));
-      }));
-    }
+        if (excludeList.indexOf('brightness') === -1) {
+          await new Promise<void>((resolve, reject) => {
+            this._getBrightness().then((brightness: huddly.Brightness) => {
+              this.setBrightness(brightness.getDefaultBrightness())
+              .then(() => resolve())
+              .catch(e => reject(e));
+            }).catch(e => reject(e));
+          });
+        }
 
-    if (excludeList.indexOf('pan') === -1) {
-      promises.push(new Promise<void>((resolve, reject) => {
-        this.getSetting('pan').then((pan: Object) => {
-          this.setPanTiltZoom({ pan:  pan['default'] })
-          .then(() => resolve())
-          .catch(e => reject(e));
-        }).catch(e => reject(e));
-      }));
-    }
+        if (excludeList.indexOf('saturation') === -1) {
+          await new Promise<void>((resolve, reject) => {
+            this._getSaturation().then((saturation: huddly.Saturation) => {
+              this.setSaturation(saturation.getDefaultSaturation())
+              .then(() => resolve())
+              .catch(e => reject(e));
+            }).catch(e => reject(e));
+          });
+        }
+        if (excludeList.indexOf('pan') === -1) {
+          await new Promise<void>((resolve, reject) => {
+            this.getSetting('pan').then((pan: Object) => {
+              this.setPanTiltZoom({ pan:  pan['default'] })
+              .then(() => resolve())
+              .catch(e => reject(e));
+            }).catch(e => reject(e));
+          });
+        }
 
-    if (excludeList.indexOf('tilt') === -1) {
-      promises.push(new Promise<void>((resolve, reject) => {
-        this.getSetting('tilt').then((tilt: Object) => {
-          this.setPanTiltZoom({ tilt:  tilt['default'] })
-          .then(() => resolve())
-          .catch(e => reject(e));
-        }).catch(e => reject(e));
-      }));
-    }
+        if (excludeList.indexOf('tilt') === -1) {
+          await new Promise<void>((resolve, reject) => {
+            this.getSetting('tilt').then((tilt: Object) => {
+              this.setPanTiltZoom({ tilt:  tilt['default'] })
+              .then(() => resolve())
+              .catch(e => reject(e));
+            }).catch(e => reject(e));
+          });
+        }
 
-    if (excludeList.indexOf('zoom') === -1) {
-      promises.push(new Promise<void>((resolve, reject) => {
-        this.getSetting('zoom').then((zoom: Object) => {
-          this.setPanTiltZoom({ zoom:  zoom['default'] })
-          .then(() => resolve())
-          .catch(e => reject(e));
-        }).catch(e => reject(e));
-      }));
-    }
+        if (excludeList.indexOf('zoom') === -1) {
+          await new Promise<void>((resolve, reject) => {
+            this.getSetting('zoom').then((zoom: Object) => {
+              this.setPanTiltZoom({ zoom:  zoom['default'] })
+              .then(() => resolve())
+              .catch(e => reject(e));
+            }).catch(e => reject(e));
+          });
+        }
 
-    return Promise.all(promises);
+        res();
+      } catch (e) {
+        Logger.error('Unable to reset settings', e, Ace.name);
+        rej(e);
+      }
+    });
   }
 
   _getPanTiltZoom(): Promise<huddly.PTZ> {
