@@ -28,7 +28,8 @@
   "files": [
     "lib",
     "README.md",
-    "bundle"
+    "bundle",
+    "proto"
   ],
   "publishConfig": {
     "registry": "http://registry.npmjs.org/",
@@ -39,15 +40,16 @@
     "url": "git+https://github.com/Huddly/sdk.git"
   },
   "scripts": {
-    "build": "npm run build-ts && npm run tslint && npm run test",
+    "build": "npm run build-ts && npm run tslint",
     "build-web": "npm run build-ts && npm run tslint && yarn webpack -p",
     "build-ts": "tsc --declaration",
+    "watch-ts": "tsc -w",
     "tslint": "tslint -c tslint.json -p tsconfig.json",
     "test": "nyc mocha -r ts-node/register --recursive \"tests/**/*.spec.ts\" --check-leaks",
     "test-js": "mocha -r ts-node/register --recursive \"lib/tests/**/*.spec.js\"",
     "publish-package": "npm run build && npm run build-web && npm publish",
     "compodoc": "compodoc -w -p tsconfig.json -s -n 'huddly-sdk' -d 'docs' --minimal --customFavicon 'docs_style/assets/imgs/favicon.ico' --disableGraph --disableInternal --hideGenerator --includesName 'Additional Information'  --includes examples -a docs_style/assets -y docs_style",
-    "prepare": "npm run build-ts",
+    "prepare": "npm run build",
     "preversion": "npm run tslint",
     "prettier": "./node_modules/.bin/prettier  --config ./.prettierrc --write src/**/*.ts",
     "prettier-check": "./node_modules/.bin/prettier  --config ./.prettierrc --check src/**/*.ts",
@@ -57,13 +59,16 @@
   },
   "pre-commit": [
     "prettier-check",
-    "build"
+    "build",
+    "test"
   ],
   "bugs": {
     "url": "https://github.com/Huddly/sdk/issues"
   },
   "devDependencies": {
+    "@types/google-protobuf": "^3.15.2",
     "@types/mocha": "~5.2.5",
+    "@types/node": "^12.20.15",
     "chai": "~4.2.0",
     "chai-as-promised": "~7.1.1",
     "chai-things": "~0.2.0",
@@ -76,6 +81,8 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "generate-changelog": "^1.8.0",
+    "grpc_tools_node_protoc_ts": "^5.3.0",
+    "grpc-tools": "^1.11.1",
     "mocha": "^7.2.0",
     "nock": "^12.0.3",
     "nyc": "~15.0.1",
@@ -91,13 +98,18 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "@types/node": "^12.20.15",
-    "jszip": "^3.2.2",
+    "@grpc/grpc-js": "^1.3.2",
+    "@huddly/camera-proto": "^1.0.4",
+    "@huddly/camera-switch-proto": "^0.0.2",
+    "cpio-stream": "^1.4.1",
+    "google-protobuf": "^3.17.3",
+    "jszip": "3.2.2",
     "msgpack-lite": "~0.1.26",
     "p-queue": "^6.6.2",
     "semver": "^7.3.5",
     "source-map-support": "^0.5.19"
   },
+  "peerDependencies": {},
   "config": {
     "commitizen": {
       "path": "./node_modules/cz-conventional-changelog"

@@ -4,11 +4,14 @@ import { EventEmitter } from 'events';
 import IDeviceManager from './../../interfaces/iDeviceManager';
 import IBoxfishUpgraderFile, { IMAGE_TYPES } from './../../interfaces/IBoxfishUpgraderFile';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
+import IUsbTransport from './../../interfaces/IUsbTransport';
 import semver from 'semver';
 import Locksmith from './../locksmith';
 import Api from '../api';
 import { calculate } from './../../utilitis/crc32c';
 import CameraEvents from './../../utilitis/events';
+import TypeHelper from './../../utilitis/typehelper';
+import Logger from './../../utilitis/logger';
 import Boxfish from './../device/boxfish';
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 
@@ -19,7 +22,6 @@ import { HPK_SUPPORT_VERSION } from './../upgrader/boxfishUpgraderFactory';
 export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgrader {
   _cameraManager: IDeviceManager;
   _sdkDeviceDisoveryEmitter: EventEmitter;
-  _logger: any;
   _boxfishPackage: IBoxfishUpgraderFile;
   locksmith: Locksmith;
   options: any = {};
@@ -28,11 +30,17 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   verboseStatusLog: boolean = true;
   private _upgradeStatus: UpgradeStatus;
 
-  constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter, logger: any) {
+  get transport(): IUsbTransport {
+    if (TypeHelper.instanceOfUsbTransport(this._cameraManager.transport)) {
+      return <IUsbTransport>this._cameraManager.transport;
+    }
+    throw new Error('Unable to talk to device. Tarnsport must be UsbTransport compatible');
+  }
+
+  constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
     super();
     this._cameraManager = manager;
     this._sdkDeviceDisoveryEmitter = sdkDeviceDiscoveryEmitter;
-    this._logger = logger;
     this.locksmith = new Locksmith();
   }
 
@@ -60,7 +68,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
 
     this._sdkDeviceDisoveryEmitter.on(CameraEvents.DETACH, async (d) => {
       if (d && this._cameraManager['serialNumber'] === d.serialNumber) {
-        this._cameraManager.transport.close();
+        this.transport.close();
         this.emit('UPGRADE_REBOOT');
       }
     });
@@ -81,7 +89,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       rebootStep,
       verificationStep,
     ]);
-    this._logger.debug('Starting Upgrade', 'Boxfish PKG Upgrader');
+    Logger.debug('Starting Upgrade', 'Boxfish PKG Upgrader');
     this.emitProgressStatus('Starting upgrade');
     this.emit(CameraEvents.UPGRADE_START);
     firstUploadStatusStep.progress = 1;
@@ -89,7 +97,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     firstUploadStatusStep.progress = 100;
     this.emitProgressStatus();
     rebootStep.progress = 1;
-    this._logger.debug('Rebooting Camera', 'Boxfish PKG Upgrader');
+    Logger.debug('Rebooting Camera', 'Boxfish PKG Upgrader');
     this.emitProgressStatus('Rebooting camera');
 
     // Timeout if the camera does not come back up after bootTimeout seconds have passed!
@@ -99,16 +107,16 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     }, this.bootTimeout);
 
     this.once('UPGRADE_REBOOT_COMPLETE', async () => {
-      this._logger.debug('Camerea successfully booted after upgrade', 'Boxfish PKG Upgrader');
+      Logger.debug('Camerea successfully booted after upgrade', 'Boxfish PKG Upgrader');
       try {
         rebootStep.progress = 100;
         this.emitProgressStatus();
         verificationStep.progress = 1;
-        this._logger.debug('Verifying new software', 'Boxfish PKG Upgrader');
+        Logger.debug('Verifying new software', 'Boxfish PKG Upgrader');
         this.emitProgressStatus('Verifying new software');
         await this.postUpgrade(state);
         verificationStep.progress = 100;
-        this._logger.debug('Upgrade Completed', 'Boxfish PKG Upgrader');
+        Logger.debug('Upgrade Completed', 'Boxfish PKG Upgrader');
         this.emitProgressStatus('Upgrade complete');
         clearTimeout(bootTimeout);
         this.emit(CameraEvents.UPGRADE_COMPLETE, this._cameraManager);
@@ -120,7 +128,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async doUpgrade(): Promise<any> {
-    return new Promise(async (resolve, reject) => {
+    return new Promise<void>(async (resolve, reject) => {
       this.once(CameraEvents.UPGRADE_COMPLETE, () => resolve());
       this.once(CameraEvents.UPGRADE_FAILED, (e) => reject(e));
       this.start();
@@ -143,7 +151,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async legacyWriteBuf(buf: Buffer, offset: number = 0): Promise<any> {
-    this._logger.debug('Falling back to legacy async file transfer', 'Boxfish PKG Upgrader');
+    Logger.debug('Falling back to legacy async file transfer', 'Boxfish PKG Upgrader');
     const sendData = {
       size: buf.length,
       offset,
@@ -166,7 +174,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
         });
       return true;
     } catch (e) {
-      this._logger.error('Signle Write Buffer not supported in this firmware', e, 'Boxfish PKG Upgrader');
+      Logger.error('Signle Write Buffer not supported in this firmware', e, 'Boxfish PKG Upgrader');
       return false;
     }
   }
@@ -198,7 +206,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async postUpgrade(upgradeSelection: string): Promise<boolean> {
-    this._logger.debug('Performing post upgrade steps', 'Boxfish PKG Upgrader');
+    Logger.debug('Performing post upgrade steps', 'Boxfish PKG Upgrader');
     await this.printBootInfo();
     await this.setFlashBootState(upgradeSelection);
     await this.setRamBootSelector(upgradeSelection);
@@ -217,11 +225,11 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
 
     const result = await this._cameraManager.api.withSubscribe(
       [cmdResult], () => new Promise(async (resolve, reject) => {
-        this._cameraManager.transport.receiveMessage(cmdResult, 5000)
+        this.transport.receiveMessage(cmdResult, 5000)
           .then((data) => {
             const receivedCmd = data.message;
             if (receivedCmd !== cmdResult) {
-              this._logger.warn(`Received unexpected ${receivedCmd}. Expected ${cmdResult}`, 'Boxfish PKG Upgrader');
+              Logger.warn(`Received unexpected ${receivedCmd}. Expected ${cmdResult}`, 'Boxfish PKG Upgrader');
               reject(`Received unexpected ${receivedCmd}. Expected ${cmdResult}.`);
             } else {
               const args = Api.decode(data.payload, 'messagepack');
@@ -230,7 +238,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
             }
           })
           .catch((e) => {
-            this._logger.error('Checksum receive message failure', e, 'Boxfish PKG Upgrader');
+            Logger.error('Checksum receive message failure', e, 'Boxfish PKG Upgrader');
             reject(e);
           });
 
@@ -258,25 +266,25 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     const subscribeMessages = statusFn ? [cmds.done, cmds.status] : [cmds.done];
     return this.locksmith.executeAsyncFunction(async () => {
       await this._cameraManager.api.withSubscribe(
-        subscribeMessages, () => new Promise(async (resolve, reject) => {
-          this._cameraManager.transport.on(cmds.done, (data) => {
+        subscribeMessages, () => new Promise<void>(async (resolve, reject) => {
+          this.transport.on(cmds.done, (data) => {
             const args = Api.decode(data.payload, 'messagepack');
             if (args.error_count === 0) {
-              this._cameraManager.transport.removeAllListeners(cmds.done);
+              this.transport.removeAllListeners(cmds.done);
               if (statusFn) {
                 statusFn(size, size);
-                this._cameraManager.transport.removeAllListeners(cmds.status);
+                this.transport.removeAllListeners(cmds.status);
               } else {
-                this._logger.debug('Stage Completed', 'Boxfish PKG Upgrader');
+                Logger.debug('Stage Completed', 'Boxfish PKG Upgrader');
               }
               resolve();
             } else {
-              this._logger.warn(`Flash command ${cmd} failed with ${args.error_count} errors`, 'Boxfish PKG Upgrader');
+              Logger.warn(`Flash command ${cmd} failed with ${args.error_count} errors`, 'Boxfish PKG Upgrader');
               reject(`Flash command ${cmd} failed with ${args.error_count} errors`);
             }
           });
           if (statusFn) {
-            this._cameraManager.transport.on(cmds.status, (data) => {
+            this.transport.on(cmds.status, (data) => {
               const args = Api.decode(data.payload, 'messagepack');
               statusFn(args.offset, size);
             });
@@ -309,35 +317,35 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       status = (progress, total) => {
         const now = Date.now();
         if (progress < lastProgress || progress === total || now > lastTime + 1) {
-          this._logger.info(`Status: ${Math.ceil(100 * (progress / total))}%\r`);
+          Logger.info(`Status: ${Math.ceil(100 * (progress / total))}%\r`);
           lastTime = now;
           lastProgress = progress;
           if (progress === total) {
-            this._logger.info('');
+            Logger.info('');
           }
         }
       };
     }
 
     const addr = parseInt(address, 16);
-    this._logger.info(`Allocating buf.. ${buffer.length}`, 'Boxfish PKG Upgrader');
+    Logger.info(`Allocating buf.. ${buffer.length}`, 'Boxfish PKG Upgrader');
     await this.allocateBuf(buffer.length);
-    this._logger.info('Uploading data to camera...', 'Boxfish PKG Upgrader');
+    Logger.info('Uploading data to camera...', 'Boxfish PKG Upgrader');
     await this.writeBuf(buffer);
-    this._logger.info('Calculating checksum on target...', 'Boxfish PKG Upgrader');
+    Logger.info('Calculating checksum on target...', 'Boxfish PKG Upgrader');
     const expectedCrc = calculate(buffer);
     const crc = await this.checksumBuf(buffer.length);
     if (expectedCrc !== crc) {
       throw new Error(`Expected crc ${expectedCrc}, got crc ${crc}`);
     }
     const eraseLen = Math.ceil(buffer.length / 4096) * 4096;
-    this._logger.info(`Erasing... addr: ${addr}`, 'Boxfish PKG Upgrader');
+    Logger.info(`Erasing... addr: ${addr}`, 'Boxfish PKG Upgrader');
     await this.eraseFlash(addr, eraseLen, status);
-    this._logger.info('Writing...', 'Boxfish PKG Upgrader');
+    Logger.info('Writing...', 'Boxfish PKG Upgrader');
     await this.writeFlash(addr, buffer.length, status);
-    this._logger.info('Reading from flash to memory...', 'Boxfish PKG Upgrader');
+    Logger.info('Reading from flash to memory...', 'Boxfish PKG Upgrader');
     await this.readFlashIntoBuf(addr, buffer.length, status);
-    this._logger.info('Calculating checksum...', 'Boxfish PKG Upgrader');
+    Logger.info('Calculating checksum...', 'Boxfish PKG Upgrader');
     const flashCrc = await this.checksumBuf(buffer.length);
     if (expectedCrc !== flashCrc) {
       throw new Error(`Expected crc ${expectedCrc}, got crc ${flashCrc}`);
@@ -345,17 +353,17 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async flashFsbl(fsblMvcmd: Buffer): Promise<any> {
-    this._logger.info('Flashing fsbl', 'Boxfish PKG Upgrader');
+    Logger.info('Flashing fsbl', 'Boxfish PKG Upgrader');
     return this.doFlash(fsblMvcmd, '0x00');
   }
 
   async setFlashBootState(state: string): Promise<any> {
-    this._logger.info(`Setting flash boot state to ${state}`, 'Boxfish PKG Upgrader');
+    Logger.info(`Setting flash boot state to ${state}`, 'Boxfish PKG Upgrader');
     return this._cameraManager.api.setProductInfo({ flash_boot_state: state });
   }
 
   async initFlash(fsblMvcmd: Buffer, boxfishUpgraderFile: IBoxfishUpgraderFile): Promise<any> {
-    this._logger.info('Initializing flash', 'Boxfish PKG Upgrader');
+    Logger.info('Initializing flash', 'Boxfish PKG Upgrader');
     await this.flashFsbl(fsblMvcmd);
     /* eslint-disable max-len */
     await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishUpgraderFile, 'C');
@@ -377,15 +385,15 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   }
 
   async setRamBootSelector(selector: string): Promise<any> {
-    this._logger.info(`Setting ram boot selector to ${selector}`, 'Boxfish PKG Upgrader');
+    Logger.info(`Setting ram boot selector to ${selector}`, 'Boxfish PKG Upgrader');
     return this._cameraManager.api.setProductInfo({ bac_fsbl: { ram_boot_selector: selector } });
   }
 
   async printBootInfo(): Promise<void> {
     const prodInfo = await this._cameraManager.api.getProductInfo();
-    this._logger.info(`Current boot decision: ${prodInfo.bac_fsbl.boot_decision}`, 'Boxfish PKG Upgrader');
-    this._logger.info(`Current flash boot selector: ${prodInfo.flash_boot_state}`, 'Boxfish PKG Upgrader');
-    this._logger.info(`Current ram boot selector: ${prodInfo.bac_fsbl.ram_boot_selector}`, 'Boxfish PKG Upgrader');
+    Logger.info(`Current boot decision: ${prodInfo.bac_fsbl.boot_decision}`, 'Boxfish PKG Upgrader');
+    Logger.info(`Current flash boot selector: ${prodInfo.flash_boot_state}`, 'Boxfish PKG Upgrader');
+    Logger.info(`Current ram boot selector: ${prodInfo.bac_fsbl.ram_boot_selector}`, 'Boxfish PKG Upgrader');
   }
 
   async upgrade(): Promise<string> {
@@ -398,8 +406,8 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       const currentSwVersion = this.extractSofwareVersionFromProdInfo(prodInfo);
       if (semver.gt(currentSwVersion, '0.0.7')) {
         await this.locksmith.executeAsyncFunction(async () => {
-          await this._cameraManager.transport.clear();
-          await this._cameraManager.transport.write('streaming/lock');
+          await this.transport.clear();
+          await this.transport.write('streaming/lock');
         });
       }
 
@@ -413,41 +421,41 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
         return 'C';
       }
       const bootDecision = this.getBootDecision(prodInfo);
-      this._logger.info(`Current boot decision ${bootDecision}`, 'Boxfish PKG Upgrader');
+      Logger.info(`Current boot decision ${bootDecision}`, 'Boxfish PKG Upgrader');
       const upgradeSelection = bootDecision === 'A' ? 'B' : 'A';
 
       /* eslint-disable max-len */
-      this._logger.debug('Flashing SSBL_HEADER', 'Boxfish PKG Upgrader');
+      Logger.debug('Flashing SSBL_HEADER', 'Boxfish PKG Upgrader');
       await this.flashImage(IMAGE_TYPES.SSBL_HEADER, boxfishUpgraderFile, upgradeSelection);
-      this._logger.debug('Flashing SSBL', 'Boxfish PKG Upgrader');
+      Logger.debug('Flashing SSBL', 'Boxfish PKG Upgrader');
       await this.flashImage(IMAGE_TYPES.SSBL, boxfishUpgraderFile, upgradeSelection);
-      this._logger.debug('Flashing APPLICATION_HEADER', 'Boxfish PKG Upgrader');
+      Logger.debug('Flashing APPLICATION_HEADER', 'Boxfish PKG Upgrader');
       await this.flashImage(IMAGE_TYPES.APP_HEADER, boxfishUpgraderFile, upgradeSelection);
-      this._logger.debug('Flashing APPLICATION', 'Boxfish PKG Upgrader');
+      Logger.debug('Flashing APPLICATION', 'Boxfish PKG Upgrader');
       await this.flashImage(IMAGE_TYPES.APP, boxfishUpgraderFile, upgradeSelection);
       /* eslint-enable max-len */
       if (semver.gt(currentSwVersion, '0.0.7')) {
-        this._logger.debug('Unlocking UVC stream on camera', 'Boxfish PKG Upgrader');
+        Logger.debug('Unlocking UVC stream on camera', 'Boxfish PKG Upgrader');
         await this.locksmith.executeAsyncFunction(async () => {
-          await this._cameraManager.transport.clear();
-          await this._cameraManager.transport.write('streaming/unlock');
+          await this.transport.clear();
+          await this.transport.write('streaming/unlock');
         });
       }
-      this._logger.debug(`Setting boot selector to ${upgradeSelection}`, 'Boxfish PKG Upgrader');
+      Logger.debug(`Setting boot selector to ${upgradeSelection}`, 'Boxfish PKG Upgrader');
       await this.setRamBootSelector(upgradeSelection);
       await this.printBootInfo();
 
-      this._logger.debug('Booting the camera and closing communication instances', 'Boxfish PKG Upgrader');
+      Logger.debug('Booting the camera and closing communication instances', 'Boxfish PKG Upgrader');
       await this._cameraManager.reboot();
-      await this._cameraManager.transport.close();
+      await this.transport.close();
 
       const finishTime = new Date().getTime();
       const flashTime = (finishTime - startTime) / 1000;
-      this._logger.info(`Upgrade completed in ${flashTime} seconds`, 'Boxfish PKG Upgrader');
+      Logger.info(`Upgrade completed in ${flashTime} seconds`, 'Boxfish PKG Upgrader');
 
       return upgradeSelection;
     } catch (e) {
-      this._logger.error('Boxfish camera upgrade failed', e, 'Boxfish PKG Upgrader');
+      Logger.error('Boxfish camera upgrade failed', e, 'Boxfish PKG Upgrader');
       this.emit(CameraEvents.UPGRADE_FAILED, e);
       throw e;
     }
@@ -463,7 +471,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     try {
       const response = await this._cameraManager.getState();
 
-      this._logger.info(`Upgrade status ${JSON.stringify(response)}`, 'Boxfish PKG Upgrader');
+      Logger.info(`Upgrade status ${JSON.stringify(response)}`, 'Boxfish PKG Upgrader');
       if (response.status === 10) {
         // EMMC is not ready lets wait and try again
         await new Promise(resolve => setTimeout(resolve, 1000));

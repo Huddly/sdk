@@ -2,14 +2,9 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import AutozoomControl from '../../src/components/autozoomControl';
 import IDeviceManager from '../../src/interfaces/iDeviceManager';
-import DefaultLogger from '../../src/utilitis/logger';
 import Api from '../../src/components/api';
 import DeviceManagerMock from '../mocks/devicemanager.mock';
 import AutozoomControlOpts from '../../src/interfaces/IAutozoomControlOpts';
-
-const createDummyLogger = (): DefaultLogger => {
-  return sinon.createStubInstance(DefaultLogger);
-};
 
 describe('AutozoomControl', () => {
   let autozoomControl: AutozoomControl;
@@ -17,7 +12,7 @@ describe('AutozoomControl', () => {
 
   beforeEach(() => {
     deviceManager = new DeviceManagerMock();
-    autozoomControl = new AutozoomControl(deviceManager, createDummyLogger());
+    autozoomControl = new AutozoomControl(deviceManager);
   });
 
   describe('#init', () => {
@@ -32,7 +27,7 @@ describe('AutozoomControl', () => {
     describe('on shouldAutoFrame option set', () => {
       describe('on shouldAutoFrame: true', () => {
         it('should set AUTO_PTZ framing config to true', async () => {
-          autozoomControl = new AutozoomControl(deviceManager, createDummyLogger(), { shouldAutoFrame: true });
+          autozoomControl = new AutozoomControl(deviceManager, { shouldAutoFrame: true });
           await autozoomControl.init();
           expect(uploadFramingConfigStub.callCount).to.equals(1);
           expect(uploadFramingConfigStub.firstCall.args[0]).to.deep.equals({ AUTO_PTZ: true });
@@ -40,7 +35,7 @@ describe('AutozoomControl', () => {
       });
       describe('on shouldAutoFrame: false', () => {
         it('should set AUTO_PTZ framing config to false', async () => {
-          autozoomControl = new AutozoomControl(deviceManager, createDummyLogger(), { shouldAutoFrame: false });
+          autozoomControl = new AutozoomControl(deviceManager, { shouldAutoFrame: false });
           await autozoomControl.init();
           expect(uploadFramingConfigStub.callCount).to.equals(1);
           expect(uploadFramingConfigStub.firstCall.args[0]).to.deep.equals({ AUTO_PTZ: false });
@@ -50,7 +45,7 @@ describe('AutozoomControl', () => {
 
     describe('on shouldAutoFrame option not set', () => {
       it('should not call #uploadFramingConfig when shouldAutoFrame options is not provided', async () => {
-        autozoomControl = new AutozoomControl(deviceManager, createDummyLogger(), {});
+        autozoomControl = new AutozoomControl(deviceManager, {});
         await autozoomControl.init();
         expect(uploadFramingConfigStub.callCount).to.equals(0);
       });

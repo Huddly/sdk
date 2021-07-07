@@ -5,6 +5,9 @@ import DetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 import semver from 'semver';
+import IUsbTransport from './../interfaces/IUsbTransport';
+import TypeHelper from './../utilitis/typehelper';
+import Logger from './../utilitis/logger';
 
 const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
 const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
@@ -19,7 +22,6 @@ const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
  */
 export default class Detector extends EventEmitter implements IDetector {
   _deviceManager: IDeviceManager;
-  _logger: any;
   _detectionHandler: any;
   _framingHandler: any;
   _frame: any;
@@ -38,10 +40,9 @@ export default class Detector extends EventEmitter implements IDetector {
    * @param {DetectorOpts} options options detector.
    * @memberof Detector
    */
-  constructor(manager: IDeviceManager, logger: any, options?: DetectorOpts) {
+  constructor(manager: IDeviceManager, options?: DetectorOpts) {
     super();
     this._deviceManager = manager;
-    this._logger = logger;
     this._options = {};
     this.validateOptions(options);
     this.setMaxListeners(50);
@@ -58,6 +59,13 @@ export default class Detector extends EventEmitter implements IDetector {
     this._options.DOWS = (options && options.DOWS) || false;
   }
 
+  get transport(): IUsbTransport {
+    if (TypeHelper.instanceOfUsbTransport(this._deviceManager.transport)) {
+      return <IUsbTransport>this._deviceManager.transport;
+    }
+    throw new Error('Unable to talk to device. Tarnsport must be UsbTransport compatible');
+  }
+
   /**
    * @ignore
    * Check `IDetector` interface for method documentation.
@@ -65,7 +73,7 @@ export default class Detector extends EventEmitter implements IDetector {
    */
   async init(): Promise<any> {
     if (this._detectorInitialized) {
-      this._logger.warn('Detector already initialized', 'IQ Detector');
+      Logger.warn('Detector already initialized', 'IQ Detector');
       return;
     }
 
@@ -73,11 +81,11 @@ export default class Detector extends EventEmitter implements IDetector {
     try {
       this._usePeopleCount = semver.gt(cameraInfo.version, LATEST_WITHOUT_PEOPLE_COUNT);
     } catch (err) {
-      this._logger.warn('Unable to test camera version with semver.');
+      Logger.warn('Unable to test camera version with semver.');
       this._usePeopleCount = false;
     }
 
-    this._logger.debug('Initializing detector class', 'IQ Detector');
+    Logger.debug('Initializing detector class', 'IQ Detector');
     if (!this._detectionHandler) {
       this._detectionHandler = detectionBuffer => {
         const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
@@ -96,14 +104,11 @@ export default class Detector extends EventEmitter implements IDetector {
 
     if (!this._options.DOWS) {
       if (this._usePeopleCount) {
-        this._logger.debug('Sending people_count start command', 'IQ Detector');
-        await this._deviceManager.transport.write(
-          'people_count/start',
-          Api.encode({ STREAMING_ONLY: false })
-        );
+        Logger.debug('Sending people_count start command', 'IQ Detector');
+        await this.transport.write('people_count/start', Api.encode({ STREAMING_ONLY: false }));
       } else {
-        this._logger.debug('Sending detector start command', 'IQ Detector');
-        await await this._deviceManager.transport.write('detector/start');
+        Logger.debug('Sending detector start command', 'IQ Detector');
+        await await this.transport.write('detector/start');
       }
       await this.setupDetectorSubscriptions({
         detectionListener: true,
@@ -111,22 +116,19 @@ export default class Detector extends EventEmitter implements IDetector {
       });
       this._previewStreamStarted = true;
     } else {
-      this._logger.debug(
+      Logger.debug(
         'Setting up detection event listeners. \n\n** NB ** Host application must stream main in order to get detection events',
         'IQ Detector'
       );
 
       if (this._usePeopleCount) {
-        await this._deviceManager.transport.write(
-          'people_count/start',
-          Api.encode({ STREAMING_ONLY: true })
-        );
+        await this.transport.write('people_count/start', Api.encode({ STREAMING_ONLY: true }));
       }
 
       await this.setupDetectorSubscriptions();
     }
     this._detectorInitialized = true;
-    this._logger.debug('Detector class initialized and ready', 'IQ Detector');
+    Logger.debug('Detector class initialized and ready', 'IQ Detector');
   }
 
   async updateOpts(options: DetectorOpts): Promise<any> {
@@ -138,22 +140,22 @@ export default class Detector extends EventEmitter implements IDetector {
 
   async destroy(): Promise<void> {
     if (!this._detectorInitialized) {
-      this._logger.warn('Detector already destroyed', 'IQ Detector');
+      Logger.warn('Detector already destroyed', 'IQ Detector');
       return;
     }
 
     if (this._usePeopleCount) {
-      await this._deviceManager.transport.write('people_count/stop');
+      await this.transport.write('people_count/stop');
     }
 
     if (!this._options.DOWS && this._previewStreamStarted) {
-      this._logger.debug(
+      Logger.debug(
         'IQ Detector teardown by stopping detection generation on previewstream, unsubscribing to events and unregistering listeners',
         'IQ Detector'
       );
       // Send `[people_count/detector]/stop` only if `[people_count/detector]/start` was called previously
       if (!this._usePeopleCount) {
-        await this._deviceManager.transport.write('detector/stop');
+        await this.transport.write('detector/stop');
       }
       this._previewStreamStarted = false;
       await this.teardownDetectorSubscriptions({
@@ -162,11 +164,11 @@ export default class Detector extends EventEmitter implements IDetector {
       });
     } else {
       if (this._usePeopleCount) {
-        this._logger.debug(
+        Logger.debug(
           'IQ Detector teardown by  unsubscribing to events and unregistering listeners'
         );
       }
-      this._logger.debug(
+      Logger.debug(
         `IQ Detector teardown by ${
           this._usePeopleCount ? 'stopping detection generation on previewstream,' : ''
         } unsubscribing to events and unregistering listeners`
@@ -197,19 +199,19 @@ export default class Detector extends EventEmitter implements IDetector {
     try {
       // Detection listener setup
       if (!this._subscriptionsSetup && listenerConfigOpts.detectionListener) {
-        await this._deviceManager.transport.subscribe('autozoom/predictions');
-        this._deviceManager.transport.on('autozoom/predictions', this._detectionHandler);
+        await this.transport.subscribe('autozoom/predictions');
+        this.transport.on('autozoom/predictions', this._detectionHandler);
       }
       // Framing listener setup
       if (!this._subscriptionsSetup && listenerConfigOpts.framingListener) {
-        await this._deviceManager.transport.subscribe('autozoom/framing');
-        this._deviceManager.transport.on('autozoom/framing', this._framingHandler);
+        await this.transport.subscribe('autozoom/framing');
+        this.transport.on('autozoom/framing', this._framingHandler);
       }
       this._subscriptionsSetup = true;
     } catch (e) {
-      await this._deviceManager.transport.unsubscribe('autozoom/predictions');
-      await this._deviceManager.transport.unsubscribe('autozoom/framing');
-      this._logger.error('Something went wrong getting predictions!', e, 'IQ Detector');
+      await this.transport.unsubscribe('autozoom/predictions');
+      await this.transport.unsubscribe('autozoom/framing');
+      Logger.error('Something went wrong getting predictions!', e, 'IQ Detector');
       this._subscriptionsSetup = false;
     }
   }
@@ -234,14 +236,14 @@ export default class Detector extends EventEmitter implements IDetector {
   ) {
     // Detection listener teardown
     if (this._subscriptionsSetup && listenerConfigOpts.detectionListener) {
-      await this._deviceManager.transport.unsubscribe('autozoom/predictions');
-      this._deviceManager.transport.removeListener('autozoom/predictions', this._detectionHandler);
+      await this.transport.unsubscribe('autozoom/predictions');
+      this.transport.removeListener('autozoom/predictions', this._detectionHandler);
     }
 
     // Framing listener teardown
     if (this._subscriptionsSetup && listenerConfigOpts.framingListener) {
-      await this._deviceManager.transport.unsubscribe('autozoom/framing');
-      this._deviceManager.transport.removeListener('autozoom/framing', this._framingHandler);
+      await this.transport.unsubscribe('autozoom/framing');
+      this.transport.removeListener('autozoom/framing', this._framingHandler);
     }
     this._subscriptionsSetup = false;
   }

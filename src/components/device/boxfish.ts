@@ -1,9 +1,8 @@
 import { EventEmitter } from 'events';
 
 import Api from './../api';
-import DefaultLogger from './../../utilitis/logger';
+import Logger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
-import ITransport from './../../interfaces/iTransport';
 import IDeviceManager from './../../interfaces/iDeviceManager';
 import IDetector from './../../interfaces/IDetector';
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
@@ -21,29 +20,29 @@ import AutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import AutozoomControl from '../autozoomControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
+import IUsbTransport from './../../interfaces/IUsbTransport';
+import ICnnControl from '../../interfaces/ICnnControl';
+import FaceBasedExposureControl from '../faceBasedExposureControl';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
-  transport: ITransport;
+  transport: IUsbTransport;
   _api: Api;
   uvcControlInterface: any;
-  logger: DefaultLogger;
   locksmith: Locksmith;
   discoveryEmitter: EventEmitter;
   productName: string = 'Huddly IQ';
 
   constructor(
     uvcCameraInstance: any,
-    transport: ITransport,
+    transport: IUsbTransport,
     uvcControlInterface: any,
-    logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
     super(uvcCameraInstance, uvcControlInterface);
 
     this.transport = transport;
     this.uvcControlInterface = uvcControlInterface;
-    this.logger = logger;
     this.locksmith = new Locksmith();
     this.discoveryEmitter = cameraDiscoveryEmitter;
   }
@@ -53,12 +52,12 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async initialize(): Promise<void> {
-    this._api = new Api(this.transport, this.logger, this.locksmith);
+    this._api = new Api(this.transport, this.locksmith);
     this.transport.init();
     try {
       this.transport.initEventLoop();
     } catch (e) {
-      this.logger.error('Failed to init event loop when transport reset', e, 'Boxfish API');
+      Logger.error('Failed to init event loop when transport reset', e, 'Boxfish API');
     }
   }
 
@@ -187,15 +186,15 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async getUpgrader(): Promise<IDeviceUpgrader> {
-    return createBoxfishUpgrader(this, this.discoveryEmitter, this.logger);
+    return createBoxfishUpgrader(this, this.discoveryEmitter);
   }
 
   async createAndRunFsblUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager) {
-    const upgrader = new BoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
+    const upgrader = new BoxfishUpgrader(deviceManager, this.discoveryEmitter);
     const mvusbFile = opts.file;
     const timeoutMs = opts.bootTimeout * 1000;
 
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const bootTimeout = setTimeout(() => {
         clearTimeout(bootTimeout);
         reject('Fsbl upgrade timed out');
@@ -211,11 +210,11 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   async createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager, createNewUpgrader: boolean) {
     let upgrader: IDeviceUpgrader = opts.upgrader;
     if (!upgrader || createNewUpgrader) {
-      upgrader = await createBoxfishUpgrader(deviceManager, this.discoveryEmitter, this.logger);
+      upgrader = await createBoxfishUpgrader(deviceManager, this.discoveryEmitter);
     }
     upgrader.init(opts);
     upgrader.start();
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       upgrader.once(CameraEvents.UPGRADE_COMPLETE, async deviceManager => {
         const upgradeIsOk = await upgrader.upgradeIsValid();
         if (upgradeIsOk) {
@@ -229,11 +228,11 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         }
       });
       upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
-        this.logger.error('Upgrade Failed', reason, 'Boxfish API');
+        Logger.error('Upgrade Failed', reason, 'Boxfish API');
         reject(reason);
       });
       upgrader.once(CameraEvents.TIMEOUT, (reason) => {
-        this.logger.error('Upgrader returned a timeout event', reason, 'Boxfish API');
+        Logger.error('Upgrader returned a timeout event', reason, 'Boxfish API');
         reject(reason);
       });
     });
@@ -241,7 +240,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
   async upgrade(opts: UpgradeOpts): Promise<any> {
     let upgradeAttempts = 0;
-    return new Promise((resolve, reject) => {
+    return new Promise<void>((resolve, reject) => {
       const tryRunAgainOnFailure = async (deviceManager: IDeviceManager) => {
         try {
           await this.createAndRunUpgrade(opts, deviceManager, upgradeAttempts > 0);
@@ -249,10 +248,10 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         } catch (e) {
           if (e.runAgain && upgradeAttempts < MAX_UPGRADE_ATTEMPT) {
             upgradeAttempts += 1;
-            this.logger.warn(`Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`, 'Boxfish API');
+            Logger.warn(`Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`, 'Boxfish API');
             tryRunAgainOnFailure(e.deviceManager);
           } else {
-            this.logger.error('Failed performing a camera upgrade', e, 'Boxfish API');
+            Logger.error('Failed performing a camera upgrade', e, 'Boxfish API');
             reject(e);
           }
         }
@@ -266,17 +265,21 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         await this.createAndRunFsblUpgrade(opts, this);
         Promise.resolve();
       } catch (e) {
-        this.logger.error('Failed performing a FSBL camera upgrade', e, 'Boxfish API');
+        Logger.error('Failed performing a FSBL camera upgrade', e, 'Boxfish API');
         Promise.reject(e);
       }
   }
 
   getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl {
-    return new AutozoomControl(this, this.logger, opts);
+    return new AutozoomControl(this, opts);
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    return new FaceBasedExposureControl(this);
   }
 
   getDetector(opts?: DetectorOpts): IDetector {
-    return new Detector(this, this.logger, opts);
+    return new Detector(this, opts);
   }
 
   async getState(): Promise<any> {

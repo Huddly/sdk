@@ -3,14 +3,10 @@ import { expect } from 'chai';
 import Detector from './../../src/components/detector';
 import IDeviceManager from './../../src/interfaces/iDeviceManager';
 import DetectorOpts, { DetectionConvertion } from './../../src//interfaces/IDetectorOpts';
-import DefaultLogger from './../../src/utilitis/logger';
+import Logger from './../../src/utilitis/logger';
 import DeviceManagerMock from './../mocks/devicemanager.mock';
 import * as msgpack from 'msgpack-lite';
 import { isSymbol } from 'util';
-
-const createDummyLogger = (): DefaultLogger => {
-  return sinon.createStubInstance(DefaultLogger);
-};
 
 describe('Detector', () => {
   let detector: Detector;
@@ -18,7 +14,7 @@ describe('Detector', () => {
 
   beforeEach(() => {
     deviceManager = new DeviceManagerMock();
-    detector = new Detector(deviceManager, createDummyLogger());
+    detector = new Detector(deviceManager);
   });
 
   describe('#validateOptions', () => {
@@ -48,7 +44,7 @@ describe('Detector', () => {
         deviceManager.getInfo = () => {
           return Promise.resolve({ version: undefined });
         };
-        detector = new Detector(deviceManager, createDummyLogger(), {});
+        detector = new Detector(deviceManager, {});
         const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
         transportWriteStub.resolves();
         await detector.init();
@@ -61,13 +57,13 @@ describe('Detector', () => {
           };
         });
         it('should should send detector/start command if camera sw does not support people_count msg if DOWS is not set', async () => {
-          detector = new Detector(deviceManager, createDummyLogger(), {});
+          detector = new Detector(deviceManager, {});
           transportWriteStub.resolves();
           await detector.init();
           expect(transportWriteStub.getCall(0).args[0]).to.equals('detector/start');
         });
         it('should not send any start msg to camera if DOWS is set', async () => {
-          detector = new Detector(deviceManager, createDummyLogger(), { DOWS: true });
+          detector = new Detector(deviceManager, { DOWS: true });
           transportWriteStub.resolves();
           await detector.init();
           expect(transportWriteStub.called).to.equals(false);
@@ -75,7 +71,7 @@ describe('Detector', () => {
       });
       describe('on camera sw version new enough to support people_count msg', () => {
         it('should send people_count/start command with !STREAMING_ONLY and setup detection listener if DOWS is not set', async () => {
-          detector = new Detector(deviceManager, createDummyLogger(), {});
+          detector = new Detector(deviceManager, {});
           const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
           transportWriteStub.resolves();
           await detector.init();
@@ -97,7 +93,7 @@ describe('Detector', () => {
         });
       });
       it('should send people_count/start command with STREAMING_ONLY and setup detection listener if DOWS is set', async () => {
-        detector = new Detector(deviceManager, createDummyLogger(), { DOWS: true });
+        detector = new Detector(deviceManager, { DOWS: true });
         const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
         transportWriteStub.resolves();
         await detector.init();
@@ -115,7 +111,7 @@ describe('Detector', () => {
     });
     describe('on detector initialized', () => {
       it('should not do anthing', async () => {
-        detector = new Detector(deviceManager, createDummyLogger(), {});
+        detector = new Detector(deviceManager, {});
         const setupDetectorSubscriptionSpy = sinon.spy(detector, 'setupDetectorSubscriptions');
         detector._detectorInitialized = true;
         await detector.init();
@@ -169,7 +165,7 @@ describe('Detector', () => {
     describe('on detector initialized', () => {
       describe('on DOWS not set', () => {
         beforeEach(async () => {
-          detector = new Detector(deviceManager, createDummyLogger(), {});
+          detector = new Detector(deviceManager, {});
           teardownDetectorSubscriptionSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
           transportWriteStub.resolves();
           detector._previewStreamStarted = true;
@@ -196,7 +192,7 @@ describe('Detector', () => {
       });
       describe('on DOWS set', () => {
         it('should teardown detection and framing listeners/subscribers and send people_count/stop', async () => {
-          detector = new Detector(deviceManager, createDummyLogger(), { DOWS: true });
+          detector = new Detector(deviceManager, { DOWS: true });
           detector._usePeopleCount = true;
           teardownDetectorSubscriptionSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
           transportWriteStub.resolves();
@@ -209,7 +205,7 @@ describe('Detector', () => {
           expect(detector._detectorInitialized).to.equals(false);
         });
         it('should not send a stop command if camera software is older than a given threshold', async () => {
-          detector = new Detector(deviceManager, createDummyLogger(), { DOWS: true });
+          detector = new Detector(deviceManager, { DOWS: true });
           transportWriteStub.resolves();
           await detector.destroy();
           expect(transportWriteStub.called).to.equals(false);
@@ -219,7 +215,7 @@ describe('Detector', () => {
 
     describe('on detector not initialized', () => {
       it('should not do anthing', async () => {
-        detector = new Detector(deviceManager, createDummyLogger(), {});
+        detector = new Detector(deviceManager, {});
         teardownDetectorSubscriptionSpy = sinon.spy(detector, 'teardownDetectorSubscriptions');
         await detector.destroy();
         expect(transportWriteStub.called).to.equals(false);

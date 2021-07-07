@@ -8,6 +8,7 @@ import DetectorOpts from './IDetectorOpts';
 import AutozoomControlOpts from './IAutozoomControlOpts';
 import DiagnosticsMessage from '../components/diagnosticsMessage';
 import ReleaseChannel from './ReleaseChannelEnum';
+import ICnnControl from './ICnnControl';
 
 /**
  * Interface used for performing actions on the camera.
@@ -42,22 +43,12 @@ export default interface IDeviceManager {
   uvcControlInterface: any;
 
   /**
-   * Utility class used to log messages (used for debugging purposes). Required
-   * class/object methods are "info", "warn" and "error" with each method
-   * having a string parameter that describes the log message!
-   *
-   * @type {any}
-   * @memberof IDeviceManager
-   */
-  logger: any;
-
-  /**
    * Class initialization function.
    *
    * @returns {Promise<void>}
    * @memberof IDeviceManager
    */
-  initialize(): Promise<void>;
+  initialize(developmentMode?: boolean): Promise<void>;
 
   /**
    * Closes the communication channels with the camera in use.
@@ -132,7 +123,16 @@ export default interface IDeviceManager {
    * @returns {IAutozoomControl} Returns a new instance of `IAutozoomControl` class.
    * @memberof IDeviceManager
    */
-  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl;
+  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl | ICnnControl;
+
+  /**
+   * Get a new instance of `CnnControl` controller class which allows
+   * you to configure the face based on the camera.
+   *
+   * @returns {ICnnControl} Returns a new instance of `ICnnControl` class.
+   * @memberof IDeviceManager
+   */
+  getFaceBasedExposureControl(): ICnnControl;
 
   /**
    * Get a new instance of the `Detector` class which allows

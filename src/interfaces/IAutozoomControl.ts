@@ -1,10 +1,12 @@
+import ICnnControl from './ICnnControl';
+
 /**
  * Interface used to configure the autozoom (genius framing) feature on the IQ camera
  *
  * @export
  * @interface IAutozoomControl
  */
-export default interface IAutozoomControl {
+export default interface IAutozoomControl extends ICnnControl {
   /**
    * Convenience function for setting up the camera
    * for starting/stopping autozoom (genius framing).

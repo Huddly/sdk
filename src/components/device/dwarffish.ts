@@ -1,32 +1,30 @@
 import { EventEmitter } from 'events';
 
 import Api from '../api';
-import DefaultLogger from '../../utilitis/logger';
-import ITransport from '../../interfaces/iTransport';
+import IUsbTransport from '../../interfaces/IUsbTransport';
 import Locksmith from '../locksmith';
 import Boxfish from './boxfish';
 import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import IDetector from '../../interfaces/IDetector';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import ICnnControl from '../../interfaces/ICnnControl';
 import InterpolationParams from '../../interfaces/InterpolationParams';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 
 export default class Dwarffish extends Boxfish {
-  transport: ITransport;
+  transport: IUsbTransport;
   _api: Api;
   uvcControlInterface: any;
-  logger: DefaultLogger;
   locksmith: Locksmith;
   discoveryEmitter: EventEmitter;
   productName: string = 'Huddly IQ Lite';
 
   constructor(
     uvcCameraInstance: any,
-    transport: ITransport,
+    transport: IUsbTransport,
     uvcControlInterface: any,
-    logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
-    super(uvcCameraInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
+    super(uvcCameraInstance, transport, uvcControlInterface, cameraDiscoveryEmitter);
   }
 
   async ensureAppMode() {
@@ -35,6 +33,10 @@ export default class Dwarffish extends Boxfish {
 
   getAutozoomControl(): IAutozoomControl {
     throw new Error('getAutozoomControl not implemented');
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    throw new Error('Method not implemented.');
   }
 
   getDetector(): IDetector {

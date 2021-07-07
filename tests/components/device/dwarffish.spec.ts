@@ -7,7 +7,7 @@ import path from 'path';
 import ITransport from '../../../src/interfaces/iTransport';
 import IDeviceUpgrader from '../../../src/interfaces/IDeviceUpgrader';
 import Dwarffish from '../../../src/components/device/dwarffish';
-import DefaultLogger from '../../../src/utilitis/logger';
+import Logger from '../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import CameraEvents from '../../../src/utilitis/events';
 import Api from '../../../src/components/api';
@@ -63,7 +63,6 @@ describe('Dwarffish', () => {
       {},
       sinon.createStubInstance(DummyTransport),
       {},
-      new DefaultLogger(false),
       new EventEmitter(),
     );
   });

@@ -1,14 +1,20 @@
 import { EventEmitter } from 'events';
 import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
-import iDeviceFactory from './interfaces/iDeviceFactory';
-import iLogger from './interfaces/iLogger';
-import DefaultLogger from './utilitis/logger';
+import IHuddlyDeviceDiscoveryAPI from './interfaces/IHuddlyDeviceDiscoveryAPI';
+import IDeviceFactory from './interfaces/iDeviceFactory';
+import IDeviceManager from './interfaces/iDeviceManager';
+import Logger from './utilitis/logger';
 import { createFactory } from './components/device/factory';
 import CameraEvents from './utilitis/events';
 import Locksmith from './components/locksmith';
 import Api from './components/api';
 import sourceMapSupport from 'source-map-support';
 import ErrorCodes from './error/errorCodes';
+import AllDeviceDiscovery from './components/allDeviceDiscovery';
+import IHuddlyService from './interfaces/IHuddlyService';
+import IServiceOpts from './interfaces/IServiceOpts';
+import ServiceFactory from './components/service/factory';
+import ILogger from './interfaces/ILogger';
 
 sourceMapSupport.install();
 
@@ -29,10 +35,10 @@ interface SDKOpts {
   /**
    * Logger instance used to log messages from the SDK.
    *
-   * @type {*}
+   * @type {ILogger}
    * @memberof SDKOpts
    */
-  logger?: iLogger;
+  logger?: ILogger;
   /**
    * Optional event emitter instance used to catch
    * SDK events!
@@ -42,6 +48,13 @@ interface SDKOpts {
    * @memberof SDKOpts
    */
   emitter?: EventEmitter;
+
+  /**
+   * @ignore
+   * @type {boolean}
+   * @memberof SDKOpts
+   */
+  developmentMode?: boolean;
 
   /**
    * @ignore
@@ -65,7 +78,7 @@ interface SDKOpts {
    * @returns {iDeviceFactory}
    * @memberof SDKOpts
    */
-  createFactory?(): iDeviceFactory;
+  createFactory?(): IDeviceFactory;
 }
 
 /**
@@ -84,14 +97,6 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   emitter: EventEmitter;
-
-  /**
-   * Logger instance used to log messages from the SDK.
-   *
-   * @type {iLogger}
-   * @memberof HuddlySdk
-   */
-  logger: iLogger;
 
   /**
    * @ignore
@@ -119,11 +124,10 @@ class HuddlySdk extends EventEmitter {
   /**
    * @ignore
    *
-   * @type {IHuddlyDeviceAPI}
+   * @type {IHuddlyDeviceDiscoveryAPI}
    * @memberof HuddlySdk
    */
-  _deviceDiscoveryApi: IHuddlyDeviceAPI;
-
+  _deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI;
 
   /**
    * @ignore
@@ -135,6 +139,7 @@ class HuddlySdk extends EventEmitter {
 
   private locksmith: Locksmith;
   private targetSerial: string;
+  private devMode: boolean;
 
   /**
    * Creates an instance of HuddlySdk.
@@ -145,7 +150,7 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   constructor(
-    deviceDiscoveryApi: IHuddlyDeviceAPI,
+    deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI | Array<IHuddlyDeviceDiscoveryAPI>,
     deviceApis?: Array<IHuddlyDeviceAPI>,
     opts?: SDKOpts
   ) {
@@ -154,11 +159,16 @@ class HuddlySdk extends EventEmitter {
       throw new Error('A default device api should be provided to the sdk!');
     }
 
-    if (!deviceApis || deviceApis.length === 0) {
-      this.mainDeviceApi = deviceDiscoveryApi;
-      this._deviceApis = new Array<IHuddlyDeviceAPI>();
-      this._deviceApis.push(deviceDiscoveryApi);
+    if (Array.isArray(deviceDiscoveryApi)) {
+      this._deviceDiscoveryApi = new AllDeviceDiscovery(deviceDiscoveryApi);
+    } else {
+      this._deviceDiscoveryApi = deviceDiscoveryApi;
+    }
 
+    if (!deviceApis || deviceApis.length === 0) {
+      this.mainDeviceApi = deviceDiscoveryApi as IHuddlyDeviceAPI;
+      this._deviceApis = new Array<IHuddlyDeviceAPI>();
+      this._deviceApis.push(this.mainDeviceApi);
     } else {
       this._mainDeviceApi = deviceApis[0];
       this._deviceApis = deviceApis;
@@ -170,18 +180,20 @@ class HuddlySdk extends EventEmitter {
       ...{
         apiDiscoveryEmitter: new EventEmitter(),
         emitter: this,
-        logger: new DefaultLogger(true),
         createFactory: createFactory,
       },
       ...opts,
     };
 
+    if (options.logger) {
+      Logger.setLogger(options.logger);
+    }
+
     this.deviceDiscovery = options.apiDiscoveryEmitter;
     this.emitter = options.emitter;
-    this._deviceDiscoveryApi = deviceDiscoveryApi;
-    this.logger = options.logger;
     this.targetSerial = options.serial;
     this._deviceFactory = options.createFactory();
+    this.devMode = options.developmentMode;
 
     this.setupDeviceDiscoveryListeners();
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
@@ -196,24 +208,23 @@ class HuddlySdk extends EventEmitter {
    */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async d => {
-      if (d && (!this.targetSerial || (this.targetSerial === d.serialNumber)) ) {
+      if (d && (!this.targetSerial || this.targetSerial === d.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
           () =>
-            new Promise(async resolve => {
+            new Promise<void>(async resolve => {
               try {
-                const cameraManager = await this._deviceFactory.getDevice(
+                const cameraManager: IDeviceManager = await this._deviceFactory.getDevice(
                   d.productId,
-                  this.logger,
                   this.mainDeviceApi,
                   this.deviceApis,
                   d,
                   this.emitter
                 );
-
+                await cameraManager.initialize(this.devMode);
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
-                this.logger.error(`Could not get device ${e}`, 'SDK');
+                Logger.error('Could not get device!', e, HuddlySdk.name);
                 this.emitter.emit(CameraEvents.ERROR, new AttachError('No transport supported', ErrorCodes.NO_TRANSPORT));
               }
             })
@@ -221,12 +232,15 @@ class HuddlySdk extends EventEmitter {
       }
     });
 
-    this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
-      if (d !== undefined  && (!this.targetSerial || (this.targetSerial === d))) {
-        await this.locksmith.executeAsyncFunction(() => new Promise((resolve) => {
-          this.emitter.emit(CameraEvents.DETACH, d);
-          resolve();
-        }));
+    this.deviceDiscovery.on(CameraEvents.DETACH, async d => {
+      if (d !== undefined && (!this.targetSerial || this.targetSerial === d)) {
+        await this.locksmith.executeAsyncFunction(
+          () =>
+            new Promise<void>(resolve => {
+              this.emitter.emit(CameraEvents.DETACH, d);
+              resolve();
+            })
+        );
       }
     });
   }
@@ -281,7 +295,7 @@ class HuddlySdk extends EventEmitter {
    *
    * @memberof HuddlySdk
    */
-  set deviceDiscoveryApi(api: IHuddlyDeviceAPI) {
+  set deviceDiscoveryApi(api: IHuddlyDeviceDiscoveryAPI) {
     this._deviceDiscoveryApi = api;
     this.deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
   }
@@ -290,10 +304,10 @@ class HuddlySdk extends EventEmitter {
    * Convenience function for getting the device api
    * instance used for camera discovery.
    *
-   * @type {IHuddlyDeviceAPI}
+   * @type { IHuddlyDeviceDiscoveryAPI}
    * @memberof HuddlySdk
    */
-  get deviceDiscoveryApi(): IHuddlyDeviceAPI {
+  get deviceDiscoveryApi(): IHuddlyDeviceDiscoveryAPI {
     return this._deviceDiscoveryApi;
   }
 
@@ -308,7 +322,22 @@ class HuddlySdk extends EventEmitter {
   async init(): Promise<any> {
     await this.deviceDiscoveryApi.initialize();
   }
+
+  /**
+   * Get a huddly service implementation class instance with communication channels already established and ready
+   * to start sending and receiving information to/from.
+   * @param {IServiceOpts} [serviceOpts] - Service options for initializing and setting up the service communication
+   * @returns A the new instance of the huddly service implementation after the setup stage has been completed
+   */
+  static async getService(
+    serviceOpts: IServiceOpts = {}
+  ): Promise<IHuddlyService> {
+    const service: IHuddlyService = ServiceFactory.getService(serviceOpts);
+    await service.init();
+    return service;
+  }
 }
+
 export { CameraEvents, Api };
 
 export default HuddlySdk;

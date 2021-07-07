@@ -1,34 +1,36 @@
 import { EventEmitter } from 'events';
 
 import Api from './../api';
-import DefaultLogger from './../../utilitis/logger';
-import ITransport from './../../interfaces/iTransport';
 import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
 import IDetector from '../../interfaces/IDetector';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import ICnnControl from '../../interfaces/ICnnControl';
 import InterpolationParams from './../../interfaces/InterpolationParams';
+import IUsbTransport from './../../interfaces/IUsbTransport';
 
 export default class DartFish extends Boxfish {
-  transport: ITransport;
+  transport: IUsbTransport;
   _api: Api;
   uvcControlInterface: any;
-  logger: DefaultLogger;
   locksmith: Locksmith;
   discoveryEmitter: EventEmitter;
   productName: string = 'Huddly Canvas';
 
   constructor(
     uvcCameraInstance: any,
-    transport: ITransport,
+    transport: IUsbTransport,
     uvcControlInterface: any,
-    logger: DefaultLogger,
     cameraDiscoveryEmitter: EventEmitter) {
-    super(uvcCameraInstance, transport, uvcControlInterface, logger, cameraDiscoveryEmitter);
+    super(uvcCameraInstance, transport, uvcControlInterface, cameraDiscoveryEmitter);
   }
 
   async ensureAppMode() {
     throw new Error('ensureAppMode not implemented');
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    throw new Error('Method not implemented.');
   }
 
   getAutozoomControl(): IAutozoomControl {

@@ -7,7 +7,7 @@ import path from 'path';
 import ITransport from './../../../src/interfaces/iTransport';
 import IDeviceUpgrader from './../../../src/interfaces/IDeviceUpgrader';
 import Boxfish from './../../../src/components/device/boxfish';
-import DefaultLogger from './../../../src/utilitis/logger';
+import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
@@ -75,7 +75,6 @@ describe('Boxfish', () => {
       {},
       sinon.createStubInstance(DummyTransport),
       {},
-      new DefaultLogger(false),
       new EventEmitter(),
     );
   });
