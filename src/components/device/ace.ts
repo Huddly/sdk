@@ -698,7 +698,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         newPtz.setTilt(newPtz.getDefaulttilt());
         newPtz.setZoom(newPtz.getDefaultzoom());
         newPtz.setTrans(0);
-      }).finally(() => {
+      }).then(() => {
         const paramKeys = Object.keys(panTiltZoom);
         if (paramKeys.includes('pan')) {
           newPtz.setPan(panTiltZoom['pan']);
