@@ -9,7 +9,7 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@huddly/device-api-ip": "git+ssh://git@github.com/Huddly/device-api-ip.git#huddly-proto-npm-pkg",
-        "@huddly/sdk": "git+ssh://git@github.com/Huddly/sdk.git#huddly-proto-npm-package"
+        "@huddly/device-api-ip": "git+ssh://git@github.com/Huddly/device-api-ip.git",
+        "@huddly/sdk": "git+ssh://git@github.com/Huddly/sdk.git#l1-sdk-support"
     }
 }
