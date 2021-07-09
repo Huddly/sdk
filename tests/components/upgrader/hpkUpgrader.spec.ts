@@ -152,14 +152,15 @@ describe('HPKUpgrader', () => {
       });
 
       it('should emit UPGRADE_FAILED if status is not zero', () => {
-        const upgradeFailedPromise = new Promise(resolve => {
-          hpkUpgrader.once('UPGRADE_FAILED', resolve);
-        });
+        const spy = sinon.spy();
+        hpkUpgrader.once('UPGRADE_FAILED', spy);
         dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
           status: 1
         });
-        hpkUpgrader.start();
-        return upgradeFailedPromise;
+        const p = hpkUpgrader.start();
+        return expect(p).to.eventually.be.rejected.then(() => {
+          expect(spy.called).to.equal(true);
+        });
       });
     });
 
