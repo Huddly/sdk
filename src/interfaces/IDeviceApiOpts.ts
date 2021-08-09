@@ -13,7 +13,7 @@ export default interface DeviceApiOpts {
    * like: warn, info or error!
    *
    * @type {*}
-   * @memberof ApiOpts
+   * @memberof DeviceApiOpts
    */
   logger?: any;
   /**
@@ -22,7 +22,7 @@ export default interface DeviceApiOpts {
    * system!
    *
    * @type {*}
-   * @memberof ApiOpts
+   * @memberof DeviceApiOpts
    */
   manager?: any;
 
@@ -30,7 +30,7 @@ export default interface DeviceApiOpts {
    * By default true, check if device api supports provided device,
    * if false best effort trying to map api on best effort basis, and might fail
    * @type {*}
-   * @memberof ApiOpts
+   * @memberof DeviceApiOpts
    */
   enforceSupport?: boolean;
 
@@ -39,7 +39,7 @@ export default interface DeviceApiOpts {
    * Amount of attemts seraching for provided device in LIBUSB
    * if undefined default value of 10 will be used
    * @type {*}
-   * @memberof ApiOpts
+   * @memberof DeviceApiOpts
    */
   maxSearchRetries?: Number;
 
@@ -48,7 +48,27 @@ export default interface DeviceApiOpts {
    * If true it will continue to search for device until it is found
    * or process is aborted, if false maxSearchRetries will be use
    * @type {*}
-   * @memberof ApiOpts
+   * @memberof DeviceApiOpts
    */
   alwaysRetry?: boolean;
+
+  /**
+   * Note: this option applies to device-api-ip module.
+   * If provided, it sets the default outgoing multicast interface of
+   * the socket to a specific interface. Must be a valid string
+   * representation of an IP from the socket's family.
+   * @type {*}
+   * @memberof DeviceApiOpts
+   */
+  multicastInterfaceAddr?: string;
+
+  /**
+   * Note: this option applies to device-api-ip module.
+   * Similar to [multicastInterfaceAddr] option, except
+   * that here you provide the name of the interface
+   * instead of it's ip address.
+   * @type {*}
+   * @memberof DeviceApiOpts
+   */
+  targetInterfaceName?: string;
 }
