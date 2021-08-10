@@ -127,7 +127,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
           return;
         }
         infoData.version = deviceVersion.toObject().version;
-        this.getUptime()
+        this.uptime()
           .then(uptime => {
             infoData.uptime = Number(uptime.toFixed(2));
           })
@@ -347,7 +347,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
-  getUptime(): Promise<number> {
+  uptime(): Promise<number> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getUptime(new Empty(), (err, uptime: huddly.Uptime) => {
         if (err != undefined) {
