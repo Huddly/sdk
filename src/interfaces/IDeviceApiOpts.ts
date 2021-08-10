@@ -60,11 +60,11 @@ export default interface DeviceApiOpts {
    * @type {*}
    * @memberof DeviceApiOpts
    */
-  multicastInterfaceAddr?: string;
+  targetInterfaceAddr?: string;
 
   /**
    * Note: this option applies to device-api-ip module.
-   * Similar to [multicastInterfaceAddr] option, except
+   * Similar to [targetInterfaceAddr] option, except
    * that here you provide the name of the interface
    * instead of it's ip address.
    * @type {*}
