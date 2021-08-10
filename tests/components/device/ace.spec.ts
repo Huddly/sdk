@@ -264,7 +264,7 @@ describe('Ace', () => {
           deviceVersion.setVersion('1.2.3-abc');
           cb(undefined, deviceVersion);
         };
-        sinon.stub(device, 'getUptime').resolves(123);
+        sinon.stub(device, 'uptime').resolves(123);
         sinon.stub(device, 'getSlot').resolves('C');
         const info = await device.getInfo();
         expect(info).to.deep.equal({
@@ -297,7 +297,7 @@ describe('Ace', () => {
           deviceVersion.setVersion('1.2.3-abc');
           cb(undefined, deviceVersion);
         };
-        sinon.stub(device, 'getUptime').rejects(dummyError);
+        sinon.stub(device, 'uptime').rejects(dummyError);
         const infoPromise = device.getInfo();
         return expect(infoPromise).to.eventually.be.rejectedWith(dummyError.message);
       });
@@ -915,7 +915,7 @@ describe('Ace', () => {
       });
     });
   });
-  describe('#getUptime', () => {
+  describe('#uptime', () => {
     describe('on success', () => {
       it('should request device uptime', () => {
         dummyTransport.grpcClient.getUptime = (empty: Empty, cb: any) => {
@@ -923,7 +923,7 @@ describe('Ace', () => {
           uptime.setUptime(200);
           cb(undefined, uptime);
         };
-        const resetPromise = device.getUptime();
+        const resetPromise = device.uptime();
         return expect(resetPromise).to.be.fulfilled;
       });
     });
@@ -932,7 +932,7 @@ describe('Ace', () => {
         dummyTransport.grpcClient.getUptime = (empty: Empty, cb: any) => {
           cb(dummyError);
         };
-        const resetPromise = device.getUptime();
+        const resetPromise = device.uptime();
         expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
       });
     });
