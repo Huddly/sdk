@@ -92,7 +92,7 @@
   },
   "dependencies": {
     "@types/node": "^12.20.15",
-    "jszip": "3.2.2",
+    "jszip": "3.7.0",
     "msgpack-lite": "~0.1.26",
     "p-queue": "^6.6.2",
     "semver": "^7.3.5",
