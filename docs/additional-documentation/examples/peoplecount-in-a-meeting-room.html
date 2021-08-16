@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../../images/favicon.ico">
-	      <link rel="stylesheet" href="../../styles/style.css">
+	   <link rel="stylesheet" href="../../styles/style.css">
+        <link rel="stylesheet" href="../../styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -43,7 +44,7 @@
 
 
 
-                   
+
 
 
 
@@ -103,7 +104,7 @@ by our event listener that we set up in the previous step.</p>
 <p>In order to track with GA we first need to create an account.</p>
 <p><a href="https://support.google.com/analytics/answer/1042508">Create a GA account and get the tracking ID </a>.</p>
 <p>You then need to set the tracking-ui as an environment variables.</p>
-<div><pre class="line-numbers"><code class="language-none">    export GA_TRACKING_ID=YOUR-TRACKING-ID</code></pre></div><p>And then some utility code that pushed the people count event to google analytics.</p>
+<div><pre class="line-numbers"><code class="language-none">  export GA_TRACKING_ID=YOUR-TRACKING-ID</code></pre></div><p>And then some utility code that pushed the people count event to google analytics.</p>
 <div><pre class="line-numbers"><code class="language-javascript">const got = require(&#39;got&#39;);
 
 const GA_TRACKING_ID = process.env.GA_TRACKING_ID;
@@ -169,11 +170,10 @@ init();</code></pre></div><p>Next up we want to create our analytics report</p>
 <h2 id="setup-a-google-analytics-report">Setup a google analytics report</h2>
 <p>We want to create a report that calculates the average number of people in our meeting room per hour.</p>
 <ol>
-<li><p>Create new custom report Customization &gt; Custom report</p>
-</li>
-<li><p>Click + New Custom report</p>
-</li>
-<li><p>Setup report</p>
+<li>Create new custom report Customization &gt; Custom report</li>
+<li>Click + New Custom report</li>
+<li>Setup report</li>
+</ol>
 <ul>
 <li>Give it a name &quot;average number of people in my_meeting_room&quot;</li>
 <li>Tab: name average number in hours</li>
@@ -185,15 +185,13 @@ init();</code></pre></div><p>Next up we want to create our analytics report</p>
 <li>Click add dimension select <code>Hour</code></li>
 <li>Click add filter only show <code>Event Label</code> Exact <code>my_meeting_room</code> (fill the name you set as environment variable)</li>
 </ul>
-<p><img src="https://developer.huddly.com/assets/imgs/report.png" alt="Average number people in meeting room moon" class="img-responsive"></p>
-</li>
-</ol>
+<p>  <img src="https://developer.huddly.com/assets/imgs/report.png" alt="Average number people in meeting room moon" class="img-responsive"></p>
 <h2 id="check-out-your-dashboard">Check out your Dashboard</h2>
 <p>You should now have tracking data coming in, and you can select different date ranges for your report.</p>
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -213,9 +211,9 @@ init();</code></pre></div><p>Next up we want to create our analytics report</p>
 
        <script src="../../js/libs/custom-elements.min.js"></script>
        <script src="../../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../../js/menu-wc.js" defer></script>
+       <script nomodule src="../../js/menu-wc_es5.js" defer></script>
 
        <script src="../../js/libs/bootstrap-native.js"></script>
 

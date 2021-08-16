@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -43,7 +44,9 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>IDeviceUpgrader</li>
+  <li
+  >
+  IDeviceUpgrader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -67,6 +70,7 @@
             <code>src/interfaces/IDeviceUpgrader.ts</code>
         </p>
 
+
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -89,22 +93,40 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#init">init</a>
+                                    <a href="#init" 
+>
+                                        init
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#on">on</a>
+                                    <a href="#on" 
+>
+                                        on
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#once">once</a>
+                                    <a href="#once" 
+>
+                                        once
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#removeListener">removeListener</a>
+                                    <a href="#removeListener" 
+>
+                                        removeListener
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#start">start</a>
+                                    <a href="#start" 
+>
+                                        start
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#upgradeIsValid">upgradeIsValid</a>
+                                    <a href="#upgradeIsValid" 
+>
+                                        upgradeIsValid
+                                    </a>
                                 </li>
                             </ul>
                         </td>
@@ -124,16 +146,14 @@
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            init
-                        </b>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>init(opts: <a href="../interfaces/UpgradeOpts.html">UpgradeOpts</a>)</code>
+<code>init(opts: <a href="../interfaces/UpgradeOpts.html" target="_self">UpgradeOpts</a>)</code>
                 </td>
             </tr>
 
@@ -154,6 +174,7 @@ verbose level etc.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -202,9 +223,7 @@ verbose level etc.</p>
                 <td class="col-md-4">
                     <a name="on"></a>
                     <span class="name">
-                        <b>
-                            on
-                        </b>
+                        <span ><b>on</b></span>
                         <a href="#on"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -231,6 +250,7 @@ verbose level etc.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -295,9 +315,7 @@ verbose level etc.</p>
                 <td class="col-md-4">
                     <a name="once"></a>
                     <span class="name">
-                        <b>
-                            once
-                        </b>
+                        <span ><b>once</b></span>
                         <a href="#once"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -324,6 +342,7 @@ verbose level etc.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -388,9 +407,7 @@ verbose level etc.</p>
                 <td class="col-md-4">
                     <a name="removeListener"></a>
                     <span class="name">
-                        <b>
-                            removeListener
-                        </b>
+                        <span ><b>removeListener</b></span>
                         <a href="#removeListener"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -417,6 +434,7 @@ verbose level etc.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -479,9 +497,7 @@ verbose level etc.</p>
                 <td class="col-md-4">
                     <a name="start"></a>
                     <span class="name">
-                        <b>
-                            start
-                        </b>
+                        <span ><b>start</b></span>
                         <a href="#start"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -521,9 +537,7 @@ Use event handlers to track the upgrade progress.</p>
                 <td class="col-md-4">
                     <a name="upgradeIsValid"></a>
                     <span class="name">
-                        <b>
-                            upgradeIsValid
-                        </b>
+                        <span ><b>upgradeIsValid</b></span>
                         <a href="#upgradeIsValid"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -569,10 +583,10 @@ Use event handlers to track the upgrade progress.</p>
     <div class="tab-pane fade " id="c-readme">
         <p><h2 id="upgrader-usage">Upgrader Usage</h2>
 <p>In order to perform a software upgarde on the camera, this interface should be used. Please note that there is a convenience function in the <code>IDeviceManager</code> for performing the upgrade, but if you want to implement your own handler then this documentation needs to be reviewed.</p>
-<p>Each upgrader class (BoxfishUpgrader or HuddlyGoUpgrader) requires some options that should be provided when initializing it:</p>
+<p>Each upgrader class (BoxfishUpgrader, HuddlyGoUpgrader, AceUPgrader) requires some options that should be provided when initializing it:</p>
 <div><pre class="line-numbers"><code class="language-javascript">const upgrader = cameraManager.getUpgrader();
 const upgradeOptions = {
-  file: fs.readSync(&#39;/path/to/upgrader/pkg/file&#39;),
+  file: fs.readSync(&#39;/path/to/firmware/image&#39;),
   bootTimeout: 60 // Default is 60 seconds
   verboseStatusLog: true // Default is true
 }; // See the `IUpgraderOpts` for explanation of each option
@@ -590,43 +604,66 @@ upgrader.start();</code></pre></div><p>During the upgrade process, the upgrader 
 </thead>
 <tbody>
 <tr>
-<td>UPGRADE_START</td>
+<td><code>UPGRADE_START</code></td>
 <td align="left">Fired when upgrade is initiated.</td>
 </tr>
 <tr>
-<td>UPGRADE_COMPLETE</td>
+<td><code>UPGRADE_COMPLETE</code></td>
 <td align="left">Fired when upgrade is completed successfully.</td>
 </tr>
 <tr>
-<td>UPGRADE_FAILED</td>
+<td><code>UPGRADE_FAILED</code></td>
 <td align="left">Fired when something fails during upgrade. The handler contains the error trace of the upgrade failure.</td>
 </tr>
 <tr>
-<td>TIMEOUT</td>
+<td><code>TIMEOUT</code></td>
 <td align="left">Fired when the camera does not come back up after reboot (reboot is necessary to complete the upgrade sequence.</td>
+</tr>
+<tr>
+<td><code>UPGRADE_PROGRESS</code></td>
+<td align="left">Fired when constantly during the upgrade process providing with information on how far the upgrade process is from completion.</td>
 </tr>
 </tbody>
 </table>
 <p>The events above can be used as shown below:</p>
 <div><pre class="line-numbers"><code class="language-javascript">
-upgrader.on(&#39;UPGRADE_START&#39;, () =&gt; {
+const onUpgradeStartHandler = () =&gt; {
   // Do something.... Inform your system that upgrade has started
-});
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
 
-upgrader.on(&#39;UPGRADE_FAILED&#39;, (e) =&gt; {
+const onUpgradeFailedHandler = (e) =&gt; {
   // Upgrade has failed. Print error log to debug the reason
-  console.log(e);
-});
+  console.error(e);
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
 
-upgrader.on(&#39;UPGRADE_COMPLETE&#39;, () =&gt; {
+const onUpgradeCompleteHandler = () =&gt; {
   // Hurrayyy! Sucessfully upgraded your Huddly camera
-});
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
 
-upgrader.on(&#39;TIMEOUT&#39;, () =&gt; {
+const onUpgradeTimeoutHandler = () =&gt; {
   // Ups! Looks like the camera did not come back up after rebooting during upgrade.
   // This also means that the new software that was loaded into the camera will be discarded.
   // Try to initiate upgrade again.
-});
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeProgressHandler = (progress) =&gt; {
+  // The progress object contains the following information:
+  /*
+   * status: A string representation of how far the upgrade progress has come (ex. Uploading firmware on the device)
+   * progress: A numerical value representing the percentage of upgrade completion (ex 30)
+   */
+  console.log(`Upgrade Progress: ${progress.progress} %`)
+}
+
+upgrader.once(&#39;UPGRADE_START&#39;, onUpgradeStartHandler);
+upgrader.once(&#39;UPGRADE_FAILED&#39;, onUpgradeFailedHandler);
+upgrader.once(&#39;UPGRADE_COMPLETE&#39;, onUpgradeCompleteHandler);
+upgrader.once(&#39;TIMEOUT&#39;, onUpgradeTimeoutHandler);
+upgrader.on(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
 
 // Finally start the upgrade after having setup all the listeners
 upgrader.start();</code></pre></div></p>
@@ -698,14 +735,14 @@ export default interface IDeviceUpgrader {
 </div>
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -725,9 +762,9 @@ export default interface IDeviceUpgrader {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

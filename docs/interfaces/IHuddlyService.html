@@ -1,0 +1,481 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content interface">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Interfaces</li>
+  <li
+  >
+  IHuddlyService</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/interfaces/IHuddlyService.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Interface used for communicating with a huddly service that facilitates and improves the experiences
+with the huddly network cameras.</p>
+
+            </p>
+
+
+        <section>
+            <h3 id="index">Index</h3>
+            <table class="table table-sm table-bordered index-table">
+                <tbody>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Properties</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                        <a href="#options" 
+>
+                                            options
+                                        </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Methods</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#close" 
+>
+                                        close
+                                    </a>
+                                </li>
+                                <li>
+                                    <a href="#init" 
+>
+                                        init
+                                    </a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="close"></a>
+                    <span class="name">
+                        <span ><b>close</b></span>
+                        <a href="#close"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>close()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/interfaces/IHuddlyService.ts:30</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Teardiwn all communication channels with the huddly service.
+otherwise</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>A promise that resolves when the teardown is successful or rejects
+otherwise</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>init()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="23"
+                            class="link-to-prism">src/interfaces/IHuddlyService.ts:23</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Initialize all communication channels with the huddly service and make sure service api
+endpoints are ready to be consumed.
+otherwise</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>A promise that resolves when the initialization is successful or rejects
+otherwise</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+            <section>
+                <h3 id="inputs">Properties</h3>
+                    <table class="table table-sm table-bordered">
+                        <tbody>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <a name="options"></a>
+                                        <span class="name "><b>options</b>
+                                            <a href="#options">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="col-md-4">
+                                        <code>options:         <code><a href="../interfaces/IServiceOpts.html" target="_self" >IServiceOpts</a></code>
+</code>
+                                    </td>
+                                </tr>
+
+
+                                    <tr>
+                                        <td class="col-md-4">
+                                            <i>Type : </i>        <code><a href="../interfaces/IServiceOpts.html" target="_self" >IServiceOpts</a></code>
+
+                                        </td>
+                                    </tr>
+
+
+
+
+
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-description"><p>Service options used to initialize and setup up the communication channel with the
+huddly service running on host machine</p>
+</div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+            </section>
+    </div>
+
+    <div class="tab-pane fade " id="c-readme">
+        <p><h2 id="huddly-camera-switch-service">Huddly Camera Switch Service</h2>
+<p>With version <strong>v0.6.0</strong> we added support for Huddly IP Cameras on the SDK and with that a new feature exclusively on windows. This new feature allows you to switch the stream between different Huddly IP cameras used on various windows streaming applications (ex. windows camera app).</p>
+<p>This feature can be useful in a multi-cam scenario where you have more than one Huddly IP camera set up on your meeting room and want to use the sdk to control which camera is used to stream on your zoom, google meet or microsoft teams meeting.</p>
+<p>The pre-requisites for using this feature are:</p>
+<ul>
+<li>Running on windows 10 or above</li>
+<li>Having the Huddly IP Camera driver and service up and running on your system</li>
+<li>Two or more Huddly IP Camera devices available on your network</li>
+</ul>
+<h3 id="listing-available-huddly-ip-cameras">Listing available Huddly IP Cameras</h3>
+<p>In order to be able to tell the service to switch from one camera to another, you need to be able to list all available cameras on your network and find their corresponding ip addresses. Here is a code snippet that helps you find the list of cameras:</p>
+<div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceApiIp = require(&#39;&#64;huddly/device-api-ip&#39;).default;
+const HuddlyDeviceApiIUsb = require(&#39;&#64;huddly/device-api-usb&#39;).default;
+const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
+const { HUDDLY_L1_PID } = require(&#39;&#64;huddly/sdk/lib/src/components/device/factory&#39;).default;
+
+const ipApi = new HuddlyDeviceApiIp();
+const usbApi = new HuddlyDeviceApiIUsb();
+// Create an instance of the SDK
+const sdk = new HuddlySdk([usbApi, ipApi], [usbApi, ipApi]);
+
+const applicationTeardown = () =&gt; {
+  process.exit();
+}
+
+const searchTime = 30; // seconds
+const cameraList = [];
+
+sdk.on(&#39;ATTACH&#39;, (huddlyDevice) =&gt; {
+  if (huddlyDevice.pid == HUDDLY_L1_PID) {
+    console.log(`Found [${huddlyDevice.productName}] device!`)
+    huddlyDevice.getInfo()
+    .then(info =&gt; {
+      cameraList.push(info)
+    })
+    .catch((e) =&gt; {
+      console.error(`Unable to get camera info from [${huddlyDevice.productName}]`)
+      console.trace(e);
+    }).finally(_ =&gt; {
+      huddlyDevice.closeConnection();
+    });
+  }
+});
+
+setTimeout(() =&gt; {
+  console.group(&#39;Camera List&#39;)
+  console.log(cameraList)
+  console.groupEnd();
+  applicationTeardown();
+}, searchTime * 1000)
+sdk.init();</code></pre></div><p>Running the code snippet above should give you the following result</p>
+<div><pre class="line-numbers"><code class="language-shell">Found [Huddly L1] device!
+Found [Huddly L1] device!
+Camera List
+  [
+    {
+      name: &#39;L1&#39;,
+      mac: &#39;90:E2:FC:90:12:EC&#39;,
+      ipv4: &#39;169.254.98.175&#39;,
+      serialNumber: &#39;12101A0029&#39;,
+      modelName: &#39;810-00011-MBLK&#39;,
+      manufacturer: &#39;Huddly&#39;,
+      productId: 1001,
+      version: &#39;1.2.6-4302.12+sha.cc52293&#39;,
+      uptime: 22417.75,
+      slot: &#39;B&#39;
+    },
+    {
+      name: &#39;L1&#39;,
+      mac: &#39;90:E2:FC:90:12:ED&#39;,
+      ipv4: &#39;169.254.98.81&#39;,
+      serialNumber: &#39;12101A0039&#39;,
+      modelName: &#39;810-00011-MWHT&#39;,
+      manufacturer: &#39;Huddly&#39;,
+      productId: 1001,
+      version: &#39;1.2.6-4302.12+sha.cc52293&#39;,
+      uptime: 344.75,
+      slot: &#39;B&#39;
+    }
+  ]
+</code></pre></div><h3 id="getting-started">Getting started</h3>
+<p>Now that you have the information about all the connected Huddly IP cameras on your network, you can use the service to figure out which camera is picked by default by the Huddly IP camera driver, switch to a different camera, set the default camera etc.</p>
+<p>The code snipped below will illustrate the camera switch service funcionalities:</p>
+<div><pre class="line-numbers"><code class="language-javascript">// Import SDK
+const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
+
+// Get a new camera switch service instance
+const cameraSwitchService = await HuddlySdk.getService();
+
+// Get the active camera currently picked by the driver
+const activeCameraObj = await cameraSwitchService.getActiveCamera();
+
+// Get the default camera currently set for the driver (can be empty if not set before)
+const defaultCameraObj = await cameraSwitchService.getDefaultCamera();
+
+// Switch between different cameras
+const huddlyIpCamera1 = {
+  name: &quot;L1&quot;,
+  ip: &#39;169.254.98.81&#39;
+}
+const huddlyIpCamera2 = {
+  name: &quot;L1&quot;,
+  ip: &#39;169.254.98.81&#39;
+}
+
+// Switch to camera1
+await cameraSwitchService.setActiveCamera(huddlyIpCamera1);
+
+// Switch to camera2
+await cameraSwitchService.setActiveCamera(huddlyIpCamera2);
+
+// Make camera2 default pick for the driver (persistent across boot)
+await cameraSwitchService.setDefaultCamera(huddlyIpCamera2);</code></pre></div></p>
+    </div>
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IServiceOpts from &#x27;./IServiceOpts&#x27;;
+
+/**
+ * Interface used for communicating with a huddly service that facilitates and improves the experiences
+ * with the huddly network cameras.
+ */
+export default interface IHuddlyService {
+  /**
+   * Service options used to initialize and setup up the communication channel with the
+   * huddly service running on host machine
+   *
+   * @type {IServiceOpts}
+   * @memberof IHuddlyService
+   */
+  options: IServiceOpts;
+
+  /**
+   * Initialize all communication channels with the huddly service and make sure service api
+   * endpoints are ready to be consumed.
+   * @returns A promise that resolves when the initialization is successful or rejects
+   * otherwise
+   */
+  init(): Promise&lt;void&gt;;
+
+  /**
+   * Teardiwn all communication channels with the huddly service.
+   * @returns A promise that resolves when the teardown is successful or rejects
+   * otherwise
+   */
+  close(): Promise&lt;void&gt;;
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
+            var COMPODOC_CURRENT_PAGE_URL = 'IHuddlyService.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

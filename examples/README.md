@@ -14,3 +14,5 @@
 #### Upgrade
 * [Upgrade camera](rest-api/upgrade.html) : `POST /upgrade`
 * [Status of upgrade](rest-api/upgrade-status.html) : `GET /upgrade/status`
+
+## Huddly L1

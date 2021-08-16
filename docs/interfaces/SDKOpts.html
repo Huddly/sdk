@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -43,7 +44,9 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>SDKOpts</li>
+  <li
+  >
+  SDKOpts</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -66,6 +69,7 @@
         <p class="comment">
             <code>src/index.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -90,11 +94,17 @@
                             <ul class="index-list">
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#emitter">emitter</a>
+                                        <a href="#emitter" 
+>
+                                            emitter
+                                        </a>
                                 </li>
                                 <li>
                                             <span class="modifier">Optional</span>
-                                        <a href="#logger">logger</a>
+                                        <a href="#logger" 
+>
+                                            logger
+                                        </a>
                                 </li>
                             </ul>
                         </td>
@@ -112,7 +122,11 @@
                                 <tr>
                                     <td class="col-md-4">
                                         <a name="emitter"></a>
-                                        <span class="name"><b>emitter</b><a href="#emitter"><span class="icon ion-ios-link"></span></a></span>
+                                        <span class="name "><b>emitter</b>
+                                            <a href="#emitter">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
@@ -154,12 +168,16 @@ See <code>utilitis/events</code> class for all possible events.</p>
                                 <tr>
                                     <td class="col-md-4">
                                         <a name="logger"></a>
-                                        <span class="name"><b>logger</b><a href="#logger"><span class="icon ion-ios-link"></span></a></span>
+                                        <span class="name "><b>logger</b>
+                                            <a href="#logger">
+                                                <span class="icon ion-ios-link"></span>
+                                            </a>
+                                        </span>
                                     </td>
                                 </tr>
                                 <tr>
                                     <td class="col-md-4">
-                                        <code>logger:     <code>iLogger</code>
+                                        <code>logger:         <code><a href="../interfaces/ILogger.html" target="_self" >ILogger</a></code>
 </code>
                                     </td>
                                 </tr>
@@ -167,7 +185,7 @@ See <code>utilitis/events</code> class for all possible events.</p>
 
                                     <tr>
                                         <td class="col-md-4">
-                                            <i>Type : </i>    <code>iLogger</code>
+                                            <i>Type : </i>        <code><a href="../interfaces/ILogger.html" target="_self" >ILogger</a></code>
 
                                         </td>
                                     </tr>
@@ -194,12 +212,11 @@ See <code>utilitis/events</code> class for all possible events.</p>
 
     <div class="tab-pane fade " id="c-readme">
         <p><h2 id="sdk-usage">SDK Usage</h2>
-<p>Please check the <a href="http://developer.huddly.com/index.html">Getting Started</a> guide to integrate the sdk with your awesome application. </p>
+<p>Please check the <a href="http://developer.huddly.com/index.html">Getting Started</a> guide to integrate the sdk with your awesome application.</p>
 <h2 id="sdk-events">SDK Events</h2>
 <p>When you create an instance of the SDK, you provide some options on the constructor:</p>
 <div><pre class="line-numbers"><code class="language-javascript">const usbApi = new DeviceApiUSB();
 const opts = {
-  logger: new DefaultLogger(),
   //emitter: new EventEmitter(), &lt;- this is an optional parameter
 };
 const sdk = new SDK(usbApi, [usbApi], opts);</code></pre></div><p>If you do not provide the <code>emitter</code> option, the SDK instance itself will act as an Event Emitter. As a result you can use the sdk instance itself to listen for the supported events. The supported events are:</p>
@@ -213,11 +230,15 @@ const sdk = new SDK(usbApi, [usbApi], opts);</code></pre></div><p>If you do not 
 <tbody>
 <tr>
 <td>ATTACH</td>
-<td align="left">The <code>ATTACH</code> event is fired by the SDK for each Huddly camera attached to your machine. This event will also be fired everytime you attach a new Huddly camera to the machine while the SDK instance is running. The <code>ATTACH</code> event gives you an instance of the <code>IDeviceManager</code> which can be used to communicate with the camera.</td>
+<td align="left">The <code>ATTACH</code> event is fired by the SDK for each Huddly camera attached on the host machine. This event will also be fired everytime you attach a new Huddly camera to the machine while the SDK instance is running. The <code>ATTACH</code> event gives you an instance of the <code>IDeviceManager</code> which can be used to communicate with the camera.</td>
 </tr>
 <tr>
 <td>DETACH</td>
-<td align="left">The <code>DETACH</code> event is fired by the SDK in case you a camera that has previously been discovered by the SDK is removed/detached from the host machine. The <code>DETACH</code> event gives you the <code>Serial Number</code> of the detached device.</td>
+<td align="left">The <code>DETACH</code> event is fired by the SDK in case a Huddly camera is removed/detached from the host machine. The <code>DETACH</code> event gives you the <code>Serial Number</code> of the detached device.</td>
+</tr>
+<tr>
+<td>ERROR</td>
+<td align="left">The <code>ERROR</code> event is fired by the SDK when the device initialization step cannot be performed on the discovered Huddly camera. The event consists of a payload of type <code>AttachError</code> and contains the error mesage and origin of the device initialization failure</td>
 </tr>
 </tbody>
 </table>
@@ -234,12 +255,24 @@ sdk.on(&#39;ATTACH&#39;, (cameraManager) =&gt; {
 });
 
 sdk.on(&#39;DETACH&#39;, (serial) =&gt; {
-  if (cameraManager.serialNumber === serial) {
+  if (IQManager.serialNumber === serial) {
     // The camera you were using has been detached from the system.
-    // Proceed with deinitializing the cameraManager instance
-    camearManager = undefined;
-    // For example...
-    connnected = false;
+    // Proceed with deinitializing the IQManager instance..
+    IQManager.closeConnection()
+    .then(_ =&gt; {
+      IQManager = undefined;
+    }).finally(_ =&gt; {
+      // For example...
+      connnected = false;
+    });
+  }
+});
+
+sdk.on(&#39;ERROR&#39;, (sdkError) =&gt; {
+  if (sdkError.device &amp;&amp; sdkError.device.serialNumber == serial) {
+    // SDK is unable to initialize the desired camera
+    console.error(sdkError.error);
+    connected = false;
   }
 });</code></pre></div></p>
     </div>
@@ -247,25 +280,24 @@ sdk.on(&#39;DETACH&#39;, (serial) =&gt; {
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
 import IHuddlyDeviceAPI from &#x27;./interfaces/iHuddlyDeviceAPI&#x27;;
-import iDeviceFactory from &#x27;./interfaces/iDeviceFactory&#x27;;
-import iLogger from &#x27;./interfaces/iLogger&#x27;;
-import DefaultLogger from &#x27;./utilitis/logger&#x27;;
+import IHuddlyDeviceDiscoveryAPI from &#x27;./interfaces/IHuddlyDeviceDiscoveryAPI&#x27;;
+import IDeviceFactory from &#x27;./interfaces/iDeviceFactory&#x27;;
+import IDeviceManager from &#x27;./interfaces/iDeviceManager&#x27;;
+import Logger from &#x27;./utilitis/logger&#x27;;
 import { createFactory } from &#x27;./components/device/factory&#x27;;
 import CameraEvents from &#x27;./utilitis/events&#x27;;
 import Locksmith from &#x27;./components/locksmith&#x27;;
 import Api from &#x27;./components/api&#x27;;
 import sourceMapSupport from &#x27;source-map-support&#x27;;
 import ErrorCodes from &#x27;./error/errorCodes&#x27;;
+import AllDeviceDiscovery from &#x27;./components/allDeviceDiscovery&#x27;;
+import IHuddlyService from &#x27;./interfaces/IHuddlyService&#x27;;
+import IServiceOpts from &#x27;./interfaces/IServiceOpts&#x27;;
+import ServiceFactory from &#x27;./components/service/factory&#x27;;
+import ILogger from &#x27;./interfaces/ILogger&#x27;;
+import AttachError from &#x27;./error/AttachError&#x27;;
 
 sourceMapSupport.install();
-
-class AttachError extends Error {
-  code: Number;
-  constructor(message: string, code: Number) {
-    super(message);
-    this.code &#x3D; code;
-  }
-}
 
 /**
  * The SDK initialization options.
@@ -276,10 +308,10 @@ interface SDKOpts {
   /**
    * Logger instance used to log messages from the SDK.
    *
-   * @type {*}
+   * @type {ILogger}
    * @memberof SDKOpts
    */
-  logger?: iLogger;
+  logger?: ILogger;
   /**
    * Optional event emitter instance used to catch
    * SDK events!
@@ -289,6 +321,13 @@ interface SDKOpts {
    * @memberof SDKOpts
    */
   emitter?: EventEmitter;
+
+  /**
+   * @ignore
+   * @type {boolean}
+   * @memberof SDKOpts
+   */
+  developmentMode?: boolean;
 
   /**
    * @ignore
@@ -312,7 +351,7 @@ interface SDKOpts {
    * @returns {iDeviceFactory}
    * @memberof SDKOpts
    */
-  createFactory?(): iDeviceFactory;
+  createFactory?(): IDeviceFactory;
 }
 
 /**
@@ -331,14 +370,6 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   emitter: EventEmitter;
-
-  /**
-   * Logger instance used to log messages from the SDK.
-   *
-   * @type {iLogger}
-   * @memberof HuddlySdk
-   */
-  logger: iLogger;
 
   /**
    * @ignore
@@ -366,11 +397,10 @@ class HuddlySdk extends EventEmitter {
   /**
    * @ignore
    *
-   * @type {IHuddlyDeviceAPI}
+   * @type {IHuddlyDeviceDiscoveryAPI}
    * @memberof HuddlySdk
    */
-  _deviceDiscoveryApi: IHuddlyDeviceAPI;
-
+  _deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI;
 
   /**
    * @ignore
@@ -382,6 +412,7 @@ class HuddlySdk extends EventEmitter {
 
   private locksmith: Locksmith;
   private targetSerial: string;
+  private devMode: boolean;
 
   /**
    * Creates an instance of HuddlySdk.
@@ -392,7 +423,7 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   constructor(
-    deviceDiscoveryApi: IHuddlyDeviceAPI,
+    deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI | Array&lt;IHuddlyDeviceDiscoveryAPI&gt;,
     deviceApis?: Array&lt;IHuddlyDeviceAPI&gt;,
     opts?: SDKOpts
   ) {
@@ -401,11 +432,16 @@ class HuddlySdk extends EventEmitter {
       throw new Error(&#x27;A default device api should be provided to the sdk!&#x27;);
     }
 
-    if (!deviceApis || deviceApis.length &#x3D;&#x3D;&#x3D; 0) {
-      this.mainDeviceApi &#x3D; deviceDiscoveryApi;
-      this._deviceApis &#x3D; new Array&lt;IHuddlyDeviceAPI&gt;();
-      this._deviceApis.push(deviceDiscoveryApi);
+    if (Array.isArray(deviceDiscoveryApi)) {
+      this._deviceDiscoveryApi &#x3D; new AllDeviceDiscovery(deviceDiscoveryApi);
+    } else {
+      this._deviceDiscoveryApi &#x3D; deviceDiscoveryApi;
+    }
 
+    if (!deviceApis || deviceApis.length &#x3D;&#x3D;&#x3D; 0) {
+      this.mainDeviceApi &#x3D; deviceDiscoveryApi as IHuddlyDeviceAPI;
+      this._deviceApis &#x3D; new Array&lt;IHuddlyDeviceAPI&gt;();
+      this._deviceApis.push(this.mainDeviceApi);
     } else {
       this._mainDeviceApi &#x3D; deviceApis[0];
       this._deviceApis &#x3D; deviceApis;
@@ -417,18 +453,20 @@ class HuddlySdk extends EventEmitter {
       ...{
         apiDiscoveryEmitter: new EventEmitter(),
         emitter: this,
-        logger: new DefaultLogger(true),
         createFactory: createFactory,
       },
       ...opts,
     };
 
+    if (options.logger) {
+      Logger.setLogger(options.logger);
+    }
+
     this.deviceDiscovery &#x3D; options.apiDiscoveryEmitter;
     this.emitter &#x3D; options.emitter;
-    this._deviceDiscoveryApi &#x3D; deviceDiscoveryApi;
-    this.logger &#x3D; options.logger;
     this.targetSerial &#x3D; options.serial;
     this._deviceFactory &#x3D; options.createFactory();
+    this.devMode &#x3D; options.developmentMode;
 
     this.setupDeviceDiscoveryListeners();
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
@@ -443,37 +481,45 @@ class HuddlySdk extends EventEmitter {
    */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async d &#x3D;&gt; {
-      if (d &amp;&amp; (!this.targetSerial || (this.targetSerial &#x3D;&#x3D;&#x3D; d.serialNumber)) ) {
+      if (d &amp;&amp; (!this.targetSerial || this.targetSerial &#x3D;&#x3D;&#x3D; d.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
           () &#x3D;&gt;
-            new Promise(async resolve &#x3D;&gt; {
+            new Promise&lt;void&gt;(async resolve &#x3D;&gt; {
               try {
-                const cameraManager &#x3D; await this._deviceFactory.getDevice(
+                const cameraManager: IDeviceManager &#x3D; await this._deviceFactory.getDevice(
                   d.productId,
-                  this.logger,
                   this.mainDeviceApi,
                   this.deviceApis,
                   d,
                   this.emitter
                 );
-
+                await cameraManager.initialize(this.devMode);
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
-                this.logger.error(&#x60;Could not get device ${e}&#x60;, &#x27;SDK&#x27;);
-                this.emitter.emit(CameraEvents.ERROR, new AttachError(&#x27;No transport supported&#x27;, ErrorCodes.NO_TRANSPORT));
+                const errorMsg: string &#x3D; &#x60;No transport implementation supported for ${JSON.stringify(d)}&#x60;;
+                Logger.warn(errorMsg, HuddlySdk.name);
+                const eventPayload &#x3D; {
+                  device: d,
+                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT)
+                }
+                this.emitter.emit(CameraEvents.ERROR, eventPayload);
+                resolve();
               }
             })
         );
       }
     });
 
-    this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
-      if (d !&#x3D;&#x3D; undefined  &amp;&amp; (!this.targetSerial || (this.targetSerial &#x3D;&#x3D;&#x3D; d))) {
-        await this.locksmith.executeAsyncFunction(() &#x3D;&gt; new Promise((resolve) &#x3D;&gt; {
-          this.emitter.emit(CameraEvents.DETACH, d);
-          resolve();
-        }));
+    this.deviceDiscovery.on(CameraEvents.DETACH, async d &#x3D;&gt; {
+      if (d !&#x3D;&#x3D; undefined &amp;&amp; (!this.targetSerial || this.targetSerial &#x3D;&#x3D;&#x3D; d)) {
+        await this.locksmith.executeAsyncFunction(
+          () &#x3D;&gt;
+            new Promise&lt;void&gt;(resolve &#x3D;&gt; {
+              this.emitter.emit(CameraEvents.DETACH, d);
+              resolve();
+            })
+        );
       }
     });
   }
@@ -528,7 +574,7 @@ class HuddlySdk extends EventEmitter {
    *
    * @memberof HuddlySdk
    */
-  set deviceDiscoveryApi(api: IHuddlyDeviceAPI) {
+  set deviceDiscoveryApi(api: IHuddlyDeviceDiscoveryAPI) {
     this._deviceDiscoveryApi &#x3D; api;
     this.deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
   }
@@ -537,10 +583,10 @@ class HuddlySdk extends EventEmitter {
    * Convenience function for getting the device api
    * instance used for camera discovery.
    *
-   * @type {IHuddlyDeviceAPI}
+   * @type { IHuddlyDeviceDiscoveryAPI}
    * @memberof HuddlySdk
    */
-  get deviceDiscoveryApi(): IHuddlyDeviceAPI {
+  get deviceDiscoveryApi(): IHuddlyDeviceDiscoveryAPI {
     return this._deviceDiscoveryApi;
   }
 
@@ -555,7 +601,22 @@ class HuddlySdk extends EventEmitter {
   async init(): Promise&lt;any&gt; {
     await this.deviceDiscoveryApi.initialize();
   }
+
+  /**
+   * Get a huddly service implementation class instance with communication channels already established and ready
+   * to start sending and receiving information to/from.
+   * @param {IServiceOpts} [serviceOpts] - Service options for initializing and setting up the service communication
+   * @returns A the new instance of the huddly service implementation after the setup stage has been completed
+   */
+  static async getService(
+    serviceOpts: IServiceOpts &#x3D; {}
+  ): Promise&lt;IHuddlyService&gt; {
+    const service: IHuddlyService &#x3D; ServiceFactory.getService(serviceOpts);
+    await service.init();
+    return service;
+  }
 }
+
 export { CameraEvents, Api };
 
 export default HuddlySdk;
@@ -564,14 +625,14 @@ export default HuddlySdk;
 </div>
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -591,9 +652,9 @@ export default HuddlySdk;
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

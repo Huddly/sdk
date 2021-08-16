@@ -2,15 +2,20 @@ import IIpDeviceManager from './../../src/interfaces/iDeviceManager';
 import {
   CNNStatus,
   CnnFeature,
-  Detections,
-  DeviceStatus,
 } from '@huddly/camera-proto/lib/api/huddly_pb';
 import DeviceManagerMock from './devicemanager.mock';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
+/**
+ * @ignore
+ */
 const statusDummy = new huddly.DeviceStatus();
 statusDummy.setMessage('status');
+
+/**
+ * @ignore
+ */
 const detectionsDummy = new huddly.Detections();
 
 /**
