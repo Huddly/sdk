@@ -20,4 +20,12 @@ module.exports = {
   resolve: {
     extensions: ['.tsx', '.ts', '.js'],
   },
+  node: {
+    child_process: 'empty',
+    fs: 'empty',
+    crypto: 'empty',
+    net: 'empty',
+    tls: 'empty',
+    dns: 'empty'
+  }
 };
