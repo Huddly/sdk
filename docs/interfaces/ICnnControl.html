@@ -46,12 +46,15 @@
   <li>Interfaces</li>
   <li
   >
-  ILogger</li>
+  ICnnControl</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
         </li>
         <li >
             <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
@@ -64,7 +67,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/interfaces/ILogger.ts</code>
+            <code>src/interfaces/ICnnControl.ts</code>
         </p>
 
 
@@ -83,27 +86,27 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#debug" 
+                                    <a href="#disable" 
 >
-                                        debug
+                                        disable
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#error" 
+                                    <a href="#enable" 
 >
-                                        error
+                                        enable
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#info" 
+                                    <a href="#init" 
 >
-                                        info
+                                        init
                                     </a>
                                 </li>
                                 <li>
-                                    <a href="#warn" 
+                                    <a href="#isEnabled" 
 >
-                                        warn
+                                        isEnabled
                                     </a>
                                 </li>
                             </ul>
@@ -122,30 +125,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="debug"></a>
+                    <a name="disable"></a>
                     <span class="name">
-                        <span ><b>debug</b></span>
-                        <a href="#debug"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>disable</b></span>
+                        <a href="#disable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>debug(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>disable(idleTimeMs?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="3"
-                            class="link-to-prism">src/interfaces/ILogger.ts:3</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="30"
+                            class="link-to-prism">src/interfaces/ICnnControl.ts:30</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Disables the cnn feature persistently. The disabled state
+is persistent on camera reboot/power cycle.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -160,90 +166,9 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>message</td>
+                                    <td>idleTimeMs</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="error"></a>
-                    <span class="name">
-                        <span ><b>error</b></span>
-                        <a href="#error"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>error(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, stackTrace?: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="5"
-                            class="link-to-prism">src/interfaces/ILogger.ts:5</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>message</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                                <tr>
-                                    <td>stackTrace</td>
-                                    <td>
-                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
 
                                     <td>
@@ -258,11 +183,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>A void function.</p>
+
                     </div>
                 </td>
             </tr>
@@ -272,30 +198,33 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="info"></a>
+                    <a name="enable"></a>
                     <span class="name">
-                        <span ><b>info</b></span>
-                        <a href="#info"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>enable</b></span>
+                        <a href="#enable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>info(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>enable(idleTimeMs?: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="2"
-                            class="link-to-prism">src/interfaces/ILogger.ts:2</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="21"
+                            class="link-to-prism">src/interfaces/ICnnControl.ts:21</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Enables the cnn feature persistently. The enable state
+is persistent on camera reboot/power cycle.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
@@ -310,13 +239,13 @@
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>message</td>
+                                    <td>idleTimeMs</td>
                                     <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                     </td>
 
                                     <td>
-                                        No
+                                        Yes
                                     </td>
 
 
@@ -327,11 +256,12 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>A void function.</p>
+
                     </div>
                 </td>
             </tr>
@@ -341,66 +271,95 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="warn"></a>
+                    <a name="init"></a>
                     <span class="name">
-                        <span ><b>warn</b></span>
-                        <a href="#warn"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>warn(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>init()</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="4"
-                            class="link-to-prism">src/interfaces/ILogger.ts:4</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="12"
+                            class="link-to-prism">src/interfaces/ICnnControl.ts:12</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Convenience function for setting up the camera
+for starting/stopping cnn feature.
+Should be called before any other methods.</p>
+<p>resolves in case the cnn feature init is completed
+otherwise it rejects with a rejection message!</p>
+</div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>message</td>
-                                    <td>
-                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>Returns a promise which
+resolves in case the cnn feature init is completed
+otherwise it rejects with a rejection message!</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isEnabled"></a>
+                    <span class="name">
+                        <span ><b>isEnabled</b></span>
+                        <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>isEnabled()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="38"
+                            class="link-to-prism">src/interfaces/ICnnControl.ts:38</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.</p>
+<p>false if disabled.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Returns a promise which resolves to true if cnn features is enabled
+false if disabled.</p>
+
                     </div>
                 </td>
             </tr>
@@ -410,13 +369,90 @@
 
     </div>
 
+    <div class="tab-pane fade " id="c-readme">
+        <p><h1 id="icnncontrol-interface">ICnnControl Interface</h1>
+<h2 id="genius-framing-controller">Genius Framing Controller</h2>
+<p>Below you can find an example on how to get started with Genius Framing (GF) on Huddly cameras that support the feature. Follow the steps below to enable or disable GF:</p>
+<div><pre class="line-numbers"><code class="language-javascript">...
+// We assume the sdk has been initialized and camera manager instance acquired
+...
+
+/**
+ * Get an autozoom control instance from the initialized camera manager.
+ * For custom autozoom, `getAutozoomControl` accepts some options which are
+ * documented on the `IAutozoomControlOpts` interface.
+ */
+const autozoomCtrl = cameraManager.getAutozoomControl();
+
+// Always call init before doing anything
+await autozoomCtrl.init();
+
+/* Enable autozoom cnn feature on the camera (persistent across camera booting) */
+await autozoomCtrl.enable();
+
+...
+// Your code goes here
+...
+
+/* Disable autozoom cnn feature on the camera (persistent across camera booting) */
+await autozoomCtrl.disable();</code></pre></div><p><strong>NOTE</strong>: For subscribing for detection and/or framing events you need to use the <a href="http://developer.huddly.com/interfaces/IDetector.html#readme">Detector</a> class.</p>
+<h2 id="portrait-lightning-controller">Portrait Lightning Controller</h2>
+<p>In a similar way to Genius Framing controller, Portrait Lightning also implements ICnnController and can be used to toggle the feature as needed. Below is a code snippet on how to do it.</p>
+<div><pre class="line-numbers"><code class="language-javascript">const portraitLightningCtrl = cameraManager.getFaceBasedExposureControl();
+
+// Always call init before doing anything
+await portraitLightningCtrl.init();
+
+/* Enable Portrait Lightning cnn feature on the camera (persistent across camera booting) */
+await portraitLightningCtrl.enable();
+
+...
+// Your code goes here
+...
+
+/* Disable Portrait Lightning cnn feature on the camera (persistent across camera booting) */
+await portraitLightningCtrl.disable();</code></pre></div></p>
+    </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface ILogger {
-  info(message: string): void;
-  debug(message: string): void;
-  warn(message: string): void;
-  error(message: string, stackTrace?: any): void;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default interface ICnnControl {
+  /**
+   * Convenience function for setting up the camera
+   * for starting/stopping cnn feature.
+   * Should be called before any other methods.
+   *
+   * @returns {Promise&lt;any&gt;} Returns a promise which
+   * resolves in case the cnn feature init is completed
+   * otherwise it rejects with a rejection message!
+   * @memberof ICnnControl
+   */
+  init(): Promise&lt;any&gt;;
+
+  /**
+   * Enables the cnn feature persistently. The enable state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @returns {Promise&lt;void&gt;} A void function.
+   * @memberof ICnnControl
+   */
+  enable(idleTimeMs?: number): Promise&lt;void&gt;;
+
+  /**
+   * Disables the cnn feature persistently. The disabled state
+   * is persistent on camera reboot/power cycle.
+   *
+   * @returns {Promise&lt;void&gt;} A void function.
+   * @memberof ICnnControl
+   */
+  disable(idleTimeMs?: number): Promise&lt;void&gt;;
+
+  /**
+   * Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.
+   *
+   * @returns {Promise&lt;Boolean} Returns a promise which resolves to true if cnn features is enabled
+   * false if disabled.
+   */
+  isEnabled(): Promise&lt;Boolean&gt;;
 }
 </code></pre>
     </div>
@@ -445,7 +481,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'interface';
-            var COMPODOC_CURRENT_PAGE_URL = 'ILogger.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ICnnControl.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

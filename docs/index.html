@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-	      <link rel="stylesheet" href="./styles/style.css">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -33,8 +34,6 @@
 <p>
   <a href="https://travis-ci.com/Huddly/sdk"><img src="https://travis-ci.com/Huddly/sdk.svg?branch=master" alt="Build Status"></a>
   <a href="https://www.npmjs.com/package/@huddly/sdk"><img src="https://badge.fury.io/js/%40huddly%2Fsdk.svg" alt="npm badge"></a>
-  <a href="https://img.shields.io/david/Huddly/sdk"><img src="https://img.shields.io/david/Huddly/sdk.svg" alt="npm dependencies"></a>
-  <a href="https://img.shields.io/david/dev/Huddly/sdk"><img src="https://img.shields.io/david/dev/Huddly/sdk.svg" alt="npm devDependencies"></a>
   <a href="https://npmcharts.com/compare/@huddly/sdk?minimal=true"><img src="https://img.shields.io/npm/dm/@huddly/sdk.svg?style=flat" alt="NPM Downloads"></a>
   <a href="https://opensource.org/licenses/MIT"><img src="https://img.shields.io/badge/license-MIT-brightgreen.svg" alt="MIT badge"></a>
   <a href="http://commitizen.github.io/cz-cli/"><img src="https://img.shields.io/badge/commitizen-friendly-brightgreen.svg" alt="Commitizen badge"></a>
@@ -50,60 +49,79 @@
 <li>8.11.2</li>
 <li>10.15.2</li>
 <li>11.5.0</li>
-<li>12.4.0 (LTS)</li>
+<li>12.4.0</li>
+<li>14.17.3 (LTS)</li>
 </ul>
 <p>We recommend using nvm as your node version manager <a href="https://github.com/creationix/nvm">https://github.com/creationix/nvm</a>.</p>
 <p>After you&#39;ve setup nvm run</p>
-<div><pre class="line-numbers"><code class="language-none">  nvm use 12.4.0</code></pre></div><h2 id="get-started">Get started</h2>
-<p>Then you can install and start using the huddly sdk you need first install it and the transport</p>
-<div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/sdk &#64;huddly/device-api-usb</code></pre></div><p>Start by creating the sdk and the transport</p>
+<div><pre class="line-numbers"><code class="language-none">  nvm use 14.17.3</code></pre></div><h2 id="getting-started">Getting started</h2>
+<p>With the node environment setup and ready, go ahead and install our sdk as part of your project dependencies:</p>
+<div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/sdk&#64;latest</code></pre></div><p>You also need to install some other Huddly npm dependencies from which the SDK relies on for device discovery and communication. Depending on which product (camera) you will be working with, the corresponding device api packages must be accompanied with the SDK:</p>
+<div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/device-api-usb    # For interacting with our USB cameras
+  npm install &#64;huddly/device-api-ip     # For interacting with our Ethernet/IP comeras</code></pre></div><p>It is also possible to install both of them and configure the SDK which one to use for discovery and/or communication.</p>
+<h3 id="setting-up-the-sdk-instance">Setting up the sdk instance</h3>
+<p>The example blow illustrates how to setup the SDK instance to communicate with a Huddly camera connected to the host machine. Start by creating the sdk and the transport apis:</p>
 <div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceAPIUSB = require(&#39;&#64;huddly/device-api-usb&#39;).default;
+const HuddlyDeviceApiIP = require(&#39;&#64;huddly/device-api-ip&#39;).default;
 const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
 
-// Create instances of device-apis you want to use
+// Create instances of device-apis you want to use. These APIs also take configuration parameters which can be consulted by the IDeviceApiOpts interface.
 const usbApi = new HuddlyDeviceAPIUSB();
+const ipApi = new HuddlyDeviceApiIP();
 
-// Create an instance of the SDK
-const sdk = new HuddlySdk(usbApi);</code></pre></div><p>setup <code>camera attached</code> subscriber, this will give you a camera than has been attached.</p>
+/*
+ Creating the SDK instance requires you to provide the following:
+ - DeviceAPI instance (or a lis of different DeviceApi instances) responsible for doing discovery (1st constructor argumet)
+ - An optional list of DeviceApi instances that can be used for communication (if ommitted the discovery device api will also be used for communication).
+*/
+
+// To setup an sdk instance that works with USB devices only, you&#39;d do:
+const sdk = new HuddlySdk(usbApi);
+
+// To setup an sdk instance that works with IP devices only, you&#39;d do:
+const sdk = new HuddlySdk(ipApi);
+
+// **BETA Feature** To setup an sdk that work with discovering both usb and ip cameras, you&#39;d do:
+const sdk = new HuddlySdk([usbApi, ipApi], [usbApi, ipApi]);</code></pre></div><p>The SDK instance will fire <code>ATTACH</code> events if it finds a camera connected on the host or if a camera is connected at a later stage. The code below listens to attach events from the SDK and initilizes a camera manager instance:</p>
 <div><pre class="line-numbers"><code class="language-javascript">// Create a instance that will represent the `IDeviceManager` interface
 let cameraManager;
-sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
-  cameraManager = d;
-});</code></pre></div><p>then initialize it</p>
-<div><pre class="line-numbers"><code class="language-javascript">sdk.init();</code></pre></div><p>Then you should be good to go. All the actions on the cameraManager are done after the attach event. For example, to get the camera information, call <code>getInfo</code> when the camera is attached.</p>
-<div><pre class="line-numbers"><code class="language-javascript">sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
-  cameraManager = d;
+sdk.on(&#39;ATTACH&#39;, (newDevice) =&gt; {
+  cameraManager = newDevice;
+});</code></pre></div><p>Now since the attach event listener has been set up, we can initilize the SDK and allow it to start the device discovery process:</p>
+<div><pre class="line-numbers"><code class="language-javascript">sdk.init();</code></pre></div><p>That&#39;s it on the SDK initialization process. All the actions on the cameraManager instance are done after the attach event. For example, to get the camera information, call <code>getInfo</code> when the camera is attached:</p>
+<div><pre class="line-numbers"><code class="language-javascript">sdk.on(&#39;ATTACH&#39;, (newDevice) =&gt; {
+  cameraManager = newDevice;
   cameraManager.getInfo().then(console.log);
 });</code></pre></div><h2 id="issues">Issues</h2>
 <p>If you have a question or found a bug please <a href="https://github.com/Huddly/sdk/issues">open an issue</a>. Thank you</p>
 <h2 id="documentation">Documentation</h2>
 <p>For more details on the rest of the functionality to the sdk check out the documentation for the sdk class and the cameraManager (IDeviceManager) interface.</p>
 <ul>
-<li><a href="http://developer.huddly.com/classes/HuddlySdk.html">SDK</a></li>
+<li><a href="http://developer.huddly.com/classes/HuddlySdk.html#readme">SDK</a></li>
 <li><a href="http://developer.huddly.com/interfaces/IDeviceManager.html">IDeviceManager</a></li>
-<li><a href="http://developer.huddly.com/interfaces/IAutozoomControl.html">Autozoom Controller</a></li>
-<li><a href="http://developer.huddly.com/interfaces/IDetector.html">Detector</a></li>
+<li><a href="http://developer.huddly.com/interfaces/IAutozoomControl.html#readme">Autozoom Controller</a></li>
+<li><a href="http://developer.huddly.com/interfaces/IDetector.html#readme">Detector</a></li>
 </ul>
 <h2 id="repo">Repo</h2>
 <p>Check out the sdk code on github (<a href="https://github.com/Huddly/sdk">https://github.com/Huddly/sdk</a>)</p>
 <h2 id="faq">FAQ</h2>
-<h3 id="my-detections-are-not-matching-what-i-see-in-the-stream">My detections are not matching what I see in the stream:</h3>
+<h4 id="my-detections-are-not-matching-what-i-see-in-the-stream"><strong>My detections are not matching what I see in the stream!</strong></h4>
 <p>  Internally the camera always sees full field of view, the coordinates are relative to full field of view by default. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.</p>
-<div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ convertDetections: &#39;FRAMING&#39; });</code></pre></div><p>  This makes it easy to draw these bbox directly on top of the main stream.</p>
-<h3 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera">How can i disable autoframing and still get detection information from camera?</h3>
+<div><pre class="line-numbers"><code class="language-none">  cameraManager.getDetector({ convertDetections: &#39;FRAMING&#39; });</code></pre></div><p>  This makes it easy to draw these bbox directly on top of the main stream.</p>
+<h4 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera"><strong>How can i disable autoframing and still get detection information from camera?</strong></h4>
 <p>  Another available detector configuration is the <code>shouldAutoFrame</code> option which when set to false, it allows you to configure Genius Framing to send detection data without autoframing.</p>
-<div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ shouldAutoFrame: false });</code></pre></div><p>  By default, the detector is configured to run autoframing and generate detection information.</p>
-<h3 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-iq">How do I get detections only when I am streaming with my Huddly IQ!</h3>
+<div><pre class="line-numbers"><code class="language-none">  cameraManager.getDetector({ shouldAutoFrame: false });</code></pre></div><p>  By default, the detector is configured to run autoframing and generate detection information.</p>
+<h4 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-iq"><strong>How do I get detections only when I am streaming with my Huddly IQ!</strong></h4>
 <p>  If you want to get detection data only when the camera is streaming on the host machine, you need to configure the detector class with the <code>DOWS</code> option.</p>
-<div><pre class="line-numbers"><code class="language-none">    cameraManager.getDetector({ DOWS: true });</code></pre></div><p>  This option makes it possible to configure the detector so that you only get detection data when you are streaming on host machine. By default, this option set to <code>false</code> so that you don&#39;t have to stream to get detection data.</p>
-<h3 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq">LED light is ON, but I am not streaming with my Huddly IQ!</h3>
+<div><pre class="line-numbers"><code class="language-none">  cameraManager.getDetector({ DOWS: true });</code></pre></div><p>  This option makes it possible to configure the detector so that you only get detection data when you are streaming on host machine. By default, this option set to <code>false</code> so that you don&#39;t have to stream to get detection data.</p>
+<h4 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq"><strong>LED light is ON, but I am not streaming with my Huddly IQ!</strong></h4>
 <p>  After <strong>v0.4.0</strong>, SDK comes with a new feature ragarding the way you get detection data from the camera. On this version (and onward) the default behavior of detector is starting an internal stream (controlled by the camera only) to give you detection information. As a result the LED light is turned ON. Proper tearing down of the detector instance will stop the internal stream on the camera and with it the LED light.</p>
-<h3 id="the-camera-is-never-attached-or-throwing-an-error">The camera is never attached, or throwing an Error</h3>
+<h4 id="the-camera-is-never-attached-or-throwing-an-error"><strong>The camera is never attached, or throwing an Error!</strong></h4>
 <p>  Make sure that no other application such as the Huddly app or another sdk instance is running and using the camera.</p>
-<h3 id="can-i-use-undocumented-methods">Can I use undocumented methods.</h3>
-<p>No. To make sure that camera is compatible with the sdk the documented api gets thoroughly tested, we do not guarantee that undocumented functionality will not break/change from sdk version to sdk version, or camera sw to camera sw.</p>
-<h3 id="transition-from-03-to-040">Transition from 0.3.* to 0.4.0</h3>
-<p>  The transition from 0.3.* to 0.4.0 involves breaking changes with regards to Genius Framing configuration and detection data retrival. The breaking change is that we have moved the configuraion part of GeniusFraming (autozoom) into a separate interface that we called <a href="http://developer.huddly.com/interfaces/IAutozoomControl.html#readme">AutozoomControl</a>. The autozoom configuration methods <code>enable</code>, <code>disable</code>, <code>start</code> and <code>stop</code> which used to live in the detector interface are now moved to the new <code>AutozoomControl</code> interface. On the other hand, the <a href="https://developer.huddly.com/interfaces/IDetector.html#readme">Detector</a> interace remains responsible for only setting up events for getting detection and framing data from the camera. Have a look at the documentation of each interface to see usage examples.</p>
+<h4 id="can-i-use-undocumented-methods"><strong>Can I use undocumented methods?</strong></h4>
+<p>No. To make sure that camera is compatible with the sdk the documented api gets thoroughly tested. We do not guarantee that undocumented functionality will not break/change from sdk version to sdk version, or camera sw to camera sw.</p>
+<h4 id="sdk-crashes-when-there-are-two-iqs-connected"><strong>SDK crashes when there are two IQs connected!</strong></h4>
+<p>The current implementation of the SDK does not support having two usb cameras connected to the host at the same time. However, having one Huddly usb cemera (IQ, Canvas, GO) and one Huddly IP camera (L1) is supported.  </p>
 
 
 
@@ -118,14 +136,14 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -145,9 +163,9 @@ sdk.on(&#39;ATTACH&#39;, (d) =&gt; {
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="./js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
 
        <script src="./js/libs/bootstrap-native.js"></script>
 

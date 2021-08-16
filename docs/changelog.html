@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="./images/favicon.ico">
-	      <link rel="stylesheet" href="./styles/style.css">
+	   <link rel="stylesheet" href="./styles/style.css">
+        <link rel="stylesheet" href="./styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -30,63 +31,84 @@
                <div class="content getting-started">
                    <div class="content-data">
 
-<h3 id="050-2020-05-25">0.5.0 (2020-05-25)</h3>
+<h4 id="063-2021-10-08">0.6.3 (2021-10-08)</h4>
 <h5 id="chores">Chores</h5>
 <ul>
-<li><strong>deps:</strong><ul>
-<li>[security] bump acorn from 6.4.0 to 6.4.1 (<a href="https://github.com/Huddly/sdk/commit/d7ca906bb5c2bcc3424037cead0af8398e2f2ebc">d7ca906b</a>)</li>
-<li>bump acorn from 6.3.0 to 6.4.1 in /examples/rest (<a href="https://github.com/Huddly/sdk/commit/bf9125382ebab30211204c071ff2312360ac1ef7">bf912538</a>)</li>
-<li>bump semver from 6.3.0 to 7.3.2 (<a href="https://github.com/Huddly/sdk/commit/071b640d8f0ac1228d84002ff2bb1bf312c0929f">071b640d</a>)</li>
-</ul>
-</li>
-<li><strong>deps-dev:</strong><ul>
-<li>bump cz-conventional-changelog from 2.1.0 to 3.1.0 (<a href="https://github.com/Huddly/sdk/commit/ed4add1e1e33aa6a3f3d7478506a391c7f8ad462">ed4add1e</a>)</li>
-<li>bump mocha from 6.2.2 to 7.1.1 (<a href="https://github.com/Huddly/sdk/commit/cd0dd086dcfa95907818ebd71eb7a7f541616b51">cd0dd086</a>)</li>
-<li>bump sinon-chai from 3.3.0 to 3.5.0 (<a href="https://github.com/Huddly/sdk/commit/4eda43dc27e7c7c5b8ee488112ebaa85d42a11fd">4eda43dc</a>)</li>
-<li>bump eslint-plugin-react from 7.17.0 to 7.19.0 (<a href="https://github.com/Huddly/sdk/commit/04cd5e2815f102c72e4cdd28960284ccdc40fc9f">04cd5e28</a>)</li>
-<li>bump nyc from 14.1.1 to 15.0.1 (<a href="https://github.com/Huddly/sdk/commit/1b42ffd78c5524fd78cf3efa423e522ae90966f5">1b42ffd7</a>)</li>
-<li>bump nock from 11.7.0 to 12.0.3 (<a href="https://github.com/Huddly/sdk/commit/ba8553233595c1370746e9a8d4c332ca2ac962d4">ba855323</a>)</li>
-<li>bump eslint-plugin-import from 2.19.1 to 2.20.2 (<a href="https://github.com/Huddly/sdk/commit/e854dab189fa0c5ffa487384d8734917b17cf59e">e854dab1</a>)</li>
-<li>bump ts-node from 8.5.4 to 8.8.2 (<a href="https://github.com/Huddly/sdk/commit/d47f75950f74c4a5859987f7e82c68a6e2835c7b">d47f7595</a>)</li>
-</ul>
-</li>
-<li><strong>examples:</strong>  Update dependencies to latest releases (<a href="https://github.com/Huddly/sdk/commit/a5cfbe4f7cc7f38aeba8f3c9a72a2d866f9fcb52">a5cfbe4f</a>)</li>
-<li><strong>Node:</strong>  Support for Node 12 LTS (<a href="https://github.com/Huddly/sdk/commit/fa0600b99d5b6f33c6cdda346cab2929be35e1c5">fa0600b9</a>)</li>
-<li><strong>package.json:</strong>  Update dependencies and devDependencies of sdk (<a href="https://github.com/Huddly/sdk/commit/8e07e8f0c07df7e7b0b6443b113183f7fa62d44f">8e07e8f0</a>)</li>
-</ul>
-<h5 id="documentation-changes">Documentation Changes</h5>
-<ul>
-<li>Added documentation for the detector (<a href="https://github.com/Huddly/sdk/pull/237">#237</a>) (<a href="https://github.com/Huddly/sdk/commit/de0bea1d3142e9f0befa90162a5690eb6bc3fd54">de0bea1d</a>)</li>
-<li><strong>Contribution:</strong>  Added description for release process (<a href="https://github.com/Huddly/sdk/commit/7a7399fef9be93672580a6326b063840a749d4af">7a7399fe</a>)</li>
-<li><strong>CONTRIBUTING.md:</strong>  Bumped version of compodoc (<a href="https://github.com/Huddly/sdk/commit/e6ca4ffbfdf548330846460917c0131a6033d312">e6ca4ffb</a>)</li>
-</ul>
-<h5 id="new-features">New Features</h5>
-<ul>
-<li><strong>Dartfish support:</strong>  Added correct dartfish device class (<a href="https://github.com/Huddly/sdk/commit/02ad6696cc233a64f1218794dcfe99fb8da0c259">02ad6696</a>)</li>
-<li>Injectable device factory so you can create custom or extend iDeviceManager clasess (<a href="https://github.com/Huddly/sdk/commit/41176b91de803b745bc1162694cf9a8934b97fc1">41176b91</a>)</li>
-<li><strong>getErrorLog:</strong>  Add option for disallowing legacy mode. (<a href="https://github.com/Huddly/sdk/commit/12f730cd153d930f208fba85a48e52a8ed397ceb">12f730cd</a>)</li>
-<li><strong>detector:</strong>  Detector should not be dependent on autozoom with newer camera software (<a href="https://github.com/Huddly/sdk/commit/715a5e43176dd61d9a7a9d35649b6157733acd20">715a5e43</a>)</li>
-<li><strong>Added options how long to search for device:</strong>  Option for setting # of times looking for device (<a href="https://github.com/Huddly/sdk/commit/056c533faac96f8b7c39c7607a0ac99be210a1ae">056c533f</a>)</li>
-<li><strong>Added support for dartfish PID in factory.ts:</strong>  Added support for dartfish PID (<a href="https://github.com/Huddly/sdk/commit/e6c037755cee8d47b5f0f1dbd8e68ca46aa5e856">e6c03775</a>)</li>
-<li><strong>Examples:</strong>  Added an example where a specific camera is targeted (<a href="https://github.com/Huddly/sdk/commit/1c88a34137e7b84da248281d8f2c2eb2e363d81f">1c88a341</a>)</li>
+<li>resolve audit issues with eslint and mocha (<a href="https://github.com/Huddly/sdk/commit/b113e5fecc60b3e1ab2fd6a7816821e2468457c1">b113e5fe</a>)</li>
+<li>update example code (<a href="https://github.com/Huddly/sdk/commit/84bfd388e470544f438d0d0c1a687f3e43951c81">84bfd388</a>)</li>
+<li><strong>package.json:</strong>  bump @Huddly/camera-proto -&gt; 1.0.9 (<a href="https://github.com/Huddly/sdk/commit/acdc8af5628c848b2a69660eda55cec92416c6a5">acdc8af5</a>)</li>
 </ul>
 <h5 id="bug-fixes">Bug Fixes</h5>
 <ul>
-<li><strong>api.ts:</strong>  getErrorLog recursive call with exact parameters (<a href="https://github.com/Huddly/sdk/commit/09f6d3ad7fd0a359def1b95d079f5fe15b8ea92f">09f6d3ad</a>)</li>
-<li><strong>getErrorLog:</strong><ul>
-<li>Throw exception with error from camera on failure. (<a href="https://github.com/Huddly/sdk/commit/d364036d3dd608a58cfe817160037b2155098dd4">d364036d</a>)</li>
-<li>Don&#39;t fall so quickly back to legacy method. Retry once. (<a href="https://github.com/Huddly/sdk/commit/c90c3759dc02c6f606122fcadb59c8a8992c00b7">c90c3759</a>)</li>
+<li>pin down camera-proto &amp; camera-switch-proto (<a href="https://github.com/Huddly/sdk/commit/657e6d23e947f3f0826b6455084942453b4c2954">657e6d23</a>)</li>
+</ul>
+<h4 id="062-2021-09-29">0.6.2 (2021-09-29)</h4>
+<h5 id="chores-1">Chores</h5>
+<ul>
+<li>update @huddly/<a href="mailto:&#99;&#97;&#x6d;&#101;&#x72;&#x61;&#45;&#115;&#x77;&#x69;&#116;&#x63;&#104;&#45;&#112;&#x72;&#x6f;&#x74;&#x6f;&#64;&#x30;&#x2e;&#48;&#46;&#52;">&#99;&#97;&#x6d;&#101;&#x72;&#x61;&#45;&#115;&#x77;&#x69;&#116;&#x63;&#104;&#45;&#112;&#x72;&#x6f;&#x74;&#x6f;&#64;&#x30;&#x2e;&#48;&#46;&#52;</a> (<a href="https://github.com/Huddly/sdk/commit/d8ec94353ac9e0cd10372f3e40cb2858c037158d">d8ec9435</a>)</li>
+<li><strong>package-lock.json:</strong>  fix critical audit dependencies (<a href="https://github.com/Huddly/sdk/commit/d17a3c5d4b4022995e8c4d5848363d5f27345a0a">d17a3c5d</a>)</li>
+<li><strong>deps:</strong><ul>
+<li>bump tmpl from 1.0.4 to 1.0.5 in /examples/rest (<a href="https://github.com/Huddly/sdk/commit/0136759c21a8f036e7929459613149239a9a28b4">0136759c</a>)</li>
+<li>bump tar from 6.1.8 to 6.1.11 (<a href="https://github.com/Huddly/sdk/commit/3602830d7f6772db3dfb8ef7e3444a5cd91c68af">3602830d</a>)</li>
 </ul>
 </li>
-<li><strong>examples:</strong>  Update sdk examples to use latest sdk version (0.4.0) (<a href="https://github.com/Huddly/sdk/commit/3b462f73cdd51032b69619c99fc42625c677c8b0">3b462f73</a>)</li>
+</ul>
+<h5 id="documentation-changes">Documentation Changes</h5>
+<ul>
+<li>Canvas documentation and sdk usage example (<a href="https://github.com/Huddly/sdk/commit/59d6c320d2772585b28fe281605ad98e052d6689">59d6c320</a>)</li>
+</ul>
+<h5 id="new-features">New Features</h5>
+<ul>
+<li><strong>canvas:</strong>  Enable/Disable enhance mode (<a href="https://github.com/Huddly/sdk/commit/9383fdc006b4b8624443c311abe0a71e39bf4f67">9383fdc0</a>)</li>
+<li>factory supports dartfish/canvas (<a href="https://github.com/Huddly/sdk/commit/e0fbddaadfd29adcbef5b656eaf80f1a2c3b2bcf">e0fbddaa</a>)</li>
+</ul>
+<h5 id="bug-fixes-1">Bug Fixes</h5>
+<ul>
+<li><strong>IpAutozoomControl:</strong>  Add start,stop methods (<a href="https://github.com/Huddly/sdk/commit/5ffb8a6a1b771de47da58187e321d625231b42f2">5ffb8a6a</a>)</li>
+<li>update product names, pid and vid info (<a href="https://github.com/Huddly/sdk/commit/d3216468d3573c268fee228a060a94556f056266">d3216468</a>)</li>
 </ul>
 <h5 id="other-changes">Other Changes</h5>
 <ul>
-<li>add support for PID=0x51 (<a href="https://github.com/Huddly/sdk/commit/5642a2e2610087cd427cc1f0cbee00278df29cf7">5642a2e2</a>)</li>
+<li>Grpc PTZ object from amera should not be used directly (<a href="https://github.com/Huddly/sdk/commit/722095b669f256381d92e14dac6bf5e27d0ba357">722095b6</a>)</li>
 </ul>
-<h4 id="042-2020-04-16">0.4.2 (2020-04-16)</h4>
-<h5 id="chores-1">Chores</h5>
+<h5 id="refactors">Refactors</h5>
 <ul>
+<li>remove IAutozoomControl (use ICnnControl) (<a href="https://github.com/Huddly/sdk/commit/7fb68634b774b4f9f101316d3c96c9ca23f88ff0">7fb68634</a>)</li>
+<li>ONE &amp; Canvas update supported features (<a href="https://github.com/Huddly/sdk/commit/0c0122476fc115c4c1e3b46155d48bcab469bdfc">0c012247</a>)</li>
+</ul>
+<h5 id="tests">Tests</h5>
+<ul>
+<li><strong>factory.ts:</strong>  add test for ACE device (<a href="https://github.com/Huddly/sdk/commit/f070190bab7bf2a8817ce00ea13f4ea1a23e2d2c">f070190b</a>)</li>
+</ul>
+<h4 id="061-2021-08-23">0.6.1 (2021-08-23)</h4>
+<h5 id="documentation-changes-1">Documentation Changes</h5>
+<ul>
+<li><strong>Readme:</strong>  Remove broken dependency badges (<a href="https://github.com/Huddly/sdk/commit/ac6400ea8f576dd4dec549ce76fe4b1eafba1ab2">ac6400ea</a>)</li>
+</ul>
+<h5 id="new-features-1">New Features</h5>
+<ul>
+<li>Export BASE product id on factory.ts (<a href="https://github.com/Huddly/sdk/commit/506e6b40a210eb9b8eb961609aa707f4acc9ee27">506e6b40</a>)</li>
+<li>Export huddly vendor id on factory.ts (<a href="https://github.com/Huddly/sdk/commit/31b5e6143bb8c1243d713f5b6c7b9440f91d9dd0">31b5e614</a>)</li>
+</ul>
+<h5 id="bug-fixes-2">Bug Fixes</h5>
+<ul>
+<li>Update L1 pid from 3E9 to 0x3E9 (<a href="https://github.com/Huddly/sdk/commit/c5c6ffeb6d241efb4527c3cc1eca8827fd122ab7">c5c6ffeb</a>)</li>
+<li>webpack bundle with new grpc dependencies (<a href="https://github.com/Huddly/sdk/commit/262751f4d1436a9e7ea74eeb6fafba8ac11d131e">262751f4</a>)</li>
+</ul>
+<h5 id="other-changes-1">Other Changes</h5>
+<ul>
+<li>Avoid discovery hang for BASE (<a href="https://github.com/Huddly/sdk/commit/66d4230e6f362c497c5514e4aab16b6a9ef201cc">66d4230e</a>)</li>
+</ul>
+<h3 id="060-2021-08-16">0.6.0 (2021-08-16)</h3>
+<h5 id="chores-2">Chores</h5>
+<ul>
+<li>bump version for camera-proto and camera-switch-proto (<a href="https://github.com/Huddly/sdk/commit/5915df1d09e2f5aeee054761c6dac02ec9c8c53e">5915df1d</a>)</li>
+<li>fix audit issues (<a href="https://github.com/Huddly/sdk/commit/75bc467261f1b665f61f9a58a542ce639e831ade">75bc4672</a>)</li>
+<li>cleanup of tests for ace device (<a href="https://github.com/Huddly/sdk/commit/3e62fadff725f1e1981be4371906a8456d6b9211">3e62fadf</a>)</li>
+<li>bump huddlyproto version to 0.0.3 (<a href="https://github.com/Huddly/sdk/commit/0c1cef1702e8714c2687571f220f93641cf05394">0c1cef17</a>)</li>
+<li>update dependencies to latest wanted (<a href="https://github.com/Huddly/sdk/commit/c4ee23e4658ae0db51831551536a800923b7c966">c4ee23e4</a>)</li>
+<li>upgrade package json &amp; lock for lts 14 (<a href="https://github.com/Huddly/sdk/commit/a3af1730bfb83bf13575b660b5f9cb3306ae4f4e">a3af1730</a>)</li>
+<li>Update dependencies for sdk and the example projects (<a href="https://github.com/Huddly/sdk/commit/4b1b8a7e0d97a8994be5f5a2f69fdede3578ef54">4b1b8a7e</a>)</li>
 <li><strong>deps:</strong><ul>
 <li>[security] bump acorn from 6.4.0 to 6.4.1 (<a href="https://github.com/Huddly/sdk/commit/d7ca906bb5c2bcc3424037cead0af8398e2f2ebc">d7ca906b</a>)</li>
 <li>bump acorn from 6.3.0 to 6.4.1 in /examples/rest (<a href="https://github.com/Huddly/sdk/commit/bf9125382ebab30211204c071ff2312360ac1ef7">bf912538</a>)</li>
@@ -108,53 +130,183 @@
 <li><strong>Node:</strong>  Support for Node 12 LTS (<a href="https://github.com/Huddly/sdk/commit/fa0600b99d5b6f33c6cdda346cab2929be35e1c5">fa0600b9</a>)</li>
 <li><strong>package.json:</strong>  Update dependencies and devDependencies of sdk (<a href="https://github.com/Huddly/sdk/commit/8e07e8f0c07df7e7b0b6443b113183f7fa62d44f">8e07e8f0</a>)</li>
 </ul>
-<h5 id="documentation-changes-1">Documentation Changes</h5>
+<h5 id="continuous-integration">Continuous Integration</h5>
 <ul>
-<li>Added documentation for the detector (<a href="https://github.com/Huddly/sdk/pull/237">#237</a>) (<a href="https://github.com/Huddly/sdk/commit/de0bea1d3142e9f0befa90162a5690eb6bc3fd54">de0bea1d</a>)</li>
-<li><strong>Contribution:</strong>  Added description for release process (<a href="https://github.com/Huddly/sdk/commit/7a7399fef9be93672580a6326b063840a749d4af">7a7399fe</a>)</li>
-<li><strong>CONTRIBUTING.md:</strong>  Bumped version of compodoc (<a href="https://github.com/Huddly/sdk/commit/e6ca4ffbfdf548330846460917c0131a6033d312">e6ca4ffb</a>)</li>
+<li>build sdk for lts v14 on travis (<a href="https://github.com/Huddly/sdk/commit/aaf2cccf0669fa5fb91acb0832e93c778f6c9e38">aaf2cccf</a>)</li>
+<li>dont build v8 on travis anymore (<a href="https://github.com/Huddly/sdk/commit/b4d689740a21224e90456e87170171b56cdb4b00">b4d68974</a>)</li>
 </ul>
-<h5 id="new-features-1">New Features</h5>
-<ul>
-<li><strong>Dartfish support:</strong>  Added correct dartfish device class (<a href="https://github.com/Huddly/sdk/commit/02ad6696cc233a64f1218794dcfe99fb8da0c259">02ad6696</a>)</li>
-<li>Injectable device factory so you can create custom or extend iDeviceManager clasess (<a href="https://github.com/Huddly/sdk/commit/41176b91de803b745bc1162694cf9a8934b97fc1">41176b91</a>)</li>
-<li><strong>getErrorLog:</strong>  Add option for disallowing legacy mode. (<a href="https://github.com/Huddly/sdk/commit/12f730cd153d930f208fba85a48e52a8ed397ceb">12f730cd</a>)</li>
-<li><strong>detector:</strong>  Detector should not be dependent on autozoom with newer camera software (<a href="https://github.com/Huddly/sdk/commit/715a5e43176dd61d9a7a9d35649b6157733acd20">715a5e43</a>)</li>
-<li><strong>Added options how long to search for device:</strong>  Option for setting # of times looking for device (<a href="https://github.com/Huddly/sdk/commit/056c533faac96f8b7c39c7607a0ac99be210a1ae">056c533f</a>)</li>
-<li><strong>Added support for dartfish PID in factory.ts:</strong>  Added support for dartfish PID (<a href="https://github.com/Huddly/sdk/commit/e6c037755cee8d47b5f0f1dbd8e68ca46aa5e856">e6c03775</a>)</li>
-<li><strong>Examples:</strong>  Added an example where a specific camera is targeted (<a href="https://github.com/Huddly/sdk/commit/1c88a34137e7b84da248281d8f2c2eb2e363d81f">1c88a341</a>)</li>
-</ul>
-<h5 id="bug-fixes-1">Bug Fixes</h5>
-<ul>
-<li><strong>api.ts:</strong>  getErrorLog recursive call with exact parameters (<a href="https://github.com/Huddly/sdk/commit/09f6d3ad7fd0a359def1b95d079f5fe15b8ea92f">09f6d3ad</a>)</li>
-<li><strong>getErrorLog:</strong><ul>
-<li>Throw exception with error from camera on failure. (<a href="https://github.com/Huddly/sdk/commit/d364036d3dd608a58cfe817160037b2155098dd4">d364036d</a>)</li>
-<li>Don&#39;t fall so quickly back to legacy method. Retry once. (<a href="https://github.com/Huddly/sdk/commit/c90c3759dc02c6f606122fcadb59c8a8992c00b7">c90c3759</a>)</li>
-</ul>
-</li>
-<li><strong>examples:</strong>  Update sdk examples to use latest sdk version (0.4.0) (<a href="https://github.com/Huddly/sdk/commit/3b462f73cdd51032b69619c99fc42625c677c8b0">3b462f73</a>)</li>
-</ul>
-<h5 id="other-changes-1">Other Changes</h5>
-<ul>
-<li>add support for PID=0x51 (<a href="https://github.com/Huddly/sdk/commit/5642a2e2610087cd427cc1f0cbee00278df29cf7">5642a2e2</a>)</li>
-</ul>
-<h4 id="041-2019-11-27">0.4.1 (2019-11-27)</h4>
 <h5 id="documentation-changes-2">Documentation Changes</h5>
 <ul>
+<li>Describe/Add more options to IDeviceApiOpts (<a href="https://github.com/Huddly/sdk/commit/b38192cc6785e14390bb3be665daa47ae0fb9b97">b38192cc</a>)</li>
+<li>Add jsdocs for the new service classes (<a href="https://github.com/Huddly/sdk/commit/e9c9b368a4be38c61c532e54dba656d699072106">e9c9b368</a>)</li>
+<li>update l1 sdk usage example project (<a href="https://github.com/Huddly/sdk/commit/e814ed01d7b2d97f2e40d0c589ab738f4b5b9bd5">e814ed01</a>)</li>
+<li>Add jsdocs for AceUpgrader (<a href="https://github.com/Huddly/sdk/commit/b44734d8f217a8ecbe1cfef4e70ec692b36972d3">b44734d8</a>)</li>
 <li>Added documentation for the detector (<a href="https://github.com/Huddly/sdk/pull/237">#237</a>) (<a href="https://github.com/Huddly/sdk/commit/de0bea1d3142e9f0befa90162a5690eb6bc3fd54">de0bea1d</a>)</li>
 <li><strong>Contribution:</strong>  Added description for release process (<a href="https://github.com/Huddly/sdk/commit/7a7399fef9be93672580a6326b063840a749d4af">7a7399fe</a>)</li>
 <li><strong>CONTRIBUTING.md:</strong>  Bumped version of compodoc (<a href="https://github.com/Huddly/sdk/commit/e6ca4ffbfdf548330846460917c0131a6033d312">e6ca4ffb</a>)</li>
 </ul>
 <h5 id="new-features-2">New Features</h5>
 <ul>
+<li><strong>Ace:</strong><ul>
+<li>Autozoom Control added (<a href="https://github.com/Huddly/sdk/commit/0293627bd35f07dc94e4f554471c968f8789a17e">0293627b</a>)</li>
+<li>Initial support for getState (<a href="https://github.com/Huddly/sdk/commit/d678dc3c4efc1e471c98ed92dd9bd7ae46da4e88">d678dc3c</a>)</li>
+<li>device info should be assign to the ace object (<a href="https://github.com/Huddly/sdk/commit/276124f1e70a93de1f1f2a3838a605dfac9525b4">276124f1</a>)</li>
+<li>Read and erase app log (<a href="https://github.com/Huddly/sdk/commit/f1e3d9303f146fae639c8bd5fcf9ad7cdefcee5d">f1e3d930</a>)</li>
+<li>Added interface for uvc-type commands (<a href="https://github.com/Huddly/sdk/commit/d656b4ef3876b8dc0dd0594381bf3f36b21420ad">d656b4ef</a>)</li>
+</ul>
+</li>
+<li>support upgrading ace by sending file buffer of cpio file (<a href="https://github.com/Huddly/sdk/commit/c28b9eff499d23e9199d4b96fe8fa83db6c115f4">c28b9eff</a>)</li>
+<li>allow consumer to set custom logger (<a href="https://github.com/Huddly/sdk/commit/986a72c0e36e4f3a6b913fbd920c8d74cf9d26ce">986a72c0</a>)</li>
+<li>Logger supports writing to file (<a href="https://github.com/Huddly/sdk/commit/0024ba5338fff4bb9f5d4e34072d5b40a44d1747">0024ba53</a>)</li>
+<li>SDK support for Huddly Service (Win) (<a href="https://github.com/Huddly/sdk/commit/3094336de3af8e4c31dbf9921f6e6a1e4e0c8604">3094336d</a>)</li>
+<li>add l1 windows service protofile (<a href="https://github.com/Huddly/sdk/commit/b2375492e639330b8544e705c1f21b000fdac0ef">b2375492</a>)</li>
+<li>huddlyproto npm package (<a href="https://github.com/Huddly/sdk/commit/ecdad1abbbb7e9b79ee5f02a749d3872f63d639f">ecdad1ab</a>)</li>
+<li>working fw upgrade for L1/Ace (<a href="https://github.com/Huddly/sdk/commit/fdafc7406b52be3221ee62e778c8986e6af27880">fdafc740</a>)</li>
+<li>discovery supports multiple apis (<a href="https://github.com/Huddly/sdk/commit/2f4a2e342e947b4ee90b6a237d585660a8bdc8e1">2f4a2e34</a>)</li>
+<li>build grpc proto files (<a href="https://github.com/Huddly/sdk/commit/8bf2f3ac85fd750aa027a0f8cece94f8109ed18f">8bf2f3ac</a>)</li>
+<li>Ace discovery support and getInfo (<a href="https://github.com/Huddly/sdk/commit/04fc25b40547974b23642826a9d9b9674b602b2f">04fc25b4</a>)</li>
+<li>Further abstraction on transport implementation (<a href="https://github.com/Huddly/sdk/commit/dbecd4893526ff54af98a827ff7f65398ac4390a">dbecd489</a>)</li>
+<li>Injectable device factory so you can create custom or extend iDeviceManager clasess (<a href="https://github.com/Huddly/sdk/commit/41176b91de803b745bc1162694cf9a8934b97fc1">41176b91</a>)</li>
+<li><strong>facebasedexposurecontrol:</strong>  sdk supports enable/disable face based exposure control (<a href="https://github.com/Huddly/sdk/commit/6a461e0b015bb9597de6534ed0d2b2c7a10ade9f">6a461e0b</a>)</li>
+<li><strong>package.json:</strong>  add typescript watcher script (<a href="https://github.com/Huddly/sdk/commit/2e329e8c70f664e568d91a3afdc4b03971e7ea65">2e329e8c</a>)</li>
+<li><strong>boxfish, huddlygo:</strong>  added current and usb to diagnostics info (<a href="https://github.com/Huddly/sdk/commit/879aefcde3f0abcb9b58cead68d1b1dfba0fe1f4">879aefcd</a>)</li>
+<li><strong>Dartfish support:</strong>  Added correct dartfish device class (<a href="https://github.com/Huddly/sdk/commit/02ad6696cc233a64f1218794dcfe99fb8da0c259">02ad6696</a>)</li>
+<li><strong>getErrorLog:</strong>  Add option for disallowing legacy mode. (<a href="https://github.com/Huddly/sdk/commit/12f730cd153d930f208fba85a48e52a8ed397ceb">12f730cd</a>)</li>
+<li><strong>detector:</strong>  Detector should not be dependent on autozoom with newer camera software (<a href="https://github.com/Huddly/sdk/commit/715a5e43176dd61d9a7a9d35649b6157733acd20">715a5e43</a>)</li>
+<li><strong>Added options how long to search for device:</strong>  Option for setting # of times looking for device (<a href="https://github.com/Huddly/sdk/commit/056c533faac96f8b7c39c7607a0ac99be210a1ae">056c533f</a>)</li>
+<li><strong>Added support for dartfish PID in factory.ts:</strong>  Added support for dartfish PID (<a href="https://github.com/Huddly/sdk/commit/e6c037755cee8d47b5f0f1dbd8e68ca46aa5e856">e6c03775</a>)</li>
 <li><strong>Examples:</strong>  Added an example where a specific camera is targeted (<a href="https://github.com/Huddly/sdk/commit/1c88a34137e7b84da248281d8f2c2eb2e363d81f">1c88a341</a>)</li>
 </ul>
-<h5 id="bug-fixes-2">Bug Fixes</h5>
+<h5 id="bug-fixes-3">Bug Fixes</h5>
+<ul>
+<li><strong>ace.ts:</strong>  updated proto dep/files to match dependecies (<a href="https://github.com/Huddly/sdk/commit/c4c95db26ea7f89185248bbff2544be759723c37">c4c95db2</a>)</li>
+<li>Suport npm link by adding dev mode on sdk (<a href="https://github.com/Huddly/sdk/commit/6deb38c1cdd1f6f49722ef20acfad8f74698076d">6deb38c1</a>)</li>
+<li>remove the Empty() and Chunk() workarounds (<a href="https://github.com/Huddly/sdk/commit/2647e67c77f8301cce27849ce00d0647590f0d88">2647e67c</a>)</li>
+<li>generated proto files in correct lib path (<a href="https://github.com/Huddly/sdk/commit/aedd7850e36abff33e0751577d60aa62b0292aaf">aedd7850</a>)</li>
+<li>empty resolve requires void promise (<a href="https://github.com/Huddly/sdk/commit/2b4554f3b0ec5ec015fb1ddd1ebbfbe13eb50b22">2b4554f3</a>)</li>
+<li><strong>prettier:</strong>  ignore prettifying generated proto (<a href="https://github.com/Huddly/sdk/commit/a9d83f29c204e75658f284300cf2a3b7b65bd42f">a9d83f29</a>)</li>
+<li><strong>update package deps:</strong>  update deps (<a href="https://github.com/Huddly/sdk/commit/d968befc3edec5a6f53d3a0d36ec3ab821b698d5">d968befc</a>)</li>
+<li><strong>api.ts:</strong>  getErrorLog recursive call with exact parameters (<a href="https://github.com/Huddly/sdk/commit/09f6d3ad7fd0a359def1b95d079f5fe15b8ea92f">09f6d3ad</a>)</li>
+<li><strong>getErrorLog:</strong><ul>
+<li>Throw exception with error from camera on failure. (<a href="https://github.com/Huddly/sdk/commit/d364036d3dd608a58cfe817160037b2155098dd4">d364036d</a>)</li>
+<li>Don&#39;t fall so quickly back to legacy method. Retry once. (<a href="https://github.com/Huddly/sdk/commit/c90c3759dc02c6f606122fcadb59c8a8992c00b7">c90c3759</a>)</li>
+</ul>
+</li>
+<li><strong>examples:</strong>  Update sdk examples to use latest sdk version (0.4.0) (<a href="https://github.com/Huddly/sdk/commit/3b462f73cdd51032b69619c99fc42625c677c8b0">3b462f73</a>)</li>
+</ul>
+<h5 id="other-changes-2">Other Changes</h5>
+<ul>
+<li>Ace-&gt;resetSettings promises must run in sequence (<a href="https://github.com/Huddly/sdk/commit/23241007bb1af3720441af2c265aee71b24f75d0">23241007</a>)</li>
+<li>bump camera-proto and lock jszip (<a href="https://github.com/Huddly/sdk/commit/19764d53eaae271cd3329a2c540bf8b5f53e0069">19764d53</a>)</li>
+<li>complete coverage for ace.ts class (<a href="https://github.com/Huddly/sdk/commit/7585c67c56ec164a9ad19ac4732982da28049b20">7585c67c</a>)</li>
+<li>Ace-&gt;setPanTiltZoom (<a href="https://github.com/Huddly/sdk/commit/4338b1cd593f09fff4e07affc609e0d16d8ca80f">4338b1cd</a>)</li>
+<li>Add support for reset settings (<a href="https://github.com/Huddly/sdk/commit/e64799d30d965edb1e4b3ece9b7fee5610400ffa">e64799d3</a>)</li>
+<li>fix ace upgrade progress events (<a href="https://github.com/Huddly/sdk/commit/1ab60bcc483410daa344807ce83fb3cf6cbe856a">1ab60bcc</a>)</li>
+<li>fix audit issues (lock jszip) (<a href="https://github.com/Huddly/sdk/commit/b11bcf9a817deb6928d6565e74dc937661030bd4">b11bcf9a</a>)</li>
+<li>add support for PID=0x51 (<a href="https://github.com/Huddly/sdk/commit/5642a2e2610087cd427cc1f0cbee00278df29cf7">5642a2e2</a>)</li>
+</ul>
+<h5 id="refactors-1">Refactors</h5>
+<ul>
+<li>rename multicastInterfaceAddr to targetInterfaceAddr (<a href="https://github.com/Huddly/sdk/commit/9ff12ef99eda0e22fb88ab6782a9ea600f556db0">9ff12ef9</a>)</li>
+<li>node8 does not like ().then().catch().finally() (<a href="https://github.com/Huddly/sdk/commit/592fcdcff9f5d70465c7b73159349bed3a221efc">592fcdcf</a>)</li>
+<li>Ace.ts rewrite setPanTiltZoom function (<a href="https://github.com/Huddly/sdk/commit/9e1b6960f90b28a1f361bc2893c9845c1df0ae8d">9e1b6960</a>)</li>
+<li>use @huddly/camera-proto and @huddly/camera-switch-proto packages (<a href="https://github.com/Huddly/sdk/commit/3defe04afe5c4fd5f8abb782d5eb19531dcc39dd">3defe04a</a>)</li>
+<li>remove @huddly/huddlyproto pkg folder (<a href="https://github.com/Huddly/sdk/commit/0d881be04354b6126115133f770d4f3ef9c2e44c">0d881be0</a>)</li>
+<li>test command should be run explicilty in travis (<a href="https://github.com/Huddly/sdk/commit/f0bde07211c1e3220b25ef578e5cdf0b8d49af38">f0bde072</a>)</li>
+<li>use @huddly/huddlyproto package (<a href="https://github.com/Huddly/sdk/commit/a49367f8ba4ca42b5fc6b3621348e9ddf97826d6">a49367f8</a>)</li>
+<li>fix logger interface and implementation (<a href="https://github.com/Huddly/sdk/commit/49c325439f2f35ee782abf0e005f6885f282ac0e">49c32543</a>)</li>
+<li>update example index.js (<a href="https://github.com/Huddly/sdk/commit/8e857714c86d2b0991e40d8889b708568ba0f7bb">8e857714</a>)</li>
+<li><strong>ace.ts:</strong>  rename uptime function (<a href="https://github.com/Huddly/sdk/commit/9d4d0fcb79b14aaea02b1e6059606ce76c0e73d8">9d4d0fcb</a>)</li>
+<li><strong>Logger:</strong>  static logger class (<a href="https://github.com/Huddly/sdk/commit/dbe83637b2eb035c62003694934b34e188c242bb">dbe83637</a>)</li>
+</ul>
+<h5 id="tests-1">Tests</h5>
+<ul>
+<li>unit tests for sdk Logger (<a href="https://github.com/Huddly/sdk/commit/8a25245b64dc93f0722add598b425c93aa6223db">8a25245b</a>)</li>
+<li>unit test service code (<a href="https://github.com/Huddly/sdk/commit/efd93396e0c97587e321ff608ba2c2af2135caf7">efd93396</a>)</li>
+<li>Unit test AceUpgrader class (<a href="https://github.com/Huddly/sdk/commit/9f33e40489e7970be5ada942dcdba9c76f20d91e">9f33e404</a>)</li>
+</ul>
+<h4 id="051-2020-07-06">0.5.1 (2020-07-06)</h4>
+<h5 id="new-features-3">New Features</h5>
+<ul>
+<li><strong>boxfish, huddlygo:</strong>  added current and usb to diagnostics info (<a href="https://github.com/Huddly/sdk/commit/879aefcde3f0abcb9b58cead68d1b1dfba0fe1f4">879aefcd</a>)</li>
+</ul>
+<h4 id="050-2020-05-25">0.5.0 (2020-05-25)</h4>
+<h5 id="new-features-4">New Features</h5>
+<ul>
+<li><strong>Dwarffish support:</strong>  added support for dwarffish 0x51 (<a href="https://github.com/Huddly/sdk/commit/f9f6047dae17def6274530bd9deffa4475cd436b">f9f6047</a>)</li>
+<li><strong>Clownfish support:</strong>  added support for clownfish  (<a href="https://github.com/Huddly/sdk/commit/c9d25f0049a422f09e1a0dfab94ad35f32f0026c">c9d25f0</a>)</li>
+</ul>
+<h4 id="042-2020-04-16">0.4.2 (2020-04-16)</h4>
+<h5 id="chores-3">Chores</h5>
+<ul>
+<li><strong>deps:</strong><ul>
+<li>[security] bump acorn from 6.4.0 to 6.4.1 (<a href="https://github.com/Huddly/sdk/commit/d7ca906bb5c2bcc3424037cead0af8398e2f2ebc">d7ca906b</a>)</li>
+<li>bump acorn from 6.3.0 to 6.4.1 in /examples/rest (<a href="https://github.com/Huddly/sdk/commit/bf9125382ebab30211204c071ff2312360ac1ef7">bf912538</a>)</li>
+<li>bump semver from 6.3.0 to 7.3.2 (<a href="https://github.com/Huddly/sdk/commit/071b640d8f0ac1228d84002ff2bb1bf312c0929f">071b640d</a>)</li>
+</ul>
+</li>
+<li><strong>deps-dev:</strong><ul>
+<li>bump cz-conventional-changelog from 2.1.0 to 3.1.0 (<a href="https://github.com/Huddly/sdk/commit/ed4add1e1e33aa6a3f3d7478506a391c7f8ad462">ed4add1e</a>)</li>
+<li>bump mocha from 6.2.2 to 7.1.1 (<a href="https://github.com/Huddly/sdk/commit/cd0dd086dcfa95907818ebd71eb7a7f541616b51">cd0dd086</a>)</li>
+<li>bump sinon-chai from 3.3.0 to 3.5.0 (<a href="https://github.com/Huddly/sdk/commit/4eda43dc27e7c7c5b8ee488112ebaa85d42a11fd">4eda43dc</a>)</li>
+<li>bump eslint-plugin-react from 7.17.0 to 7.19.0 (<a href="https://github.com/Huddly/sdk/commit/04cd5e2815f102c72e4cdd28960284ccdc40fc9f">04cd5e28</a>)</li>
+<li>bump nyc from 14.1.1 to 15.0.1 (<a href="https://github.com/Huddly/sdk/commit/1b42ffd78c5524fd78cf3efa423e522ae90966f5">1b42ffd7</a>)</li>
+<li>bump nock from 11.7.0 to 12.0.3 (<a href="https://github.com/Huddly/sdk/commit/ba8553233595c1370746e9a8d4c332ca2ac962d4">ba855323</a>)</li>
+<li>bump eslint-plugin-import from 2.19.1 to 2.20.2 (<a href="https://github.com/Huddly/sdk/commit/e854dab189fa0c5ffa487384d8734917b17cf59e">e854dab1</a>)</li>
+<li>bump ts-node from 8.5.4 to 8.8.2 (<a href="https://github.com/Huddly/sdk/commit/d47f75950f74c4a5859987f7e82c68a6e2835c7b">d47f7595</a>)</li>
+</ul>
+</li>
+<li><strong>examples:</strong>  Update dependencies to latest releases (<a href="https://github.com/Huddly/sdk/commit/a5cfbe4f7cc7f38aeba8f3c9a72a2d866f9fcb52">a5cfbe4f</a>)</li>
+<li><strong>Node:</strong>  Support for Node 12 LTS (<a href="https://github.com/Huddly/sdk/commit/fa0600b99d5b6f33c6cdda346cab2929be35e1c5">fa0600b9</a>)</li>
+<li><strong>package.json:</strong>  Update dependencies and devDependencies of sdk (<a href="https://github.com/Huddly/sdk/commit/8e07e8f0c07df7e7b0b6443b113183f7fa62d44f">8e07e8f0</a>)</li>
+</ul>
+<h5 id="documentation-changes-3">Documentation Changes</h5>
+<ul>
+<li>Added documentation for the detector (<a href="https://github.com/Huddly/sdk/pull/237">#237</a>) (<a href="https://github.com/Huddly/sdk/commit/de0bea1d3142e9f0befa90162a5690eb6bc3fd54">de0bea1d</a>)</li>
+<li><strong>Contribution:</strong>  Added description for release process (<a href="https://github.com/Huddly/sdk/commit/7a7399fef9be93672580a6326b063840a749d4af">7a7399fe</a>)</li>
+<li><strong>CONTRIBUTING.md:</strong>  Bumped version of compodoc (<a href="https://github.com/Huddly/sdk/commit/e6ca4ffbfdf548330846460917c0131a6033d312">e6ca4ffb</a>)</li>
+</ul>
+<h5 id="new-features-5">New Features</h5>
+<ul>
+<li><strong>Dartfish support:</strong>  Added correct dartfish device class (<a href="https://github.com/Huddly/sdk/commit/02ad6696cc233a64f1218794dcfe99fb8da0c259">02ad6696</a>)</li>
+<li>Injectable device factory so you can create custom or extend iDeviceManager clasess (<a href="https://github.com/Huddly/sdk/commit/41176b91de803b745bc1162694cf9a8934b97fc1">41176b91</a>)</li>
+<li><strong>getErrorLog:</strong>  Add option for disallowing legacy mode. (<a href="https://github.com/Huddly/sdk/commit/12f730cd153d930f208fba85a48e52a8ed397ceb">12f730cd</a>)</li>
+<li><strong>detector:</strong>  Detector should not be dependent on autozoom with newer camera software (<a href="https://github.com/Huddly/sdk/commit/715a5e43176dd61d9a7a9d35649b6157733acd20">715a5e43</a>)</li>
+<li><strong>Added options how long to search for device:</strong>  Option for setting # of times looking for device (<a href="https://github.com/Huddly/sdk/commit/056c533faac96f8b7c39c7607a0ac99be210a1ae">056c533f</a>)</li>
+<li><strong>Added support for dartfish PID in factory.ts:</strong>  Added support for dartfish PID (<a href="https://github.com/Huddly/sdk/commit/e6c037755cee8d47b5f0f1dbd8e68ca46aa5e856">e6c03775</a>)</li>
+<li><strong>Examples:</strong>  Added an example where a specific camera is targeted (<a href="https://github.com/Huddly/sdk/commit/1c88a34137e7b84da248281d8f2c2eb2e363d81f">1c88a341</a>)</li>
+</ul>
+<h5 id="bug-fixes-4">Bug Fixes</h5>
+<ul>
+<li><strong>api.ts:</strong>  getErrorLog recursive call with exact parameters (<a href="https://github.com/Huddly/sdk/commit/09f6d3ad7fd0a359def1b95d079f5fe15b8ea92f">09f6d3ad</a>)</li>
+<li><strong>getErrorLog:</strong><ul>
+<li>Throw exception with error from camera on failure. (<a href="https://github.com/Huddly/sdk/commit/d364036d3dd608a58cfe817160037b2155098dd4">d364036d</a>)</li>
+<li>Don&#39;t fall so quickly back to legacy method. Retry once. (<a href="https://github.com/Huddly/sdk/commit/c90c3759dc02c6f606122fcadb59c8a8992c00b7">c90c3759</a>)</li>
+</ul>
+</li>
+<li><strong>examples:</strong>  Update sdk examples to use latest sdk version (0.4.0) (<a href="https://github.com/Huddly/sdk/commit/3b462f73cdd51032b69619c99fc42625c677c8b0">3b462f73</a>)</li>
+</ul>
+<h5 id="other-changes-3">Other Changes</h5>
+<ul>
+<li>add support for PID=0x51 (<a href="https://github.com/Huddly/sdk/commit/5642a2e2610087cd427cc1f0cbee00278df29cf7">5642a2e2</a>)</li>
+</ul>
+<h4 id="041-2019-11-27">0.4.1 (2019-11-27)</h4>
+<h5 id="documentation-changes-4">Documentation Changes</h5>
+<ul>
+<li>Added documentation for the detector (<a href="https://github.com/Huddly/sdk/pull/237">#237</a>) (<a href="https://github.com/Huddly/sdk/commit/de0bea1d3142e9f0befa90162a5690eb6bc3fd54">de0bea1d</a>)</li>
+<li><strong>Contribution:</strong>  Added description for release process (<a href="https://github.com/Huddly/sdk/commit/7a7399fef9be93672580a6326b063840a749d4af">7a7399fe</a>)</li>
+<li><strong>CONTRIBUTING.md:</strong>  Bumped version of compodoc (<a href="https://github.com/Huddly/sdk/commit/e6ca4ffbfdf548330846460917c0131a6033d312">e6ca4ffb</a>)</li>
+</ul>
+<h5 id="new-features-6">New Features</h5>
+<ul>
+<li><strong>Examples:</strong>  Added an example where a specific camera is targeted (<a href="https://github.com/Huddly/sdk/commit/1c88a34137e7b84da248281d8f2c2eb2e363d81f">1c88a341</a>)</li>
+</ul>
+<h5 id="bug-fixes-5">Bug Fixes</h5>
 <ul>
 <li><strong>examples:</strong>  Update sdk examples to use latest sdk version (0.4.0) (<a href="https://github.com/Huddly/sdk/commit/3b462f73cdd51032b69619c99fc42625c677c8b0">3b462f73</a>)</li>
 </ul>
 <h3 id="040-2019-10-14">0.4.0 (2019-10-14)</h3>
-<h5 id="chores-2">Chores</h5>
+<h5 id="chores-4">Chores</h5>
 <ul>
 <li><strong>Changelog:</strong><ul>
 <li>Creating package.json scripts that generate changelog (<a href="https://github.com/Huddly/sdk/commit/098d334982402bdfde09775ba8f505a5e2ffcd8c">098d3349</a>)</li>
@@ -163,7 +315,7 @@
 <li><strong>Dependencies:</strong>  Updated project dependencies (<a href="https://github.com/Huddly/sdk/commit/bed7abd2245e778433a58cc02e4df703aa7ce1f8">bed7abd2</a>)</li>
 <li><strong>package.json:</strong>  Update and audit dependencies (<a href="https://github.com/Huddly/sdk/commit/7f1973ebff3119acb95a21d6c227a32db482f8a8">7f1973eb</a>)</li>
 </ul>
-<h5 id="documentation-changes-3">Documentation Changes</h5>
+<h5 id="documentation-changes-5">Documentation Changes</h5>
 <ul>
 <li><strong>CONTRIBUTING.md:</strong><ul>
 <li>Proper guidelins on making comitizen formated commits (<a href="https://github.com/Huddly/sdk/commit/14e7d4c5196b5bf1ce37565ab17d722eba921a1f">14e7d4c5</a>)</li>
@@ -171,7 +323,7 @@
 </ul>
 </li>
 </ul>
-<h5 id="new-features-3">New Features</h5>
+<h5 id="new-features-7">New Features</h5>
 <ul>
 <li><strong>Autozoom/Detector:</strong>  Add setter method for options class attribute (<a href="https://github.com/Huddly/sdk/commit/a58dfeee6ea38b31013f39283f99c0306a20b234">a58dfeee</a>)</li>
 <li><strong>DeviceManager:</strong><ul>
@@ -187,11 +339,11 @@
 <li><strong>error log:</strong>  Implement error log reading without file transfer (<a href="https://github.com/Huddly/sdk/commit/35733b93f0af49e98a562b3896ce05764480df1f">35733b93</a>)</li>
 <li><strong>boxfish.ts:</strong>  Added FSBL upgrade to boxfish (<a href="https://github.com/Huddly/sdk/commit/efd0459efb01c807478e8b9ae9b0df1596583540">efd0459e</a>)</li>
 </ul>
-<h5 id="bug-fixes-3">Bug Fixes</h5>
+<h5 id="bug-fixes-6">Bug Fixes</h5>
 <ul>
 <li><strong>AutozoomControl:</strong> Enable/Disable needs to query product info (<a href="https://github.com/Huddly/sdk/commit/8d335e93b0e9b663d2fbb3fa3606afc9d24d1747">8d335e93</a>)</li>
 </ul>
-<h5 id="refactors">Refactors</h5>
+<h5 id="refactors-2">Refactors</h5>
 <ul>
 <li><strong>Factory.ts:</strong>  Remove confusing warning logs on factory class (<a href="https://github.com/Huddly/sdk/commit/b76d74a3c854e6a3526150fe995f2b5383a8e4f7">b76d74a3</a>)</li>
 <li><strong>AutozoomControl:</strong><ul>
@@ -213,14 +365,14 @@
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -240,9 +392,9 @@
 
        <script src="./js/libs/custom-elements.min.js"></script>
        <script src="./js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="./js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="./js/menu-wc.js" defer></script>
+       <script nomodule src="./js/menu-wc_es5.js" defer></script>
 
        <script src="./js/libs/bootstrap-native.js"></script>
 

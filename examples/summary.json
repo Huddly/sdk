@@ -36,6 +36,10 @@
             "file": "rest/documentation/upgrade_status.md"
           }
         ]
+      },
+      {
+        "title": "Huddly L1",
+        "file": "huddly_l1/README.md"
       }
     ]
   },

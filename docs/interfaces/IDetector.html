@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -43,7 +44,9 @@
 
 <ol class="breadcrumb">
   <li>Interfaces</li>
-  <li>IDetector</li>
+  <li
+  >
+  IDetector</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -67,6 +70,7 @@
             <code>src/interfaces/IDetector.ts</code>
         </p>
 
+
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -89,22 +93,40 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#destroy">destroy</a>
+                                    <a href="#destroy" 
+>
+                                        destroy
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#init">init</a>
+                                    <a href="#init" 
+>
+                                        init
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#on">on</a>
+                                    <a href="#on" 
+>
+                                        on
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#once">once</a>
+                                    <a href="#once" 
+>
+                                        once
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#removeAllListeners">removeAllListeners</a>
+                                    <a href="#removeAllListeners" 
+>
+                                        removeAllListeners
+                                    </a>
                                 </li>
                                 <li>
-                                    <a href="#removeListener">removeListener</a>
+                                    <a href="#removeListener" 
+>
+                                        removeListener
+                                    </a>
                                 </li>
                             </ul>
                         </td>
@@ -124,9 +146,7 @@
                 <td class="col-md-4">
                     <a name="destroy"></a>
                     <span class="name">
-                        <b>
-                            destroy
-                        </b>
+                        <span ><b>destroy</b></span>
                         <a href="#destroy"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -176,9 +196,7 @@ detection events and stops it&#39;s internal streaming.</p>
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            init
-                        </b>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -224,9 +242,7 @@ framing data event listeners.</p>
                 <td class="col-md-4">
                     <a name="on"></a>
                     <span class="name">
-                        <b>
-                            on
-                        </b>
+                        <span ><b>on</b></span>
                         <a href="#on"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -255,6 +271,7 @@ detector events together with all the other camera events can be found in the <c
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -319,9 +336,7 @@ detector events together with all the other camera events can be found in the <c
                 <td class="col-md-4">
                     <a name="once"></a>
                     <span class="name">
-                        <b>
-                            once
-                        </b>
+                        <span ><b>once</b></span>
                         <a href="#once"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -350,6 +365,7 @@ the first time the message is emitted from the <code>Detector</code> implementat
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -414,9 +430,7 @@ the first time the message is emitted from the <code>Detector</code> implementat
                 <td class="col-md-4">
                     <a name="removeAllListeners"></a>
                     <span class="name">
-                        <b>
-                            removeAllListeners
-                        </b>
+                        <span ><b>removeAllListeners</b></span>
                         <a href="#removeAllListeners"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -444,6 +458,7 @@ listeners setup on the given message name.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -492,9 +507,7 @@ listeners setup on the given message name.</p>
                 <td class="col-md-4">
                     <a name="removeListener"></a>
                     <span class="name">
-                        <b>
-                            removeListener
-                        </b>
+                        <span ><b>removeListener</b></span>
                         <a href="#removeListener"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -519,10 +532,12 @@ listeners setup on the given message name.</p>
                     <div class="io-description"><p>EventEmitter <code>removeListener</code> method. Unregisters any event listeners
 setup on the detector class (that is either the detection or framing
 data event listeners).</p>
+<p>on the caught event.</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -588,9 +603,10 @@ on the caught event.</p>
 
     <div class="tab-pane fade " id="c-readme">
         <p><h2 id="how-to-use-the-detector-interface">How to use the detector interface!</h2>
-<p>In order to use the detector interface you need to make sure that the autozoom feature is enabled on the camera (see the <a href="http://developer.huddly.com/interfaces/IAutozoomControl.html">IAutozoomControl</a> interface for documentation on how to do it).</p>
-<p>The detector interface allows you to subscribe to detection and/or framing data from the camera. From version 0.4.0 we support getting detection data from Detector without having to stream the camera on the host machine. <strong>NOTE</strong> that this is the default behavior now. It is still possible to get detections the old way, where you only get detection when streaming the camera on the host machine. We show you below how to do that!</p>
-<div><pre class="line-numbers"><code class="language-javascript">/* 
+<p>In order to use the detector interface you need to make sure that the autozoom feature is enabled on the camera (see the <a href="http://developer.huddly.com/interfaces/ICnnControl.html#readme">ICnnControl</a> interface for documentation on how to do it).</p>
+<p>The detector interface allows you to subscribe to detection and/or framing data from the camera. From version <strong>0.4.0</strong> we support getting detection data from Detector without having to stream the camera on the host machine.<br><strong>NOTE</strong> that this is the default behavior now.</p>
+<p>It is still possible to get detections the old way, where you only get detection when streaming the camera on the host machine. We show you below how to do that!</p>
+<div><pre class="line-numbers"><code class="language-javascript">/*
 We suppose that the sdk has been initialized and autozoom feature is enabled
 and running.
 */
@@ -606,7 +622,7 @@ const detector = cameraManager.getDetector();
 await detector.init();
 
 /*
-Detector class implements EventEmitter and therefor implements
+Detector class implements EventEmitter and therefore implements
 all the event emitter methods. Below we show how to listen
 to detector events such as DETECTIONS and FRAMING.
 */
@@ -663,11 +679,11 @@ await detector.destroy();
 </thead>
 <tbody>
 <tr>
-<td>DETECTIONS</td>
+<td><code>DETECTIONS</code></td>
 <td align="left">Subscribe to this event to get detections from the camera. At the moment only the <code>People</code> class is supported from the detector.</td>
 </tr>
 <tr>
-<td>FRAMING</td>
+<td><code>FRAMING</code></td>
 <td align="left">Subscribe to this event to get information about the framing. Framing data consists of a property called <code>bbox</code> which contains the coordinates (x, y, width and height) representing the framing data. The framer configuration on the camera will always make sure that the perfect framing of the people in the view is selected.</td>
 </tr>
 </tbody>
@@ -747,14 +763,14 @@ await detector.destroy();
 </div>
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -774,9 +790,9 @@ await detector.destroy();
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

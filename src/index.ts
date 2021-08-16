@@ -15,16 +15,9 @@ import IHuddlyService from './interfaces/IHuddlyService';
 import IServiceOpts from './interfaces/IServiceOpts';
 import ServiceFactory from './components/service/factory';
 import ILogger from './interfaces/ILogger';
+import AttachError from './error/AttachError';
 
 sourceMapSupport.install();
-
-class AttachError extends Error {
-  code: Number;
-  constructor(message: string, code: Number) {
-    super(message);
-    this.code = code;
-  }
-}
 
 /**
  * The SDK initialization options.
