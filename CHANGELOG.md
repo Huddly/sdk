@@ -1,3 +1,23 @@
+#### 0.6.1 (2021-08-23)
+
+##### Documentation Changes
+
+* **Readme:**  Remove broken dependency badges ([ac6400ea](https://github.com/Huddly/sdk/commit/ac6400ea8f576dd4dec549ce76fe4b1eafba1ab2))
+
+##### New Features
+
+*  Export BASE product id on factory.ts ([506e6b40](https://github.com/Huddly/sdk/commit/506e6b40a210eb9b8eb961609aa707f4acc9ee27))
+*  Export huddly vendor id on factory.ts ([31b5e614](https://github.com/Huddly/sdk/commit/31b5e6143bb8c1243d713f5b6c7b9440f91d9dd0))
+
+##### Bug Fixes
+
+*  Update L1 pid from 3E9 to 0x3E9 ([c5c6ffeb](https://github.com/Huddly/sdk/commit/c5c6ffeb6d241efb4527c3cc1eca8827fd122ab7))
+*  webpack bundle with new grpc dependencies ([262751f4](https://github.com/Huddly/sdk/commit/262751f4d1436a9e7ea74eeb6fafba8ac11d131e))
+
+##### Other Changes
+
+*  Avoid discovery hang for BASE ([66d4230e](https://github.com/Huddly/sdk/commit/66d4230e6f362c497c5514e4aab16b6a9ef201cc))
+
 ### 0.6.0 (2021-08-16)
 
 ##### Chores
