@@ -12,6 +12,7 @@ import Clownfish from './clownfish';
 import Ace from './ace';
 import { EventEmitter } from 'events';
 
+export const HUDDLY_VID = 0x2bd9;
 export const HUDDLY_GO_PID = 0x11;
 export const HUDDLY_BOXFISH_PID = 0x21;
 export const HUDDLY_CLOWNFISH_PID = 0x31;
