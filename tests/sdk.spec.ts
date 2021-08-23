@@ -87,6 +87,11 @@ describe('HuddlySDK', () => {
       productId: 0x21,
       serialNumber: deviceSerial
     };
+    const dummyBase = {
+      productId: 0xBA5E,
+      serialNumber: '1241234541234'
+    };
+
     let huddlygoInitStub;
     let boxfishInitStub;
     let discoveryEmitter;
@@ -217,8 +222,28 @@ describe('HuddlySDK', () => {
         });
         discoveryEmitter.emit('ATTACH', dummyIQ);
       });
+      it('should emit error and resolve if BASE is discovered', (done) => {
+        initSdk();
+        otherEmitter.on('ERROR', (e) => {
+          expect(e).to.be.instanceof(Error);
+          expect(e.message).to.equal(`No transport implementation supported for {"productId":47710,"serialNumber":"1241234541234"}`);
+          done();
+        });
+        discoveryEmitter.emit('ATTACH', dummyBase);
+      });
     });
-
+    describe('combined', () => {
+      it('should should resolve IQ when non supported Huddly device gets discovered first', (done) => {
+        initSdk();
+        otherEmitter.on('ATTACH', (d) => {
+          expect(d).to.be.instanceof(Boxfish);
+          expect(d.serialNumber).to.equals(deviceSerial);
+          done();
+        });
+        discoveryEmitter.emit('ATTACH', dummyBase);
+        discoveryEmitter.emit('ATTACH', dummyIQ);
+      });
+    });
   });
 
   describe('#init', () => {
