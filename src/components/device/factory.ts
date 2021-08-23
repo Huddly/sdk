@@ -18,6 +18,7 @@ export const HUDDLY_BOXFISH_PID = 0x21;
 export const HUDDLY_CLOWNFISH_PID = 0x31;
 export const HUDDLY_DWARFFISH_PID = 0x51;
 export const HUDDLY_L1_PID = 0x3E9; // 1001 for L1/Ace
+export const HUDDLY_BASE_PID = 0xBA5E;
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
