@@ -687,18 +687,23 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
   }
 
   setPanTiltZoom(panTiltZoom: Object): Promise<void> {
-    let newPtz: huddly.PTZ;
+    const newPtz = new huddly.PTZ();
     return new Promise((resolve, reject) => {
       this._getPanTiltZoom()
       .then((currentPtz: huddly.PTZ) => {
-        newPtz = currentPtz;
+        newPtz.setPan(currentPtz.getPan());
+        newPtz.setZoom(currentPtz.getZoom());
+        newPtz.setTilt(currentPtz.getTilt());
+        newPtz.setTrans(currentPtz.getTrans());
       }).catch((e) => {
-        newPtz = new huddly.PTZ();
-        newPtz.setPan(newPtz.getDefaultpan());
-        newPtz.setTilt(newPtz.getDefaulttilt());
-        newPtz.setZoom(newPtz.getDefaultzoom());
+        const defaultPan = newPtz.getDefaultpan();
+        const defaultTilt = newPtz.getDefaulttilt();
+        const defaultZoom = newPtz.getDefaultzoom();
+        newPtz.setPan(defaultPan);
+        newPtz.setTilt(defaultTilt);
+        newPtz.setZoom(defaultZoom);
         newPtz.setTrans(0);
-      }).then(() => {
+      }).finally(() => {
         const paramKeys = Object.keys(panTiltZoom);
         if (paramKeys.includes('pan')) {
           newPtz.setPan(panTiltZoom['pan']);
