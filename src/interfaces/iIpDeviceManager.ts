@@ -1,6 +1,6 @@
 import IDeviceManager from './iDeviceManager';
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
-import { CnnFeature, CNNStatus } from '@huddly/camera-proto/lib/api/huddly_pb';
+import { CnnFeature, CNNStatus, DeviceStatus } from '@huddly/camera-proto/lib/api/huddly_pb';
 
 /**
  * Interface used to manage communcation with a IP camera.

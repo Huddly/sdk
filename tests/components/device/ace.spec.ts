@@ -15,6 +15,7 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import AceUpgrader from './../../../src/components/upgrader/aceUpgrader';
 import IpAutozoomControl from './../../../src/components/ipAutozoomControl';
 import IpFaceBasedExposureControl from './../../../src/components/ipFaceBasedExposureControl';
+import IpDetector from './../../../src/components/ipDetector';
 import ReleaseChannel from './../../../src/interfaces/ReleaseChannelEnum';
 
 chai.should();
@@ -870,9 +871,9 @@ describe('Ace', () => {
     });
   });
   describe('#getDetector', () => {
-    it('should not be implemented', () => {
-      const badFn = () => { device.getDetector({}); };
-      return expect(badFn).to.throw(Error, 'Method not implemented.');
+    it('should return an instance of IpDetector', () => {
+      const detector = device.getDetector({});
+      expect(detector).to.be.instanceOf(IpDetector);
     });
   });
   describe('#getDiagnostics', () => {
