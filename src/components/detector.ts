@@ -90,7 +90,6 @@ export default class Detector extends EventEmitter implements IDetector {
     if (!this._detectionHandler) {
       this._detectionHandler = detectionBuffer => {
         const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
-        Logger.warn(predictions);
         const convertedDetections = this.convertDetections(predictions, this._options);
         this.emit(CameraEvents.DETECTIONS, convertedDetections);
       };
