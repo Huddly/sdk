@@ -8,6 +8,7 @@ import semver from 'semver';
 import IUsbTransport from './../interfaces/IUsbTransport';
 import TypeHelper from './../utilitis/typehelper';
 import Logger from './../utilitis/logger';
+import DetectionsConverter from './../utilitis/detectionsConverter';
 
 const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
 const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
@@ -89,6 +90,7 @@ export default class Detector extends EventEmitter implements IDetector {
     if (!this._detectionHandler) {
       this._detectionHandler = detectionBuffer => {
         const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
+        Logger.warn(predictions);
         const convertedDetections = this.convertDetections(predictions, this._options);
         this.emit(CameraEvents.DETECTIONS, convertedDetections);
       };
@@ -257,48 +259,11 @@ export default class Detector extends EventEmitter implements IDetector {
    * @memberof Detector
    */
   convertDetections(detections: Array<any>, opts?: DetectorOpts): Array<any> {
-    let objectFilter = this._defaultLabelWhiteList;
-    if (opts && opts.objectFilter) {
-      objectFilter = opts.objectFilter;
-    }
-    const filteredDetections =
-      objectFilter.length === 0
-        ? detections
-        : detections.filter(({ label }) => {
-            return objectFilter.some(x => x === label);
-          });
-
-    if (opts && opts.convertDetections === DetectionConvertion.FRAMING && this._frame) {
-      const { bbox: framingBBox } = this._frame;
-      const relativeSize = {
-        height: PREVIEW_IMAGE_SIZE.height / framingBBox.height,
-        width: PREVIEW_IMAGE_SIZE.width / framingBBox.width,
-      };
-      return filteredDetections.map(({ label, bbox }) => {
-        return {
-          label: label,
-          bbox: {
-            x: (bbox.x - framingBBox.x) * relativeSize.width,
-            y: (bbox.y - framingBBox.y) * relativeSize.height,
-            width: bbox.width * relativeSize.width,
-            height: bbox.height * relativeSize.height,
-            frameWidth: framingBBox.width * relativeSize.width,
-            frameHeight: framingBBox.height * relativeSize.height,
-          },
-        };
-      });
-    } else {
-      return filteredDetections.map(({ label, bbox }) => {
-        return {
-          label: label,
-          bbox: {
-            x: bbox.x / PREVIEW_IMAGE_SIZE.width,
-            y: bbox.y / PREVIEW_IMAGE_SIZE.height,
-            width: bbox.width / PREVIEW_IMAGE_SIZE.width,
-            height: bbox.height / PREVIEW_IMAGE_SIZE.height,
-          },
-        };
-      });
-    }
+    const converterOpts = {
+      frame: this._frame,
+      preview_image_size: PREVIEW_IMAGE_SIZE,
+      ...opts,
+    };
+    return new DetectionsConverter(detections, converterOpts).convert();
   }
 }

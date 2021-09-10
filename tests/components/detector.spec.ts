@@ -2,7 +2,7 @@ import sinon from 'sinon';
 import { expect } from 'chai';
 import Detector from './../../src/components/detector';
 import IDeviceManager from './../../src/interfaces/iDeviceManager';
-import DetectorOpts, { DetectionConvertion } from './../../src//interfaces/IDetectorOpts';
+import DetectorOpts, { DetectionConvertion } from './../../src/interfaces/IDetectorOpts';
 import Logger from './../../src/utilitis/logger';
 import DeviceManagerMock from './../mocks/devicemanager.mock';
 import * as msgpack from 'msgpack-lite';
@@ -103,9 +103,7 @@ describe('Detector', () => {
         expect(detector._previewStreamStarted).to.equals(false);
         expect(detector._detectorInitialized).to.equals(true);
 
-        const streamingOnly = JSON.stringify(
-          msgpack.decode(transportWriteStub.getCall(0).args[1])
-        );
+        const streamingOnly = JSON.stringify(msgpack.decode(transportWriteStub.getCall(0).args[1]));
         expect(streamingOnly).to.equals(JSON.stringify({ STREAMING_ONLY: true }));
       });
     });
@@ -305,85 +303,6 @@ describe('Detector', () => {
         expect(transportUnsubscribeStub.callCount).to.equals(1);
         expect(transportRemoveListenerStub.callCount).to.equals(1);
         expect(detector._subscriptionsSetup).to.equals(false);
-      });
-    });
-  });
-
-  describe('#convertPredictions', () => {
-    const predictions = [
-      {
-        label: 'person',
-        bbox: {
-          x: 10,
-          y: 10,
-          width: 60,
-          height: 120,
-        },
-      },
-      {
-        label: 'couch',
-        bbox: {
-          x: 10,
-          y: 10,
-          width: 60,
-          height: 120,
-        },
-      },
-    ];
-    beforeEach(() => {
-      detector._frame = {
-        bbox: {
-          x: 0,
-          y: 0,
-          width: 720,
-          height: 405,
-        },
-      };
-    });
-    describe('RELATIVE', () => {
-      it('should convert bbox coordinates absolute to the selected frame in main stream', () => {
-        const newPredictions = detector.convertDetections(predictions, {
-          convertDetections: DetectionConvertion.FRAMING,
-        });
-        expect(newPredictions.length).to.equals(1);
-        expect(newPredictions[0].label).to.equals('person');
-        expect(newPredictions[0].bbox).to.deep.equals({
-          x: 8.88888888888889,
-          y: 11.851851851851851,
-          width: 53.33333333333333,
-          height: 142.22222222222223,
-          frameWidth: 640,
-          frameHeight: 480,
-        });
-      });
-      it('should detect couch when objectFilter is set to all', () => {
-        const newPredictions = detector.convertDetections(predictions, {
-          convertDetections: DetectionConvertion.FRAMING,
-          objectFilter: [],
-        });
-        expect(newPredictions.length).to.equals(2);
-      });
-      it('should detect objects specified by filter', () => {
-        const newPredictions = detector.convertDetections(predictions, {
-          convertDetections: DetectionConvertion.FRAMING,
-          objectFilter: ['person'],
-        });
-        expect(newPredictions.length).to.equals(1);
-      });
-    });
-    describe('ABSOLUTE', () => {
-      it('should convert bbox absolute coordinates to relative (0 to 1 values)', async () => {
-        const newPredictions = detector.convertDetections(predictions, {
-          convertDetections: DetectionConvertion.RELATIVE,
-        });
-        expect(newPredictions.length).to.equals(1);
-        expect(newPredictions[0].label).to.equals('person');
-        expect(newPredictions[0].bbox).to.deep.equals({
-          x: 0.015625,
-          y: 0.020833333333333332,
-          width: 0.09375,
-          height: 0.25,
-        });
       });
     });
   });
