@@ -17,6 +17,7 @@ import IpAutozoomControl from './../../../src/components/ipAutozoomControl';
 import IpFaceBasedExposureControl from './../../../src/components/ipFaceBasedExposureControl';
 import IpDetector from './../../../src/components/ipDetector';
 import ReleaseChannel from './../../../src/interfaces/ReleaseChannelEnum';
+import { HUDDLY_VID } from './../../../src/components/device/factory';
 
 chai.should();
 chai.use(sinonChai);
@@ -253,7 +254,7 @@ describe('Ace', () => {
         const wsddDeviceObj = {
           infoObject: () => {
             return {
-              name: 'L1',
+              name: 'Huddly L1',
               serial: '1234HA',
               mac: 'AA:BB:CC:DD:EE'
             };
@@ -272,7 +273,8 @@ describe('Ace', () => {
           ...wsddDeviceObj.infoObject(),
           slot: 'C',
           uptime: 123,
-          version: '1.2.3-abc'
+          version: '1.2.3-abc',
+          vendorId: HUDDLY_VID
         });
       });
     });

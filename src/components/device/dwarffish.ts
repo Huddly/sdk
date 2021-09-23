@@ -17,7 +17,7 @@ export default class Dwarffish extends Boxfish {
   uvcControlInterface: any;
   locksmith: Locksmith;
   discoveryEmitter: EventEmitter;
-  productName: string = 'Huddly IQ Lite';
+  productName: string = 'Huddly ONE';
 
   constructor(
     uvcCameraInstance: any,

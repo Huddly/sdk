@@ -12,13 +12,16 @@ import Clownfish from './clownfish';
 import Ace from './ace';
 import { EventEmitter } from 'events';
 
-export const HUDDLY_VID = 0x2bd9;
-export const HUDDLY_GO_PID = 0x11;
-export const HUDDLY_BOXFISH_PID = 0x21;
-export const HUDDLY_CLOWNFISH_PID = 0x31;
-export const HUDDLY_DWARFFISH_PID = 0x51;
-export const HUDDLY_L1_PID = 0x3E9; // 1001 for L1/Ace
-export const HUDDLY_BASE_PID = 0xBA5E;
+export const HUDDLY_VID = 0x2bd9; // Huddly Vendor ID
+export const HUDDLY_GO_PID = 0x11; // Huddly GO
+
+export const HUDDLY_BOXFISH_PID = 0x21; // Huddly IQ (with mic) / IQ Jamboard
+export const HUDDLY_CLOWNFISH_PID = 0x31; // Huddly IQ (without mic and cnn feature)
+export const HUDDLY_DWARFFISH_PID = 0x51; // Huddly ONE
+export const HUDDLY_DARTFISH_PID = 0x41; // Huddly Canvas
+
+export const HUDDLY_L1_PID = 0x3E9; // Huddly L1/ACE
+export const HUDDLY_BASE_PID = 0xBA5E; // Huddly BASE
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
