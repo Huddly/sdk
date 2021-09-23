@@ -2,15 +2,17 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 import DeviceFactory from './../../../src/components/device/factory';
-import Boxfish from './../../../src/components/device/boxfish';
-import HuddlyGo from './../../../src/components/device/huddlygo';
-import Dwarffish from './../../../src/components/device/dwarffish';
-import Clownfish from './../../../src/components/device/clownfish';
 import IHuddlyDeviceAPI from './../../../src/interfaces/iHuddlyDeviceAPI';
 import IUVCControlAPI from './../../../src/interfaces/iUVCControlApi';
 import { EventEmitter } from 'events';
 import ITransport from './../../../src/interfaces/iTransport';
 import IDeviceDiscovery from './../../../src/interfaces/iDeviceDiscovery';
+
+import Boxfish from './../../../src/components/device/boxfish';
+import HuddlyGo from './../../../src/components/device/huddlygo';
+import Dwarffish from './../../../src/components/device/dwarffish';
+import Clownfish from './../../../src/components/device/clownfish';
+import DartFish from './../../../src/components/device/dartfish';
 
 chai.should();
 chai.use(sinonChai);
@@ -220,6 +222,23 @@ describe('DeviceFactory', () => {
           dummyClownfishDevice,
           discoveryEmitter);
         expect(deviceManager).to.be.instanceof(Clownfish);
+      });
+    });
+
+    describe('Dartfish', () => {
+      it('should initialize dartfish/canvas device when product id is 0x41', async () => {
+        const dummyDartfishDevice = {
+          deviceDescriptor: {
+            idProduct: 0x41
+          }
+        };
+        const deviceManager = await DeviceFactory.getDevice(
+          dummyDartfishDevice.deviceDescriptor.idProduct,
+          dummyDeviceApis[0],
+          dummyDeviceApis,
+          dummyDartfishDevice,
+          discoveryEmitter);
+        expect(deviceManager).to.be.instanceof(DartFish);
       });
     });
 

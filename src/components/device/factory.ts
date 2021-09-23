@@ -5,11 +5,15 @@ import Logger from './../../utilitis/logger';
 import IDeviceManager from './../../interfaces/iDeviceManager';
 import IDeviceFactory from './../../interfaces/iDeviceFactory';
 import IGrpcTransport from './../../interfaces/IGrpcTransport';
+
+// Device Manager Imports
 import HuddlyGo from './huddlygo';
 import Boxfish from './boxfish';
 import Dwarffish from './dwarffish';
 import Clownfish from './clownfish';
+import DartFish from './dartfish';
 import Ace from './ace';
+
 import { EventEmitter } from 'events';
 
 export const HUDDLY_VID = 0x2bd9; // Huddly Vendor ID
@@ -177,6 +181,9 @@ export default class DeviceFactory {
         break;
       case HUDDLY_DWARFFISH_PID:
         device = new Dwarffish(devInstance, <IUsbTransport>transport, uvcControlInterface, cameraDiscoveryEmitter);
+        break;
+      case HUDDLY_DARTFISH_PID:
+        device = new DartFish(devInstance, <IUsbTransport>transport, uvcControlInterface, cameraDiscoveryEmitter);
         break;
       case HUDDLY_L1_PID:
         device = new Ace(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);
