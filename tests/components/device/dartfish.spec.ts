@@ -7,7 +7,6 @@ import path from 'path';
 import ITransport from './../../../src/interfaces/iTransport';
 import IDeviceUpgrader from './../../../src/interfaces/IDeviceUpgrader';
 import Dartfish from './../../../src/components/device/dartfish';
-import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
@@ -168,19 +167,19 @@ describe('Dartfish', () => {
 
   describe('#getDetector', () => {
     it('should throw an error', () => {
-      expect(device.getDetector).to.throw('getDetector not implemented');
+      expect(device.getDetector).to.throw('Method not implemented/supported.');
     });
   });
 
   describe('#getAutozoomControl', () => {
     it('should throw an error', () => {
-      expect(device.getAutozoomControl).to.throw('getAutozoomControl not implemented');
+      expect(device.getAutozoomControl).to.throw('Method not implemented/supported.');
     });
   });
 
   describe('#getState', () => {
     it('should throw an error', () => {
-      expect(device.getState).to.throw('getState not implemented');
+      expect(device.getState).to.throw('Method not implemented/supported.');
     });
   });
 
@@ -191,7 +190,7 @@ describe('Dartfish', () => {
         await device.setInterpolationParams();
         throw new Error('should fail');
       } catch (e) {
-        expect(e.message).equal('setInterpolationParams not implemented');
+        expect(e.message).equal('Method not implemented/supported.');
       }
     });
   });
@@ -202,7 +201,7 @@ describe('Dartfish', () => {
         await device.getInterpolationParams();
         throw new Error('should fail');
       } catch (e) {
-        expect(e.message).equal('getInterpolationParams not implemented');
+        expect(e.message).equal('Method not implemented/supported.');
       }
     });
   });

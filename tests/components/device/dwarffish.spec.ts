@@ -1,17 +1,10 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import fs from 'fs';
-import path from 'path';
-
 import ITransport from '../../../src/interfaces/iTransport';
-import IDeviceUpgrader from '../../../src/interfaces/IDeviceUpgrader';
 import Dwarffish from '../../../src/components/device/dwarffish';
-import Logger from '../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
-import CameraEvents from '../../../src/utilitis/events';
 import Api from '../../../src/components/api';
-import ReleaseChannel from '../../../src/interfaces/ReleaseChannelEnum';
 
 chai.should();
 chai.use(sinonChai);
@@ -128,19 +121,6 @@ describe('Dwarffish', () => {
     });
   });
 
-  describe('#upgrade', () => {
-    it('should throw an error', async () => {
-      try {
-        await device.upgrade({
-          file: Buffer.alloc(0),
-        });
-        throw new Error('should fail');
-      } catch (e) {
-        expect(e.message).to.equal('upgrade not implemented');
-      }
-    });
-  });
-
   describe('#reboot', () => {
     describe('on mvusb mode', () => {
       it('should send upgrader/mv_usb', async () => {
@@ -168,26 +148,26 @@ describe('Dwarffish', () => {
         await device.getLatestFirmwareUrl();
         throw new Error('should fail');
       } catch (e) {
-        expect(e.message).to.equal('getLatestFirmwareUrl not implemented');
+        expect(e.message).to.equal('Method not implemented/supported.');
       }
     });
   });
 
   describe('#getDetector', () => {
     it('should throw an error', () => {
-      expect(device.getDetector).to.throw('getDetector not implemented');
+      expect(device.getDetector).to.throw('Method not implemented/supported.');
     });
   });
 
   describe('#getAutozoomControl', () => {
     it('should throw an error', () => {
-      expect(device.getAutozoomControl).to.throw('getAutozoomControl not implemented');
+      expect(device.getAutozoomControl).to.throw('Method not implemented/supported.');
     });
   });
 
   describe('#getState', () => {
     it('should throw an error', () => {
-      expect(device.getState).to.throw('getState not implemented');
+      expect(device.getState).to.throw('Method not implemented/supported.');
     });
   });
 
@@ -198,7 +178,7 @@ describe('Dwarffish', () => {
         await device.setInterpolationParams();
         throw new Error('should fail');
       } catch (e) {
-        expect(e.message).equal('setInterpolationParams not implemented');
+        expect(e.message).equal('Method not implemented/supported.');
       }
     });
   });
@@ -209,7 +189,7 @@ describe('Dwarffish', () => {
         await device.getInterpolationParams();
         throw new Error('should fail');
       } catch (e) {
-        expect(e.message).equal('getInterpolationParams not implemented');
+        expect(e.message).equal('Method not implemented/supported.');
       }
     });
   });

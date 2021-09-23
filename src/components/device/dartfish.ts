@@ -8,6 +8,7 @@ import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import ICnnControl from '../../interfaces/ICnnControl';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 import IUsbTransport from './../../interfaces/IUsbTransport';
+import Logger from './../../utilitis/logger';
 
 export default class DartFish extends Boxfish {
   transport: IUsbTransport;
@@ -26,30 +27,37 @@ export default class DartFish extends Boxfish {
   }
 
   async ensureAppMode() {
-    throw new Error('ensureAppMode not implemented');
+    Logger.warn('Attempting to call method [ensureAppMode] on Huddly ONE', 'Huddly Canvas API');
+    throw new Error('Method not implemented/supported.');
   }
 
   getFaceBasedExposureControl(): ICnnControl {
-    throw new Error('Method not implemented.');
+    Logger.warn('Attempting to call method [getFaceBasedExposureControl] on Huddly ONE', 'Huddly Canvas API');
+    throw new Error('Method not implemented/supported.');
   }
 
   getAutozoomControl(): IAutozoomControl {
-    throw new Error('getAutozoomControl not implemented');
+    Logger.warn('Attempting to call method [getAutozoomControl] on Huddly ONE', 'Huddly Canvas API');
+    throw new Error('Method not implemented/supported.');
   }
 
   getDetector(): IDetector {
-    throw new Error('getDetector not implemented');
+    Logger.warn('Attempting to call method [getDetector] on Huddly ONE', 'Huddly Canvas API');
+    throw new Error('Method not implemented/supported.');
   }
 
   getState(): Promise<any> {
-    throw new Error('getState not implemented');
+    Logger.warn('Attempting to call method [getState] on Huddly ONE', 'Huddly Canvas API');
+    throw new Error('Method not implemented/supported.');
   }
 
   async setInterpolationParams() {
-    throw new Error('setInterpolationParams not implemented');
+    Logger.warn('Attempting to call method [setInterpolationParams] on Huddly ONE', 'Huddly Canvas API');
+    throw new Error('Method not implemented/supported.');
   }
 
   async getInterpolationParams(): Promise<InterpolationParams> {
-    throw new Error('getInterpolationParams not implemented');
+    Logger.warn('Attempting to call method [getInterpolationParams] on Huddly ONE', 'Huddly Canvas API');
+    throw new Error('Method not implemented/supported.');
   }
 }
