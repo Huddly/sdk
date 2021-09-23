@@ -13,6 +13,7 @@ import HuddlyGo from './../../../src/components/device/huddlygo';
 import Dwarffish from './../../../src/components/device/dwarffish';
 import Clownfish from './../../../src/components/device/clownfish';
 import DartFish from './../../../src/components/device/dartfish';
+import Ace from './../../../src/components/device/ace';
 
 chai.should();
 chai.use(sinonChai);
@@ -239,6 +240,23 @@ describe('DeviceFactory', () => {
           dummyDartfishDevice,
           discoveryEmitter);
         expect(deviceManager).to.be.instanceof(DartFish);
+      });
+    });
+
+    describe('Ace', () => {
+      it('should initialize Ace/L1 device when product id is 0x3E9', async () => {
+        const dummyAceDevice = {
+          deviceDescriptor: {
+            idProduct: 0x3E9
+          }
+        };
+        const deviceManager = await DeviceFactory.getDevice(
+          dummyAceDevice.deviceDescriptor.idProduct,
+          dummyDeviceApis[0],
+          dummyDeviceApis,
+          dummyAceDevice,
+          discoveryEmitter);
+        expect(deviceManager).to.be.instanceof(Ace);
       });
     });
 
