@@ -23,6 +23,7 @@ import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 import IUsbTransport from './../../interfaces/IUsbTransport';
 import ICnnControl from '../../interfaces/ICnnControl';
 import FaceBasedExposureControl from '../faceBasedExposureControl';
+import { HUDDLY_VID } from './factory';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
@@ -70,10 +71,11 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     const status = {
       id: this['id'],
       serialNumber: this['serialNumber'],
-      vendorId: this['vendorId'],
+      vendorId: this['vendorId'] || HUDDLY_VID,
       productId: this['productId'],
       version: this.extractSemanticSoftwareVersion(info.softwareVersion),
       location: this['location'],
+      name: this.productName,
       ...info
     };
     if (this['pathName'] !== undefined) {

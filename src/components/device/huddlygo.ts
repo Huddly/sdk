@@ -17,6 +17,7 @@ import { MinMaxDiagnosticsMessage } from '../diagnosticsMessageData';
 import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import ICnnControl from '../../interfaces/ICnnControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
+import { HUDDLY_GO_PID, HUDDLY_VID } from './factory';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;
 
@@ -43,6 +44,7 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   locksmith: Locksmith;
   softwareVersion: any;
   discoveryEmitter: EventEmitter;
+  productName: string = 'Huddly GO';
 
   constructor(
     uvcCameraInstance: any,
@@ -95,6 +97,9 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     status.temperature = await this.getTemperature();
     status.powerUsage = await this.getPowerUsage();
     status.version = this.softwareVersion.mv2_app;
+    status.vendorId = this['vendorId'] || HUDDLY_VID;
+    status.name = this.productName;
+    status.productId =  this['productId'] || HUDDLY_GO_PID;
     //    status.uptime = await this.uptime();
     return status;
   }

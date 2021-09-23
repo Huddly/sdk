@@ -95,6 +95,7 @@ describe('Dwarffish', () => {
         location: '/location-path',
         uptime: 67345.19,
         softwareVersion: 'HuddlyIQ-8.8.8',
+        name: 'Huddly ONE'
       });
     });
   });

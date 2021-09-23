@@ -25,6 +25,7 @@ import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as grpc from '@grpc/grpc-js';
+import { HUDDLY_VID } from './factory';
 
 // TODO: Not just log status. Instead getMessage() etc.
 interface ErrorInterface {
@@ -118,6 +119,8 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     return new Promise((resolve, reject) => {
       const infoData = {
         ...this.wsdDevice.infoObject(),
+        name: this.productName,
+        vendorId: HUDDLY_VID
       };
       // Get devive version
       this.grpcClient.getDeviceVersion(new Empty(), (err, deviceVersion: huddly.DeviceVersion) => {
