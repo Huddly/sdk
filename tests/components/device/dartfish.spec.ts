@@ -205,4 +205,58 @@ describe('Dartfish', () => {
       }
     });
   });
+
+  describe('#disableCanvasEnhanceMode', () => {
+    describe('on success', () => {
+      it('should change to canvas-no-enhance', async () => {
+        await device.initialize();
+        sinon.stub(device.api, 'setProductInfo').resolves({});
+        sinon.stub(device.api, 'getProductInfo').resolves({
+          'camera-mode': 'canvas-no-enhance'
+        });
+
+        const promise = device.disableCanvasEnhanceMode();
+        return expect(promise).to.be.fulfilled;
+      });
+    });
+    describe('on error', () => {
+      it('should reject if mode not updated', async () => {
+        await device.initialize();
+        sinon.stub(device.api, 'setProductInfo').resolves({});
+        sinon.stub(device.api, 'getProductInfo').resolves({
+          'camera-mode': 'canvas'
+        });
+
+        const promise = device.disableCanvasEnhanceMode();
+        return expect(promise).to.eventually.be.rejectedWith('Unable to turn off canvas enhance mode!');
+      });
+    });
+  });
+
+  describe('#enableCanvasEnhanceMode', () => {
+    describe('on success', () => {
+      it('should change to canvas-no-enhance', async () => {
+        await device.initialize();
+        sinon.stub(device.api, 'setProductInfo').resolves({});
+        sinon.stub(device.api, 'getProductInfo').resolves({
+          'camera-mode': 'canvas'
+        });
+
+        const promise = device.enableCanvasEnhanceMode();
+        return expect(promise).to.be.fulfilled;
+      });
+    });
+    describe('on error', () => {
+      it('should reject if mode not updated', async () => {
+        await device.initialize();
+        sinon.stub(device.api, 'setProductInfo').resolves({});
+        sinon.stub(device.api, 'getProductInfo').resolves({
+          'camera-mode': 'canvas-no-enhance'
+        });
+
+        const promise = device.enableCanvasEnhanceMode();
+        return expect(promise).to.eventually.be.rejectedWith('Unable to turn on canvas enhance mode!');
+      });
+    });
+  });
 });
