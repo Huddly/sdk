@@ -14,7 +14,6 @@ import CameraEvents from './../../utilitis/events';
 import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
 import DiagnosticsMessage from '../diagnosticsMessage';
 import { MinMaxDiagnosticsMessage } from '../diagnosticsMessageData';
-import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import ICnnControl from '../../interfaces/ICnnControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 import { HUDDLY_GO_PID, HUDDLY_VID } from './factory';
@@ -286,7 +285,7 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     });
   }
 
-  getAutozoomControl(): IAutozoomControl {
+  getAutozoomControl(): ICnnControl {
     Logger.warn('Attempting to call method [getAutozoomControl] on HuddlyGO', 'HuddlyGO API');
     throw new Error('Autozoom is not supported on Huddly GO cameras!');
   }

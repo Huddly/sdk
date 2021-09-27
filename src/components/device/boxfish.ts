@@ -17,7 +17,6 @@ import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 import AutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
-import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import AutozoomControl from '../autozoomControl';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 import IUsbTransport from './../../interfaces/IUsbTransport';
@@ -272,7 +271,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       }
   }
 
-  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl {
+  getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
     return new AutozoomControl(this, opts);
   }
 

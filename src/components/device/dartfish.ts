@@ -4,7 +4,6 @@ import Api from './../api';
 import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
 import IDetector from '../../interfaces/IDetector';
-import IAutozoomControl from '../../interfaces/IAutozoomControl';
 import ICnnControl from '../../interfaces/ICnnControl';
 import InterpolationParams from './../../interfaces/InterpolationParams';
 import IUsbTransport from './../../interfaces/IUsbTransport';
@@ -36,7 +35,7 @@ export default class DartFish extends Boxfish {
     throw new Error('Method not implemented/supported.');
   }
 
-  getAutozoomControl(): IAutozoomControl {
+  getAutozoomControl(): ICnnControl {
     Logger.warn('Attempting to call method [getAutozoomControl] on Huddly Canvas', 'Huddly Canvas API');
     throw new Error('Method not implemented/supported.');
   }

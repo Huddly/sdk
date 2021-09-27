@@ -13,7 +13,14 @@ describe('FaceBasedExposureControl', () => {
     faceBasedExposureControl = new FaceBasedExposureControl(deviceManager);
   });
 
-  describe('autozoom enable/disable', () => {
+  describe('#init', () => {
+    it('should not throw error', () => {
+      const initFunc = () => { faceBasedExposureControl.init(); };
+      expect(initFunc).to.not.throw();
+    });
+  });
+
+  describe('fbe enable/disable', () => {
     let writeStub;
     let isEnabledStub;
 

@@ -1,5 +1,17 @@
 export default interface ICnnControl {
   /**
+   * Convenience function for setting up the camera
+   * for starting/stopping cnn feature.
+   * Should be called before any other methods.
+   *
+   * @returns {Promise<any>} Returns a promise which
+   * resolves in case the cnn feature init is completed
+   * otherwise it rejects with a rejection message!
+   * @memberof ICnnControl
+   */
+  init(): Promise<any>;
+
+  /**
    * Enables the cnn feature persistently. The enable state
    * is persistent on camera reboot/power cycle.
    *
