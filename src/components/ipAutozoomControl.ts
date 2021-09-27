@@ -113,4 +113,20 @@ export default class IpAutozoomControl implements ICnnControl {
     const azStatus = await this._deviceManager.getCnnFeatureStatus(cnnFeature);
     return azStatus.getAzStatus().getAzEnabled();
   }
+
+  async start(): Promise<void> {
+    // Not required. The `enable` method takes care of autozoom persistency across boot and also starting autozoom at the same time.
+    Logger.warn(
+      'Autozoom->start() method on IpAutozoomControl is redundant. Present only for backwards compatibility reasons!',
+      IpAutozoomControl.name
+    );
+  }
+
+  async stop(): Promise<void> {
+    // Not required. The `enable` method takes care of autozoom persistency across boot and also stopping autozoom at the same time.
+    Logger.warn(
+      'Autozoom->stop() method on IpAutozoomControl is redundant. Present only for backwards compatibility reasons!',
+      IpAutozoomControl.name
+    );
+  }
 }
