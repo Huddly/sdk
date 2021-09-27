@@ -113,4 +113,17 @@ describe('IpAutozoomControl', () => {
       });
     });
   });
+
+  describe('#start', () => {
+    it('should not throw error', () => {
+      const startFunc = () => { autozoomControl.start(); };
+      expect(startFunc).to.not.throw();
+    });
+  });
+  describe('#stop', () => {
+    it('should not throw error', () => {
+      const stopFunc = () => { autozoomControl.stop(); };
+      expect(stopFunc).to.not.throw();
+    });
+  });
 });
