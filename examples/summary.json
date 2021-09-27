@@ -48,5 +48,9 @@
         "file": "detector_doc/previous_detectors.md"
       }
     ]
+  },
+  {
+    "title": "Canvas",
+    "file": "canvas_doc/canvas.md"
   }
 ]
