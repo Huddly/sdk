@@ -1,10 +1,10 @@
-import IAutozoomControl from '../interfaces/IAutozoomControl';
 import AutozoomControlOpts from '../interfaces/IAutozoomControlOpts';
+import ICnnControl from './../interfaces/ICnnControl';
 import IDeviceManager from '../interfaces/iDeviceManager';
 import Api from './api';
 import Logger from './../utilitis/logger';
 
-export default class AutozoomControl implements IAutozoomControl {
+export default class AutozoomControl implements ICnnControl {
   _deviceManager: IDeviceManager;
   _options: AutozoomControlOpts;
 
@@ -17,7 +17,7 @@ export default class AutozoomControl implements IAutozoomControl {
 
   /**
    * @ignore
-   * Check `IAutozoomControl` interface for method documentation.
+   * Check `ICnnControl` interface for method documentation.
    * @memberof AutozoomControl
    */
   async init(): Promise<any> {
@@ -47,7 +47,7 @@ export default class AutozoomControl implements IAutozoomControl {
 
   /**
    * @ignore
-   * Check `IAutozoomControl` interface for method documentation.
+   * Check `ICnnControl` interface for method documentation.
    * @memberof AutozoomControl
    */
   async enable(idleTimeMs: number = 2000): Promise<void> {
@@ -89,7 +89,7 @@ export default class AutozoomControl implements IAutozoomControl {
 
   /**
    * @ignore
-   * Check `IAutozoomControl` interface for method documentation.
+   * Check `ICnnControl` interface for method documentation.
    * @memberof AutozoomControl
    */
   async disable(idleTimeMs: number = 2000): Promise<void> {
@@ -131,7 +131,7 @@ export default class AutozoomControl implements IAutozoomControl {
 
   /**
    * @ignore
-   * Check `IAutozoomControl` interface for method documentation.
+   * Check `ICnnControl` interface for method documentation.
    * @memberof AutozoomControl
    */
   async isEnabled(): Promise<Boolean> {
@@ -140,8 +140,12 @@ export default class AutozoomControl implements IAutozoomControl {
   }
 
   /**
-   * @ignore
-   * Check `IAutozoomControl` interface for method documentation.
+   * Starts autozoom feature on the camera. User `Detector` class
+   * for setting up detections and/or framing event listeners.
+   *
+   * NOTE: For persistent enable of autozoom feature you
+   * need to call the `enable` method.
+   *
    * @memberof AutozoomControl
    */
   async start(): Promise<void> {
@@ -160,8 +164,12 @@ export default class AutozoomControl implements IAutozoomControl {
   }
 
   /**
-   * @ignore
-   * Check `IAutozoomControl` interface for method documentation.
+   * Stops autozoom feature on the camera.
+   *
+   * NOTE: For persistent disable of autozoom feature you
+   * need to call the `disable` method.
+   *
+   * @returns {Promise<void>} A void function.
    * @memberof AutozoomControl
    */
   async stop(): Promise<void> {
@@ -180,8 +188,10 @@ export default class AutozoomControl implements IAutozoomControl {
   }
 
   /**
-   * @ignore
-   * Check `IAutozoomControl` interface for method documentation.
+   * Checks if autozoom is running on the camera. Returns true if yes, false otherwise.
+   *
+   * @returns {Promise<Boolean>} Boolean representation of the running state
+   * of autozoom feature.
    * @memberof AutozoomControl
    */
   async isRunning(): Promise<Boolean> {

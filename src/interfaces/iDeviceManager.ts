@@ -1,7 +1,6 @@
 import ITransport from './iTransport';
 import Api from './../components/api';
 import IDeviceUpgrader from './IDeviceUpgrader';
-import IAutozoomControl from './IAutozoomControl';
 import IDetector from './IDetector';
 import UpgradeOpts from './IUpgradeOpts';
 import DetectorOpts from './IDetectorOpts';
@@ -120,10 +119,10 @@ export default interface IDeviceManager {
    * you to configure the autozoom (genius framing) on the camera.
    *
    * @param {AutozoomControlOpts} opts AutozoomControl options
-   * @returns {IAutozoomControl} Returns a new instance of `IAutozoomControl` class.
+   * @returns {ICnnControl} Returns a new instance of `ICnnControl` class.
    * @memberof IDeviceManager
    */
-  getAutozoomControl(opts: AutozoomControlOpts): IAutozoomControl | ICnnControl;
+  getAutozoomControl(opts: AutozoomControlOpts): ICnnControl | ICnnControl;
 
   /**
    * Get a new instance of `CnnControl` controller class which allows

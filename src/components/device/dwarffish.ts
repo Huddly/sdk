@@ -5,7 +5,7 @@ import IUsbTransport from '../../interfaces/IUsbTransport';
 import Locksmith from '../locksmith';
 import Boxfish from './boxfish';
 import IDetector from '../../interfaces/IDetector';
-import IAutozoomControl from '../../interfaces/IAutozoomControl';
+import ICnnControl from '../../interfaces/ICnnControl';
 import InterpolationParams from '../../interfaces/InterpolationParams';
 import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 import Logger from './../../utilitis/logger';
@@ -31,7 +31,7 @@ export default class Dwarffish extends Boxfish {
     throw new Error('Method not implemented/supported.');
   }
 
-  getAutozoomControl(): IAutozoomControl {
+  getAutozoomControl(): ICnnControl {
     Logger.warn('Attempting to call method [getAutozoomControl] on Huddly ONE', 'HuddlyONE API');
     throw new Error('Method not implemented/supported.');
   }

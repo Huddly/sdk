@@ -14,6 +14,15 @@ export default class FaseBasedExposureControl implements ICnnControl {
    * Check `ICnnControl` interface for method documentation.
    * @memberof FaceBasedExposureControl
    */
+  init(): Promise<any> {
+    return Promise.resolve();
+  }
+
+  /**
+   * @ignore
+   * Check `ICnnControl` interface for method documentation.
+   * @memberof FaceBasedExposureControl
+   */
   async enable(): Promise<void> {
     try {
       const r = await this._deviceManager.api.transport.write('face-based-exposure/enable');

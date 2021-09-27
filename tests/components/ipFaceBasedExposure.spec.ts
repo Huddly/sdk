@@ -26,6 +26,13 @@ describe('IpFaceBasedExposureControl', () => {
     infoStub.restore();
   });
 
+  describe('#init', () => {
+    it('should not throw error', () => {
+      const initFunc = () => { fbeControl.init(); };
+      expect(initFunc).to.not.throw();
+    });
+  });
+
   describe('#enable', () => {
     describe('fbe is disabled', () => {
       beforeEach(() => {
