@@ -93,25 +93,6 @@ export default class CameraSwitchService implements IHuddlyService {
   }
 
   /**
-   * Helper function for properly formatting the mac address being sent over to the
-   * service grpc server
-   * @param {mac} Mac address in string fromat
-   * @returns Mac address in a format that is satisfactory for the service when sending it
-   * over gprc
-   */
-  formatMacAddress(mac: string): string {
-    if (mac.indexOf(':') == -1 && mac.indexOf('-') == -1) {
-      throw new Error(
-        `Format Error! The folloing mac address is not valid: ${mac}. Use - or : as delimiters`
-      );
-    }
-    if (mac.indexOf(':') > -1) {
-      return mac.split(':').join('-');
-    }
-    return mac;
-  }
-
-  /**
    * Helper function for calling a setter command on the service grpc server. Using the
    * parameter "action" to determine which specific setter to invoke.
    * @param  {ServiceCameraActions} action Determine which setter should be called on
@@ -123,7 +104,6 @@ export default class CameraSwitchService implements IHuddlyService {
    */
   serviceCameraSetter(action: ServiceCameraActions, camInfo: CameraInfo): Promise<void> {
     const serviceCamInfo: switchservice.CameraInfo = new switchservice.CameraInfo();
-    serviceCamInfo.setMac(this.formatMacAddress(camInfo.mac));
     serviceCamInfo.setName(camInfo.name);
     serviceCamInfo.setIp(camInfo.ip);
     const setterActionStr: string = Object.keys(ServiceCameraActions).find(

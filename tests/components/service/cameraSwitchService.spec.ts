@@ -62,48 +62,28 @@ describe('CameraSwitchService', () => {
     });
   });
 
-  describe('#formatMacAddress', () => {
-    it('should format FF:FF:FF to FF-FF-FF', () => {
-      const expected = 'FF-FF-FF';
-      const got = service.formatMacAddress('FF:FF:FF');
-      expect(expected).to.equal(got);
-    });
-    it('should keep same mac address format is format is correct', () => {
-      const expected = 'FF-FF-FF';
-      const got = service.formatMacAddress(expected);
-      expect(expected).to.equal(got);
-    });
-    it('should throw error when mac address has wrong format', () => {
-      const fn = (macAddr) => { service.formatMacAddress(macAddr); };
-      const malFormedMacs = ['FF,FF,FF,FF', 'FF/FF/FF/FF', '', 'FFFFFFFF'];
-      malFormedMacs.forEach((macAddr) => {
-        expect(() => fn(macAddr)).to.throw(`Format Error! The folloing mac address is not valid: ${macAddr}. Use - or : as delimiters`);
-      });
-    });
-  });
-
   describe('#serviceCameraSetter', () => {
     describe('onGrpcSuccess', () => {
       it('should call setActiveCamera and resolve on callback', () => {
         (service.grpcClient.setActiveCamera as any).yields(undefined);
-        const promise = service.serviceCameraSetter(ServiceCameraActions.ACTIVE, { mac: 'FF-FF', name: 'L1', ip: '1.2.3.4' });
+        const promise = service.serviceCameraSetter(ServiceCameraActions.ACTIVE, { name: 'L1', ip: '1.2.3.4' });
         return expect(promise).to.be.fulfilled;
       });
       it('should call setDefaultCamera and resolve on callback', () => {
         (service.grpcClient.setDefaultCamera as any).yields(undefined);
-        const promise = service.serviceCameraSetter(ServiceCameraActions.DEFAULT, { mac: 'FF-FF', name: 'L1', ip: '1.2.3.4' });
+        const promise = service.serviceCameraSetter(ServiceCameraActions.DEFAULT, { name: 'L1', ip: '1.2.3.4' });
         return expect(promise).to.be.fulfilled;
       });
     });
     describe('onGrpcFailure', () => {
       it('should reject with the error received from grpc call', () => {
         (service.grpcClient.setDefaultCamera as any).yields({details: 'Something went wrong', stack: ''});
-        const promise = service.serviceCameraSetter(ServiceCameraActions.DEFAULT, { mac: 'FF-FF', name: 'L1', ip: '1.2.3.4' });
+        const promise = service.serviceCameraSetter(ServiceCameraActions.DEFAULT, { name: 'L1', ip: '1.2.3.4' });
         return expect(promise).to.eventually.be.rejectedWith('Something went wrong');
       });
     });
     it('should throw error when passing wrong action', () => {
-      const promise = service.serviceCameraSetter(-1, { mac: 'FF-FF', name: 'L1', ip: '1.2.3.4' });
+      const promise = service.serviceCameraSetter(-1, { name: 'L1', ip: '1.2.3.4' });
       return expect(promise).to.eventually.be.rejectedWith('Unknown service camera action: undefined');
     });
   });
@@ -111,7 +91,6 @@ describe('CameraSwitchService', () => {
   describe('#serviceCameraGetter', () => {
     const serviceCamInfo: switchservice.CameraInfo = new switchservice.CameraInfo();
     before(() => {
-      serviceCamInfo.setMac('FFFFFFF');
       serviceCamInfo.setName('L1');
       serviceCamInfo.setIp('1.2.3');
     });
