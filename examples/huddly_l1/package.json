@@ -9,7 +9,8 @@
     "author": "",
     "license": "ISC",
     "dependencies": {
-        "@huddly/device-api-ip": "git+ssh://git@github.com/Huddly/device-api-ip.git",
-        "@huddly/sdk": "git+ssh://git@github.com/Huddly/sdk.git"
+        "@huddly/device-api-ip": "^0.1",
+        "@huddly/device-api-usb": "^0.3",
+        "@huddly/sdk": "^0.6"
     }
 }
