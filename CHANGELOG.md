@@ -1,3 +1,40 @@
+#### 0.6.2 (2021-09-29)
+
+##### Chores
+
+*  update @huddly/camera-switch-proto@0.0.4 ([d8ec9435](https://github.com/Huddly/sdk/commit/d8ec94353ac9e0cd10372f3e40cb2858c037158d))
+* **package-lock.json:**  fix critical audit dependencies ([d17a3c5d](https://github.com/Huddly/sdk/commit/d17a3c5d4b4022995e8c4d5848363d5f27345a0a))
+* **deps:**
+  *  bump tmpl from 1.0.4 to 1.0.5 in /examples/rest ([0136759c](https://github.com/Huddly/sdk/commit/0136759c21a8f036e7929459613149239a9a28b4))
+  *  bump tar from 6.1.8 to 6.1.11 ([3602830d](https://github.com/Huddly/sdk/commit/3602830d7f6772db3dfb8ef7e3444a5cd91c68af))
+
+##### Documentation Changes
+
+*  Canvas documentation and sdk usage example ([59d6c320](https://github.com/Huddly/sdk/commit/59d6c320d2772585b28fe281605ad98e052d6689))
+
+##### New Features
+
+* **canvas:**  Enable/Disable enhance mode ([9383fdc0](https://github.com/Huddly/sdk/commit/9383fdc006b4b8624443c311abe0a71e39bf4f67))
+*  factory supports dartfish/canvas ([e0fbddaa](https://github.com/Huddly/sdk/commit/e0fbddaadfd29adcbef5b656eaf80f1a2c3b2bcf))
+
+##### Bug Fixes
+
+* **IpAutozoomControl:**  Add start,stop methods ([5ffb8a6a](https://github.com/Huddly/sdk/commit/5ffb8a6a1b771de47da58187e321d625231b42f2))
+*  update product names, pid and vid info ([d3216468](https://github.com/Huddly/sdk/commit/d3216468d3573c268fee228a060a94556f056266))
+
+##### Other Changes
+
+*  Grpc PTZ object from amera should not be used directly ([722095b6](https://github.com/Huddly/sdk/commit/722095b669f256381d92e14dac6bf5e27d0ba357))
+
+##### Refactors
+
+*  remove IAutozoomControl (use ICnnControl) ([7fb68634](https://github.com/Huddly/sdk/commit/7fb68634b774b4f9f101316d3c96c9ca23f88ff0))
+*  ONE & Canvas update supported features ([0c012247](https://github.com/Huddly/sdk/commit/0c0122476fc115c4c1e3b46155d48bcab469bdfc))
+
+##### Tests
+
+* **factory.ts:**  add test for ACE device ([f070190b](https://github.com/Huddly/sdk/commit/f070190bab7bf2a8817ce00ea13f4ea1a23e2d2c))
+
 #### 0.6.1 (2021-08-23)
 
 ##### Documentation Changes
