@@ -10,6 +10,6 @@
   "license": "ISC",
   "dependencies": {
     "@huddly/device-api-usb": "^0.3",
-    "@huddly/sdk": "git+ssh://git@github.com/Huddly/sdk.git#canvas-support"
+    "@huddly/sdk": "^0.6"
   }
 }

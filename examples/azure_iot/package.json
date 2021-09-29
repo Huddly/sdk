@@ -15,8 +15,8 @@
   "author": "Oystein Grimstad",
   "license": "MIT",
   "dependencies": {
-    "@huddly/device-api-usb": "^0.2.16",
-    "@huddly/sdk": "^0.4.2",
+    "@huddly/device-api-usb": "^0.3",
+    "@huddly/sdk": "^0.6",
     "azure-iot-device": "^1.17.4",
     "azure-iot-device-amqp": "^1.13.4",
     "azure-iot-provisioning-device": "^1.8.8",

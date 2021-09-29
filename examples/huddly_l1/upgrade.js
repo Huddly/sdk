@@ -1,41 +1,63 @@
 const HuddlyDeviceApiIp = require('@huddly/device-api-ip').default;
 const HuddlySdk = require('@huddly/sdk').default;
+const { HUDDLY_L1_PID } = require('@huddly/sdk/lib/src/components/device/factory').default;
+const fs = require('fs');
 
 const ipApi = new HuddlyDeviceApiIp();
-
 // Create an instance of the SDK
-const sdk = new HuddlySdk(ipApi, [ipApi], { serial: '12101A0029', developmentMode: true });
-aceDevice = undefined;
+const sdk = new HuddlySdk(ipApi);
 
-sdk.once('ATTACH', async (cameraManager) => {
-    aceDevice = cameraManager;
-    aceDevice.upgrade({
-        cpioFilePath: '/home/brikend/Downloads/falcon-firmware-1.2.3.cpio'
-    }).then(async () => {
-        console.log('---- APP ----- upgrade completed!');
-        await aceDevice.closeConnection();
-        process.exit();
-    }).catch((e) => {
-        console.error(e);
-        console.error('---- APP ----- upgrade failed!');
-    });
-});
-
-sdk.on('DETACH', async (device) => {
-    await aceDevice.closeConnection();
-    aceDevice = undefined;
-});
-
-
-process.on('SIGINT', async () => {
-    console.log("\nClosing application gracefully");
-    if (aceDevice) {
-        console.log('Closing connection with the camera');
-        await aceDevice.closeConnection();
-    }
-    console.log("\nTeardown completed! Application closed");
+const applicationTeardown = () => {
     process.exit();
+}
+
+if (!process.argv[2]) {
+    throw new Error('Please provide the cpio file path as the last argument!');
+}
+
+let aceDevice;
+let isUpgrading = false;
+const cpioFilePath = process.argv[2];
+sdk.on('ATTACH', (newDevice) => {
+    if (newDevice.pid == HUDDLY_L1_PID) {
+        if (!aceDevice || aceDevice['serialNumber'] == newDevice['serialNumber']) {
+            aceDevice = newDevice;
+            if (isUpgrading) {
+                return;
+            }
+        }
+        aceDevice.getInfo()
+        .then(info => new Promise((resolve, reject) => {
+            console.log(info);
+            const upgradeOpts = {
+                file: fs.readFileSync(cpioFilePath)
+            };
+            console.log('Starting software upgrade...');
+            isUpgrading = true;
+            aceDevice.upgrade(upgradeOpts)
+            .then(_ => {
+                console.log('Upgrade completed successfully!');
+                aceDevice.getInfo()
+                .then(newInfo => {
+                    console.log(newInfo);
+                    resolve();
+                }).catch(e => {
+                    console.error('Unable to get device info after upgrade!');
+                    reject(e);
+                })
+            }).catch(e => {
+                console.error('Upgrade failed!');
+                reject(e);
+            });
+        }))
+        .catch((e) => {
+            console.trace(e);
+        }).finally(_ => {
+            aceDevice.closeConnection()
+            .then(applicationTeardown);
+        });
+    }
 });
 
-console.log('SDK init')
+// Call init() to trigger device discovery
 sdk.init();
