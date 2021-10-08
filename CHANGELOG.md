@@ -1,3 +1,15 @@
+#### 0.6.3 (2021-10-08)
+
+##### Chores
+
+*  resolve audit issues with eslint and mocha ([b113e5fe](https://github.com/Huddly/sdk/commit/b113e5fecc60b3e1ab2fd6a7816821e2468457c1))
+*  update example code ([84bfd388](https://github.com/Huddly/sdk/commit/84bfd388e470544f438d0d0c1a687f3e43951c81))
+* **package.json:**  bump @Huddly/camera-proto -> 1.0.9 ([acdc8af5](https://github.com/Huddly/sdk/commit/acdc8af5628c848b2a69660eda55cec92416c6a5))
+
+##### Bug Fixes
+
+*  pin down camera-proto & camera-switch-proto ([657e6d23](https://github.com/Huddly/sdk/commit/657e6d23e947f3f0826b6455084942453b4c2954))
+
 #### 0.6.2 (2021-09-29)
 
 ##### Chores
