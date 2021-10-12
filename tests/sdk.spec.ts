@@ -217,7 +217,7 @@ describe('HuddlySDK', () => {
       it('should not emit ERROR if can not get device', (done) => {
         initSdk();
         otherEmitter.on('ERROR', (e) => {
-          expect(e).to.be.instanceof(Error);
+          expect(e.error).to.be.instanceof(Error);
           done();
         });
         discoveryEmitter.emit('ATTACH', dummyIQ);
@@ -225,8 +225,8 @@ describe('HuddlySDK', () => {
       it('should emit error and resolve if BASE is discovered', (done) => {
         initSdk();
         otherEmitter.on('ERROR', (e) => {
-          expect(e).to.be.instanceof(Error);
-          expect(e.message).to.equal(`No transport implementation supported for {"productId":47710,"serialNumber":"1241234541234"}`);
+          expect(e.error).to.be.instanceof(Error);
+          expect(e.error.message).to.equal(`No transport implementation supported for {"productId":47710,"serialNumber":"1241234541234"}`);
           done();
         });
         discoveryEmitter.emit('ATTACH', dummyBase);

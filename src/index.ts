@@ -219,7 +219,11 @@ class HuddlySdk extends EventEmitter {
               } catch (e) {
                 const errorMsg: string = `No transport implementation supported for ${JSON.stringify(d)}`;
                 Logger.warn(errorMsg, HuddlySdk.name);
-                this.emitter.emit(CameraEvents.ERROR, new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT));
+                const eventPayload = {
+                  device: d,
+                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT)
+                };
+                this.emitter.emit(CameraEvents.ERROR, eventPayload);
                 resolve();
               }
             })
