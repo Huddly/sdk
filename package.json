@@ -46,7 +46,7 @@
     "test-js": "mocha -r ts-node/register --recursive \"lib/tests/**/*.spec.js\"",
     "prepublish-package": "node ./scripts/rmLibDir",
     "publish-package": "npm run prepublish-package && npm run build && npm publish",
-    "compodoc": "compodoc -w -p tsconfig.json -s -n 'huddly-sdk' -d 'docs' --minimal --customFavicon 'docs_style/assets/imgs/favicon.ico' --disableGraph --disableInternal --hideGenerator --includesName 'Additional Information'  --includes examples -a docs_style/assets -y docs_style",
+    "compodoc": "compodoc -w -p tsconfig.json -s -n \"huddly-sdk\" -d \"docs\" --minimal --customFavicon \"docs_style/assets/imgs/favicon.ico\" --disableGraph --disableInternal --hideGenerator --includesName \"Additional Information\"  --includes examples -a docs_style/assets -y docs_style",
     "prepare": "npm run build",
     "preversion": "npm run tslint",
     "prettier": "./node_modules/.bin/prettier  --config ./.prettierrc --write src/**/*.ts",
