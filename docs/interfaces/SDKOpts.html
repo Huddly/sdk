@@ -502,7 +502,7 @@ class HuddlySdk extends EventEmitter {
                 const eventPayload &#x3D; {
                   device: d,
                   error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT)
-                }
+                };
                 this.emitter.emit(CameraEvents.ERROR, eventPayload);
                 resolve();
               }
