@@ -103,7 +103,7 @@ For more details on the rest of the functionality to the sdk check out the docum
 
  - [SDK](http://developer.huddly.com/classes/HuddlySdk.html#readme)
  - [Device Manager](http://developer.huddly.com/interfaces/IDeviceManager.html)
- - [CNN Controller](http://developer.huddly.com/interfaces/interfaces/ICnnControl.html#readme)
+ - [CNN Controller](http://developer.huddly.com/interfaces/ICnnControl.html#readme)
  - [Detector](http://developer.huddly.com/interfaces/IDetector.html#readme)
  - [Device Upgrader](http://developer.huddly.com/interfaces/IDeviceUpgrader.html#readme)
  - [Camera Switch Service](http://developer.huddly.com/interfaces/IHuddlyService.html#readme)
