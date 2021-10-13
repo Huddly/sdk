@@ -43,7 +43,7 @@ You also need to install some other Huddly npm dependencies from which the SDK r
 It is also possible to install both of them and configure the SDK which one to use for discovery and/or communication.
 
 ### Setting up the sdk instance
-The example blow illustrates how to setup the SDK instance to communicate with a Huddly camera connected to the host machine. Start by creating the sdk and the transport apis:
+The example below illustrates how to setup the SDK instance to communicate with a Huddly camera connected to the host machine. Start by creating the sdk and the transport apis:
 
 ```javascript
 const HuddlyDeviceAPIUSB = require('@huddly/device-api-usb').default;
@@ -127,7 +127,7 @@ Check out the sdk code on github (https://github.com/Huddly/sdk)
   ```
   By default, the detector is configured to run autoframing and generate detection information.
 
-#### **How do I get detections only when I am streaming with my Huddly IQ!**
+#### **How do I get detections only when I am streaming with my Huddly Camera!**
   If you want to get detection data only when the camera is streaming on the host machine, you need to configure the detector class with the `DOWS` option.
 
   ```
@@ -145,4 +145,4 @@ Check out the sdk code on github (https://github.com/Huddly/sdk)
 No. To make sure that camera is compatible with the sdk the documented api gets thoroughly tested. We do not guarantee that undocumented functionality will not break/change from sdk version to sdk version, or camera sw to camera sw.
 
 #### **SDK crashes when there are two IQs connected!**
-The current implementation of the SDK does not support having two usb cameras connected to the host at the same time. However, having one Huddly usb cemera (IQ, Canvas, GO) and one Huddly IP camera (L1) is supported.  
+The current implementation of the SDK does not support having two usb cameras connected to the host at the same time. However, having one Huddly usb camera (IQ, Canvas, GO) and one Huddly IP camera (L1) is supported.  
