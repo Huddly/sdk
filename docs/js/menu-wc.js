@@ -91,9 +91,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                             <li class="link for-chapter3">
                                                 <a href="additional-documentation/examples/rest-api/upgrade-status.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Upgrade status</a>
                                             </li>
-                                            <li class="link for-chapter2">
-                                                <a href="additional-documentation/examples/huddly-l1.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Huddly L1</a>
-                                            </li>
                                         </ul>
                                     </li>
                                     <li class="chapter inner">

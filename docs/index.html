@@ -60,7 +60,7 @@
 <div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/device-api-usb    # For interacting with our USB cameras
   npm install &#64;huddly/device-api-ip     # For interacting with our Ethernet/IP comeras</code></pre></div><p>It is also possible to install both of them and configure the SDK which one to use for discovery and/or communication.</p>
 <h3 id="setting-up-the-sdk-instance">Setting up the sdk instance</h3>
-<p>The example blow illustrates how to setup the SDK instance to communicate with a Huddly camera connected to the host machine. Start by creating the sdk and the transport apis:</p>
+<p>The example below illustrates how to setup the SDK instance to communicate with a Huddly camera connected to the host machine. Start by creating the sdk and the transport apis:</p>
 <div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceAPIUSB = require(&#39;&#64;huddly/device-api-usb&#39;).default;
 const HuddlyDeviceApiIP = require(&#39;&#64;huddly/device-api-ip&#39;).default;
 const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
@@ -113,7 +113,7 @@ sdk.on(&#39;ATTACH&#39;, (newDevice) =&gt; {
 <h4 id="how-can-i-disable-autoframing-and-still-get-detection-information-from-camera"><strong>How can i disable autoframing and still get detection information from camera?</strong></h4>
 <p>  Another available detector configuration is the <code>shouldAutoFrame</code> option which when set to false, it allows you to configure Genius Framing to send detection data without autoframing.</p>
 <div><pre class="line-numbers"><code class="language-none">  cameraManager.getDetector({ shouldAutoFrame: false });</code></pre></div><p>  By default, the detector is configured to run autoframing and generate detection information.</p>
-<h4 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-iq"><strong>How do I get detections only when I am streaming with my Huddly IQ!</strong></h4>
+<h4 id="how-do-i-get-detections-only-when-i-am-streaming-with-my-huddly-camera"><strong>How do I get detections only when I am streaming with my Huddly Camera!</strong></h4>
 <p>  If you want to get detection data only when the camera is streaming on the host machine, you need to configure the detector class with the <code>DOWS</code> option.</p>
 <div><pre class="line-numbers"><code class="language-none">  cameraManager.getDetector({ DOWS: true });</code></pre></div><p>  This option makes it possible to configure the detector so that you only get detection data when you are streaming on host machine. By default, this option set to <code>false</code> so that you don&#39;t have to stream to get detection data.</p>
 <h4 id="led-light-is-on-but-i-am-not-streaming-with-my-huddly-iq"><strong>LED light is ON, but I am not streaming with my Huddly IQ!</strong></h4>
