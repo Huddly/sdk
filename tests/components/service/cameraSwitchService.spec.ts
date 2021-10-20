@@ -2,18 +2,15 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 
-import Logger from '../../../src/utilitis/logger';
 import CameraSwitchService, { ServiceCameraActions } from '../../../src/components/service/cameraSwitchService';
 import { HuddlyCameraServiceClient } from '@huddly/camera-switch-proto/lib/api/service_grpc_pb';
 import * as switchservice from '@huddly/camera-switch-proto/lib/api/service_pb';
+import { CameraInfo, FwUpdateSchedule, FwUpdateScheduleStatus } from '../../../src/interfaces/ICameraSwitchModels';
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 
 chai.should();
 chai.use(sinonChai);
-
-const stubLogger = () => {
-  return sinon.createStubInstance(Logger);
-};
 
 const createServiceInstance = (): CameraSwitchService => {
   const service = new CameraSwitchService({});
@@ -23,10 +20,25 @@ const createServiceInstance = (): CameraSwitchService => {
     getActiveCamera: sinon.stub(),
     getDefaultCamera: sinon.stub(),
     setUserPTZ: sinon.stub(),
-    getUserPTZ: sinon.stub()
+    getUserPTZ: sinon.stub(),
+    getAvailableCameras: sinon.stub(),
+    setFwUpdateSchedule: sinon.stub(),
+    scheduleFwUpdate: sinon.stub(),
+    scheduleFwUpdateAll: sinon.stub()
   });
   service.grpcClient = grpcClientMock;
   return service;
+};
+
+const getGenericDeviceInfo = (): switchservice.CameraInfo => {
+  const device1: switchservice.CameraInfo = new switchservice.CameraInfo();
+  device1.setIp('0.0.0.0');
+  device1.setName('L1');
+  device1.setVersion('1.1.0');
+  device1.setVersionState(switchservice.VersionState.VERIFIED);
+  device1.addPairingStates(switchservice.CameraPairingState.ACTIVE);
+  device1.addPairingStates(switchservice.CameraPairingState.PAIRED);
+  return device1;
 };
 
 describe('CameraSwitchService', () => {
@@ -93,21 +105,36 @@ describe('CameraSwitchService', () => {
     before(() => {
       serviceCamInfo.setName('L1');
       serviceCamInfo.setIp('1.2.3');
+      serviceCamInfo.setVersion('1.1.0');
+      serviceCamInfo.setPairingStatesList([]);
+      serviceCamInfo.setVersionState(switchservice.VersionState.UNKNOWNVERSIONSTATE);
     });
 
     describe('onGrpcSuccess', () => {
       it('should call getActiveCamera and resolve on callback', () => {
         (service.grpcClient.getActiveCamera as any).yields(undefined, serviceCamInfo);
         const promise = service.serviceCameraGetter(ServiceCameraActions.ACTIVE);
-        return expect(promise).to.be.fulfilled.then((gotCamInfo) => {
-          expect(gotCamInfo).to.deep.equal(serviceCamInfo.toObject());
+        return expect(promise).to.be.fulfilled.then((gotCamInfo: CameraInfo) => {
+          expect(gotCamInfo).to.deep.equal({
+            ip: serviceCamInfo.getIp(),
+            name: serviceCamInfo.getName(),
+            version: serviceCamInfo.getVersion(),
+            version_state: 'UNKNOWNVERSIONSTATE',
+            pairing_state: []
+          });
         });
       });
       it('should call getDefaultCamera and resolve on callback', () => {
         (service.grpcClient.getDefaultCamera as any).yields(undefined, serviceCamInfo);
         const promise = service.serviceCameraGetter(ServiceCameraActions.DEFAULT);
-        return expect(promise).to.be.fulfilled.then((gotCamInfo) => {
-          expect(gotCamInfo).to.deep.equal(serviceCamInfo.toObject());
+        return expect(promise).to.be.fulfilled.then((gotCamInfo: CameraInfo) => {
+          expect(gotCamInfo).to.deep.equal({
+            ip: serviceCamInfo.getIp(),
+            name: serviceCamInfo.getName(),
+            version: serviceCamInfo.getVersion(),
+            version_state: 'UNKNOWNVERSIONSTATE',
+            pairing_state: []
+          });
         });
       });
     });
@@ -137,7 +164,7 @@ describe('CameraSwitchService', () => {
     });
     describe('#setDefaultCamera', () => {
       it('should call serviceCameraSetter with action DEFAULT', () => {
-        service.setDefaultCamera({});
+        service.setDefaultCamera({ ip: '127.0.0.1', name: 'L1' });
         expect(serviceCameraSetterStub.called).to.equal(true);
         expect(serviceCameraSetterStub.getCall(0).args[0]).to.equals(ServiceCameraActions.DEFAULT);
       });
@@ -151,7 +178,7 @@ describe('CameraSwitchService', () => {
     });
     describe('#setActiveCamera', () => {
       it('should call serviceCameraSetter with action ACTIVE', () => {
-        service.setActiveCamera({});
+        service.setActiveCamera({ ip: '127.0.0.1', name: 'L1' });
         expect(serviceCameraSetterStub.called).to.equal(true);
         expect(serviceCameraSetterStub.getCall(0).args[0]).to.equals(ServiceCameraActions.ACTIVE);
       });
@@ -226,6 +253,316 @@ describe('CameraSwitchService', () => {
         service.blokUserPtz();
         expect(setUserPtzStub.called).to.equal(true);
         expect(setUserPtzStub.getCall(0).args[0]).to.equals(false);
+      });
+    });
+  });
+
+  describe('#pairingStateToStringArray', () => {
+    it('should convert pairing state enum to array of strings representing the key names', () => {
+      const pairingList: Array<switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]> = [
+        switchservice.CameraPairingState.ACTIVE,
+        switchservice.CameraPairingState.DEFAULT,
+        switchservice.CameraPairingState.PAIRED
+      ];
+      const pairingStateKeys: Array<string> = service.pairingStateToStringArray(pairingList);
+      expect(pairingStateKeys).to.deep.equals(['Active', 'Default', 'Paired']);
+    });
+
+    it('should not contain duplicate keys', () => {
+      const pairingList: Array<switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]> = [
+        switchservice.CameraPairingState.ACTIVE,
+        switchservice.CameraPairingState.ACTIVE,
+        switchservice.CameraPairingState.ACTIVE
+      ];
+      const pairingStateKeys: Array<string> = service.pairingStateToStringArray(pairingList);
+      expect(pairingStateKeys).to.deep.equals(['Active']);
+    });
+    it('should convert unknown states to the proper enum key', () => {
+      const pairingList: Array<switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]> = [
+        undefined,
+        undefined
+      ];
+      const pairingStateKeys: Array<string> = service.pairingStateToStringArray(pairingList);
+      expect(pairingStateKeys).to.deep.equals(['UnknownPairingState']);
+    });
+  });
+
+  describe('#versionStateToString', () => {
+    it('should convert device version state enum value to string representation of the corresponding key', () => {
+      const deviceInfo: switchservice.CameraInfo = new switchservice.CameraInfo();
+      deviceInfo.setVersionState(switchservice.VersionState.VERIFIED);
+      const versionStateStr: string = service.versionStateToString(deviceInfo);
+      expect(versionStateStr).to.equals('VERIFIED');
+    });
+    it('should return UNKNOWNVERSIONSTATE for unknown enum values', () => {
+      const deviceInfo: switchservice.CameraInfo = new switchservice.CameraInfo();
+      deviceInfo.setVersionState(undefined);
+      const versionStateStr: string = service.versionStateToString(deviceInfo);
+      expect(versionStateStr).to.equals('UNKNOWNVERSIONSTATE');
+    });
+  });
+
+  describe('#protoCameraInfoListToLocalCameraInfoList', () => {
+    it('should covert from protocolbuf type to local cameraswitch type', () => {
+      const list: Array<switchservice.CameraInfo> = [];
+      const device1: switchservice.CameraInfo = new switchservice.CameraInfo();
+      device1.setIp('0.0.0.0');
+      device1.setName('L1');
+      device1.setVersion('1.1.0');
+      device1.setVersionState(switchservice.VersionState.VERIFIED);
+      device1.addPairingStates(switchservice.CameraPairingState.ACTIVE);
+      device1.addPairingStates(switchservice.CameraPairingState.PAIRED);
+      list.push(device1);
+      const device2: switchservice.CameraInfo = new switchservice.CameraInfo();
+      device2.setIp('1.1.1.1');
+      device2.setName('SEE');
+      device2.setVersion('1.0.0');
+      device2.setVersionState(switchservice.VersionState.VERIFIED);
+      device2.addPairingStates(switchservice.CameraPairingState.PAIRED);
+      list.push(device2);
+
+      const expectedList: Array<CameraInfo> = [];
+      expectedList.push({
+        ip: device1.getIp(),
+        name: device1.getName(),
+        version: device1.getVersion(),
+        version_state: 'VERIFIED',
+        pairing_state: ['Active', 'Paired']
+      });
+      expectedList.push({
+        ip: device2.getIp(),
+        name: device2.getName(),
+        version: device2.getVersion(),
+        version_state: 'VERIFIED',
+        pairing_state: ['Paired']
+      });
+      const result: Array<CameraInfo> = service.protoCameraInfoListToLocalCameraInfoList(list);
+      expect(result).to.deep.equal(expectedList);
+    });
+  });
+
+  describe('#getAvailableCameras', () => {
+    const availableCameras: switchservice.AvailableCameras = new switchservice.AvailableCameras();
+    const dummyDevice = getGenericDeviceInfo();
+    before(() => {
+      availableCameras.addCameraList(dummyDevice);
+    });
+
+    describe('onGrpcSuccess', () => {
+      it('should call getAvailableCameras and resolve on callback', () => {
+        (service.grpcClient.getAvailableCameras as any).yields(undefined, availableCameras);
+        const promise = service.getAvailableCameras();
+        return expect(promise).to.be.fulfilled.then((cameraList: Array<CameraInfo>) => {
+          expect(cameraList.length).to.equal(1);
+          expect(cameraList).to.deep.equal([{
+            ip: dummyDevice.getIp(),
+            name: dummyDevice.getName(),
+            version: dummyDevice.getVersion(),
+            version_state: 'VERIFIED',
+            pairing_state: ['Active', 'Paired']
+          }]);
+        });
+      });
+    });
+    describe('onGrpcFailure', () => {
+      it('should reject with the error received from grpc call', () => {
+        (service.grpcClient.getAvailableCameras as any).yields({details: 'Something went wrong', stack: ''}, undefined);
+        const promise = service.getAvailableCameras();
+        return expect(promise).to.eventually.be.rejectedWith('Something went wrong');
+      });
+    });
+  });
+
+  describe('#pairingStateKeysToValues', () => {
+    it('should convert comma separated pairing states keys into protobuf CameraPairingStateMap', () => {
+      const payload: string = 'Active,Paired';
+      const result = service.pairingStateKeysToValues(payload);
+      expect(result).to.deep.equals([switchservice.CameraPairingState.ACTIVE, switchservice.CameraPairingState.PAIRED]);
+    });
+    it('should ignore duplicate keys on the comma separated pairing states string', () => {
+      const payload: string = 'Active,Active,Paired,Paired';
+      const result = service.pairingStateKeysToValues(payload);
+      expect(result).to.deep.equals([switchservice.CameraPairingState.ACTIVE, switchservice.CameraPairingState.PAIRED]);
+    });
+    it('should throw error if comma separated string contains unknown state', () => {
+      const payload: string = 'Hello,Paired';
+      const badFuncCall = () => service.pairingStateKeysToValues(payload);
+
+      expect(badFuncCall).to.throw(`Unknown CameraPairingState [Hello]! Allowed States: UnknownPairingState,Default,Active,Paired`);
+    });
+  });
+
+  describe('#setFwUpdateSchedule', () => {
+    const newFwSchedule: FwUpdateSchedule = {
+      daysOfWeek: 'Tuesday,Friday',
+      hour: 3,
+      maxStartDelay: 30,
+      validPairingStates: 'Paired'
+    };
+    describe('onGrpcSuccess', () => {
+      it('should update the fw schedule on the service', () => {
+        const status: switchservice.FwUpdateScheduleStatus = new switchservice.FwUpdateScheduleStatus();
+        status.setCode(switchservice.FwUpdateScheduleStatusCodes.SUCCESS);
+        status.setMessage('All Good');
+        const dummyDevice = getGenericDeviceInfo();
+        status.addAffectedCameras(dummyDevice);
+
+        (service.grpcClient.setFwUpdateSchedule as any).yields(undefined, status);
+        const promise = service.setFwUpdateSchedule(newFwSchedule);
+        return expect(promise).to.be.fulfilled.then((response: FwUpdateScheduleStatus) => {
+          expect(response.message).to.equal('All Good');
+          expect(response.affectedCameras).to.deep.equal([{
+            ip: dummyDevice.getIp(),
+            name: dummyDevice.getName(),
+            version: dummyDevice.getVersion(),
+            version_state: 'VERIFIED',
+            pairing_state: ['Active', 'Paired']
+          }]);
+          expect((service.grpcClient.setFwUpdateSchedule as any).getCall(0).args[0])
+          .to.be.instanceOf(switchservice.FwUpdateSchedule);
+        });
+      });
+    });
+    describe('onGrpcFailure', () => {
+      it('should reject if grpc call fails', () => {
+        (service.grpcClient.setFwUpdateSchedule as any).yields({details: 'Something went wrong', stack: ''}, undefined);
+        const promise = service.setFwUpdateSchedule(newFwSchedule);
+        return expect(promise).to.eventually.be.rejectedWith('Something went wrong');
+      });
+      it('should reject if status code errornous', () => {
+        const status: switchservice.FwUpdateScheduleStatus = new switchservice.FwUpdateScheduleStatus();
+        status.setCode(switchservice.FwUpdateScheduleStatusCodes.FAILED);
+        status.setMessage('Could not update schedule!');
+        (service.grpcClient.setFwUpdateSchedule as any).yields(undefined, status);
+        const promise = service.setFwUpdateSchedule(newFwSchedule);
+        return expect(promise).to.eventually.be.rejectedWith(status.getMessage());
+      });
+    });
+  });
+
+  describe('#getFwUpdateSchedule', () => {
+    describe('onGrpcSuccess', () => {
+      it('should get the current fw update schedule', () => {
+        const grpcResponse: switchservice.FwUpdateSchedule = new switchservice.FwUpdateSchedule();
+        grpcResponse.setDaysOfWeek('Monday,Tuesday');
+        grpcResponse.setHourOfDay(3);
+        grpcResponse.setStartDelayMaxSeconds(0);
+        grpcResponse.setDisabled(true);
+        grpcResponse.addValidPairingStates(switchservice.CameraPairingState.ACTIVE);
+
+        (service.grpcClient.getFwUpdateSchedule as any).yields(undefined, grpcResponse);
+        const promise = service.getFwUpdateSchedule();
+        return expect(promise).to.be.fulfilled.then((response: FwUpdateSchedule) => {
+          expect(response).to.deep.equal({
+            daysOfWeek: grpcResponse.getDaysOfWeek(),
+            validPairingStates: 'Active',
+            hour: grpcResponse.getHourOfDay(),
+            maxStartDelay: grpcResponse.getStartDelayMaxSeconds(),
+            disabled: grpcResponse.getDisabled()
+          });
+        });
+      });
+    });
+    describe('onGrpcFailure', () => {
+      it('should reject if grpc call fails', () => {
+        (service.grpcClient.getFwUpdateSchedule as any).yields({details: 'Something went wrong', stack: ''}, undefined);
+        const promise = service.getFwUpdateSchedule();
+        return expect(promise).to.eventually.be.rejectedWith('Something went wrong');
+      });
+    });
+  });
+
+  describe('#scheduleFwUpdate', () => {
+    describe('onGrpcSuccess', () => {
+      it('should start the update on the given camera', () => {
+        const status: switchservice.FwUpdateScheduleStatus = new switchservice.FwUpdateScheduleStatus();
+        status.setCode(switchservice.FwUpdateScheduleStatusCodes.SUCCESS);
+        status.setMessage('All Good');
+        const dummyDevice = getGenericDeviceInfo();
+        status.addAffectedCameras(dummyDevice);
+
+        (service.grpcClient.scheduleFwUpdate as any).yields(undefined, status);
+        const promise = service.scheduleFwUpdate({
+          ip: dummyDevice.getIp(),
+          name: dummyDevice.getName()
+        });
+        return expect(promise).to.be.fulfilled.then((response: FwUpdateScheduleStatus) => {
+          expect(response.message).to.equal('All Good');
+          expect(response.affectedCameras).to.deep.equal([{
+            ip: dummyDevice.getIp(),
+            name: dummyDevice.getName(),
+            version: dummyDevice.getVersion(),
+            version_state: 'VERIFIED',
+            pairing_state: ['Active', 'Paired']
+          }]);
+          expect((service.grpcClient.scheduleFwUpdate as any).getCall(0).args[0])
+          .to.be.instanceOf(switchservice.CameraInfoWrite);
+        });
+      });
+    });
+    describe('onGrpcFailure', () => {
+      it('should reject if grpc call fails', () => {
+        (service.grpcClient.scheduleFwUpdate as any).yields({details: 'Something went wrong', stack: ''}, undefined);
+        const dummyDevice = getGenericDeviceInfo();
+        const promise = service.scheduleFwUpdate({
+          ip: dummyDevice.getIp(),
+          name: dummyDevice.getName()
+        });
+        return expect(promise).to.eventually.be.rejectedWith('Something went wrong');
+      });
+      it('should reject if status code errornous', () => {
+        const status: switchservice.FwUpdateScheduleStatus = new switchservice.FwUpdateScheduleStatus();
+        status.setCode(switchservice.FwUpdateScheduleStatusCodes.FAILED);
+        status.setMessage('Camera not available for ugprade!');
+        const dummyDevice = getGenericDeviceInfo();
+        (service.grpcClient.scheduleFwUpdate as any).yields(undefined, status);
+        const promise = service.scheduleFwUpdate({
+          ip: dummyDevice.getIp(),
+          name: dummyDevice.getName()
+        });
+        return expect(promise).to.eventually.be.rejectedWith(status.getMessage());
+      });
+    });
+  });
+
+  describe('#scheduleFwUpdateAll', () => {
+    describe('onGrpcSuccess', () => {
+      it('should start the update on the given camera', () => {
+        const status: switchservice.FwUpdateScheduleStatus = new switchservice.FwUpdateScheduleStatus();
+        status.setCode(switchservice.FwUpdateScheduleStatusCodes.SUCCESS);
+        status.setMessage('All Good');
+        const dummyDevice = getGenericDeviceInfo();
+        status.addAffectedCameras(dummyDevice);
+
+        (service.grpcClient.scheduleFwUpdateAll as any).yields(undefined, status);
+        const promise = service.scheduleFwUpdateAll();
+        return expect(promise).to.be.fulfilled.then((response: FwUpdateScheduleStatus) => {
+          expect(response.message).to.equal('All Good');
+          expect(response.affectedCameras).to.deep.equal([{
+            ip: dummyDevice.getIp(),
+            name: dummyDevice.getName(),
+            version: dummyDevice.getVersion(),
+            version_state: 'VERIFIED',
+            pairing_state: ['Active', 'Paired']
+          }]);
+          expect((service.grpcClient.scheduleFwUpdateAll as any).getCall(0).args[0])
+          .to.be.instanceOf(Empty);
+        });
+      });
+    });
+    describe('onGrpcFailure', () => {
+      it('should reject if grpc call fails', () => {
+        (service.grpcClient.scheduleFwUpdateAll as any).yields({details: 'Something went wrong', stack: ''}, undefined);
+        const promise = service.scheduleFwUpdateAll();
+        return expect(promise).to.eventually.be.rejectedWith('Something went wrong');
+      });
+      it('should reject if status code errornous', () => {
+        const status: switchservice.FwUpdateScheduleStatus = new switchservice.FwUpdateScheduleStatus();
+        status.setCode(switchservice.FwUpdateScheduleStatusCodes.FAILED);
+        status.setMessage('Camera not available for ugprade!');
+        (service.grpcClient.scheduleFwUpdateAll as any).yields(undefined, status);
+        const promise = service.scheduleFwUpdateAll();
+        return expect(promise).to.eventually.be.rejectedWith(status.getMessage());
       });
     });
   });
