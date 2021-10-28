@@ -42,9 +42,15 @@ export default class IpDetector extends EventEmitter implements IDetector {
     // _detectionHandler fetches detections from the grpc server and emits them.
     if (!this._detectionHandler) {
       this._detectionHandler = async () => {
-        const detections = await this._getDetections();
-        const convertedDetections = this.convertDetections(detections, this._options);
-        this.emit(CameraEvents.DETECTIONS, convertedDetections);
+        try {
+          const detections = await this._getDetections();
+          const convertedDetections = this.convertDetections(detections, this._options);
+          this.emit(CameraEvents.DETECTIONS, convertedDetections);
+        } catch (error) {
+          Logger.warn(
+            `Unable to get detection data from the camera! Make sure you're running latest camera fimware.\n${error}`
+          );
+        }
       };
     }
     if (!this._options.DOWS) {
@@ -63,6 +69,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
           if (err != undefined) {
             Logger.error('Unable to get detections', err.stack || '');
             reject(err.message || 'Unknown error');
+            return;
           }
           resolve(detections.toObject().detectionsList || []);
         }
