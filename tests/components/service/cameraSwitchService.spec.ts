@@ -79,12 +79,16 @@ describe('CameraSwitchService', () => {
       it('should call setActiveCamera and resolve on callback', () => {
         (service.grpcClient.setActiveCamera as any).yields(undefined);
         const promise = service.serviceCameraSetter(ServiceCameraActions.ACTIVE, { name: 'L1', ip: '1.2.3.4' });
-        return expect(promise).to.be.fulfilled;
+        return expect(promise).to.be.fulfilled.then((_: any) => {
+          expect((service.grpcClient.setActiveCamera as any).getCall(0).args[0]).to.be.instanceOf(switchservice.CameraInfoWrite);
+        });
       });
       it('should call setDefaultCamera and resolve on callback', () => {
         (service.grpcClient.setDefaultCamera as any).yields(undefined);
         const promise = service.serviceCameraSetter(ServiceCameraActions.DEFAULT, { name: 'L1', ip: '1.2.3.4' });
-        return expect(promise).to.be.fulfilled;
+        return expect(promise).to.be.fulfilled.then((_: any) => {
+          expect((service.grpcClient.setDefaultCamera as any).getCall(0).args[0]).to.be.instanceOf(switchservice.CameraInfoWrite);
+        });
       });
     });
     describe('onGrpcFailure', () => {
