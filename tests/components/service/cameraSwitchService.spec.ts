@@ -126,6 +126,7 @@ describe('CameraSwitchService', () => {
             version_state: 'UNKNOWNVERSIONSTATE',
             pairing_state: []
           });
+          expect((service.grpcClient.getActiveCamera as any).getCall(0).args[0]).to.be.instanceOf(Empty);
         });
       });
       it('should call getDefaultCamera and resolve on callback', () => {
@@ -139,6 +140,7 @@ describe('CameraSwitchService', () => {
             version_state: 'UNKNOWNVERSIONSTATE',
             pairing_state: []
           });
+          expect((service.grpcClient.getDefaultCamera as any).getCall(0).args[0]).to.be.instanceOf(Empty);
         });
       });
     });
@@ -200,7 +202,9 @@ describe('CameraSwitchService', () => {
     it('should call setUserPtz and resolve on callback', () => {
       (service.grpcClient.setUserPTZ as any).yields(undefined);
       const promise = service.setUserPtz(true);
-      return expect(promise).to.be.fulfilled;
+      return expect(promise).to.be.fulfilled.then((_: any) => {
+        expect((service.grpcClient.setUserPTZ as any).getCall(0).args[0]).to.be.instanceOf(switchservice.UserPtz);
+      });
     });
     it('should reject with the error received from grpc call', () => {
       (service.grpcClient.setUserPTZ as any).yields({details: 'Something went wrong', stack: ''});
@@ -216,8 +220,9 @@ describe('CameraSwitchService', () => {
 
       (service.grpcClient.getUserPTZ as any).yields(undefined, userPtz);
       const promise = service.isUserPtzAllowed();
-      return expect(promise).to.be.fulfilled.then((isAllowed) => {
+      return expect(promise).to.be.fulfilled.then((isAllowed: any) => {
         expect(isAllowed).to.equal(true);
+        expect((service.grpcClient.getUserPTZ as any).getCall(0).args[0]).to.be.instanceOf(Empty);
       });
     });
     it('should not allow user ptz', () => {
@@ -226,8 +231,9 @@ describe('CameraSwitchService', () => {
 
       (service.grpcClient.getUserPTZ as any).yields(undefined, userPtz);
       const promise = service.isUserPtzAllowed();
-      return expect(promise).to.be.fulfilled.then((isAllowed) => {
+      return expect(promise).to.be.fulfilled.then((isAllowed: any) => {
         expect(isAllowed).to.equal(false);
+        expect((service.grpcClient.getUserPTZ as any).getCall(0).args[0]).to.be.instanceOf(Empty);
       });
     });
     it('should reject with the error received from grpc call', () => {
@@ -365,6 +371,7 @@ describe('CameraSwitchService', () => {
             version_state: 'VERIFIED',
             pairing_state: ['Active', 'Paired']
           }]);
+          expect((service.grpcClient.getAvailableCameras as any).getCall(0).args[0]).to.be.instanceOf(Empty);
         });
       });
     });
@@ -464,6 +471,7 @@ describe('CameraSwitchService', () => {
             maxStartDelay: grpcResponse.getStartDelayMaxSeconds(),
             disabled: grpcResponse.getDisabled()
           });
+          expect((service.grpcClient.getFwUpdateSchedule as any).getCall(0).args[0]).to.be.instanceOf(Empty);
         });
       });
     });
