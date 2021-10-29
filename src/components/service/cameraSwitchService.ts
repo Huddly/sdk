@@ -103,7 +103,7 @@ export default class CameraSwitchService implements IHuddlyService {
    * otherwise.
    */
   serviceCameraSetter(action: ServiceCameraActions, camInfo: CameraInfo): Promise<void> {
-    const serviceCamInfo: switchservice.CameraInfo = new switchservice.CameraInfo();
+    const serviceCamInfo: switchservice.CameraInfoWrite = new switchservice.CameraInfoWrite();
     serviceCamInfo.setName(camInfo.name);
     serviceCamInfo.setIp(camInfo.ip);
     const setterActionStr: string = Object.keys(ServiceCameraActions).find(
