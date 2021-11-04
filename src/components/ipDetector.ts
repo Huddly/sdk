@@ -103,7 +103,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
     return new Promise((resolve, reject) => {
       const cnnFeature = new huddly.CnnFeature();
       cnnFeature.setFeature(huddly.Feature.DETECTOR);
-      cnnFeature.setMode(huddly.Mode.START);
+      cnnFeature.setMode(huddly.Mode.STOP);
       this._deviceManager.grpcClient.setCnnFeature(
         cnnFeature,
         (err, status: huddly.DeviceStatus) => {
