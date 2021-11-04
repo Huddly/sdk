@@ -106,9 +106,9 @@ describe('IpDetector', () => {
           ipDetector = new IpDetector(deviceManager, {});
           await ipDetector.init();
           await ipDetector.destroy();
-          const arg = setCnnFeatureSpy.firstCall.args[0];
+          const arg = setCnnFeatureSpy.secondCall.args[0];
           expect(arg.getFeature()).to.equal(huddly.Feature.DETECTOR);
-          expect(arg.getMode()).to.equal(huddly.Mode.START);
+          expect(arg.getMode()).to.equal(huddly.Mode.STOP);
         });
       });
       describe('on DOWS set', () => {
