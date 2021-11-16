@@ -1,7 +1,7 @@
 import { EventEmitter } from 'events';
 import IDetector from './../interfaces/IDetector';
 import IIpDeviceManager from '../interfaces/iIpDeviceManager';
-import DetectorOpts from './../interfaces/IDetectorOpts';
+import DetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
 import CameraEvents from './../utilitis/events';
 import DetectionsConverter from './../utilitis/detectionsConverter';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
@@ -29,7 +29,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
     super();
     this._deviceManager = manager;
     this._options = options || {};
-    this._options.DOWS = (options && options.DOWS) || false;
+    this._validateOptions(this._options);
   }
 
   async init(): Promise<any> {
@@ -39,23 +39,46 @@ export default class IpDetector extends EventEmitter implements IDetector {
     }
     Logger.debug('Initializing detector class', 'L1 Detector');
 
-    // _detectionHandler fetches detections from the grpc server and emits them.
-    if (!this._detectionHandler) {
-      this._detectionHandler = async () => {
-        const detections = await this._getDetections();
-        const convertedDetections = this.convertDetections(detections, this._options);
-        this.emit(CameraEvents.DETECTIONS, convertedDetections);
-      };
-    }
+    this._setupDetectionHandler();    
     if (!this._options.DOWS) {
       await this._startDetections();
     }
-    this._intervalId = setInterval(this._detectionHandler, this._UPDATE_INTERVAL);
+    this._intervalId = setInterval(
+      () => this._getDetections().then(this._detectionHandler),
+      this._UPDATE_INTERVAL
+    );
     this._detectorInitialized = true;
     Logger.debug('Detector class initialized and ready', 'L1 Detector');
   }
 
-  _getDetections(): Promise<Array<any>> {
+  _validateOptions(options: DetectorOpts) {
+    if (options.convertDetections && options.convertDetections === DetectionConvertion.FRAMING) {
+      Logger.warn(
+        'FRAMING opt is not fully supported on L1 yet. Convertion may not work as intended',
+        'L1 Detector'
+      );
+    }
+    const currentSetOpts = this._options;
+    this._options = {
+      ...currentSetOpts,
+      ...options,
+    };
+    this._options.DOWS = (options && options.DOWS) || false;
+    this._options.includeRawDetections = (options && options.includeRawDetections) || false;
+  }
+
+  _setupDetectionHandler() {
+    this._detectionHandler = detectionBuffer => {
+      const rawDetections = detectionBuffer.toObject();
+      const convertedDetections = this.convertDetections(rawDetections.detectionsList, this._options);
+      this.emit(CameraEvents.DETECTIONS, convertedDetections);
+      if (this._options.includeRawDetections) {
+        this.emit(CameraEvents.RAW_DETECTIONS, rawDetections);
+      }
+    };
+  }
+
+  _getDetections(): Promise<huddly.Detections> {
     return new Promise((resolve, reject) => {
       this._deviceManager.grpcClient.getDetections(
         new Empty(),
@@ -64,7 +87,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
             Logger.error('Unable to get detections', err.stack || '');
             reject(err.message || 'Unknown error');
           }
-          resolve(detections.toObject().detectionsList || []);
+          resolve(detections);
         }
       );
     });
@@ -119,6 +142,16 @@ export default class IpDetector extends EventEmitter implements IDetector {
       );
     });
   }
+
+  async updateOpts(options: DetectorOpts): Promise<any> {
+    this._validateOptions(options);
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
+    this._detectorInitialized = false;
+    return this.init();
+  }
+
 
   async destroy(): Promise<void> {
     if (!this._detectorInitialized) {

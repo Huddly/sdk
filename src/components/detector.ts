@@ -45,11 +45,11 @@ export default class Detector extends EventEmitter implements IDetector {
     super();
     this._deviceManager = manager;
     this._options = {};
-    this.validateOptions(options);
+    this._validateOptions(options);
     this.setMaxListeners(50);
   }
 
-  validateOptions(options: DetectorOpts) {
+  _validateOptions(options: DetectorOpts) {
     const currentSetOpts = this._options;
     this._options = {
       ...currentSetOpts,
@@ -58,6 +58,7 @@ export default class Detector extends EventEmitter implements IDetector {
     this._options.convertDetections =
       (options && options.convertDetections) || DetectionConvertion.RELATIVE;
     this._options.DOWS = (options && options.DOWS) || false;
+    this._options.includeRawDetections = (options && options.includeRawDetections) || false;
   }
 
   get transport(): IUsbTransport {
@@ -87,13 +88,7 @@ export default class Detector extends EventEmitter implements IDetector {
     }
 
     Logger.debug('Initializing detector class', 'IQ Detector');
-    if (!this._detectionHandler) {
-      this._detectionHandler = (detectionBuffer) => {
-        const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
-        const convertedDetections = this.convertDetections(predictions, this._options);
-        this.emit(CameraEvents.DETECTIONS, convertedDetections);
-      };
-    }
+    this._setupDetectionHandler();
 
     if (!this._framingHandler) {
       this._framingHandler = (frameBuffer) => {
@@ -132,8 +127,19 @@ export default class Detector extends EventEmitter implements IDetector {
     Logger.debug('Detector class initialized and ready', 'IQ Detector');
   }
 
+  _setupDetectionHandler() {
+    this._detectionHandler = detectionBuffer => {
+      const rawDetections = Api.decode(detectionBuffer.payload, 'messagepack');
+      const convertedDetections = this.convertDetections(rawDetections.predictions, this._options);
+      this.emit(CameraEvents.DETECTIONS, convertedDetections);
+      if (this._options.includeRawDetections) {
+        this.emit(CameraEvents.RAW_DETECTIONS, rawDetections);
+      }
+    };
+  }
+
   async updateOpts(options: DetectorOpts): Promise<any> {
-    this.validateOptions(options);
+    this._validateOptions(options);
     await this.teardownDetectorSubscriptions();
     this._detectorInitialized = false;
     return this.init();

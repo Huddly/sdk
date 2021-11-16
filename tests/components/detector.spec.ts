@@ -17,15 +17,17 @@ describe('Detector', () => {
     detector = new Detector(deviceManager);
   });
 
-  describe('#validateOptions', () => {
+  describe('#_validateOptions', () => {
     it('should update old options with new options', () => {
       expect(detector._options.convertDetections).to.equals(DetectionConvertion.RELATIVE);
       expect(detector._options.DOWS).to.equals(false);
+      expect(detector._options.includeRawDetections).to.equal(false);
       const newOpts: DetectorOpts = {
         DOWS: true,
         convertDetections: DetectionConvertion.FRAMING,
+        includeRawDetections: true,
       };
-      detector.validateOptions(newOpts);
+      detector._validateOptions(newOpts);
       expect(detector._options).to.deep.equals(newOpts);
     });
   });
@@ -125,6 +127,7 @@ describe('Detector', () => {
     const newOpts: DetectorOpts = {
       DOWS: true,
       convertDetections: DetectionConvertion.FRAMING,
+      includeRawDetections: true,
     };
     beforeEach(() => {
       teardownStub = sinon.stub(detector, 'teardownDetectorSubscriptions').resolves();
@@ -136,7 +139,7 @@ describe('Detector', () => {
     });
 
     it('should validate new options', async () => {
-      const validateOptionsSpy = sinon.spy(detector, 'validateOptions');
+      const validateOptionsSpy = sinon.spy(detector, '_validateOptions');
       await detector.updateOpts(newOpts);
       expect(validateOptionsSpy.called).to.equals(true);
       expect(validateOptionsSpy.getCall(0).args[0]).to.deep.equals(newOpts);
@@ -147,6 +150,7 @@ describe('Detector', () => {
       expect(teardownStub.called).to.equals(true);
       expect(detector._detectorInitialized).to.equals(false);
       expect(initStub.called).to.equals(true);
+      expect(detector._options.includeRawDetections).to.equal(true);
     });
   });
 
