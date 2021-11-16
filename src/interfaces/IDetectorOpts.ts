@@ -40,6 +40,14 @@ export default interface DetectorOpts {
    * @memberof DetectorOpts
    */
   DOWS?: boolean;
+
+  /**
+   * When set to true, the `Detector` will emit a
+   * 'RAW_DETECTIONS' event with raw detection data
+   * for every 'DETECTIONS' event.
+   */
+  includeRawDetections?: boolean;
+
 }
 
 export { DetectionConvertion };

@@ -6,6 +6,7 @@ import IIPDeviceManager from '../../src/interfaces/iIpDeviceManager';
 import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
 import CameraEvents from '../../src/utilitis/events';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
+import DetectorOpts, { DetectionConvertion } from './../../src/interfaces/IDetectorOpts';
 
 chai.should();
 chai.use(sinonChai);
@@ -30,6 +31,35 @@ describe('IpDetector', () => {
       ipDetector.destroy();
     });
     describe('on detector not initialized', () => {
+      describe('on includeRawDetections is true', () => {
+        it('should emit both DETECTIONS and RAWDETECTIONS at initialization', async () => {
+          ipDetector = new IpDetector(deviceManager, { includeRawDetections: true });
+          const cb = sinon.spy();
+          ipDetector.on(CameraEvents.DETECTIONS, cb);
+          const rawCb = sinon.spy();
+          ipDetector.on(CameraEvents.RAW_DETECTIONS, rawCb);
+          await ipDetector.init();
+          clock.tick(ipDetector._UPDATE_INTERVAL);
+          await clock.next();
+          expect(cb.called).to.equal(true);
+          expect(rawCb.called).to.equal(true);
+        })
+      })
+      describe('on includeRawDetections is false', () => {
+        it('should only emit DETECTIONS', async () => {
+          ipDetector = new IpDetector(deviceManager, { includeRawDetections: false });
+          const cb = sinon.spy();
+          ipDetector.on(CameraEvents.DETECTIONS, cb);
+          const rawCb = sinon.spy();
+          ipDetector.on(CameraEvents.RAW_DETECTIONS, rawCb);
+          await ipDetector.init();
+          clock.tick(ipDetector._UPDATE_INTERVAL);
+          await clock.next();
+          expect(cb.called).to.equal(true);
+          expect(rawCb.called).to.equal(false);
+        })
+      });
+
       describe('on DOWS not set', () => {
         it('should emit DETECTIONS event at initialization and every update interval', async () => {
           ipDetector = new IpDetector(deviceManager, {});
@@ -134,4 +164,26 @@ describe('IpDetector', () => {
       });
     });
   });
+
+  describe('#updateOpts', () => {
+    let initStub;
+    const newOpts: DetectorOpts = {
+      DOWS: true,
+      convertDetections: DetectionConvertion.FRAMING,
+      includeRawDetections: true,
+      objectFilter: ['person'],
+    };
+    beforeEach(() => {
+      initStub = sinon.stub(ipDetector, 'init').resolves();
+    });
+    afterEach(() => {
+      initStub.restore();
+      ipDetector.destroy();
+    });
+    it('should reset detector class with new options', async () => {
+      ipDetector = new IpDetector(deviceManager, {});
+      await ipDetector.updateOpts(newOpts);
+      expect(ipDetector._options).to.deep.equals(newOpts);
+    })
+  })
 });
