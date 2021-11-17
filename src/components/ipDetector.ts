@@ -6,6 +6,7 @@ import CameraEvents from './../utilitis/events';
 import DetectionsConverter from './../utilitis/detectionsConverter';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import Logger from './../utilitis/logger';
+import throttle from './../utilitis/throttle';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 const PREVIEW_IMAGE_SIZE = { width: 832, height: 480 };
@@ -24,6 +25,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
   _usePeopleCount: boolean = false;
   _UPDATE_INTERVAL: number = 500; // ms
   _detectorWasStarted: boolean = false;
+  _lastTimestamp: number = undefined;
 
   constructor(manager: IIpDeviceManager, options?: DetectorOpts) {
     super();
@@ -39,7 +41,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
     }
     Logger.debug('Initializing detector class', 'L1 Detector');
 
-    this._setupDetectionHandler();    
+    this._setupDetectionHandler();
     if (!this._options.DOWS) {
       await this._startDetections();
     }
@@ -68,9 +70,33 @@ export default class IpDetector extends EventEmitter implements IDetector {
   }
 
   _setupDetectionHandler() {
-    this._detectionHandler = detectionBuffer => {
+    // A negative timestamp means the IMX has not received any detections
+    const detectionsAreInvalid = ({ timestamp }) => timestamp < 0.0;
+    // A timestamp of 0 is the default value, which will be the case for older L1-versions which do not set the timestamp
+    const detectionsAreStale = ({ timestamp }) =>
+      timestamp !== 0 && timestamp === this._lastTimestamp;
+
+    const throttledInvalidWarning = throttle(() => {
+      Logger.warn(
+        'Invalid detections received, ensure detector is running / autozoom is on and stream is open.',
+        'L1 Detector'
+      );
+    }, 10000);
+
+    this._detectionHandler = (detectionBuffer) => {
       const rawDetections = detectionBuffer.toObject();
-      const convertedDetections = this.convertDetections(rawDetections.detectionsList, this._options);
+      if (detectionsAreInvalid(rawDetections)) {
+        throttledInvalidWarning();
+        return;
+      }
+      if (detectionsAreStale(rawDetections)) {
+        return;
+      }
+      this._lastTimestamp = rawDetections.timestamp;
+      const convertedDetections = this.convertDetections(
+        rawDetections.detectionsList,
+        this._options
+      );
       this.emit(CameraEvents.DETECTIONS, convertedDetections);
       if (this._options.includeRawDetections) {
         this.emit(CameraEvents.RAW_DETECTIONS, rawDetections);
@@ -151,7 +177,6 @@ export default class IpDetector extends EventEmitter implements IDetector {
     this._detectorInitialized = false;
     return this.init();
   }
-
 
   async destroy(): Promise<void> {
     if (!this._detectorInitialized) {
