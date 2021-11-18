@@ -24,15 +24,14 @@ export const HUDDLY_CLOWNFISH_PID = 0x31; // Huddly IQ (without mic and cnn feat
 export const HUDDLY_DWARFFISH_PID = 0x51; // Huddly ONE
 export const HUDDLY_DARTFISH_PID = 0x41; // Huddly Canvas
 
-export const HUDDLY_L1_PID = 0x3E9; // Huddly L1/ACE
-export const HUDDLY_BASE_PID = 0xBA5E; // Huddly BASE
+export const HUDDLY_L1_PID = 0x3e9; // Huddly L1/ACE
+export const HUDDLY_BASE_PID = 0xba5e; // Huddly BASE
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
 }
 
 export default class DeviceFactory {
-
   /**
    * Get a concrete transport implementation on the IHuddlyDeviceAPI
    *
@@ -50,12 +49,16 @@ export default class DeviceFactory {
   static async getTransportImplementation(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array<IHuddlyDeviceAPI>): Promise<ITransport> {
+    secondaryDeviceApis: Array<IHuddlyDeviceAPI>
+  ): Promise<ITransport> {
     const mainTransport = await preferredDeviceApi.getValidatedTransport(device);
     if (mainTransport) {
       return mainTransport;
     }
-    Logger.warn('Transport init on main device api failed. Falling back to secondary device apis', 'SDK DeviceFactory');
+    Logger.warn(
+      'Transport init on main device api failed. Falling back to secondary device apis',
+      'SDK DeviceFactory'
+    );
 
     for (const deviceApi of secondaryDeviceApis) {
       const fallbackTransport = await deviceApi.getValidatedTransport(device);
@@ -64,7 +67,9 @@ export default class DeviceFactory {
       }
     }
 
-    throw new Error(`Unable to find appropriate transport implementation for device: ${JSON.stringify(device)}`);
+    throw new Error(
+      `Unable to find appropriate transport implementation for device: ${JSON.stringify(device)}`
+    );
   }
 
   /**
@@ -83,8 +88,8 @@ export default class DeviceFactory {
   static async getUVCControlInterface(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array<IHuddlyDeviceAPI>): Promise<any> {
-
+    secondaryDeviceApis: Array<IHuddlyDeviceAPI>
+  ): Promise<any> {
     if (await preferredDeviceApi.isUVCControlsSupported(device)) {
       return preferredDeviceApi.getUVCControlAPIForDevice(device);
     }
@@ -121,7 +126,8 @@ export default class DeviceFactory {
   static async getHIDInterface(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array<IHuddlyDeviceAPI>): Promise<any> {
+    secondaryDeviceApis: Array<IHuddlyDeviceAPI>
+  ): Promise<any> {
     if (await preferredDeviceApi.isHIDSupported(device)) {
       return preferredDeviceApi.getHIDAPIForDevice(device);
     }
@@ -133,7 +139,9 @@ export default class DeviceFactory {
         return deviceApi.getHIDAPIForDevice(device);
       }
     }
-    throw new Error(`Unable to find appropriate HID interface for device: ${JSON.stringify(device)}`);
+    throw new Error(
+      `Unable to find appropriate HID interface for device: ${JSON.stringify(device)}`
+    );
   }
 
   /**
@@ -156,34 +164,67 @@ export default class DeviceFactory {
     preferredDeviceApi: IHuddlyDeviceAPI,
     secondaryDeviceApis: Array<IHuddlyDeviceAPI>,
     devInstance: any,
-    cameraDiscoveryEmitter: EventEmitter): Promise<IDeviceManager> {
+    cameraDiscoveryEmitter: EventEmitter
+  ): Promise<IDeviceManager> {
     const transport = await this.getTransportImplementation(
       devInstance,
       preferredDeviceApi,
-      secondaryDeviceApis);
+      secondaryDeviceApis
+    );
 
     const uvcControlInterface = await this.getUVCControlInterface(
       devInstance,
       preferredDeviceApi,
-      secondaryDeviceApis);
+      secondaryDeviceApis
+    );
 
     let device: IDeviceManager;
     switch (productId) {
       case HUDDLY_GO_PID:
-        const hidApi = await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis);
-        device = new HuddlyGo(devInstance, <IUsbTransport>transport, uvcControlInterface, hidApi, cameraDiscoveryEmitter);
+        const hidApi = await this.getHIDInterface(
+          devInstance,
+          preferredDeviceApi,
+          secondaryDeviceApis
+        );
+        device = new HuddlyGo(
+          devInstance,
+          <IUsbTransport>transport,
+          uvcControlInterface,
+          hidApi,
+          cameraDiscoveryEmitter
+        );
         break;
       case HUDDLY_CLOWNFISH_PID:
-        device = new Clownfish(devInstance, <IUsbTransport>transport, uvcControlInterface, cameraDiscoveryEmitter);
+        device = new Clownfish(
+          devInstance,
+          <IUsbTransport>transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
         break;
       case HUDDLY_BOXFISH_PID:
-        device = new Boxfish(devInstance, <IUsbTransport>transport, uvcControlInterface, cameraDiscoveryEmitter);
+        device = new Boxfish(
+          devInstance,
+          <IUsbTransport>transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
         break;
       case HUDDLY_DWARFFISH_PID:
-        device = new Dwarffish(devInstance, <IUsbTransport>transport, uvcControlInterface, cameraDiscoveryEmitter);
+        device = new Dwarffish(
+          devInstance,
+          <IUsbTransport>transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
         break;
       case HUDDLY_DARTFISH_PID:
-        device = new DartFish(devInstance, <IUsbTransport>transport, uvcControlInterface, cameraDiscoveryEmitter);
+        device = new DartFish(
+          devInstance,
+          <IUsbTransport>transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
         break;
       case HUDDLY_L1_PID:
         device = new Ace(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);

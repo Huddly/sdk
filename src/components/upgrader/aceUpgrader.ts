@@ -60,7 +60,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    * @type {IUpgradeOpts}
    * @memberof AceUpgrader
    */
-  bootTimeout: number = (30 * 1000); // 30 seconds
+  bootTimeout: number = 30 * 1000; // 30 seconds
 
   /**
    * Upgrade status object used to emit upgrade progress throughout the whole upgrade process.
@@ -79,9 +79,11 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    */
   get aceManager(): Ace {
     if (this._cameraManager instanceof Ace) {
-      return <Ace> this._cameraManager;
+      return <Ace>this._cameraManager;
     }
-    throw new Error(`Ace upgrader initialized with wrong camera manager! Manager is not instance of Ace but => ${this._cameraManager.constructor.name}`);
+    throw new Error(
+      `Ace upgrader initialized with wrong camera manager! Manager is not instance of Ace but => ${this._cameraManager.constructor.name}`
+    );
   }
 
   /**
@@ -118,7 +120,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   registerHotPlugEvents(): void {
     this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, async (devManager) => {
       if (devManager && devManager instanceof Ace) {
-        const aceDeviceMng: Ace = <Ace> devManager;
+        const aceDeviceMng: Ace = <Ace>devManager;
         if (aceDeviceMng.equals(this._cameraManager)) {
           this._cameraManager = devManager;
           this.emit('UPGRADE_REBOOT_COMPLETE');
@@ -151,11 +153,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
     const rebootStep = new UpgradeStatusStep('Rebooting camera', 60);
     const verificationStep = new UpgradeStatusStep('Verifying new software', 10);
 
-    this._upgradeStatus = new UpgradeStatus([
-      firstUploadStatusStep,
-      rebootStep,
-      verificationStep,
-    ]);
+    this._upgradeStatus = new UpgradeStatus([firstUploadStatusStep, rebootStep, verificationStep]);
 
     try {
       // Check that camera is running in Normal/Verified state
@@ -178,7 +176,8 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
 
       // Start interval for emitting upgrade progress events while camera is booting up
       const rebootUpgradeProgress = setInterval(() => {
-        if (rebootStep.progress >= 95) { // Last 5% will be completed upon camera coming up after reboot
+        if (rebootStep.progress >= 95) {
+          // Last 5% will be completed upon camera coming up after reboot
           clearInterval(rebootUpgradeProgress);
           return;
         }
@@ -192,7 +191,6 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
         clearInterval(rebootUpgradeProgress);
         this.emit(CameraEvents.TIMEOUT, 'Camera did not come back up after upgrade!');
       }, this.bootTimeout);
-
 
       this.once('UPGRADE_REBOOT_COMPLETE', async () => {
         Logger.debug('Camera successfully booted after upgrade', AceUpgrader.name);
@@ -240,8 +238,12 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   async verifyVersionState(expectedState: number): Promise<void> {
     const currentState: number = await this.getVersionState();
     if (currentState !== expectedState) {
-      const currentStateStr: string = Object.keys(huddly.VersionState).find(key => huddly.VersionState[key] === currentState);
-      const expectedStateStr: string = Object.keys(huddly.VersionState).find(key => huddly.VersionState[key] === expectedState);
+      const currentStateStr: string = Object.keys(huddly.VersionState).find(
+        (key) => huddly.VersionState[key] === currentState
+      );
+      const expectedStateStr: string = Object.keys(huddly.VersionState).find(
+        (key) => huddly.VersionState[key] === expectedState
+      );
       const errMsg = `Device not running in expected state. Expected ${expectedStateStr} | Got ${currentStateStr}`;
       Logger.error(errMsg, undefined, AceUpgrader.name);
       this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
@@ -334,13 +336,20 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    */
   getVersionState(): Promise<number> {
     return new Promise((resolve) => {
-      this.aceManager.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
-        if (err) {
-          Logger.error(`Unable to get device version state! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
-          resolve(undefined);
+      this.aceManager.grpcClient.getDeviceVersion(
+        new Empty(),
+        (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+          if (err) {
+            Logger.error(
+              `Unable to get device version state! Error msg: ${err.message}`,
+              err.stack,
+              AceUpgrader.name
+            );
+            resolve(undefined);
+          }
+          resolve(deviceVersion.getVersionState());
         }
-        resolve(deviceVersion.getVersionState());
-      });
+      );
     });
   }
 
@@ -351,13 +360,20 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    */
   getVersion(): Promise<string> {
     return new Promise((resolve) => {
-      this.aceManager.grpcClient.getDeviceVersion(new Empty(), (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
-        if (err) {
-          Logger.error(`Unable to get device version! Error msg: ${err.message}`, err.stack, AceUpgrader.name);
-          resolve(undefined);
+      this.aceManager.grpcClient.getDeviceVersion(
+        new Empty(),
+        (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) => {
+          if (err) {
+            Logger.error(
+              `Unable to get device version! Error msg: ${err.message}`,
+              err.stack,
+              AceUpgrader.name
+            );
+            resolve(undefined);
+          }
+          resolve(deviceVersion.getVersion());
         }
-        resolve(deviceVersion.getVersion());
-      });
+      );
     });
   }
 
@@ -384,11 +400,17 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
         clearTimeout(readTimeout);
         if (err != undefined) {
           this.emit(CameraEvents.UPGRADE_FAILED, err);
-          Logger.error(`Unable to perform ${stepName} step on device!`, err.message, AceUpgrader.name);
+          Logger.error(
+            `Unable to perform ${stepName} step on device!`,
+            err.message,
+            AceUpgrader.name
+          );
           reject(err.details);
           return;
         }
-        resolve(`${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}`);
+        resolve(
+          `${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}`
+        );
       };
 
       let stream: grpc.ClientWritableStream<huddly.Chunk>;
@@ -400,9 +422,14 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
           stream = this.aceManager.grpcClient.upgradeVerify(upgradeStepCompleteCb);
           break;
         default:
-          const upgradeStepStr: string = Object.keys(UpgradeSteps).find(key => UpgradeSteps[key] === step);
+          const upgradeStepStr: string = Object.keys(UpgradeSteps).find(
+            (key) => UpgradeSteps[key] === step
+          );
           clearTimeout(readTimeout);
-          throw new AceUpgraderError(`Unknown upgrade step ${upgradeStepStr}`, ErrorCodes.UPGRADE_FAILED);
+          throw new AceUpgraderError(
+            `Unknown upgrade step ${upgradeStepStr}`,
+            ErrorCodes.UPGRADE_FAILED
+          );
       }
 
       extract.on('entry', (header: any, cpioStream: any, cb: any) => {
@@ -423,7 +450,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
       });
 
       new BufferStream(this.options.file).pipe(extract);
-     });
+    });
   }
 
   /**
@@ -443,20 +470,25 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   reboot(): Promise<void> {
     return new Promise((resolve, reject) => {
       Logger.debug('Rebooting camera....', AceUpgrader.name);
-      this.aceManager.grpcClient.reset(new Empty(), (err: grpc.ServiceError, status: huddly.DeviceStatus) => {
-        if (err || status.getCode() !== huddly.StatusCode.OK) {
-          this.emit(CameraEvents.UPGRADE_FAILED, err);
-          Logger.error(`Reboot failed!`, err, AceUpgrader.name);
-          if (status == undefined) {
-            reject(`Reboot failed! Error: code [${err.code}] Details [${err.details}]`);
-          } else {
-            reject(`Reboot failed! DeviceStatus: code [${status.getCode()}] Msg [${status.getMessage()}]`);
+      this.aceManager.grpcClient.reset(
+        new Empty(),
+        (err: grpc.ServiceError, status: huddly.DeviceStatus) => {
+          if (err || status.getCode() !== huddly.StatusCode.OK) {
+            this.emit(CameraEvents.UPGRADE_FAILED, err);
+            Logger.error(`Reboot failed!`, err, AceUpgrader.name);
+            if (status == undefined) {
+              reject(`Reboot failed! Error: code [${err.code}] Details [${err.details}]`);
+            } else {
+              reject(
+                `Reboot failed! DeviceStatus: code [${status.getCode()}] Msg [${status.getMessage()}]`
+              );
+            }
+            return;
           }
-          return;
+          this.aceManager.closeConnection();
+          resolve();
         }
-        this.aceManager.closeConnection();
-        resolve();
-      });
+      );
     });
   }
 

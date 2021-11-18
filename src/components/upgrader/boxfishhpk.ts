@@ -1,5 +1,8 @@
 import crypto from 'crypto';
-import IBoxfishUpgraderFile, { IMAGE_TYPES, FLASH_ADDR_LOCATION } from './../../interfaces/IBoxfishUpgraderFile';
+import IBoxfishUpgraderFile, {
+  IMAGE_TYPES,
+  FLASH_ADDR_LOCATION,
+} from './../../interfaces/IBoxfishUpgraderFile';
 
 const MARKER = Buffer.from('\0\n--97da1ea4-803a-4979-8e5d-f2aaa0799f4d--\n');
 
@@ -21,8 +24,8 @@ class BoxfishHpk implements IBoxfishUpgraderFile {
     this._headerLen = signPos + signHexLen + 1;
     this.header = JSON.parse(this._buf.slice(0, markerPos).toString('utf8'));
 
-    this.listFiles().forEach(f => {
-      this.getData((<IMAGE_TYPES>f));
+    this.listFiles().forEach((f) => {
+      this.getData(<IMAGE_TYPES>f);
     });
   }
 
@@ -41,7 +44,7 @@ class BoxfishHpk implements IBoxfishUpgraderFile {
   getImage(imageType: IMAGE_TYPES): any {
     return {
       ...this.header.files[imageType],
-      data: this.getData(imageType)
+      data: this.getData(imageType),
     };
   }
 

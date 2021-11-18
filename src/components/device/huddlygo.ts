@@ -50,7 +50,8 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     transport: IUsbTransport,
     uvcControlInterface: any,
     hidAPI: any,
-    cameraDiscoveryEmitter: EventEmitter) {
+    cameraDiscoveryEmitter: EventEmitter
+  ) {
     super(uvcCameraInstance, uvcControlInterface);
 
     this.transport = transport;
@@ -81,9 +82,12 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
       } catch (e) {
         err = e;
         Logger.error(
-          `Failed parsing/reading the software version on GO! Retry Attempts left: ${fetchAttemts - retryAttempts}`,
+          `Failed parsing/reading the software version on GO! Retry Attempts left: ${
+            fetchAttemts - retryAttempts
+          }`,
           e,
-          'HuddlyGO API');
+          'HuddlyGO API'
+        );
       }
     } while (fetchAttemts < retryAttempts);
     Logger.error('Unable to retrieve software version from camera!', err, 'HuddlyGO API');
@@ -98,7 +102,7 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     status.version = this.softwareVersion.mv2_app;
     status.vendorId = this['vendorId'] || HUDDLY_VID;
     status.name = this.productName;
-    status.productId =  this['productId'] || HUDDLY_GO_PID;
+    status.productId = this['productId'] || HUDDLY_GO_PID;
     //    status.uptime = await this.uptime();
     return status;
   }
@@ -170,13 +174,27 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     const minCurrent = 0;
     const voltageTip = 'Check your cables';
 
-    const voltage = new MinMaxDiagnosticsMessage('Voltage',
-      minVoltage, maxVoltage, powerUsage.voltage.min,
-      powerUsage.voltage.max, powerUsage.voltage.curr, voltageTip, voltageTip);
+    const voltage = new MinMaxDiagnosticsMessage(
+      'Voltage',
+      minVoltage,
+      maxVoltage,
+      powerUsage.voltage.min,
+      powerUsage.voltage.max,
+      powerUsage.voltage.curr,
+      voltageTip,
+      voltageTip
+    );
 
-    const current = new MinMaxDiagnosticsMessage('Current',
-      minCurrent, maxCurrent, powerUsage.current.min,
-      powerUsage.current.max, powerUsage.current.curr, voltageTip, voltageTip);
+    const current = new MinMaxDiagnosticsMessage(
+      'Current',
+      minCurrent,
+      maxCurrent,
+      powerUsage.current.min,
+      powerUsage.current.max,
+      powerUsage.current.curr,
+      voltageTip,
+      voltageTip
+    );
     return [voltage, current];
   }
 
@@ -291,7 +309,10 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
   }
 
   getFaceBasedExposureControl(): ICnnControl {
-    Logger.warn('Attempting to call method [getFaceBasedExposureControl] on HuddlyGO', 'HuddlyGO API');
+    Logger.warn(
+      'Attempting to call method [getFaceBasedExposureControl] on HuddlyGO',
+      'HuddlyGO API'
+    );
     throw new Error('FaceBased  is not supported on Huddly GO cameras!');
   }
 

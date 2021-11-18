@@ -38,7 +38,8 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     uvcCameraInstance: any,
     transport: IUsbTransport,
     uvcControlInterface: any,
-    cameraDiscoveryEmitter: EventEmitter) {
+    cameraDiscoveryEmitter: EventEmitter
+  ) {
     super(uvcCameraInstance, uvcControlInterface);
 
     this.transport = transport;
@@ -75,7 +76,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
       version: this.extractSemanticSoftwareVersion(info.softwareVersion),
       location: this['location'],
       name: this.productName,
-      ...info
+      ...info,
     };
     if (this['pathName'] !== undefined) {
       status.pathName = this['pathName'];
@@ -94,7 +95,11 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     }
   }
 
-  async getErrorLog(timeout: number = 60000, retry: number = 1, allowLegacy: boolean = true): Promise<any> {
+  async getErrorLog(
+    timeout: number = 60000,
+    retry: number = 1,
+    allowLegacy: boolean = true
+  ): Promise<any> {
     return this.api.getErrorLog(timeout, retry, allowLegacy);
   }
 
@@ -103,22 +108,18 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async getPowerUsage(): Promise<any> {
-    const response = await this.api.sendAndReceiveMessagePack('',
-      {
-        send: 'get_power',
-        receive: 'get_power_reply'
-      }
-    );
+    const response = await this.api.sendAndReceiveMessagePack('', {
+      send: 'get_power',
+      receive: 'get_power_reply',
+    });
     return response;
   }
 
   async getTemperature(): Promise<any> {
-    const response = await this.api.sendAndReceiveMessagePack('',
-      {
-        send: 'get_temperature',
-        receive: 'get_temperature_reply'
-      }
-    );
+    const response = await this.api.sendAndReceiveMessagePack('', {
+      send: 'get_temperature',
+      receive: 'get_temperature_reply',
+    });
     return response;
   }
 
@@ -129,36 +130,51 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     const minCurrent = 0;
     const voltageTip = 'Check your cables';
 
-
     let diagnostics = [];
     if (powerUsage.voltage) {
-      const voltage = new MinMaxDiagnosticsMessage('Voltage',
-        minVoltage, maxVoltage, powerUsage.voltage.min,
-        powerUsage.voltage.max, powerUsage.voltage.curr, voltageTip, voltageTip);
+      const voltage = new MinMaxDiagnosticsMessage(
+        'Voltage',
+        minVoltage,
+        maxVoltage,
+        powerUsage.voltage.min,
+        powerUsage.voltage.max,
+        powerUsage.voltage.curr,
+        voltageTip,
+        voltageTip
+      );
 
-      diagnostics  = [...diagnostics, voltage];
+      diagnostics = [...diagnostics, voltage];
     }
 
     if (powerUsage.current) {
-      const current = new MinMaxDiagnosticsMessage('Current',
-        minCurrent, maxCurrent, powerUsage.current.min,
-        powerUsage.current.max, powerUsage.current.curr, voltageTip, voltageTip);
+      const current = new MinMaxDiagnosticsMessage(
+        'Current',
+        minCurrent,
+        maxCurrent,
+        powerUsage.current.min,
+        powerUsage.current.max,
+        powerUsage.current.curr,
+        voltageTip,
+        voltageTip
+      );
 
-        diagnostics  = [...diagnostics, current];
+      diagnostics = [...diagnostics, current];
     }
 
     return diagnostics;
   }
 
   async getDiagnosticsInfo(): Promise<Array<DiagnosticsMessage>> {
-    const message = await this.api.sendAndReceiveMessagePack('', {
-      send: 'diagnostics/get_info',
-      receive: 'diagnostics/get_info_reply',
-    }, 3000);
+    const message = await this.api.sendAndReceiveMessagePack(
+      '',
+      {
+        send: 'diagnostics/get_info',
+        receive: 'diagnostics/get_info_reply',
+      },
+      3000
+    );
 
-    return [
-      new DiagnosticsMessageData('USBMODE', 'USB Ok', message.usb),
-    ];
+    return [new DiagnosticsMessageData('USBMODE', 'USB Ok', message.usb)];
   }
 
   async getDiagnostics(): Promise<Array<DiagnosticsMessage>> {
@@ -208,7 +224,11 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     });
   }
 
-  async createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager, createNewUpgrader: boolean) {
+  async createAndRunUpgrade(
+    opts: UpgradeOpts,
+    deviceManager: IDeviceManager,
+    createNewUpgrader: boolean
+  ) {
     let upgrader: IDeviceUpgrader = opts.upgrader;
     if (!upgrader || createNewUpgrader) {
       upgrader = await createBoxfishUpgrader(deviceManager, this.discoveryEmitter);
@@ -216,7 +236,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     upgrader.init(opts);
     upgrader.start();
     return new Promise<void>((resolve, reject) => {
-      upgrader.once(CameraEvents.UPGRADE_COMPLETE, async deviceManager => {
+      upgrader.once(CameraEvents.UPGRADE_COMPLETE, async (deviceManager) => {
         const upgradeIsOk = await upgrader.upgradeIsValid();
         if (upgradeIsOk) {
           resolve();
@@ -224,7 +244,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
           reject({
             message: 'Upgrade status is not ok, run again',
             runAgain: true,
-            deviceManager
+            deviceManager,
           });
         }
       });
@@ -249,7 +269,10 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
         } catch (e) {
           if (e.runAgain && upgradeAttempts < MAX_UPGRADE_ATTEMPT) {
             upgradeAttempts += 1;
-            Logger.warn(`Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`, 'Boxfish API');
+            Logger.warn(
+              `Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`,
+              'Boxfish API'
+            );
             tryRunAgainOnFailure(e.deviceManager);
           } else {
             Logger.error('Failed performing a camera upgrade', e, 'Boxfish API');
@@ -262,13 +285,13 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async upgradeFsbl(opts: UpgradeOpts): Promise<any> {
-      try {
-        await this.createAndRunFsblUpgrade(opts, this);
-        Promise.resolve();
-      } catch (e) {
-        Logger.error('Failed performing a FSBL camera upgrade', e, 'Boxfish API');
-        Promise.reject(e);
-      }
+    try {
+      await this.createAndRunFsblUpgrade(opts, this);
+      Promise.resolve();
+    } catch (e) {
+      Logger.error('Failed performing a FSBL camera upgrade', e, 'Boxfish API');
+      Promise.reject(e);
+    }
   }
 
   getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
@@ -284,12 +307,10 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
   }
 
   async getState(): Promise<any> {
-    const response = await this.api.sendAndReceiveMessagePack('',
-      {
-        send: 'camera/get_state',
-        receive: 'camera/get_state_reply'
-      }
-    );
+    const response = await this.api.sendAndReceiveMessagePack('', {
+      send: 'camera/get_state',
+      receive: 'camera/get_state_reply',
+    });
     return response;
   }
 

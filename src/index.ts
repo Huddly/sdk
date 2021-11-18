@@ -200,11 +200,11 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
-    this.deviceDiscovery.on(CameraEvents.ATTACH, async d => {
+    this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) => {
       if (d && (!this.targetSerial || this.targetSerial === d.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
           () =>
-            new Promise<void>(async resolve => {
+            new Promise<void>(async (resolve) => {
               try {
                 const cameraManager: IDeviceManager = await this._deviceFactory.getDevice(
                   d.productId,
@@ -217,11 +217,13 @@ class HuddlySdk extends EventEmitter {
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
-                const errorMsg: string = `No transport implementation supported for ${JSON.stringify(d)}`;
+                const errorMsg: string = `No transport implementation supported for ${JSON.stringify(
+                  d
+                )}`;
                 Logger.warn(errorMsg, HuddlySdk.name);
                 const eventPayload = {
                   device: d,
-                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT)
+                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT),
                 };
                 this.emitter.emit(CameraEvents.ERROR, eventPayload);
                 resolve();
@@ -231,11 +233,11 @@ class HuddlySdk extends EventEmitter {
       }
     });
 
-    this.deviceDiscovery.on(CameraEvents.DETACH, async d => {
+    this.deviceDiscovery.on(CameraEvents.DETACH, async (d) => {
       if (d !== undefined && (!this.targetSerial || this.targetSerial === d)) {
         await this.locksmith.executeAsyncFunction(
           () =>
-            new Promise<void>(resolve => {
+            new Promise<void>((resolve) => {
               this.emitter.emit(CameraEvents.DETACH, d);
               resolve();
             })
@@ -328,9 +330,7 @@ class HuddlySdk extends EventEmitter {
    * @param {IServiceOpts} [serviceOpts] - Service options for initializing and setting up the service communication
    * @returns A the new instance of the huddly service implementation after the setup stage has been completed
    */
-  static async getService(
-    serviceOpts: IServiceOpts = {}
-  ): Promise<IHuddlyService> {
+  static async getService(serviceOpts: IServiceOpts = {}): Promise<IHuddlyService> {
     const service: IHuddlyService = ServiceFactory.getService(serviceOpts);
     await service.init();
     return service;

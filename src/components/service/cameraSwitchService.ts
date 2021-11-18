@@ -1,6 +1,12 @@
 import IHuddlyService from '../../interfaces/IHuddlyService';
 import IServiceOpts from '../../interfaces/IServiceOpts';
-import { CameraInfo, CameraPairingState, FwUpdateSchedule, FwUpdateScheduleStatus, CameraInfoWrite } from '../../interfaces/ICameraSwitchModels';
+import {
+  CameraInfo,
+  CameraPairingState,
+  FwUpdateSchedule,
+  FwUpdateScheduleStatus,
+  CameraInfoWrite,
+} from '../../interfaces/ICameraSwitchModels';
 import Logger from '../../utilitis/logger';
 
 import * as switchservice from '@huddly/camera-switch-proto/lib/api/service_pb';
@@ -76,7 +82,7 @@ export default class CameraSwitchService implements IHuddlyService {
     );
 
     return new Promise<void>((resolve, reject) =>
-      this.grpcClient.waitForReady(deadline, error => {
+      this.grpcClient.waitForReady(deadline, (error) => {
         if (error) {
           Logger.error(
             `Connection failed with GPRC server on ACE!`,
@@ -107,7 +113,7 @@ export default class CameraSwitchService implements IHuddlyService {
     serviceCamInfo.setName(camInfo.name);
     serviceCamInfo.setIp(camInfo.ip);
     const setterActionStr: string = Object.keys(ServiceCameraActions).find(
-      key => ServiceCameraActions[key] === action
+      (key) => ServiceCameraActions[key] === action
     );
 
     return new Promise((resolve, reject) => {
@@ -147,7 +153,7 @@ export default class CameraSwitchService implements IHuddlyService {
    */
   serviceCameraGetter(action: ServiceCameraActions): Promise<CameraInfo> {
     const getterActionStr: string = Object.keys(ServiceCameraActions).find(
-      key => ServiceCameraActions[key] === action
+      (key) => ServiceCameraActions[key] === action
     );
     return new Promise((resolve, reject) => {
       const getterCallback = (err: grpc.ServiceError, device: switchservice.CameraInfo) => {
@@ -166,7 +172,7 @@ export default class CameraSwitchService implements IHuddlyService {
           name: device.getName(),
           version: device.getVersion(),
           version_state: this.versionStateToString(device),
-          pairing_state: this.pairingStateToStringArray(device.getPairingStatesList())
+          pairing_state: this.pairingStateToStringArray(device.getPairingStatesList()),
         });
       };
 
@@ -297,13 +303,21 @@ export default class CameraSwitchService implements IHuddlyService {
    * @param pairingStateList List of proto CameraPairingState values
    * @returns A string array representing the keys for the different Pairing states of the camera
    */
-  pairingStateToStringArray(pairingStateList: Array<switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]>): Array<string> {
+  pairingStateToStringArray(
+    pairingStateList: Array<
+      switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]
+    >
+  ): Array<string> {
     const pairingStates: Array<string> = [];
-    pairingStateList.forEach(state => {
+    pairingStateList.forEach((state) => {
       // Check for unknown pairing states
       if (CameraPairingState[state] == undefined) {
         // Check for duplicates
-        if (!pairingStates.includes(CameraPairingState[switchservice.CameraPairingState.UNKNOWNPAIRINGSTATE])) {
+        if (
+          !pairingStates.includes(
+            CameraPairingState[switchservice.CameraPairingState.UNKNOWNPAIRINGSTATE]
+          )
+        ) {
           pairingStates.push(CameraPairingState[CameraPairingState.UnknownPairingState]);
         }
       } else {
@@ -323,10 +337,10 @@ export default class CameraSwitchService implements IHuddlyService {
    * @returns A string representation of the device version state
    */
   versionStateToString(device: switchservice.CameraInfo): string {
-    return Object.keys(switchservice.VersionState)
-      .find(state => switchservice.VersionState[state] == device.getVersionState());
+    return Object.keys(switchservice.VersionState).find(
+      (state) => switchservice.VersionState[state] == device.getVersionState()
+    );
   }
-
 
   /**
    * @ignore
@@ -334,15 +348,17 @@ export default class CameraSwitchService implements IHuddlyService {
    * @param cameraList List instance of `@huddly/camera-switch-proto/CameraInfo` objects to be converted into local `CameraInfo` list representation
    * @returns A list of local `CameraInfo` objects converted from `@huddly/camera-switch-proto/CameraInfo`
    */
-  protoCameraInfoListToLocalCameraInfoList(cameraList: Array<switchservice.CameraInfo>): Array<CameraInfo> {
+  protoCameraInfoListToLocalCameraInfoList(
+    cameraList: Array<switchservice.CameraInfo>
+  ): Array<CameraInfo> {
     const newConveredCameraList: Array<CameraInfo> = new Array<CameraInfo>();
-    cameraList.forEach(device => {
+    cameraList.forEach((device) => {
       newConveredCameraList.push({
         ip: device.getIp(),
         name: device.getName(),
         version: device.getVersion(),
         version_state: this.versionStateToString(device),
-        pairing_state: this.pairingStateToStringArray(device.getPairingStatesList())
+        pairing_state: this.pairingStateToStringArray(device.getPairingStatesList()),
       });
     });
     return newConveredCameraList;
@@ -354,20 +370,25 @@ export default class CameraSwitchService implements IHuddlyService {
    */
   getAvailableCameras(): Promise<Array<CameraInfo>> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getAvailableCameras(new Empty(), (err: grpc.ServiceError, availableCameras: switchservice.AvailableCameras) => {
-        if (err) {
-          Logger.error(
-            `Unable to get available cameras from the service. Error: ${err.details}`,
-            err.stack,
-            CameraSwitchService.name
-          );
-          reject(err.details);
-          return;
-        }
+      this.grpcClient.getAvailableCameras(
+        new Empty(),
+        (err: grpc.ServiceError, availableCameras: switchservice.AvailableCameras) => {
+          if (err) {
+            Logger.error(
+              `Unable to get available cameras from the service. Error: ${err.details}`,
+              err.stack,
+              CameraSwitchService.name
+            );
+            reject(err.details);
+            return;
+          }
 
-        const resolveList: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(availableCameras.getCameraListList());
-        resolve(resolveList);
-      });
+          const resolveList: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(
+            availableCameras.getCameraListList()
+          );
+          resolve(resolveList);
+        }
+      );
     });
   }
 
@@ -378,17 +399,25 @@ export default class CameraSwitchService implements IHuddlyService {
    * @param states A comma separated string of CameraPairingState keys
    * @returns A list of CameraPairingState objects represented as `repeated CameraPairingState` type on the service proto messages
    */
-  pairingStateKeysToValues(states: string): Array<switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]> {
-    const pairStateEnumValues: Array<switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]> = [];
-    const allowedCameraPairingStates: string[] = Object.keys(CameraPairingState).filter(x => !(parseInt(x) >= 0));
-    states.split(',').forEach(state => {
+  pairingStateKeysToValues(
+    states: string
+  ): Array<switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]> {
+    const pairStateEnumValues: Array<
+      switchservice.CameraPairingStateMap[keyof switchservice.CameraPairingStateMap]
+    > = [];
+    const allowedCameraPairingStates: string[] = Object.keys(CameraPairingState).filter(
+      (x) => !(parseInt(x) >= 0)
+    );
+    states.split(',').forEach((state) => {
       if (allowedCameraPairingStates.includes(state)) {
         // Avoid adding duplicates
         if (!pairStateEnumValues.includes(CameraPairingState[state])) {
           pairStateEnumValues.push(CameraPairingState[state]);
         }
       } else {
-        throw new Error(`Unknown CameraPairingState [${state}]! Allowed States: ${allowedCameraPairingStates}`);
+        throw new Error(
+          `Unknown CameraPairingState [${state}]! Allowed States: ${allowedCameraPairingStates}`
+        );
       }
     });
     return pairStateEnumValues;
@@ -404,36 +433,43 @@ export default class CameraSwitchService implements IHuddlyService {
     request.setDaysOfWeek(newSchedule.daysOfWeek);
     request.setHourOfDay(newSchedule.hour);
     request.setStartDelayMaxSeconds(newSchedule.maxStartDelay);
-    request.setValidPairingStatesList(this.pairingStateKeysToValues(newSchedule.validPairingStates));
+    request.setValidPairingStatesList(
+      this.pairingStateKeysToValues(newSchedule.validPairingStates)
+    );
     request.setDisabled(newSchedule.disabled == undefined ? false : newSchedule.disabled);
 
     return new Promise((resolve, reject) => {
-      this.grpcClient.setFwUpdateSchedule(request, (err: grpc.ServiceError, status: switchservice.FwUpdateScheduleStatus) => {
-        if (err) {
-          Logger.error(
-            `Unable to set new fw update schedule. Error: ${err.details}`,
-            err.stack,
-            CameraSwitchService.name
-          );
-          reject(err.details);
-          return;
-        }
-        if (status.getCode() != switchservice.FwUpdateScheduleStatusCodes.SUCCESS) {
-          Logger.error(
-            `Server reported error when setting new fw update schedule`,
-            undefined,
-            CameraSwitchService.name
-          );
-          reject(status.getMessage());
-          return;
-        }
+      this.grpcClient.setFwUpdateSchedule(
+        request,
+        (err: grpc.ServiceError, status: switchservice.FwUpdateScheduleStatus) => {
+          if (err) {
+            Logger.error(
+              `Unable to set new fw update schedule. Error: ${err.details}`,
+              err.stack,
+              CameraSwitchService.name
+            );
+            reject(err.details);
+            return;
+          }
+          if (status.getCode() != switchservice.FwUpdateScheduleStatusCodes.SUCCESS) {
+            Logger.error(
+              `Server reported error when setting new fw update schedule`,
+              undefined,
+              CameraSwitchService.name
+            );
+            reject(status.getMessage());
+            return;
+          }
 
-        const affectedCameras: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(status.getAffectedCamerasList());
-        resolve({
-          message: status.getMessage(),
-          affectedCameras
-        });
-      });
+          const affectedCameras: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(
+            status.getAffectedCamerasList()
+          );
+          resolve({
+            message: status.getMessage(),
+            affectedCameras,
+          });
+        }
+      );
     });
   }
 
@@ -443,24 +479,29 @@ export default class CameraSwitchService implements IHuddlyService {
    */
   getFwUpdateSchedule(): Promise<FwUpdateSchedule> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.getFwUpdateSchedule(new Empty(), (err: grpc.ServiceError, schedule: switchservice.FwUpdateSchedule) => {
-        if (err) {
-          Logger.error(
-            `Unable to retrieve fw update schedule. Error: ${err.details}`,
-            err.stack,
-            CameraSwitchService.name
-          );
-          reject(err.details);
-          return;
+      this.grpcClient.getFwUpdateSchedule(
+        new Empty(),
+        (err: grpc.ServiceError, schedule: switchservice.FwUpdateSchedule) => {
+          if (err) {
+            Logger.error(
+              `Unable to retrieve fw update schedule. Error: ${err.details}`,
+              err.stack,
+              CameraSwitchService.name
+            );
+            reject(err.details);
+            return;
+          }
+          resolve({
+            daysOfWeek: schedule.getDaysOfWeek(),
+            validPairingStates: this.pairingStateToStringArray(
+              schedule.getValidPairingStatesList()
+            ).join(','),
+            disabled: schedule.getDisabled(),
+            hour: schedule.getHourOfDay(),
+            maxStartDelay: schedule.getStartDelayMaxSeconds(),
+          });
         }
-        resolve({
-          daysOfWeek: schedule.getDaysOfWeek(),
-          validPairingStates: this.pairingStateToStringArray(schedule.getValidPairingStatesList()).join(','),
-          disabled: schedule.getDisabled(),
-          hour: schedule.getHourOfDay(),
-          maxStartDelay: schedule.getStartDelayMaxSeconds(),
-        });
-      });
+      );
     });
   }
 
@@ -475,32 +516,37 @@ export default class CameraSwitchService implements IHuddlyService {
     request.setIp(cameraToUpgrade.ip);
     request.setName(cameraToUpgrade.name);
     return new Promise((resolve, reject) => {
-      this.grpcClient.scheduleFwUpdate(request, (err: grpc.ServiceError, status: switchservice.FwUpdateScheduleStatus) => {
-        if (err) {
-          Logger.error(
-            `Unable to schedule upgrade for camera (Ip: ${cameraToUpgrade.ip}, Name: ${cameraToUpgrade.name})`,
-            err.stack,
-            CameraSwitchService.name
-          );
-          reject(err.details);
-          return;
-        }
-        if (status.getCode() != switchservice.FwUpdateScheduleStatusCodes.SUCCESS) {
-          Logger.error(
-            `Unable to schedule upgrade for camera (Ip: ${cameraToUpgrade.ip}, Name: ${cameraToUpgrade.name})`,
-            undefined,
-            CameraSwitchService.name
-          );
-          reject(status.getMessage());
-          return;
-        }
+      this.grpcClient.scheduleFwUpdate(
+        request,
+        (err: grpc.ServiceError, status: switchservice.FwUpdateScheduleStatus) => {
+          if (err) {
+            Logger.error(
+              `Unable to schedule upgrade for camera (Ip: ${cameraToUpgrade.ip}, Name: ${cameraToUpgrade.name})`,
+              err.stack,
+              CameraSwitchService.name
+            );
+            reject(err.details);
+            return;
+          }
+          if (status.getCode() != switchservice.FwUpdateScheduleStatusCodes.SUCCESS) {
+            Logger.error(
+              `Unable to schedule upgrade for camera (Ip: ${cameraToUpgrade.ip}, Name: ${cameraToUpgrade.name})`,
+              undefined,
+              CameraSwitchService.name
+            );
+            reject(status.getMessage());
+            return;
+          }
 
-        const affectedCameras: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(status.getAffectedCamerasList());
-        resolve({
-          message: status.getMessage(),
-          affectedCameras
-        });
-      });
+          const affectedCameras: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(
+            status.getAffectedCamerasList()
+          );
+          resolve({
+            message: status.getMessage(),
+            affectedCameras,
+          });
+        }
+      );
     });
   }
 
@@ -510,32 +556,37 @@ export default class CameraSwitchService implements IHuddlyService {
    */
   scheduleFwUpdateAll(): Promise<FwUpdateScheduleStatus> {
     return new Promise((resolve, reject) => {
-      this.grpcClient.scheduleFwUpdateAll(new Empty(), (err: grpc.ServiceError, status: switchservice.FwUpdateScheduleStatus) => {
-        if (err) {
-          Logger.error(
-            `Unable to schedule fw update on all connected cameras! Error: ${err.details}`,
-            err.stack,
-            CameraSwitchService.name
-          );
-          reject(err.details);
-          return;
-        }
-        if (status.getCode() != switchservice.FwUpdateScheduleStatusCodes.SUCCESS) {
-          Logger.error(
-            'Unable to schedule fw update on all connected cameras!',
-            undefined,
-            CameraSwitchService.name
-          );
-          reject(status.getMessage());
-          return;
-        }
+      this.grpcClient.scheduleFwUpdateAll(
+        new Empty(),
+        (err: grpc.ServiceError, status: switchservice.FwUpdateScheduleStatus) => {
+          if (err) {
+            Logger.error(
+              `Unable to schedule fw update on all connected cameras! Error: ${err.details}`,
+              err.stack,
+              CameraSwitchService.name
+            );
+            reject(err.details);
+            return;
+          }
+          if (status.getCode() != switchservice.FwUpdateScheduleStatusCodes.SUCCESS) {
+            Logger.error(
+              'Unable to schedule fw update on all connected cameras!',
+              undefined,
+              CameraSwitchService.name
+            );
+            reject(status.getMessage());
+            return;
+          }
 
-        const affectedCameras: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(status.getAffectedCamerasList());
-        resolve({
-          message: status.getMessage(),
-          affectedCameras
-        });
-      });
+          const affectedCameras: Array<CameraInfo> = this.protoCameraInfoListToLocalCameraInfoList(
+            status.getAffectedCamerasList()
+          );
+          resolve({
+            message: status.getMessage(),
+            affectedCameras,
+          });
+        }
+      );
     });
   }
 

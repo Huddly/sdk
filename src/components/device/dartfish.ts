@@ -21,7 +21,8 @@ export default class DartFish extends Boxfish {
     uvcCameraInstance: any,
     transport: IUsbTransport,
     uvcControlInterface: any,
-    cameraDiscoveryEmitter: EventEmitter) {
+    cameraDiscoveryEmitter: EventEmitter
+  ) {
     super(uvcCameraInstance, transport, uvcControlInterface, cameraDiscoveryEmitter);
   }
 
@@ -31,12 +32,18 @@ export default class DartFish extends Boxfish {
   }
 
   getFaceBasedExposureControl(): ICnnControl {
-    Logger.warn('Attempting to call method [getFaceBasedExposureControl] on Huddly Canvas', 'Huddly Canvas API');
+    Logger.warn(
+      'Attempting to call method [getFaceBasedExposureControl] on Huddly Canvas',
+      'Huddly Canvas API'
+    );
     throw new Error('Method not implemented/supported.');
   }
 
   getAutozoomControl(): ICnnControl {
-    Logger.warn('Attempting to call method [getAutozoomControl] on Huddly Canvas', 'Huddly Canvas API');
+    Logger.warn(
+      'Attempting to call method [getAutozoomControl] on Huddly Canvas',
+      'Huddly Canvas API'
+    );
     throw new Error('Method not implemented/supported.');
   }
 
@@ -51,18 +58,24 @@ export default class DartFish extends Boxfish {
   }
 
   async setInterpolationParams() {
-    Logger.warn('Attempting to call method [setInterpolationParams] on Huddly Canvas', 'Huddly Canvas API');
+    Logger.warn(
+      'Attempting to call method [setInterpolationParams] on Huddly Canvas',
+      'Huddly Canvas API'
+    );
     throw new Error('Method not implemented/supported.');
   }
 
   async getInterpolationParams(): Promise<InterpolationParams> {
-    Logger.warn('Attempting to call method [getInterpolationParams] on Huddly Canvas', 'Huddly Canvas API');
+    Logger.warn(
+      'Attempting to call method [getInterpolationParams] on Huddly Canvas',
+      'Huddly Canvas API'
+    );
     throw new Error('Method not implemented/supported.');
   }
 
   disableCanvasEnhanceMode() {
     const payload = {
-      'camera-mode': 'canvas-no-enhance'
+      'camera-mode': 'canvas-no-enhance',
     };
     return new Promise<void>(async (resolve, reject) => {
       await this.api.setProductInfo(payload);
@@ -77,7 +90,7 @@ export default class DartFish extends Boxfish {
 
   enableCanvasEnhanceMode() {
     const payload = {
-      'camera-mode': 'canvas'
+      'camera-mode': 'canvas',
     };
     return new Promise<void>(async (resolve, reject) => {
       await this.api.setProductInfo(payload);
