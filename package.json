@@ -86,7 +86,7 @@
     "nock": "^12.0.3",
     "nyc": "~15.0.1",
     "pre-commit": "~1.2.2",
-    "prettier": "^1.19.1",
+    "prettier": "^2.4.1",
     "rimraf": "^3.0.2",
     "sinon": "^7.5.0",
     "sinon-chai": "~3.5.0",
