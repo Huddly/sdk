@@ -61,11 +61,11 @@ export default class Api {
           this.transport.setEventLoopReadSpeed(1);
           this.transport
             .receiveMessage(commands.receive, timeout)
-            .then(reply => {
+            .then((reply) => {
               this.transport.setEventLoopReadSpeed();
               resolve(reply);
             })
-            .catch(e => {
+            .catch((e) => {
               this.transport.setEventLoopReadSpeed();
               reject(e);
             });
@@ -111,7 +111,7 @@ export default class Api {
     timeout: number = 60000
   ): Promise<any> {
     const clearListeners = () => {
-      subscribedMessages.forEach(msg => {
+      subscribedMessages.forEach((msg) => {
         this.transport.removeAllListeners(msg);
         this.transport.setEventLoopReadSpeed();
         Logger.debug('Clearing out all file transfer listeners', 'SDK API');
@@ -131,7 +131,7 @@ export default class Api {
 
       Logger.debug('Setting up async_file_transfer/* listeners', 'SDK API');
       if (subscribedMessages.indexOf('async_file_transfer/data') >= 0) {
-        this.transport.on('async_file_transfer/data', async msgPacket => {
+        this.transport.on('async_file_transfer/data', async (msgPacket) => {
           this.transport.setEventLoopReadSpeed(1);
           await this.transport.write('async_file_transfer/data_reply');
           const bufferComposition = Buffer.concat([data, msgPacket.payload]);
@@ -140,7 +140,7 @@ export default class Api {
       }
 
       if (subscribedMessages.indexOf('async_file_transfer/receive') >= 0) {
-        this.transport.on('async_file_transfer/receive', async msgPacket => {
+        this.transport.on('async_file_transfer/receive', async (msgPacket) => {
           this.transport.setEventLoopReadSpeed(1);
           if (msgPacket.payload.length !== 4) {
             clearListeners();
@@ -156,7 +156,7 @@ export default class Api {
       }
 
       if (subscribedMessages.indexOf('async_file_transfer/done') >= 0) {
-        this.transport.on('async_file_transfer/done', async buffer => {
+        this.transport.on('async_file_transfer/done', async (buffer) => {
           clearListeners();
           clearTimeout(timeoutTimer);
           resolve(data);
@@ -164,7 +164,7 @@ export default class Api {
       }
 
       if (subscribedMessages.indexOf('async_file_transfer/timeout') >= 0) {
-        this.transport.on('async_file_transfer/timeout', async buffer => {
+        this.transport.on('async_file_transfer/timeout', async (buffer) => {
           clearListeners();
           clearTimeout(timeoutTimer);
           Logger.debug(
@@ -192,10 +192,10 @@ export default class Api {
       const transferRes = await this.withSubscribe(subscribeMsgs, async () => {
         return new Promise(async (resolve, reject) => {
           this.fileTransfer(data, subscribeMsgs)
-            .then(result => {
+            .then((result) => {
               resolve(result);
             })
-            .catch(reason => reject(reason));
+            .catch((reason) => reject(reason));
           const status = await this.sendAndReceive(
             command.send_data ? command.send_data : Buffer.alloc(0),
             command,
@@ -360,11 +360,11 @@ export default class Api {
           new Promise(async (resolve, reject) => {
             this.transport
               .receiveMessage('camctrl/uptime_reply')
-              .then(reply => {
+              .then((reply) => {
                 const uptimeSeconds = Api.decode(reply.payload, 'double');
                 resolve(uptimeSeconds);
               })
-              .catch(e => reject(e));
+              .catch((e) => reject(e));
             this.transport.write('camctrl/uptime');
           })
       );
@@ -399,10 +399,10 @@ export default class Api {
         async () => {
           return new Promise((resolve, reject) => {
             this.fileTransfer(Buffer.alloc(0), subscribeMsgs, timeout)
-              .then(result => {
+              .then((result) => {
                 resolve(result.toString('ascii'));
               })
-              .catch(reason => reject(reason));
+              .catch((reason) => reject(reason));
             Logger.debug('Sending "error_logger/read" message', 'SDK API');
             this.transport.write('error_logger/read');
           });
@@ -461,11 +461,11 @@ export default class Api {
           new Promise<void>(async (resolve, reject) => {
             this.transport
               .receiveMessage('error_logger/erase_done', timeout)
-              .then(reply => {
+              .then((reply) => {
                 Logger.debug('Done erasing error log', 'SDK API');
                 resolve();
               })
-              .catch(e => reject(e));
+              .catch((e) => reject(e));
             this.transport.write('error_logger/erase');
           }),
         true
@@ -522,7 +522,7 @@ export default class Api {
     const url = `http://huddlyreleaseserver.azurewebsites.net/releases/${releaseChannel}/latest/${device}`;
     return new Promise((resolve, reject) =>
       http
-        .get(url, res => {
+        .get(url, (res) => {
           const { statusCode } = res;
           const contentType = res.headers['content-type'];
 
@@ -548,7 +548,7 @@ export default class Api {
 
           res.setEncoding('utf8');
           let rawData = '';
-          res.on('data', chunk => {
+          res.on('data', (chunk) => {
             rawData += chunk;
           });
           res.on('end', () => {
@@ -559,7 +559,7 @@ export default class Api {
             resolve(parsedData[urlJsonKey]);
           });
         })
-        .on('error', e => {
+        .on('error', (e) => {
           reject(new Error(`Request error!\n ${e}`));
         })
     );

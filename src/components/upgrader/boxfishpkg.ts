@@ -1,13 +1,18 @@
 import JSZip from 'jszip';
 import crypto from 'crypto';
-import IBoxfishUpgraderFile, { IMAGE_TYPES, FLASH_ADDR_LOCATION } from './../../interfaces/IBoxfishUpgraderFile';
+import IBoxfishUpgraderFile, {
+  IMAGE_TYPES,
+  FLASH_ADDR_LOCATION,
+} from './../../interfaces/IBoxfishUpgraderFile';
 
 const SUPPORTED_MANIFEST_VERSIONS = Object.freeze([4, 5]);
 
 class BoxfishPackage implements IBoxfishUpgraderFile {
   zipFileBuffer: Buffer;
   files: any = {};
-  readonly supportedImageTypes: Array<string> = Object.keys(IMAGE_TYPES).map(key => IMAGE_TYPES[key]);
+  readonly supportedImageTypes: Array<string> = Object.keys(IMAGE_TYPES).map(
+    (key) => IMAGE_TYPES[key]
+  );
 
   constructor(zipFileBuffer: Buffer) {
     this.zipFileBuffer = zipFileBuffer;
@@ -26,7 +31,7 @@ class BoxfishPackage implements IBoxfishUpgraderFile {
       throw new Error('Could not parse the manifest json file');
     }
 
-    const isThis = x => x === jsonManifest.manifest_version;
+    const isThis = (x) => x === jsonManifest.manifest_version;
     if (!SUPPORTED_MANIFEST_VERSIONS.some(isThis)) {
       throw new Error(`Unsupported manifest version ${jsonManifest.manifest_version}`);
     }

@@ -88,7 +88,7 @@ export default class Detector extends EventEmitter implements IDetector {
 
     Logger.debug('Initializing detector class', 'IQ Detector');
     if (!this._detectionHandler) {
-      this._detectionHandler = detectionBuffer => {
+      this._detectionHandler = (detectionBuffer) => {
         const { predictions } = Api.decode(detectionBuffer.payload, 'messagepack');
         const convertedDetections = this.convertDetections(predictions, this._options);
         this.emit(CameraEvents.DETECTIONS, convertedDetections);
@@ -96,7 +96,7 @@ export default class Detector extends EventEmitter implements IDetector {
     }
 
     if (!this._framingHandler) {
-      this._framingHandler = frameBuffer => {
+      this._framingHandler = (frameBuffer) => {
         const frame = Api.decode(frameBuffer.payload, 'messagepack');
         this.emit(CameraEvents.FRAMING, frame);
         this._frame = frame;

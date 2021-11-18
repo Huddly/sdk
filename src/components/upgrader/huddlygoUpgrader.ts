@@ -13,14 +13,16 @@ const getBinaries = async (pkgAsBuffer) => {
   if (pkgAsBuffer === null) return {};
   const pkg = await JSZip.loadAsync(pkgAsBuffer);
 
-  const mv2AppFile = pkg.files[BINARY_APPLICATION] ? BINARY_APPLICATION : `bin/${BINARY_APPLICATION}`;
+  const mv2AppFile = pkg.files[BINARY_APPLICATION]
+    ? BINARY_APPLICATION
+    : `bin/${BINARY_APPLICATION}`;
   const mv2BootFile = pkg.files[BINARY_BOOT] ? BINARY_BOOT : `bin/${BINARY_BOOT}`;
 
   const mv2 = await pkg.files[mv2AppFile].async('nodebuffer');
   const mv2_boot = await pkg.files[mv2BootFile].async('nodebuffer');
   return {
     mv2,
-    mv2_boot
+    mv2_boot,
   };
 };
 
@@ -29,7 +31,7 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
   _cameraDiscovery: EventEmitter;
   _hidApi: any;
   options: any = {};
-  bootTimeout: number = (30 * 1000); // 30 seconds
+  bootTimeout: number = 30 * 1000; // 30 seconds
   private _upgradeStatus: UpgradeStatus;
 
   constructor(devInstance: any, cameraDiscovery: EventEmitter, hidAPI: any) {
@@ -84,7 +86,7 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
         return reject(msg);
       });
 
-      hidEventEmitter.on('UPGRADE_PROGRESS', msg => {
+      hidEventEmitter.on('UPGRADE_PROGRESS', (msg) => {
         Logger.info(msg, 'HuddlyGO Upgrader');
       });
 

@@ -22,7 +22,8 @@ export default class Dwarffish extends Boxfish {
     uvcCameraInstance: any,
     transport: IUsbTransport,
     uvcControlInterface: any,
-    cameraDiscoveryEmitter: EventEmitter) {
+    cameraDiscoveryEmitter: EventEmitter
+  ) {
     super(uvcCameraInstance, transport, uvcControlInterface, cameraDiscoveryEmitter);
   }
 
@@ -47,12 +48,18 @@ export default class Dwarffish extends Boxfish {
   }
 
   async setInterpolationParams() {
-    Logger.warn('Attempting to call method [setInterpolationParams] on Huddly ONE', 'HuddlyONE API');
+    Logger.warn(
+      'Attempting to call method [setInterpolationParams] on Huddly ONE',
+      'HuddlyONE API'
+    );
     throw new Error('Method not implemented/supported.');
   }
 
   async getInterpolationParams(): Promise<InterpolationParams> {
-    Logger.warn('Attempting to call method [getInterpolationParams] on Huddly ONE', 'HuddlyONE API');
+    Logger.warn(
+      'Attempting to call method [getInterpolationParams] on Huddly ONE',
+      'HuddlyONE API'
+    );
     throw new Error('Method not implemented/supported.');
   }
 

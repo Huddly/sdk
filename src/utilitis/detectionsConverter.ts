@@ -4,7 +4,7 @@ import Logger from './logger';
 const _filterDetections = (objectFilter: Array<String>, detections: Array<any>): Array<any> =>
   objectFilter.length === 0
     ? detections
-    : detections.filter(({ label }) => objectFilter.some(x => x === label));
+    : detections.filter(({ label }) => objectFilter.some((x) => x === label));
 
 interface ImageSize {
   width: number;

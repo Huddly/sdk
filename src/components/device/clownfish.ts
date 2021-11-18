@@ -17,7 +17,8 @@ export default class ClownFish extends Boxfish {
     uvcCameraInstance: any,
     transport: IUsbTransport,
     uvcControlInterface: any,
-    cameraDiscoveryEmitter: EventEmitter) {
+    cameraDiscoveryEmitter: EventEmitter
+  ) {
     super(uvcCameraInstance, transport, uvcControlInterface, cameraDiscoveryEmitter);
   }
 }

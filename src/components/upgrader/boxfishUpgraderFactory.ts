@@ -15,14 +15,17 @@ export const HPK_SUPPORT_VERSION = process.env.HPK_SUPPORT_VERSION || '1.2.1-0';
 
 export async function createBoxfishUpgrader(
   manager: IDeviceManager,
-  sdkDeviceDiscoveryEmitter: EventEmitter,
+  sdkDeviceDiscoveryEmitter: EventEmitter
 ): Promise<IDeviceUpgrader> {
   const info = await manager.getInfo();
   if (semver.gte(info.version, HPK_SUPPORT_VERSION)) {
     Logger.warn('Initializing HPKUpgrader', 'Boxfish Upgrader Factory');
     return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter);
   }
-  Logger.warn(`Camera version is ${info.version} which is not supported by HPK Upgrader. Using BoxfishUpgrader as fallback.`, 'Boxfish Upgrader Factory');
+  Logger.warn(
+    `Camera version is ${info.version} which is not supported by HPK Upgrader. Using BoxfishUpgrader as fallback.`,
+    'Boxfish Upgrader Factory'
+  );
   return new BoxfishUpgrader(manager, sdkDeviceDiscoveryEmitter);
 }
 

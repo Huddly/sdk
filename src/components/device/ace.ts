@@ -81,7 +81,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       );
 
       return new Promise<void>((resolve, reject) =>
-        this.devModeGrpcClient.waitForReady(deadline, error => {
+        this.devModeGrpcClient.waitForReady(deadline, (error) => {
           if (error) {
             Logger.error(`Connection failed with GPRC server on ACE. Reason: ${error}`, Ace.name);
             reject(error);
@@ -120,7 +120,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       const infoData = {
         ...this.wsdDevice.infoObject(),
         name: this.productName,
-        vendorId: HUDDLY_VID
+        vendorId: HUDDLY_VID,
       };
       // Get devive version
       this.grpcClient.getDeviceVersion(new Empty(), (err, deviceVersion: huddly.DeviceVersion) => {
@@ -132,15 +132,15 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         }
         infoData.version = deviceVersion.toObject().version;
         this.uptime()
-          .then(uptime => {
+          .then((uptime) => {
             infoData.uptime = Number(uptime.toFixed(2));
           })
           .then(() => this.getSlot())
-          .then(bootSlot => {
+          .then((bootSlot) => {
             infoData.slot = bootSlot;
             resolve(infoData);
           })
-          .catch(uptimeErr => {
+          .catch((uptimeErr) => {
             Logger.error('Unable to get device uptime!', uptimeErr.message, Ace.name);
             Logger.warn(uptimeErr.stack, Ace.name);
             reject(uptimeErr.message);
@@ -233,9 +233,9 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
           upgrader
             .doUpgrade()
             .then(() => resolve(undefined))
-            .catch(e => reject(e));
+            .catch((e) => reject(e));
         })
-        .catch(e => reject(e));
+        .catch((e) => reject(e));
     });
   }
 
@@ -294,7 +294,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         const _temperatures = await this._getTemperatures();
         const tempList = _temperatures.getTemperaturesList();
         if (key != undefined) {
-          tempList.forEach(temp => {
+          tempList.forEach((temp) => {
             if (temp.getName() === key) {
               resolve(temp.toObject());
             }
@@ -344,7 +344,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
           return;
         }
         const SlotStr: string = Object.keys(huddly.Slot).find(
-          key => huddly.Slot[key] === slot.getSlot()
+          (key) => huddly.Slot[key] === slot.getSlot()
         );
         resolve(SlotStr);
       });
@@ -560,53 +560,62 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     // Reset brightness
     return new Promise<void>(async (res, rej) => {
       try {
-
         if (excludeList.indexOf('brightness') === -1) {
           await new Promise<void>((resolve, reject) => {
-            this._getBrightness().then((brightness: huddly.Brightness) => {
-              this.setBrightness(brightness.getDefaultBrightness())
-              .then(() => resolve())
-              .catch(e => reject(e));
-            }).catch(e => reject(e));
+            this._getBrightness()
+              .then((brightness: huddly.Brightness) => {
+                this.setBrightness(brightness.getDefaultBrightness())
+                  .then(() => resolve())
+                  .catch((e) => reject(e));
+              })
+              .catch((e) => reject(e));
           });
         }
 
         if (excludeList.indexOf('saturation') === -1) {
           await new Promise<void>((resolve, reject) => {
-            this._getSaturation().then((saturation: huddly.Saturation) => {
-              this.setSaturation(saturation.getDefaultSaturation())
-              .then(() => resolve())
-              .catch(e => reject(e));
-            }).catch(e => reject(e));
+            this._getSaturation()
+              .then((saturation: huddly.Saturation) => {
+                this.setSaturation(saturation.getDefaultSaturation())
+                  .then(() => resolve())
+                  .catch((e) => reject(e));
+              })
+              .catch((e) => reject(e));
           });
         }
         if (excludeList.indexOf('pan') === -1) {
           await new Promise<void>((resolve, reject) => {
-            this.getSetting('pan').then((pan: Object) => {
-              this.setPanTiltZoom({ pan:  pan['default'] })
-              .then(() => resolve())
-              .catch(e => reject(e));
-            }).catch(e => reject(e));
+            this.getSetting('pan')
+              .then((pan: Object) => {
+                this.setPanTiltZoom({ pan: pan['default'] })
+                  .then(() => resolve())
+                  .catch((e) => reject(e));
+              })
+              .catch((e) => reject(e));
           });
         }
 
         if (excludeList.indexOf('tilt') === -1) {
           await new Promise<void>((resolve, reject) => {
-            this.getSetting('tilt').then((tilt: Object) => {
-              this.setPanTiltZoom({ tilt:  tilt['default'] })
-              .then(() => resolve())
-              .catch(e => reject(e));
-            }).catch(e => reject(e));
+            this.getSetting('tilt')
+              .then((tilt: Object) => {
+                this.setPanTiltZoom({ tilt: tilt['default'] })
+                  .then(() => resolve())
+                  .catch((e) => reject(e));
+              })
+              .catch((e) => reject(e));
           });
         }
 
         if (excludeList.indexOf('zoom') === -1) {
           await new Promise<void>((resolve, reject) => {
-            this.getSetting('zoom').then((zoom: Object) => {
-              this.setPanTiltZoom({ zoom:  zoom['default'] })
-              .then(() => resolve())
-              .catch(e => reject(e));
-            }).catch(e => reject(e));
+            this.getSetting('zoom')
+              .then((zoom: Object) => {
+                this.setPanTiltZoom({ zoom: zoom['default'] })
+                  .then(() => resolve())
+                  .catch((e) => reject(e));
+              })
+              .catch((e) => reject(e));
           });
         }
 
@@ -639,21 +648,21 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
             default: ptz.getDefaultpan(),
             value: ptz.getPan(),
             min: ptz.getRangepan().getMin(),
-            max: ptz.getRangepan().getMax()
+            max: ptz.getRangepan().getMax(),
           },
           tilt: {
             ...this._getDefaultParams(),
             default: ptz.getDefaulttilt(),
             value: ptz.getTilt(),
             min: ptz.getRangetilt().getMin(),
-            max: ptz.getRangetilt().getMax()
+            max: ptz.getRangetilt().getMax(),
           },
           zoom: {
             ...this._getDefaultParams(),
             default: ptz.getDefaultzoom(),
             value: ptz.getZoom(),
             min: ptz.getRangedzoom().getMin(),
-            max: ptz.getRangedzoom().getMax()
+            max: ptz.getRangedzoom().getMax(),
           },
         };
         resolve(ptzObj);
@@ -694,39 +703,41 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     const newPtz = new huddly.PTZ();
     return new Promise((resolve, reject) => {
       this._getPanTiltZoom()
-      .then((currentPtz: huddly.PTZ) => {
-        newPtz.setPan(currentPtz.getPan());
-        newPtz.setZoom(currentPtz.getZoom());
-        newPtz.setTilt(currentPtz.getTilt());
-        newPtz.setTrans(currentPtz.getTrans());
-      }).catch((e) => {
-        const defaultPan = newPtz.getDefaultpan();
-        const defaultTilt = newPtz.getDefaulttilt();
-        const defaultZoom = newPtz.getDefaultzoom();
-        newPtz.setPan(defaultPan);
-        newPtz.setTilt(defaultTilt);
-        newPtz.setZoom(defaultZoom);
-        newPtz.setTrans(0);
-      }).finally(() => {
-        const paramKeys = Object.keys(panTiltZoom);
-        if (paramKeys.includes('pan')) {
-          newPtz.setPan(panTiltZoom['pan']);
-        }
-        if (paramKeys.includes('tilt')) {
-          newPtz.setTilt(panTiltZoom['tilt']);
-        }
-        if (paramKeys.includes('zoom')) {
-          newPtz.setZoom(panTiltZoom['zoom']);
-        }
-        this.grpcClient.setPTZ(newPtz, (err, status: huddly.DeviceStatus) => {
-          if (err != undefined) {
-            this.handleError('Unable to set PTZ values!', err, reject);
-            return;
+        .then((currentPtz: huddly.PTZ) => {
+          newPtz.setPan(currentPtz.getPan());
+          newPtz.setZoom(currentPtz.getZoom());
+          newPtz.setTilt(currentPtz.getTilt());
+          newPtz.setTrans(currentPtz.getTrans());
+        })
+        .catch((e) => {
+          const defaultPan = newPtz.getDefaultpan();
+          const defaultTilt = newPtz.getDefaulttilt();
+          const defaultZoom = newPtz.getDefaultzoom();
+          newPtz.setPan(defaultPan);
+          newPtz.setTilt(defaultTilt);
+          newPtz.setZoom(defaultZoom);
+          newPtz.setTrans(0);
+        })
+        .finally(() => {
+          const paramKeys = Object.keys(panTiltZoom);
+          if (paramKeys.includes('pan')) {
+            newPtz.setPan(panTiltZoom['pan']);
           }
-          Logger.info(status.toString());
-          resolve();
+          if (paramKeys.includes('tilt')) {
+            newPtz.setTilt(panTiltZoom['tilt']);
+          }
+          if (paramKeys.includes('zoom')) {
+            newPtz.setZoom(panTiltZoom['zoom']);
+          }
+          this.grpcClient.setPTZ(newPtz, (err, status: huddly.DeviceStatus) => {
+            if (err != undefined) {
+              this.handleError('Unable to set PTZ values!', err, reject);
+              return;
+            }
+            Logger.info(status.toString());
+            resolve();
+          });
         });
-      });
     });
   }
 

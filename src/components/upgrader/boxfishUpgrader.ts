@@ -1,4 +1,3 @@
-
 import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import { EventEmitter } from 'events';
 import IDeviceManager from './../../interfaces/iDeviceManager';
@@ -25,7 +24,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
   _boxfishPackage: IBoxfishUpgraderFile;
   locksmith: Locksmith;
   options: any = {};
-  bootTimeout: number = (30 * 1000); // 30 seconds
+  bootTimeout: number = 30 * 1000; // 30 seconds
   writeBufSupport: boolean = undefined;
   verboseStatusLog: boolean = true;
   private _upgradeStatus: UpgradeStatus;
@@ -59,8 +58,11 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
 
   registerHotPlugEvents(): void {
     this._sdkDeviceDisoveryEmitter.on(CameraEvents.ATTACH, async (devManager) => {
-      if (devManager && devManager instanceof Boxfish
-        && this._cameraManager['serialNumber'] === devManager['serialNumber']) {
+      if (
+        devManager &&
+        devManager instanceof Boxfish &&
+        this._cameraManager['serialNumber'] === devManager['serialNumber']
+      ) {
         this._cameraManager = devManager;
         this.emit('UPGRADE_REBOOT_COMPLETE');
       }
@@ -84,11 +86,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     const rebootStep = new UpgradeStatusStep('Rebooting camera', 3);
     const verificationStep = new UpgradeStatusStep('Verifying new software', 3);
 
-    this._upgradeStatus = new UpgradeStatus([
-      firstUploadStatusStep,
-      rebootStep,
-      verificationStep,
-    ]);
+    this._upgradeStatus = new UpgradeStatus([firstUploadStatusStep, rebootStep, verificationStep]);
     Logger.debug('Starting Upgrade', 'Boxfish PKG Upgrader');
     this.emitProgressStatus('Starting upgrade');
     this.emit(CameraEvents.UPGRADE_START);
@@ -166,12 +164,10 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
 
   async writeBuffProbe(): Promise<boolean> {
     try {
-      await this.sendReceive(
-        'upgrader/write_buf',
-        {
-          args: { data: Buffer.alloc(1), offset: 0 },
-          receiveEncoding: 'string'
-        });
+      await this.sendReceive('upgrader/write_buf', {
+        args: { data: Buffer.alloc(1), offset: 0 },
+        receiveEncoding: 'string',
+      });
       return true;
     } catch (e) {
       Logger.error('Signle Write Buffer not supported in this firmware', e, 'Boxfish PKG Upgrader');
@@ -185,13 +181,11 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     }
 
     if (this.writeBufSupport) {
-      const result = await this.sendReceive(
-        'upgrader/write_buf',
-        {
-          args: { data: buf, offset },
-          receiveEncoding: 'messagepack',
-          timeout: 60000
-        });
+      const result = await this.sendReceive('upgrader/write_buf', {
+        args: { data: buf, offset },
+        receiveEncoding: 'messagepack',
+        timeout: 60000,
+      });
       return result;
     }
     return this.legacyWriteBuf(buf, offset);
@@ -224,40 +218,55 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     };
 
     const result = await this._cameraManager.api.withSubscribe(
-      [cmdResult], () => new Promise(async (resolve, reject) => {
-        this.transport.receiveMessage(cmdResult, 5000)
-          .then((data) => {
-            const receivedCmd = data.message;
-            if (receivedCmd !== cmdResult) {
-              Logger.warn(`Received unexpected ${receivedCmd}. Expected ${cmdResult}`, 'Boxfish PKG Upgrader');
-              reject(`Received unexpected ${receivedCmd}. Expected ${cmdResult}.`);
-            } else {
-              const args = Api.decode(data.payload, 'messagepack');
-              const result = doReply(args);
-              resolve(result);
-            }
-          })
-          .catch((e) => {
-            Logger.error('Checksum receive message failure', e, 'Boxfish PKG Upgrader');
-            reject(e);
-          });
+      [cmdResult],
+      () =>
+        new Promise(async (resolve, reject) => {
+          this.transport
+            .receiveMessage(cmdResult, 5000)
+            .then((data) => {
+              const receivedCmd = data.message;
+              if (receivedCmd !== cmdResult) {
+                Logger.warn(
+                  `Received unexpected ${receivedCmd}. Expected ${cmdResult}`,
+                  'Boxfish PKG Upgrader'
+                );
+                reject(`Received unexpected ${receivedCmd}. Expected ${cmdResult}.`);
+              } else {
+                const args = Api.decode(data.payload, 'messagepack');
+                const result = doReply(args);
+                resolve(result);
+              }
+            })
+            .catch((e) => {
+              Logger.error('Checksum receive message failure', e, 'Boxfish PKG Upgrader');
+              reject(e);
+            });
 
-        const res = await this.sendReceive(cmd, {
-          args: { size, offset, algorithm },
-          receiveEncoding: 'messagepack',
-        });
-        if (res.error !== 0) {
-          throw new Error(`Failed to retrieve checksum. Error: ${res.error}. Status: ${res.string}`);
-        }
-        if (res.checksum !== undefined) {
-          const result = doReply(res);
-          resolve(result);
-        }
-      }));
+          const res = await this.sendReceive(cmd, {
+            args: { size, offset, algorithm },
+            receiveEncoding: 'messagepack',
+          });
+          if (res.error !== 0) {
+            throw new Error(
+              `Failed to retrieve checksum. Error: ${res.error}. Status: ${res.string}`
+            );
+          }
+          if (res.checksum !== undefined) {
+            const result = doReply(res);
+            resolve(result);
+          }
+        })
+    );
     return result;
   }
 
-  async executeFlashCmdWaitForDoneWithStatus(cmd: string, cmdData: any, addr: number, size: number, statusFn?: any): Promise<any> {
+  async executeFlashCmdWaitForDoneWithStatus(
+    cmd: string,
+    cmdData: any,
+    addr: number,
+    size: number,
+    statusFn?: any
+  ): Promise<any> {
     const cmds = {
       cmd,
       done: `${cmd}_done`,
@@ -266,47 +275,71 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     const subscribeMessages = statusFn ? [cmds.done, cmds.status] : [cmds.done];
     return this.locksmith.executeAsyncFunction(async () => {
       await this._cameraManager.api.withSubscribe(
-        subscribeMessages, () => new Promise<void>(async (resolve, reject) => {
-          this.transport.on(cmds.done, (data) => {
-            const args = Api.decode(data.payload, 'messagepack');
-            if (args.error_count === 0) {
-              this.transport.removeAllListeners(cmds.done);
-              if (statusFn) {
-                statusFn(size, size);
-                this.transport.removeAllListeners(cmds.status);
-              } else {
-                Logger.debug('Stage Completed', 'Boxfish PKG Upgrader');
-              }
-              resolve();
-            } else {
-              Logger.warn(`Flash command ${cmd} failed with ${args.error_count} errors`, 'Boxfish PKG Upgrader');
-              reject(`Flash command ${cmd} failed with ${args.error_count} errors`);
-            }
-          });
-          if (statusFn) {
-            this.transport.on(cmds.status, (data) => {
+        subscribeMessages,
+        () =>
+          new Promise<void>(async (resolve, reject) => {
+            this.transport.on(cmds.done, (data) => {
               const args = Api.decode(data.payload, 'messagepack');
-              statusFn(args.offset, size);
+              if (args.error_count === 0) {
+                this.transport.removeAllListeners(cmds.done);
+                if (statusFn) {
+                  statusFn(size, size);
+                  this.transport.removeAllListeners(cmds.status);
+                } else {
+                  Logger.debug('Stage Completed', 'Boxfish PKG Upgrader');
+                }
+                resolve();
+              } else {
+                Logger.warn(
+                  `Flash command ${cmd} failed with ${args.error_count} errors`,
+                  'Boxfish PKG Upgrader'
+                );
+                reject(`Flash command ${cmd} failed with ${args.error_count} errors`);
+              }
             });
-          }
-          await this._cameraManager.api.sendAndReceiveWithoutLock(cmds.cmd, { args: cmdData });
-        }));
+            if (statusFn) {
+              this.transport.on(cmds.status, (data) => {
+                const args = Api.decode(data.payload, 'messagepack');
+                statusFn(args.offset, size);
+              });
+            }
+            await this._cameraManager.api.sendAndReceiveWithoutLock(cmds.cmd, { args: cmdData });
+          })
+      );
     });
   }
 
   async eraseFlash(addr: number, size: number, statusFn: any): Promise<any> {
     const cmdData = { flash_addr: addr, size };
-    return this.executeFlashCmdWaitForDoneWithStatus('upgrader/erase_flash', cmdData, addr, size, statusFn);
+    return this.executeFlashCmdWaitForDoneWithStatus(
+      'upgrader/erase_flash',
+      cmdData,
+      addr,
+      size,
+      statusFn
+    );
   }
 
   async writeFlash(addr: number, size: number, statusFn: any): Promise<any> {
     const cmdData = { flash_addr: addr, size, offset: 0 };
-    return this.executeFlashCmdWaitForDoneWithStatus('upgrader/write_flash', cmdData, addr, size, statusFn);
+    return this.executeFlashCmdWaitForDoneWithStatus(
+      'upgrader/write_flash',
+      cmdData,
+      addr,
+      size,
+      statusFn
+    );
   }
 
   async readFlashIntoBuf(addr: number, size: number, statusFn: any): Promise<any> {
     const cmdData = { flash_addr: addr, size, offset: 0 };
-    return this.executeFlashCmdWaitForDoneWithStatus('upgrader/read_flash', cmdData, addr, size, statusFn);
+    return this.executeFlashCmdWaitForDoneWithStatus(
+      'upgrader/read_flash',
+      cmdData,
+      addr,
+      size,
+      statusFn
+    );
   }
 
   async doFlash(buffer: Buffer, address: string): Promise<any> {
@@ -375,10 +408,16 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     await this.setRamBootSelector('C');
   }
 
-  async flashImage(imageType: IMAGE_TYPES, upgraderFile: IBoxfishUpgraderFile, location: string): Promise<any> {
+  async flashImage(
+    imageType: IMAGE_TYPES,
+    upgraderFile: IBoxfishUpgraderFile,
+    location: string
+  ): Promise<any> {
     const data = upgraderFile.getData(imageType);
     if (data.length === 0) {
-      throw new Error(`Error starting flashing of image ${IMAGE_TYPES} - could not get data from package`);
+      throw new Error(
+        `Error starting flashing of image ${IMAGE_TYPES} - could not get data from package`
+      );
     }
     const address = upgraderFile.getFlashAddress(imageType, location);
     return this.doFlash(data, address);
@@ -391,9 +430,18 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
 
   async printBootInfo(): Promise<void> {
     const prodInfo = await this._cameraManager.api.getProductInfo();
-    Logger.info(`Current boot decision: ${prodInfo.bac_fsbl.boot_decision}`, 'Boxfish PKG Upgrader');
-    Logger.info(`Current flash boot selector: ${prodInfo.flash_boot_state}`, 'Boxfish PKG Upgrader');
-    Logger.info(`Current ram boot selector: ${prodInfo.bac_fsbl.ram_boot_selector}`, 'Boxfish PKG Upgrader');
+    Logger.info(
+      `Current boot decision: ${prodInfo.bac_fsbl.boot_decision}`,
+      'Boxfish PKG Upgrader'
+    );
+    Logger.info(
+      `Current flash boot selector: ${prodInfo.flash_boot_state}`,
+      'Boxfish PKG Upgrader'
+    );
+    Logger.info(
+      `Current ram boot selector: ${prodInfo.bac_fsbl.ram_boot_selector}`,
+      'Boxfish PKG Upgrader'
+    );
   }
 
   async upgrade(): Promise<string> {
@@ -412,8 +460,10 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       }
 
       if (prodInfo.bac_fsbl === false && !this.options.flash_fsbl) {
-        throw new Error('Unable to upgrade without first stage bootloader.\n' +
-          'No first stage bootloader provided');
+        throw new Error(
+          'Unable to upgrade without first stage bootloader.\n' +
+            'No first stage bootloader provided'
+        );
       } else if (prodInfo.bac_fsbl === false && this.options.flash_fsbl) {
         const fsblBuffer = boxfishUpgraderFile.getImage(IMAGE_TYPES.FSBL);
         await this.initFlash(fsblBuffer, boxfishUpgraderFile);
@@ -445,7 +495,10 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       await this.setRamBootSelector(upgradeSelection);
       await this.printBootInfo();
 
-      Logger.debug('Booting the camera and closing communication instances', 'Boxfish PKG Upgrader');
+      Logger.debug(
+        'Booting the camera and closing communication instances',
+        'Boxfish PKG Upgrader'
+      );
       await this._cameraManager.reboot();
       await this.transport.close();
 
@@ -474,7 +527,7 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
       Logger.info(`Upgrade status ${JSON.stringify(response)}`, 'Boxfish PKG Upgrader');
       if (response.status === 10) {
         // EMMC is not ready lets wait and try again
-        await new Promise(resolve => setTimeout(resolve, 1000));
+        await new Promise((resolve) => setTimeout(resolve, 1000));
         return await this.upgradeIsValid();
       }
       return response.status === 0;
