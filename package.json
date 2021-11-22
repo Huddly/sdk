@@ -49,15 +49,16 @@
     "compodoc": "compodoc -w -p tsconfig.json -s -n \"huddly-sdk\" -d \"docs\" --minimal --customFavicon \"docs_style/assets/imgs/favicon.ico\" --disableGraph --disableInternal --hideGenerator --includesName \"Additional Information\"  --includes examples -a docs_style/assets -y docs_style",
     "prepare": "npm run build",
     "preversion": "npm run tslint",
-    "prettier": "./node_modules/.bin/prettier  --config ./.prettierrc --write 'src/**/*.ts'",
-    "prettier-check": "./node_modules/.bin/prettier  --config ./.prettierrc --check 'src/**/*.ts'",
+    "prettier": "./node_modules/.bin/prettier  --config ./.prettierrc --write \"src/**/*.ts\"",
+    "prettier-check": "./node_modules/.bin/prettier  --config ./.prettierrc --check \"src/**/*.ts\"",
+    "prettify-staged": "pretty-quick --staged --pattern \"src/**/*.ts\" --verbose",
     "release:major": "./node_modules/generate-changelog/bin/generate -M && git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && npm version major && git push origin && git push origin --tags",
     "release:minor": "./node_modules/generate-changelog/bin/generate -m && git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && npm version minor && git push origin && git push origin --tags",
     "release:patch": "./node_modules/generate-changelog/bin/generate -p && git add CHANGELOG.md && git commit -m 'Updated CHANGELOG.md' && npm version patch && git push origin && git push origin --tags",
     "commit": "cz"
   },
   "pre-commit": [
-    "prettier-check",
+    "prettify-staged",
     "build",
     "test"
   ],
@@ -87,6 +88,7 @@
     "nyc": "~15.0.1",
     "pre-commit": "~1.2.2",
     "prettier": "^2.4.1",
+    "pretty-quick": "^3.1.2",
     "rimraf": "^3.0.2",
     "sinon": "^7.5.0",
     "sinon-chai": "~3.5.0",
