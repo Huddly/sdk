@@ -99,6 +99,10 @@ export default class IpDetector extends EventEmitter implements IDetector {
       );
       this.emit(CameraEvents.DETECTIONS, convertedDetections);
       if (this._options.includeRawDetections) {
+        // Workaround until this is fixed camera side
+        if (rawDetections.detectionsList[0] && rawDetections.detectionsList[0].label === 'NULL') {
+          rawDetections.detectionsList = [];
+        }
         this.emit(CameraEvents.RAW_DETECTIONS, rawDetections);
       }
     };
