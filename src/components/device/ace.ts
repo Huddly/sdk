@@ -278,6 +278,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       this.grpcClient.getCnnFeatureStatus(cnnFeature, (err, cnnStatus: huddly.CNNStatus) => {
         if (err != undefined) {
           this.handleError('Unable to get cnn feature status', err, reject);
+          return;
         }
         resolve(cnnStatus);
       });
@@ -314,6 +315,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       this.grpcClient.getTemperatures(new Empty(), (err, temperatures: huddly.Temperatures) => {
         if (err != undefined) {
           reject(err);
+          return;
         }
         resolve(temperatures);
       });
@@ -518,6 +520,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       this.grpcClient.getBrightness(new Empty(), (err, brightness: huddly.Brightness) => {
         if (err != undefined) {
           reject(err);
+          return;
         }
         resolve(brightness);
       });
@@ -549,6 +552,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       this.grpcClient.setBrightness(brightness, (err, deviceStatus: huddly.DeviceStatus) => {
         if (err != undefined) {
           this.handleError('Unable to set brightness', err, reject);
+          return;
         }
         Logger.info(deviceStatus.toString());
         resolve();
@@ -632,6 +636,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       this.grpcClient.getPTZ(new Empty(), (err, ptz: huddly.PTZ) => {
         if (err != undefined) {
           reject(err);
+          return;
         }
         resolve(ptz);
       });
