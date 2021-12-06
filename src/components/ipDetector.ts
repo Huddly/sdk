@@ -116,6 +116,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
           if (err != undefined) {
             Logger.error('Unable to get detections', err.stack || '');
             reject(err.message || 'Unknown error');
+            return;
           }
           resolve(detections);
         }
