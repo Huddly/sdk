@@ -12,19 +12,19 @@
 # Huddly Software Development Kit (SDK)
 
 ## Prerequisites
-Huddly SDK supportes the following node versions: (Needs to support NAPI v3 )
+Huddly SDK works with the following NodeJS releases: (Needs to support NAPI v3 )
 
-- 8.11.2
-- 10.15.2
-- 11.5.0
-- 12.4.0
-- 14.17.3 (LTS)
+- Node 10
+- Node 11
+- Node 12
+- Node 14 (Latest)
 
 We recommend using nvm as your node version manager [https://github.com/creationix/nvm](https://github.com/creationix/nvm).
 
 After you've setup nvm run
-```
-  nvm use 14.17.3
+```bash
+  nvm install 14
+  nvm use 14
 ```
 
 ## Getting started

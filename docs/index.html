@@ -44,17 +44,17 @@
 
 <h1 id="huddly-software-development-kit-sdk">Huddly Software Development Kit (SDK)</h1>
 <h2 id="prerequisites">Prerequisites</h2>
-<p>Huddly SDK supportes the following node versions: (Needs to support NAPI v3 )</p>
+<p>Huddly SDK works with the following NodeJS releases: (Needs to support NAPI v3 )</p>
 <ul>
-<li>8.11.2</li>
-<li>10.15.2</li>
-<li>11.5.0</li>
-<li>12.4.0</li>
-<li>14.17.3 (LTS)</li>
+<li>Node 10</li>
+<li>Node 11</li>
+<li>Node 12</li>
+<li>Node 14 (Latest)</li>
 </ul>
 <p>We recommend using nvm as your node version manager <a href="https://github.com/creationix/nvm">https://github.com/creationix/nvm</a>.</p>
 <p>After you&#39;ve setup nvm run</p>
-<div><pre class="line-numbers"><code class="language-none">  nvm use 14.17.3</code></pre></div><h2 id="getting-started">Getting started</h2>
+<div><pre class="line-numbers"><code class="language-bash">  nvm install 14
+  nvm use 14</code></pre></div><h2 id="getting-started">Getting started</h2>
 <p>With the node environment setup and ready, go ahead and install our sdk as part of your project dependencies:</p>
 <div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/sdk&#64;latest</code></pre></div><p>You also need to install some other Huddly npm dependencies from which the SDK relies on for device discovery and communication. Depending on which product (camera) you will be working with, the corresponding device api packages must be accompanied with the SDK:</p>
 <div><pre class="line-numbers"><code class="language-none">  npm install &#64;huddly/device-api-usb    # For interacting with our USB cameras

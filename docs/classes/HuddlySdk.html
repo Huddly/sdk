@@ -401,8 +401,8 @@ please see <code>events</code> class.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="331"
-                            class="link-to-prism">src/index.ts:331</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="333"
+                            class="link-to-prism">src/index.ts:333</a></div>
                 </td>
             </tr>
 
@@ -487,8 +487,8 @@ to start sending and receiving information to/from.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="321"
-                            class="link-to-prism">src/index.ts:321</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="323"
+                            class="link-to-prism">src/index.ts:323</a></div>
                 </td>
             </tr>
 
@@ -583,7 +583,7 @@ Will emit the device serial number when a DETACH event occurs.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="264" class="link-to-prism">src/index.ts:264</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="266" class="link-to-prism">src/index.ts:266</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -608,7 +608,7 @@ used for communicating with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="253" class="link-to-prism">src/index.ts:253</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="255" class="link-to-prism">src/index.ts:255</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -669,7 +669,7 @@ used for communicating with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="287" class="link-to-prism">src/index.ts:287</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="289" class="link-to-prism">src/index.ts:289</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -695,7 +695,7 @@ the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="275" class="link-to-prism">src/index.ts:275</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="277" class="link-to-prism">src/index.ts:277</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -757,7 +757,7 @@ communication channels with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="309" class="link-to-prism">src/index.ts:309</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="311" class="link-to-prism">src/index.ts:311</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -782,7 +782,7 @@ instance used for camera discovery.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="297" class="link-to-prism">src/index.ts:297</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="299" class="link-to-prism">src/index.ts:299</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -1100,11 +1100,11 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
-    this.deviceDiscovery.on(CameraEvents.ATTACH, async d &#x3D;&gt; {
+    this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) &#x3D;&gt; {
       if (d &amp;&amp; (!this.targetSerial || this.targetSerial &#x3D;&#x3D;&#x3D; d.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
           () &#x3D;&gt;
-            new Promise&lt;void&gt;(async resolve &#x3D;&gt; {
+            new Promise&lt;void&gt;(async (resolve) &#x3D;&gt; {
               try {
                 const cameraManager: IDeviceManager &#x3D; await this._deviceFactory.getDevice(
                   d.productId,
@@ -1117,11 +1117,13 @@ class HuddlySdk extends EventEmitter {
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
-                const errorMsg: string &#x3D; &#x60;No transport implementation supported for ${JSON.stringify(d)}&#x60;;
+                const errorMsg: string &#x3D; &#x60;No transport implementation supported for ${JSON.stringify(
+                  d
+                )}&#x60;;
                 Logger.warn(errorMsg, HuddlySdk.name);
                 const eventPayload &#x3D; {
                   device: d,
-                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT)
+                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT),
                 };
                 this.emitter.emit(CameraEvents.ERROR, eventPayload);
                 resolve();
@@ -1131,11 +1133,11 @@ class HuddlySdk extends EventEmitter {
       }
     });
 
-    this.deviceDiscovery.on(CameraEvents.DETACH, async d &#x3D;&gt; {
+    this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
       if (d !&#x3D;&#x3D; undefined &amp;&amp; (!this.targetSerial || this.targetSerial &#x3D;&#x3D;&#x3D; d)) {
         await this.locksmith.executeAsyncFunction(
           () &#x3D;&gt;
-            new Promise&lt;void&gt;(resolve &#x3D;&gt; {
+            new Promise&lt;void&gt;((resolve) &#x3D;&gt; {
               this.emitter.emit(CameraEvents.DETACH, d);
               resolve();
             })
@@ -1228,9 +1230,7 @@ class HuddlySdk extends EventEmitter {
    * @param {IServiceOpts} [serviceOpts] - Service options for initializing and setting up the service communication
    * @returns A the new instance of the huddly service implementation after the setup stage has been completed
    */
-  static async getService(
-    serviceOpts: IServiceOpts &#x3D; {}
-  ): Promise&lt;IHuddlyService&gt; {
+  static async getService(serviceOpts: IServiceOpts &#x3D; {}): Promise&lt;IHuddlyService&gt; {
     const service: IHuddlyService &#x3D; ServiceFactory.getService(serviceOpts);
     await service.init();
     return service;

@@ -143,6 +143,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                 <a href="interfaces/DetectorOpts.html" data-type="entity-link" >DetectorOpts</a>
                             </li>
                             <li class="link">
+                                <a href="interfaces/FwUpdateScheduleStatus.html" data-type="entity-link" >FwUpdateScheduleStatus</a>
+                            </li>
+                            <li class="link">
                                 <a href="interfaces/ICnnControl.html" data-type="entity-link" >ICnnControl</a>
                             </li>
                             <li class="link">
