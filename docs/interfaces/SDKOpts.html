@@ -480,11 +480,11 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
-    this.deviceDiscovery.on(CameraEvents.ATTACH, async d &#x3D;&gt; {
+    this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) &#x3D;&gt; {
       if (d &amp;&amp; (!this.targetSerial || this.targetSerial &#x3D;&#x3D;&#x3D; d.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
           () &#x3D;&gt;
-            new Promise&lt;void&gt;(async resolve &#x3D;&gt; {
+            new Promise&lt;void&gt;(async (resolve) &#x3D;&gt; {
               try {
                 const cameraManager: IDeviceManager &#x3D; await this._deviceFactory.getDevice(
                   d.productId,
@@ -497,11 +497,13 @@ class HuddlySdk extends EventEmitter {
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (e) {
-                const errorMsg: string &#x3D; &#x60;No transport implementation supported for ${JSON.stringify(d)}&#x60;;
+                const errorMsg: string &#x3D; &#x60;No transport implementation supported for ${JSON.stringify(
+                  d
+                )}&#x60;;
                 Logger.warn(errorMsg, HuddlySdk.name);
                 const eventPayload &#x3D; {
                   device: d,
-                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT)
+                  error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT),
                 };
                 this.emitter.emit(CameraEvents.ERROR, eventPayload);
                 resolve();
@@ -511,11 +513,11 @@ class HuddlySdk extends EventEmitter {
       }
     });
 
-    this.deviceDiscovery.on(CameraEvents.DETACH, async d &#x3D;&gt; {
+    this.deviceDiscovery.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
       if (d !&#x3D;&#x3D; undefined &amp;&amp; (!this.targetSerial || this.targetSerial &#x3D;&#x3D;&#x3D; d)) {
         await this.locksmith.executeAsyncFunction(
           () &#x3D;&gt;
-            new Promise&lt;void&gt;(resolve &#x3D;&gt; {
+            new Promise&lt;void&gt;((resolve) &#x3D;&gt; {
               this.emitter.emit(CameraEvents.DETACH, d);
               resolve();
             })
@@ -608,9 +610,7 @@ class HuddlySdk extends EventEmitter {
    * @param {IServiceOpts} [serviceOpts] - Service options for initializing and setting up the service communication
    * @returns A the new instance of the huddly service implementation after the setup stage has been completed
    */
-  static async getService(
-    serviceOpts: IServiceOpts &#x3D; {}
-  ): Promise&lt;IHuddlyService&gt; {
+  static async getService(serviceOpts: IServiceOpts &#x3D; {}): Promise&lt;IHuddlyService&gt; {
     const service: IHuddlyService &#x3D; ServiceFactory.getService(serviceOpts);
     await service.init();
     return service;
