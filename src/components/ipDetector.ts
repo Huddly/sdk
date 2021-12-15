@@ -193,7 +193,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
     }
     if (this._detectorWasStarted) {
       Logger.debug('Sending stop-cnn Detector command', 'L1 Detector');
-      this._stopDetections();
+      await this._stopDetections();
     }
     this._detectorInitialized = false;
   }
