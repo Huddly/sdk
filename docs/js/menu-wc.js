@@ -110,6 +110,9 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                     <li class="link ">
                                         <a href="additional-documentation/canvas.html" data-type="entity-link" data-context-id="additional">Canvas</a>
                                     </li>
+                                    <li class="link ">
+                                        <a href="additional-documentation/huddly-l1.html" data-type="entity-link" data-context-id="additional">Huddly L1</a>
+                                    </li>
                         </ul>
                     </li>
                     <li class="chapter">

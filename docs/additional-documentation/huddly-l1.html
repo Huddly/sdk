@@ -1,0 +1,313 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content additional-page">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<h1 id="huddly-l1-ip-camera">Huddly L1 IP Camera</h1>
+<p>This page provides with code snippets and examples on how to use the SDK for interacting with the Huddly L1 camera.</p>
+<h2 id="camera-info">Camera Info</h2>
+<div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceApiIp = require(&#39;&#64;huddly/device-api-ip&#39;).default;
+const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
+const { HUDDLY_L1_PID } = require(&#39;&#64;huddly/sdk/lib/src/components/device/factory&#39;).default;
+
+const ipApi = new HuddlyDeviceApiIp();
+
+// Create an instance of the SDK
+const sdk = new HuddlySdk(ipApi);
+
+const applicationTeardown = () =&gt; {
+    process.exit();
+}
+
+sdk.on(&#39;ATTACH&#39;, (aceDevice) =&gt; {
+    if (aceDevice.pid == HUDDLY_L1_PID) {
+        aceDevice.getInfo()
+        .then(info =&gt; {
+            console.log(info);
+        })
+        .catch((e) =&gt; {
+            console.trace(e);
+        }).finally(_ =&gt; {
+            aceDevice.closeConnection()
+            .then(applicationTeardown);
+        });
+    }
+});
+
+// Call init() to trigger device discovery
+sdk.init();</code></pre></div><p>Running the above code snippet would print the following information on the console:</p>
+<div><pre class="line-numbers"><code class="language-console">{
+  name: &#39;Huddly L1&#39;,
+  mac: &#39;90:E2:FC:90:12:EC&#39;,
+  ipv4: &#39;169.254.98.175&#39;,
+  serialNumber: &#39;12101A0029&#39;,
+  modelName: &#39;810-00011-MBLK&#39;,
+  manufacturer: &#39;Huddly&#39;,
+  productId: 1001,
+  vendorId: 11225,
+  version: &#39;1.2.8-4388.21+sha.10b8803&#39;,
+  uptime: 751.91,
+  slot: &#39;A&#39;
+}</code></pre></div><h2 id="upgrade">Upgrade</h2>
+<div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceApiIp = require(&#39;&#64;huddly/device-api-ip&#39;).default;
+const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
+const { HUDDLY_L1_PID } = require(&#39;&#64;huddly/sdk/lib/src/components/device/factory&#39;).default;
+const fs = require(&#39;fs&#39;);
+
+const ipApi = new HuddlyDeviceApiIp();
+const sdk = new HuddlySdk(ipApi);
+let aceDevice;
+let isUpgrading = false;
+
+
+const applicationTeardown = () =&gt; {
+    process.exit();
+}
+
+const performUpgrade = (attachedDevice, cpioFilePath) =&gt; {
+    if (!aceDevice || aceDevice[&#39;serialNumber&#39;] == newDevice[&#39;serialNumber&#39;]) {
+        aceDevice = newDevice;
+        if (isUpgrading) {
+            return;
+        }
+    }
+    aceDevice.getInfo()
+    .then(info =&gt; new Promise((resolve, reject) =&gt; {
+        console.log(info);
+        const upgradeOpts = {
+            file: fs.readFileSync(cpioFilePath)
+        };
+        console.log(&#39;Starting software upgrade...&#39;);
+        isUpgrading = true;
+        aceDevice.upgrade(upgradeOpts)
+        .then(_ =&gt; {
+            console.log(&#39;Upgrade completed successfully!&#39;);
+            resolve();
+        }).catch(e =&gt; {
+            console.error(&#39;Upgrade failed!&#39;);
+            reject(e);
+        });
+    }))
+    .catch((e) =&gt; {
+        console.trace(e);
+    }).finally(_ =&gt; {
+        aceDevice.closeConnection()
+        .then(applicationTeardown);
+    });
+};
+
+if (!process.argv[2]) {
+    throw new Error(&#39;Please provide the cpio file path as the last argument!&#39;);
+}
+
+
+sdk.on(&#39;ATTACH&#39;, (newDevice) =&gt; {
+    if (newDevice.pid == HUDDLY_L1_PID) {
+        performUpgrade(newDevice, process.argv[2]);
+    }
+});
+
+// Call init() to trigger device discovery
+sdk.init();</code></pre></div><p>The code snippet above allows you to performa software upgrades on the L1 camera given that you have the firmware image available. You can run the command below for starting the upgrade process:</p>
+<div><pre class="line-numbers"><code class="language-bash">node upgrade.js ~/Path/to/L1_FW_Image.cpio</code></pre></div><p>This results in the following console output:</p>
+<div><pre class="line-numbers"><code class="language-stdout">{
+  name: &#39;Huddly L1&#39;,
+  mac: &#39;90:E2:FC:90:12:EC&#39;,
+  ipv4: &#39;169.254.98.175&#39;,
+  serialNumber: &#39;12101A0029&#39;,
+  modelName: &#39;810-00011-MBLK&#39;,
+  manufacturer: &#39;Huddly&#39;,
+  productId: 1001,
+  vendorId: 11225,
+  version: &#39;1.2.8-4388.21+sha.10b8803&#39;,
+  uptime: 1353.97,
+  slot: &#39;A&#39;
+}
+Starting software upgrade...
+Upgrade completed successfully!</code></pre></div><h2 id="detections">Detections</h2>
+<div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceApiIp = require(&#39;&#64;huddly/device-api-ip&#39;).default;
+const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
+const { HUDDLY_L1_PID } = require(&#39;&#64;huddly/sdk/lib/src/components/device/factory&#39;).default;
+
+const ipApi = new HuddlyDeviceApiIp();
+const sdk = new HuddlySdk(ipApi);
+let manager;
+let detector;
+
+sdk.on(&#39;ATTACH&#39;, async (aceDevice) =&gt; {
+  if (aceDevice.pid == HUDDLY_L1_PID) {
+    manager = aceDevice;
+    detector = manager.getDetector({ objectFilter: [&#39;person&#39;] });
+    detector.on(&#39;DETECTIONS&#39;, (data) =&gt; {
+      if (Array.isArray(data)) {
+        console.log(`Camera is seeing ${data.length} people in total!`)
+      } else {
+        console.log(data);
+      }
+    });
+    detector.init();
+    process.on(&#39;SIGINT&#39;, async () =&gt; {
+      if (detector) {
+        await detector.destroy();
+        await manager.closeConnection();
+      }
+      process.exit();
+    });
+  }
+});
+
+sdk.init();</code></pre></div><p>Use the code snippet above to get detection data from Huddly L1 camera. You can update the object filter to get <code>face</code> detections only or get both. See the <code>IDetectorOpts</code> interface for detailed information on the options you can give to the detector.</p>
+<p>Here is an example console output after running the snippet above:</p>
+<div><pre class="line-numbers"><code class="language-console">Camera is seeing 0 people in total!
+Camera is seeing 1 people in total!
+Camera is seeing 1 people in total!
+Camera is seeing 2 people in total!
+Camera is seeing 1 people in total!
+Camera is seeing 0 people in total!</code></pre></div><h2 id="ptz">PTZ</h2>
+<div><pre class="line-numbers"><code class="language-javascript">const HuddlyDeviceApiIp = require(&#39;&#64;huddly/device-api-ip&#39;).default;
+const HuddlySdk = require(&#39;&#64;huddly/sdk&#39;).default;
+const { HUDDLY_L1_PID } = require(&#39;&#64;huddly/sdk/lib/src/components/device/factory&#39;).default;
+
+const ipApi = new HuddlyDeviceApiIp();
+const sdk = new HuddlySdk(ipApi);
+
+if (!process.argv[2]) {
+  throw new Error(&#39;Provide ptz data comma separated. Ex: node ptz.js 0,0,1000&#39;);
+}
+const ptz = process.argv[2].split(&#39;,&#39;);
+
+if (ptz.length &lt; 3) {
+  throw new Error(&#39;You need to specify all three values as a comma separated argument!&#39;);
+}
+
+const pan = ptz[0];   // Default value for pan is 0
+const tilt = ptz[1];  // Default value for tilt is 0
+const zoom = ptz[2];  // Default value for zoom is 1000
+
+sdk.on(&#39;ATTACH&#39;, (aceDevice) =&gt; {
+  if (aceDevice.pid == HUDDLY_L1_PID) {
+    aceDevice.setPanTiltZoom({
+      pan,
+      tilt,
+      zoom
+    }).then(() =&gt; console.log(&#39;PTZ updated on the camera!&#39;))
+    .catch((e) =&gt; console.error(e))
+    .finally(async () =&gt; {
+      if (aceDevice) {
+        await aceDevice.closeConnection()
+      }
+      process.exit();
+    });
+  }
+});
+
+sdk.init();</code></pre></div><p>Use the code snippet above to manually update pan,tilt and zoom values on the Huddly L1 camera. Please note that updating PTZ values manually on the camera will disable the Genius Framing feature.</p>
+<p>If you want to re-enable genius framing on the camera you can either do it with the Huddly App, or use the SDK showcased on the example below:</p>
+<div><pre class="line-numbers"><code class="language-javascript">/*
+* We assume that the SDK setup is already completed
+*/
+...
+
+azController = manager.getAutozoomControl();
+await azController.init();
+if (parseInt(enable) == 1) {
+    console.log(&#39;Enabling autozoom.....&#39;);
+    await azController.enable();
+} else {
+    console.log(&#39;Disabling autozoom.....&#39;);
+    await azController.disable();
+}
+process.exit();
+
+...</code></pre></div>
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
+            var COMPODOC_CURRENT_PAGE_URL = 'huddly-l1.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>
