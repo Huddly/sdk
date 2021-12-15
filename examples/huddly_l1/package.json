@@ -11,6 +11,6 @@
     "dependencies": {
         "@huddly/device-api-ip": "^0.1",
         "@huddly/device-api-usb": "^0.3",
-        "@huddly/sdk": "^0.6"
+        "@huddly/sdk": "^0.6.3"
     }
 }
