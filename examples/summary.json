@@ -52,5 +52,9 @@
   {
     "title": "Canvas",
     "file": "canvas_doc/canvas.md"
+  },
+  {
+    "title": "Huddly L1",
+    "file": "huddly_l1/l1_docs.md"
   }
 ]
