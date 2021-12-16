@@ -1,3 +1,54 @@
+#### 0.6.4 (2021-12-16)
+
+##### Chores
+
+*  update camera-proto version ([15b704a3](https://github.com/Huddly/sdk/commit/15b704a38263934ab2a62460c73b6dd2d4110859))
+*  remove ./node_modules prefix from npm scripts ([71b750ac](https://github.com/Huddly/sdk/commit/71b750ac22f53deba7847626f08d1765caa40a13))
+*  use pretty-quick for pre-commits ([588b5ea1](https://github.com/Huddly/sdk/commit/588b5ea14bfabac7282ad4c601c24309fc4f61fd))
+*  bump prettier version (includes some new formatting rules) ([1ad4255f](https://github.com/Huddly/sdk/commit/1ad4255f34c50a07fb599513235a8ede4ba81886))
+*  Update @huddly/camera-switch-proto@0.0.6 ([0c77290e](https://github.com/Huddly/sdk/commit/0c77290e38da9b7dc0ee6745ad5ba32f4e844734))
+*  use escaped double quotes since windows does not like singles ([c9873d05](https://github.com/Huddly/sdk/commit/c9873d0519afc5cf1d805ea17b65bdd055eb2584))
+* **pacakge.json:**  remove webpack dependencies (sdk not supported on browsers) ([6fa27d9c](https://github.com/Huddly/sdk/commit/6fa27d9c4cfebde33727c07a6fee63f812f6e17b))
+
+##### Documentation Changes
+
+*  Commit documentation changes ([77cae6a8](https://github.com/Huddly/sdk/commit/77cae6a866172e378374453326ab0dd3fce87eb4))
+*  Add example docs for Huddly L1 ([3a6aef98](https://github.com/Huddly/sdk/commit/3a6aef982a7c99a5e80950875d7f15b36c1ff5ba))
+*  Update info on supported node versions for sdk ([5cadd1d7](https://github.com/Huddly/sdk/commit/5cadd1d714e2603eb8feec0ec89d55041cb0556b))
+*  fix link to ICnnControl from main page ([6bb2b39a](https://github.com/Huddly/sdk/commit/6bb2b39a3aaad8f417d8afc2611642580307300c))
+*  huddly l1 example readme update ([9053adbd](https://github.com/Huddly/sdk/commit/9053adbd48cb51129da4a68bb94e08f058be0ba2))
+*  List more interface docs on main page ([a2448476](https://github.com/Huddly/sdk/commit/a2448476f789793d9878e72920a0ac91c6b5c7c0))
+*  Update docs to sync with latest sdk release ([798cdbec](https://github.com/Huddly/sdk/commit/798cdbec2308a09d5b461c257d3f557c099551e8))
+
+##### New Features
+
+*  Detectors can now optionally emit raw detections data ([891a0715](https://github.com/Huddly/sdk/commit/891a0715c39372bba3db6b2fff350994df3919c2))
+* **cameraSwitchService:**  fw upgrade schedule ([fbc6c35c](https://github.com/Huddly/sdk/commit/fbc6c35c62409b12ddb32213a74e727fc96a9bb8))
+
+##### Bug Fixes
+
+* **ipDetector:**  await stop promise on destroy ([70724462](https://github.com/Huddly/sdk/commit/707244624d3324d1e51ba5b78b310259c86a17be))
+*  added return statement after reject in ace.ts & ipDetector.ts ([ea6b7ace](https://github.com/Huddly/sdk/commit/ea6b7aced5a46366f407acc62c001bf73810cd07))
+*  temporary workaround for not emitting dummy rawDetections ([af44c170](https://github.com/Huddly/sdk/commit/af44c17092fed96759012f41341a9adffbf72756))
+*  ipDetector now does not emit duplicate or invalid detections ([6312cc53](https://github.com/Huddly/sdk/commit/6312cc53f3722a8770c65d10ece0b209dcb20a5a))
+*  glob pattern for prettier now correctly matches all ts files in all subdirs ([5208dab3](https://github.com/Huddly/sdk/commit/5208dab300848d50fd86a1b7ff9c8627ea9c0b3a))
+* **ipdetector.ts:**  _stopDetections should invoke setCnnFeature with the correct mode ([34c10eff](https://github.com/Huddly/sdk/commit/34c10effc280fa0ac6777de41a34e84bcf25c914))
+* **package.json:**  Fix publish-package npm command ([a7270e51](https://github.com/Huddly/sdk/commit/a7270e51c3a6661865023058247bcf01b2a76a90))
+* **pacakge.json:**  Use https for npmjs registry ([22b1124f](https://github.com/Huddly/sdk/commit/22b1124fe619f2b39ba275d907f4d0dd5954d797))
+
+##### Other Changes
+
+* **cameraswitchservice.ts:**  Send correct type ([ba42e834](https://github.com/Huddly/sdk/commit/ba42e83406d486d3e0bd830a7e482079bbe9f8fd))
+
+##### Refactors
+
+*  fix improperly formatted files ([14cd2343](https://github.com/Huddly/sdk/commit/14cd2343f459394a5197beff4afcc817b8dade8a))
+* **index.ts:**  sdk ERROR event includes device instance ([6eff42cf](https://github.com/Huddly/sdk/commit/6eff42cf09492043a0bc94585fd64fb8556f1abf))
+
+##### Tests
+
+* **cameraswitchservice:**  Assert grpc out call type ([54e388d9](https://github.com/Huddly/sdk/commit/54e388d951df861a6379d09379fc61c7612fd267))
+
 #### 0.6.3 (2021-10-08)
 
 ##### Chores
