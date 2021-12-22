@@ -3,10 +3,10 @@ import JSZip from 'jszip';
 
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
 import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import CameraEvents from './../../utilitis/events';
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
-import Logger from './../../utilitis/logger';
 
 const BINARY_APPLICATION = 'huddly.bin';
 const BINARY_BOOT = 'huddly_boot.bin';

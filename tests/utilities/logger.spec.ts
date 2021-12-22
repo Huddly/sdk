@@ -3,8 +3,7 @@ import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 import fs from 'fs';
 
-import Logger from './../../src/utilitis/logger';
-
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 chai.should();
 chai.use(sinonChai);

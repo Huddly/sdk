@@ -4,11 +4,11 @@ import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import Api from './../api';
 import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
-import Logger from './../../utilitis/logger';
 
 export default class DartFish extends Boxfish {
   transport: IUsbTransport;

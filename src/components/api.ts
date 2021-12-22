@@ -1,13 +1,13 @@
 import * as msgpack from 'msgpack-lite';
 import http from 'http';
 
-import Logger from './../utilitis/logger';
 import Locksmith from './locksmith';
 
 import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
 import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import IDeviceCommonApi from '@huddly/sdk-interfaces/lib/interfaces/IDeviceCommonApi';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 export default class Api implements IDeviceCommonApi {
   transport: IUsbTransport;

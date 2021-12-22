@@ -1,7 +1,8 @@
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
 import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
-import Logger from './../utilitis/logger';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
+
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
 export default class IpAutozoomControl implements ICnnControl {

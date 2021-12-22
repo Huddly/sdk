@@ -6,12 +6,12 @@ import DetectorOpts, {
   DetectionConvertion,
 } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 import semver from 'semver';
 import TypeHelper from './../utilitis/typehelper';
-import Logger from './../utilitis/logger';
 import DetectionsConverter from './../utilitis/detectionsConverter';
 
 const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };

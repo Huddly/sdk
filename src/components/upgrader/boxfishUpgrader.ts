@@ -8,13 +8,13 @@ import IBoxfishUpgraderFile, {
 } from '@huddly/sdk-interfaces/lib/interfaces/IBoxfishUpgraderFile';
 import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import Locksmith from './../locksmith';
 import Api from '../api';
 import { calculate } from './../../utilitis/crc32c';
 import CameraEvents from './../../utilitis/events';
 import TypeHelper from './../../utilitis/typehelper';
-import Logger from './../../utilitis/logger';
 import Boxfish from './../device/boxfish';
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 
