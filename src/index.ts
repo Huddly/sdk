@@ -7,8 +7,8 @@ import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager
 import ILogger from '@huddly/sdk-interfaces/lib/interfaces/ILogger';
 import IHuddlyService from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyService';
 import IServiceOpts from '@huddly/sdk-interfaces/lib/interfaces/IServiceOpts';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
-import Logger from './utilitis/logger';
 import { createFactory } from './components/device/factory';
 import CameraEvents from './utilitis/events';
 import Locksmith from './components/locksmith';

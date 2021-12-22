@@ -4,10 +4,10 @@ import cpio from 'cpio-stream';
 import IUpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 import AceUpgraderError from './../../error/AceUpgraderError';
-import Logger from './../../utilitis/logger';
 import CameraEvents from './../../utilitis/events';
 import Ace from './../../components/device/ace';
 import * as grpc from '@grpc/grpc-js';

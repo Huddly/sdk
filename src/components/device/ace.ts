@@ -12,10 +12,11 @@ import IUVCControls from '@huddly/sdk-interfaces/lib/interfaces/IUVCControlApi';
 import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import Api from '../api';
 import DiagnosticsMessage from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
-import Logger from './../../utilitis/logger';
 import Locksmith from './../locksmith';
 import AceUpgrader from './../upgrader/aceUpgrader';
 import IpAutozoomControl from '../ipAutozoomControl';
@@ -26,7 +27,6 @@ import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as grpc from '@grpc/grpc-js';
-import { HUDDLY_VID } from './factory';
 
 // TODO: Not just log status. Instead getMessage() etc.
 interface ErrorInterface {
@@ -121,7 +121,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       const infoData = {
         ...this.wsdDevice.infoObject(),
         name: this.productName,
-        vendorId: HUDDLY_VID,
+        vendorId: HuddlyHEX.VID,
       };
       // Get devive version
       this.grpcClient.getDeviceVersion(new Empty(), (err, deviceVersion: huddly.DeviceVersion) => {

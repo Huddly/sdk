@@ -7,8 +7,8 @@ import {
   FwUpdateScheduleStatus,
   CameraInfoWrite,
 } from '@huddly/sdk-interfaces/lib/interfaces/ICameraSwitchModels';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
-import Logger from '../../utilitis/logger';
 import * as switchservice from '@huddly/camera-switch-proto/lib/api/service_pb';
 import { HuddlyCameraServiceClient } from '@huddly/camera-switch-proto/lib/api/service_grpc_pb';
 import * as grpc from '@grpc/grpc-js';

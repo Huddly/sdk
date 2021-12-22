@@ -8,16 +8,16 @@ import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import Api from '../api';
-import Logger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
 import DiagnosticsMessage from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
 import { MinMaxDiagnosticsMessage } from '../diagnosticsMessageData';
-import { HUDDLY_GO_PID, HUDDLY_VID } from './factory';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;
 
@@ -101,9 +101,9 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
     status.temperature = await this.getTemperature();
     status.powerUsage = await this.getPowerUsage();
     status.version = this.softwareVersion.mv2_app;
-    status.vendorId = this['vendorId'] || HUDDLY_VID;
+    status.vendorId = this['vendorId'] || HuddlyHEX.VID;
     status.name = this.productName;
-    status.productId = this['productId'] || HUDDLY_GO_PID;
+    status.productId = this['productId'] || HuddlyHEX.GO_PID;
     //    status.uptime = await this.uptime();
     return status;
   }

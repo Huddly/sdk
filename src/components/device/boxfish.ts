@@ -11,9 +11,10 @@ import AutozoomControl from '../autozoomControl';
 import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import Api from './../api';
-import Logger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
@@ -23,7 +24,6 @@ import DiagnosticsMessage from '@huddly/sdk-interfaces/lib/abstract_classes/Diag
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import FaceBasedExposureControl from '../faceBasedExposureControl';
-import { HUDDLY_VID } from './factory';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
@@ -72,7 +72,7 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     const status = {
       id: this['id'],
       serialNumber: this['serialNumber'],
-      vendorId: this['vendorId'] || HUDDLY_VID,
+      vendorId: this['vendorId'] || HuddlyHEX.VID,
       productId: this['productId'],
       version: this.extractSemanticSoftwareVersion(info.softwareVersion),
       location: this['location'],

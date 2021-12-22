@@ -4,10 +4,11 @@ import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceMan
 import DetectorOpts, {
   DetectionConvertion,
 } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
+
 import CameraEvents from './../utilitis/events';
 import DetectionsConverter from './../utilitis/detectionsConverter';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
-import Logger from './../utilitis/logger';
 import throttle from './../utilitis/throttle';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 

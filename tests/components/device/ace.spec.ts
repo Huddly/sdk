@@ -6,10 +6,11 @@ import { TextEncoder } from 'util';
 
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
-import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 import Ace from './../../../src/components/device/ace';
 import Boxfish from './../../../src/components/device/boxfish';
@@ -18,7 +19,6 @@ import AceUpgrader from './../../../src/components/upgrader/aceUpgrader';
 import IpAutozoomControl from './../../../src/components/ipAutozoomControl';
 import IpFaceBasedExposureControl from './../../../src/components/ipFaceBasedExposureControl';
 import IpDetector from './../../../src/components/ipDetector';
-import { HUDDLY_VID } from './../../../src/components/device/factory';
 
 chai.should();
 chai.use(sinonChai);
@@ -275,7 +275,7 @@ describe('Ace', () => {
           slot: 'C',
           uptime: 123,
           version: '1.2.3-abc',
-          vendorId: HUDDLY_VID
+          vendorId: HuddlyHEX.VID
         });
       });
     });

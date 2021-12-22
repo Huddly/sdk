@@ -2,10 +2,10 @@ import semver from 'semver';
 
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import HPKUpgrader from './../upgrader/hpkUpgrader';
-import Logger from './../../utilitis/logger';
 
 import BoxfishPkg from './boxfishpkg';
 import BoxfishHpk from './boxfishhpk';

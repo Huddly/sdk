@@ -4,6 +4,8 @@ import IHuddlyDeviceAPI from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyDevic
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import IDeviceFactory from '@huddly/sdk-interfaces/lib/interfaces/IDeviceFactory';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 // Device Manager Imports
 import HuddlyGo from './huddlygo';
@@ -12,20 +14,8 @@ import Dwarffish from './dwarffish';
 import Clownfish from './clownfish';
 import DartFish from './dartfish';
 import Ace from './ace';
-import Logger from './../../utilitis/logger';
 
 import { EventEmitter } from 'events';
-
-export const HUDDLY_VID = 0x2bd9; // Huddly Vendor ID
-export const HUDDLY_GO_PID = 0x11; // Huddly GO
-
-export const HUDDLY_BOXFISH_PID = 0x21; // Huddly IQ (with mic) / IQ Jamboard
-export const HUDDLY_CLOWNFISH_PID = 0x31; // Huddly IQ (without mic and cnn feature)
-export const HUDDLY_DWARFFISH_PID = 0x51; // Huddly ONE
-export const HUDDLY_DARTFISH_PID = 0x41; // Huddly Canvas
-
-export const HUDDLY_L1_PID = 0x3e9; // Huddly L1/ACE
-export const HUDDLY_BASE_PID = 0xba5e; // Huddly BASE
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
@@ -180,7 +170,7 @@ export default class DeviceFactory {
 
     let device: IDeviceManager;
     switch (productId) {
-      case HUDDLY_GO_PID:
+      case HuddlyHEX.GO_PID:
         const hidApi = await this.getHIDInterface(
           devInstance,
           preferredDeviceApi,
@@ -194,7 +184,7 @@ export default class DeviceFactory {
           cameraDiscoveryEmitter
         );
         break;
-      case HUDDLY_CLOWNFISH_PID:
+      case HuddlyHEX.CLOWNFISH_PID:
         device = new Clownfish(
           devInstance,
           <IUsbTransport>transport,
@@ -202,7 +192,7 @@ export default class DeviceFactory {
           cameraDiscoveryEmitter
         );
         break;
-      case HUDDLY_BOXFISH_PID:
+      case HuddlyHEX.BOXFISH_PID:
         device = new Boxfish(
           devInstance,
           <IUsbTransport>transport,
@@ -210,7 +200,7 @@ export default class DeviceFactory {
           cameraDiscoveryEmitter
         );
         break;
-      case HUDDLY_DWARFFISH_PID:
+      case HuddlyHEX.DWARFFISH_PID:
         device = new Dwarffish(
           devInstance,
           <IUsbTransport>transport,
@@ -218,7 +208,7 @@ export default class DeviceFactory {
           cameraDiscoveryEmitter
         );
         break;
-      case HUDDLY_DARTFISH_PID:
+      case HuddlyHEX.DARTFISH_PID:
         device = new DartFish(
           devInstance,
           <IUsbTransport>transport,
@@ -226,7 +216,7 @@ export default class DeviceFactory {
           cameraDiscoveryEmitter
         );
         break;
-      case HUDDLY_L1_PID:
+      case HuddlyHEX.L1_PID:
         device = new Ace(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);
         break;
       default:

@@ -1,8 +1,9 @@
 import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
+
 import Api from './api';
-import Logger from './../utilitis/logger';
 
 export default class AutozoomControl implements ICnnControl {
   _deviceManager: IDeviceManager;

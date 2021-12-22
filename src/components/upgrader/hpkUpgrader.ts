@@ -3,9 +3,9 @@ import { EventEmitter } from 'events';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import CameraEvents from './../../utilitis/events';
-import Logger from './../../utilitis/logger';
 import Api from '../api';
 import Boxfish from './../device/boxfish';
 import BoxfishHpk from './boxfishhpk';
