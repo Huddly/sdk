@@ -1,8 +1,13 @@
 import { EventEmitter } from 'events';
-import IHuddlyDeviceAPI from './interfaces/iHuddlyDeviceAPI';
-import IHuddlyDeviceDiscoveryAPI from './interfaces/IHuddlyDeviceDiscoveryAPI';
-import IDeviceFactory from './interfaces/iDeviceFactory';
-import IDeviceManager from './interfaces/iDeviceManager';
+
+import IHuddlyDeviceAPI from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceAPI';
+import IHuddlyDeviceDiscoveryAPI from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceDiscoveryAPI';
+import IDeviceFactory from '@huddly/sdk-interfaces/lib/interfaces/IDeviceFactory';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import ILogger from '@huddly/sdk-interfaces/lib/interfaces/ILogger';
+import IHuddlyService from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyService';
+import IServiceOpts from '@huddly/sdk-interfaces/lib/interfaces/IServiceOpts';
+
 import Logger from './utilitis/logger';
 import { createFactory } from './components/device/factory';
 import CameraEvents from './utilitis/events';
@@ -11,10 +16,7 @@ import Api from './components/api';
 import sourceMapSupport from 'source-map-support';
 import ErrorCodes from './error/errorCodes';
 import AllDeviceDiscovery from './components/allDeviceDiscovery';
-import IHuddlyService from './interfaces/IHuddlyService';
-import IServiceOpts from './interfaces/IServiceOpts';
 import ServiceFactory from './components/service/factory';
-import ILogger from './interfaces/ILogger';
 import AttachError from './error/AttachError';
 
 sourceMapSupport.install();

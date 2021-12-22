@@ -1,7 +1,9 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
+
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+
 import FaceBasedExposureControl from '../../src/components/faceBasedExposureControl';
-import IDeviceManager from '../../src/interfaces/iDeviceManager';
 import DeviceManagerMock from '../mocks/devicemanager.mock';
 
 describe('FaceBasedExposureControl', () => {

@@ -1,14 +1,15 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
+
+import DetectorOpts, { DetectionConvertion } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import IIPDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
+
 import IpDetector from '../../src/components/ipDetector';
-import IIPDeviceManager from '../../src/interfaces/iIpDeviceManager';
 import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
 import CameraEvents from '../../src/utilitis/events';
 import Logger from './../../src/utilitis/logger';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
-import DetectorOpts, { DetectionConvertion } from './../../src/interfaces/IDetectorOpts';
-import { utils } from 'mocha';
 
 chai.should();
 chai.use(sinonChai);

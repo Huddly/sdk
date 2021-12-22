@@ -1,7 +1,7 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import DiagnosticsMessage, { DiagnosticsLevel } from './../../src/components/diagnosticsMessage';
+import DiagnosticsMessage, { DiagnosticsLevel } from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
 import { MinMaxDiagnosticsMessage } from './../../src/components/diagnosticsMessageData';
 
 

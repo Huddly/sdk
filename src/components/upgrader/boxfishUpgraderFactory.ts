@@ -1,7 +1,8 @@
 import semver from 'semver';
 
-import IDeviceManager from './../../interfaces/iDeviceManager';
-import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
 import HPKUpgrader from './../upgrader/hpkUpgrader';
 import Logger from './../../utilitis/logger';

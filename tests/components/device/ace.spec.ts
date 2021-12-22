@@ -4,7 +4,9 @@ import sinonChai from 'sinon-chai';
 import { PassThrough } from 'stream';
 import { TextEncoder } from 'util';
 
-import IGrpcTransport from './../../../src/interfaces/IGrpcTransport';
+import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import Logger from './../../../src/utilitis/logger';
@@ -16,7 +18,6 @@ import AceUpgrader from './../../../src/components/upgrader/aceUpgrader';
 import IpAutozoomControl from './../../../src/components/ipAutozoomControl';
 import IpFaceBasedExposureControl from './../../../src/components/ipFaceBasedExposureControl';
 import IpDetector from './../../../src/components/ipDetector';
-import ReleaseChannel from './../../../src/interfaces/ReleaseChannelEnum';
 import { HUDDLY_VID } from './../../../src/components/device/factory';
 
 chai.should();

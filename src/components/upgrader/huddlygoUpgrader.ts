@@ -1,8 +1,10 @@
 import { EventEmitter } from 'events';
-import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
-import UpgradeOpts from './../../interfaces/IUpgradeOpts';
-import CameraEvents from './../../utilitis/events';
 import JSZip from 'jszip';
+
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+
+import CameraEvents from './../../utilitis/events';
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 import Logger from './../../utilitis/logger';
 

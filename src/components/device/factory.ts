@@ -1,10 +1,9 @@
-import ITransport from './../../interfaces/iTransport';
-import IUsbTransport from './../../interfaces/IUsbTransport';
-import IHuddlyDeviceAPI from './../../interfaces/iHuddlyDeviceAPI';
-import Logger from './../../utilitis/logger';
-import IDeviceManager from './../../interfaces/iDeviceManager';
-import IDeviceFactory from './../../interfaces/iDeviceFactory';
-import IGrpcTransport from './../../interfaces/IGrpcTransport';
+import ITransport from '@huddly/sdk-interfaces/lib/interfaces/ITransport';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import IHuddlyDeviceAPI from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceAPI';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import IDeviceFactory from '@huddly/sdk-interfaces/lib/interfaces/IDeviceFactory';
+import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 
 // Device Manager Imports
 import HuddlyGo from './huddlygo';
@@ -13,6 +12,7 @@ import Dwarffish from './dwarffish';
 import Clownfish from './clownfish';
 import DartFish from './dartfish';
 import Ace from './ace';
+import Logger from './../../utilitis/logger';
 
 import { EventEmitter } from 'events';
 

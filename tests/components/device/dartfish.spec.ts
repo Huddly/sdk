@@ -4,13 +4,14 @@ import sinonChai from 'sinon-chai';
 import fs from 'fs';
 import path from 'path';
 
-import ITransport from './../../../src/interfaces/iTransport';
-import IDeviceUpgrader from './../../../src/interfaces/IDeviceUpgrader';
+import ITransport from '@huddly/sdk-interfaces/lib/interfaces/ITransport';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+
 import Dartfish from './../../../src/components/device/dartfish';
 import { EventEmitter } from 'events';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
-import ReleaseChannel from './../../../src/interfaces/ReleaseChannelEnum';
 
 chai.should();
 chai.use(sinonChai);
@@ -56,7 +57,7 @@ class DummyTransport extends EventEmitter implements ITransport {
 }
 
 class DummyUpgrader extends EventEmitter implements IDeviceUpgrader {
-  init(opts: import('../../../src/interfaces/IUpgradeOpts').default): void {
+  init(opts: import('@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts').default): void {
     return;
   }
   start(): Promise<void> {

@@ -1,5 +1,5 @@
-import IUsbTransport from '../interfaces/IUsbTransport';
-import IGrpcTransport from '../interfaces/IGrpcTransport';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 export default class TypeHelper {
   static instanceOfUsbTransport(object: any): object is IUsbTransport {
     return (

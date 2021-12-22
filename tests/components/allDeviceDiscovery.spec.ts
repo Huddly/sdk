@@ -2,11 +2,13 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 import { EventEmitter } from 'events';
+
+import IHuddlyDeviceAPI from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceAPI';
+import IUVCControlAPI from '@huddly/sdk-interfaces/lib/interfaces/IUVCControlApi';
+import ITransport from '@huddly/sdk-interfaces/lib/interfaces/ITransport';
+import IDeviceDiscovery from '@huddly/sdk-interfaces/lib/interfaces/IDeviceDiscovery';
+
 import AllDeviceDiscovery from '../../src/components/allDeviceDiscovery';
-import IHuddlyDeviceAPI from '../../src/interfaces/iHuddlyDeviceAPI';
-import IUVCControlAPI from '../../src/interfaces/iUVCControlApi';
-import ITransport from '../../src/interfaces/iTransport';
-import IDeviceDiscovery from '../../src/interfaces/iDeviceDiscovery';
 
 chai.should();
 chai.use(sinonChai);

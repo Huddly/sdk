@@ -3,8 +3,9 @@ import sinonChai from 'sinon-chai';
 import fs from 'fs';
 import path from 'path';
 
+import { IMAGE_TYPES } from '@huddly/sdk-interfaces/lib/interfaces/IBoxfishUpgraderFile';
+
 import BoxfishHpk from './../../../src/components/upgrader/boxfishhpk';
-import { IMAGE_TYPES } from './../../../src/interfaces/IBoxfishUpgraderFile';
 
 chai.should();
 chai.use(sinonChai);

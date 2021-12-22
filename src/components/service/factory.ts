@@ -1,6 +1,6 @@
 import CameraSwitchService from './cameraSwitchService';
-import IServiceOpts from '../../interfaces/IServiceOpts';
-import IHuddlyService from './../../interfaces/IHuddlyService';
+import IServiceOpts from '@huddly/sdk-interfaces/lib/interfaces/IServiceOpts';
+import IHuddlyService from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyService';
 
 export default class ServiceFactory {
   /**

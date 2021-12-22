@@ -1,5 +1,5 @@
-import ICnnControl from '../interfaces/ICnnControl';
-import IIpDeviceManager from '../interfaces/iIpDeviceManager';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
 import Logger from '../utilitis/logger';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
