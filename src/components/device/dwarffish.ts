@@ -1,13 +1,14 @@
 import { EventEmitter } from 'events';
 
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+
 import Api from '../api';
-import IUsbTransport from '../../interfaces/IUsbTransport';
 import Locksmith from '../locksmith';
 import Boxfish from './boxfish';
-import IDetector from '../../interfaces/IDetector';
-import ICnnControl from '../../interfaces/ICnnControl';
-import InterpolationParams from '../../interfaces/InterpolationParams';
-import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 import Logger from './../../utilitis/logger';
 
 export default class Dwarffish extends Boxfish {
@@ -63,7 +64,9 @@ export default class Dwarffish extends Boxfish {
     throw new Error('Method not implemented/supported.');
   }
 
-  async getLatestFirmwareUrl(releaseChannel: ReleaseChannel = ReleaseChannel.STABLE) {
+  async getLatestFirmwareUrl(
+    releaseChannel: ReleaseChannel = ReleaseChannel.STABLE
+  ): Promise<string> {
     Logger.warn('Attempting to call method [getLatestFirmwareUrl] on Huddly ONE', 'HuddlyONE API');
     throw new Error('Method not implemented/supported.');
   }

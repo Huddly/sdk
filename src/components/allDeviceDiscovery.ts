@@ -1,4 +1,4 @@
-import IHuddlyDeviceDiscoveryAPI from '../interfaces/IHuddlyDeviceDiscoveryAPI';
+import IHuddlyDeviceDiscoveryAPI from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceDiscoveryAPI';
 
 class AllDeviceDiscovery implements IHuddlyDeviceDiscoveryAPI {
   apis: Array<IHuddlyDeviceDiscoveryAPI> = [];

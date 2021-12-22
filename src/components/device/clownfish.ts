@@ -3,7 +3,7 @@ import { EventEmitter } from 'events';
 import Api from './../api';
 import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
-import IUsbTransport from './../../interfaces/IUsbTransport';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 
 export default class ClownFish extends Boxfish {
   transport: IUsbTransport;

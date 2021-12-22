@@ -1,7 +1,9 @@
-import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
-import IDeviceManager from './../../interfaces/iDeviceManager';
-import UpgradeOpts from './../../interfaces/IUpgradeOpts';
 import { EventEmitter } from 'events';
+
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+
 import CameraEvents from './../../utilitis/events';
 import Logger from './../../utilitis/logger';
 import Api from '../api';

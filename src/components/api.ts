@@ -3,11 +3,13 @@ import http from 'http';
 
 import Logger from './../utilitis/logger';
 import Locksmith from './locksmith';
-import InterpolationParams from './../interfaces/InterpolationParams';
-import ReleaseChannel from './../interfaces/ReleaseChannelEnum';
-import IUsbTransport from './../interfaces/IUsbTransport';
 
-export default class Api {
+import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import IDeviceCommonApi from '@huddly/sdk-interfaces/lib/interfaces/IDeviceCommonApi';
+
+export default class Api implements IDeviceCommonApi {
   transport: IUsbTransport;
   locksmith: Locksmith;
   setProdInfoMsgPackSupport: boolean = true;
@@ -517,7 +519,7 @@ export default class Api {
   async getLatestFirmwareUrl(
     device: string,
     releaseChannel: ReleaseChannel = ReleaseChannel.STABLE
-  ) {
+  ): Promise<string> {
     const urlJsonKey = device === 'iq' ? 'url_hpk' : 'url';
     const url = `http://huddlyreleaseserver.azurewebsites.net/releases/${releaseChannel}/latest/${device}`;
     return new Promise((resolve, reject) =>

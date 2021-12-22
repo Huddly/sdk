@@ -1,7 +1,9 @@
 import { EventEmitter } from 'events';
-import IDetector from './../interfaces/IDetector';
-import IIpDeviceManager from '../interfaces/iIpDeviceManager';
-import DetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
+import DetectorOpts, {
+  DetectionConvertion,
+} from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 import CameraEvents from './../utilitis/events';
 import DetectionsConverter from './../utilitis/detectionsConverter';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';

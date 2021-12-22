@@ -1,11 +1,15 @@
 import { EventEmitter } from 'events';
-import IDetector from './../interfaces/IDetector';
-import IDeviceManager from './../interfaces/iDeviceManager';
-import DetectorOpts, { DetectionConvertion } from './../interfaces/IDetectorOpts';
+
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import DetectorOpts, {
+  DetectionConvertion,
+} from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+
 import Api from './api';
 import CameraEvents from './../utilitis/events';
 import semver from 'semver';
-import IUsbTransport from './../interfaces/IUsbTransport';
 import TypeHelper from './../utilitis/typehelper';
 import Logger from './../utilitis/logger';
 import DetectionsConverter from './../utilitis/detectionsConverter';
@@ -128,7 +132,7 @@ export default class Detector extends EventEmitter implements IDetector {
   }
 
   _setupDetectionHandler() {
-    this._detectionHandler = detectionBuffer => {
+    this._detectionHandler = (detectionBuffer) => {
       const rawDetections = Api.decode(detectionBuffer.payload, 'messagepack');
       const convertedDetections = this.convertDetections(rawDetections.predictions, this._options);
       this.emit(CameraEvents.DETECTIONS, convertedDetections);

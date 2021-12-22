@@ -1,11 +1,11 @@
-import IDeviceManager from './../../src/interfaces/iDeviceManager';
-import IDeviceUpgrader from './../../src/interfaces/IDeviceUpgrader';
-import UpgradeOpts from './../../src/interfaces/IUpgradeOpts';
-import IDetector from './../../src/interfaces/IDetector';
-import AutozoomControlOpts from '../../src/interfaces/IAutozoomControlOpts';
-import DetectorOpts from './../../src//interfaces/IDetectorOpts';
-import DiagnosticsMessage from './../../src//components/diagnosticsMessage';
-import ICnnControl from '../../src/interfaces/ICnnControl';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
+import DetectorOpts from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import DiagnosticsMessage from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 
 /**
  * @ignore

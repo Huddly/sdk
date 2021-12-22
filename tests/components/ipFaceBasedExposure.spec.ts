@@ -1,7 +1,9 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
+
+import IIPDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
+
 import IpFaceBasedExposureControl from '../../src/components/ipFaceBasedExposureControl';
-import IIPDeviceManager from '../../src/interfaces/iIpDeviceManager';
 import Logger from './../../src/utilitis/logger';
 import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';

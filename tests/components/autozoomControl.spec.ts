@@ -1,10 +1,12 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
+
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
+
 import AutozoomControl from '../../src/components/autozoomControl';
-import IDeviceManager from '../../src/interfaces/iDeviceManager';
 import Api from '../../src/components/api';
 import DeviceManagerMock from '../mocks/devicemanager.mock';
-import AutozoomControlOpts from '../../src/interfaces/IAutozoomControlOpts';
 
 describe('AutozoomControl', () => {
   let autozoomControl: AutozoomControl;

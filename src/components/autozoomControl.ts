@@ -1,6 +1,6 @@
-import AutozoomControlOpts from '../interfaces/IAutozoomControlOpts';
-import ICnnControl from './../interfaces/ICnnControl';
-import IDeviceManager from '../interfaces/iDeviceManager';
+import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import Api from './api';
 import Logger from './../utilitis/logger';
 

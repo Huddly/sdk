@@ -1,5 +1,4 @@
-import { DetectionConvertion } from './../interfaces/IDetectorOpts';
-import Logger from './logger';
+import { DetectionConvertion } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 
 const _filterDetections = (objectFilter: Array<String>, detections: Array<any>): Array<any> =>
   objectFilter.length === 0

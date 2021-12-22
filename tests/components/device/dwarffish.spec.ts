@@ -1,7 +1,9 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import ITransport from '../../../src/interfaces/iTransport';
+
+import ITransport from '@huddly/sdk-interfaces/lib/interfaces/ITransport';
+
 import Dwarffish from '../../../src/components/device/dwarffish';
 import { EventEmitter } from 'events';
 import Api from '../../../src/components/api';

@@ -1,26 +1,27 @@
 import { EventEmitter } from 'events';
 
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import DetectorOpts from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
+import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
+import AutozoomControl from '../autozoomControl';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+
 import Api from './../api';
 import Logger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
-import IDeviceManager from './../../interfaces/iDeviceManager';
-import IDetector from './../../interfaces/IDetector';
-import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
-import UpgradeOpts from './../../interfaces/IUpgradeOpts';
-import DetectorOpts from './../../interfaces/IDetectorOpts';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import Detector from './../detector';
 import { MinMaxDiagnosticsMessage, DiagnosticsMessageData } from '../diagnosticsMessageData';
-import DiagnosticsMessage from '../diagnosticsMessage';
+import DiagnosticsMessage from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
 import { createBoxfishUpgrader } from './../upgrader/boxfishUpgraderFactory';
 import BoxfishUpgrader from './../upgrader/boxfishUpgrader';
-import InterpolationParams from './../../interfaces/InterpolationParams';
-import AutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
-import AutozoomControl from '../autozoomControl';
-import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
-import IUsbTransport from './../../interfaces/IUsbTransport';
-import ICnnControl from '../../interfaces/ICnnControl';
 import FaceBasedExposureControl from '../faceBasedExposureControl';
 import { HUDDLY_VID } from './factory';
 

@@ -1,21 +1,22 @@
 import { EventEmitter } from 'events';
 
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+
 import Api from '../api';
 import Logger from './../../utilitis/logger';
 import UvcBaseDevice from './uvcbase';
-import IUsbTransport from './../../interfaces/IUsbTransport';
-import IDeviceManager from './../../interfaces/iDeviceManager';
-import IDetector from './../../interfaces/IDetector';
-import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
-import UpgradeOpts from './../../interfaces/IUpgradeOpts';
-import InterpolationParams from './../../interfaces/InterpolationParams';
 import Locksmith from './../locksmith';
 import CameraEvents from './../../utilitis/events';
 import HuddlyGoUpgrader from './../upgrader/huddlygoUpgrader';
-import DiagnosticsMessage from '../diagnosticsMessage';
+import DiagnosticsMessage from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
 import { MinMaxDiagnosticsMessage } from '../diagnosticsMessageData';
-import ICnnControl from '../../interfaces/ICnnControl';
-import ReleaseChannel from './../../interfaces/ReleaseChannelEnum';
 import { HUDDLY_GO_PID, HUDDLY_VID } from './factory';
 
 const FETCH_UX_CONTROLS_ATTEMPTS = 10;

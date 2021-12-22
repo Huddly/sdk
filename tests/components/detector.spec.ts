@@ -1,12 +1,11 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import DetectorOpts, { DetectionConvertion } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+
 import Detector from './../../src/components/detector';
-import IDeviceManager from './../../src/interfaces/iDeviceManager';
-import DetectorOpts, { DetectionConvertion } from './../../src/interfaces/IDetectorOpts';
-import Logger from './../../src/utilitis/logger';
 import DeviceManagerMock from './../mocks/devicemanager.mock';
 import * as msgpack from 'msgpack-lite';
-import { isSymbol } from 'util';
 
 describe('Detector', () => {
   let detector: Detector;

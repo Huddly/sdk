@@ -1,4 +1,4 @@
-import IIpDeviceManager from './../../src/interfaces/iDeviceManager';
+import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import {
   CNNStatus,
   CnnFeature,

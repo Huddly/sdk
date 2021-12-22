@@ -3,10 +3,12 @@ import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 import * as msgpack from 'msgpack-lite';
 import nock from 'nock';
+
+import ITransport from '@huddly/sdk-interfaces/lib/interfaces/ITransport';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+
 import Api from './../../src/components/api';
 import Locksmith from './../../src/components/locksmith';
-import ITransport from './../../src/interfaces/iTransport';
-import ReleaseChannel from './../../src/interfaces/ReleaseChannelEnum';
 
 chai.should();
 chai.use(sinonChai);

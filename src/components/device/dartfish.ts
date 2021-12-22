@@ -1,12 +1,13 @@
 import { EventEmitter } from 'events';
 
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import InterpolationParams from '@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+
 import Api from './../api';
 import Locksmith from './../locksmith';
 import Boxfish from './boxfish';
-import IDetector from '../../interfaces/IDetector';
-import ICnnControl from '../../interfaces/ICnnControl';
-import InterpolationParams from './../../interfaces/InterpolationParams';
-import IUsbTransport from './../../interfaces/IUsbTransport';
 import Logger from './../../utilitis/logger';
 
 export default class DartFish extends Boxfish {

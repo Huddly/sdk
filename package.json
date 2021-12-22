@@ -102,6 +102,7 @@
     "@huddly/camera-proto": "1.0.11",
     "@huddly/camera-switch-proto": "0.0.6",
     "cpio-stream": "git+ssh://git@github.com/Huddly/cpio-stream.git",
+    "@huddly/sdk-interfaces": "^0.1.0",
     "google-protobuf": "^3.17.3",
     "jszip": "3.2.2",
     "msgpack-lite": "~0.1.26",

@@ -1,6 +1,8 @@
 import { expect } from 'chai';
+
+import { DetectionConvertion } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+
 import DetectionsConverter from './../../src/utilitis/detectionsConverter';
-import { DetectionConvertion } from './../../src/interfaces/IDetectorOpts';
 
 describe('DetectionsConverter', () => {
   const predictions = [

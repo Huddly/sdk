@@ -1,5 +1,5 @@
 import fs from 'fs';
-import ILogger from './../interfaces/ILogger';
+import ILogger from '@huddly/sdk-interfaces/lib/interfaces/ILogger';
 
 /**
  * Huddly Logger class.

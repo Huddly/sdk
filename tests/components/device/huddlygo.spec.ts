@@ -2,9 +2,9 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 
-import ITransport from './../../../src/interfaces/iTransport';
+import ITransport from '@huddly/sdk-interfaces/lib/interfaces/ITransport';
+
 import HuddlyGo from './../../../src/components/device/huddlygo';
-import Logger from './../../../src/utilitis/logger';
 import { EventEmitter } from 'events';
 
 chai.should();

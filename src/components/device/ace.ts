@@ -1,21 +1,22 @@
 import { EventEmitter } from 'events';
 import { TextDecoder } from 'util';
 
-import IAutozoomControlOpts from '../../interfaces/IAutozoomControlOpts';
-import IDetector from '../../interfaces/IDetector';
-import IDetectorOpts from '../../interfaces/IDetectorOpts';
-import IDeviceUpgrader from '../../interfaces/IDeviceUpgrader';
-import IGrpcTransport from '../../interfaces/IGrpcTransport';
-import IUpgradeOpts from '../../interfaces/IUpgradeOpts';
-import ReleaseChannel from '../../interfaces/ReleaseChannelEnum';
-import IUVCControls from './../../interfaces/iUVCControlApi';
+import IAutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import IDetectorOpts from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
+import IUpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import ReleaseChannel from '@huddly/sdk-interfaces/lib/enums/ReleaseChannel';
+import IUVCControls from '@huddly/sdk-interfaces/lib/interfaces/IUVCControlApi';
+import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+
 import Api from '../api';
-import diagnosticsMessage from '../diagnosticsMessage';
+import DiagnosticsMessage from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
 import Logger from './../../utilitis/logger';
 import Locksmith from './../locksmith';
-import IIpDeviceManager from './../../interfaces/iIpDeviceManager';
-import IDeviceManager from './../../interfaces/iDeviceManager';
-import ICnnControl from '../../interfaces/ICnnControl';
 import AceUpgrader from './../upgrader/aceUpgrader';
 import IpAutozoomControl from '../ipAutozoomControl';
 import IpFaceBasedExposureControl from '../ipFaceBasedExposureControl';
@@ -251,7 +252,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     return new IpDetector(this, opts);
   }
 
-  getDiagnostics(): Promise<diagnosticsMessage[]> {
+  getDiagnostics(): Promise<DiagnosticsMessage[]> {
     throw new Error('Method not implemented.');
   }
 

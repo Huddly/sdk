@@ -1,4 +1,4 @@
-import IUVCControls from './../../interfaces/iUVCControlApi';
+import IUVCControls from '@huddly/sdk-interfaces/lib/interfaces/IUVCControlApi';
 
 export default class UvcBaseDevice implements IUVCControls {
   uvcControlInterface: any;

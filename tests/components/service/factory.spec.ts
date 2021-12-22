@@ -2,7 +2,8 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 
-import IHuddlyService from './../../../src/interfaces/IHuddlyService';
+import IHuddlyService from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyService';
+
 import ServiceFactory from './../../../src/components/service/factory';
 import CameraSwitchService from '../../../src/components/service/cameraSwitchService';
 

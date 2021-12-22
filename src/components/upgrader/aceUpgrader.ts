@@ -1,9 +1,10 @@
 import { EventEmitter } from 'events';
 import cpio from 'cpio-stream';
 
-import IUpgradeOpts from './../../interfaces/IUpgradeOpts';
-import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
-import IDeviceManager from './../../interfaces/iDeviceManager';
+import IUpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 import AceUpgraderError from './../../error/AceUpgraderError';
 import Logger from './../../utilitis/logger';

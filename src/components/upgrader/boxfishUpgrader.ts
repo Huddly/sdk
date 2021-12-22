@@ -1,10 +1,14 @@
-import IDeviceUpgrader from './../../interfaces/IDeviceUpgrader';
 import { EventEmitter } from 'events';
-import IDeviceManager from './../../interfaces/iDeviceManager';
-import IBoxfishUpgraderFile, { IMAGE_TYPES } from './../../interfaces/IBoxfishUpgraderFile';
-import UpgradeOpts from './../../interfaces/IUpgradeOpts';
-import IUsbTransport from './../../interfaces/IUsbTransport';
 import semver from 'semver';
+
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
+import IBoxfishUpgraderFile, {
+  IMAGE_TYPES,
+} from '@huddly/sdk-interfaces/lib/interfaces/IBoxfishUpgraderFile';
+import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
+import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
+
 import Locksmith from './../locksmith';
 import Api from '../api';
 import { calculate } from './../../utilitis/crc32c';

@@ -1,14 +1,14 @@
-import IHuddlyService from '../../interfaces/IHuddlyService';
-import IServiceOpts from '../../interfaces/IServiceOpts';
+import IHuddlyService from '@huddly/sdk-interfaces/lib/interfaces/IHuddlyService';
+import IServiceOpts from '@huddly/sdk-interfaces/lib/interfaces/IServiceOpts';
 import {
   CameraInfo,
   CameraPairingState,
   FwUpdateSchedule,
   FwUpdateScheduleStatus,
   CameraInfoWrite,
-} from '../../interfaces/ICameraSwitchModels';
-import Logger from '../../utilitis/logger';
+} from '@huddly/sdk-interfaces/lib/interfaces/ICameraSwitchModels';
 
+import Logger from '../../utilitis/logger';
 import * as switchservice from '@huddly/camera-switch-proto/lib/api/service_pb';
 import { HuddlyCameraServiceClient } from '@huddly/camera-switch-proto/lib/api/service_grpc_pb';
 import * as grpc from '@grpc/grpc-js';
@@ -24,9 +24,14 @@ export enum ServiceCameraActions {
 }
 
 /**
+ * @export
+ *
  * IHuddlyService class implementation for sdk consumers running on a Windows host machine. The service can be used
  * to switch which huddly network camera is used to stream on the host machine. All the functionality of this
  * service is described in the proto file from @huddly/camera-switch npm package with the name service.proto
+ *
+ * @class CameraSwitchService
+ * @implements {IHuddlyService}
  */
 export default class CameraSwitchService implements IHuddlyService {
   /**

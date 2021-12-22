@@ -2,10 +2,11 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 
+import { CameraInfo, FwUpdateSchedule, FwUpdateScheduleStatus } from '@huddly/sdk-interfaces/lib/interfaces/ICameraSwitchModels';
+
 import CameraSwitchService, { ServiceCameraActions } from '../../../src/components/service/cameraSwitchService';
 import { HuddlyCameraServiceClient } from '@huddly/camera-switch-proto/lib/api/service_grpc_pb';
 import * as switchservice from '@huddly/camera-switch-proto/lib/api/service_pb';
-import { CameraInfo, FwUpdateSchedule, FwUpdateScheduleStatus } from '../../../src/interfaces/ICameraSwitchModels';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 

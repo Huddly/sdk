@@ -3,7 +3,7 @@ import crypto from 'crypto';
 import IBoxfishUpgraderFile, {
   IMAGE_TYPES,
   FLASH_ADDR_LOCATION,
-} from './../../interfaces/IBoxfishUpgraderFile';
+} from '@huddly/sdk-interfaces/lib/interfaces/IBoxfishUpgraderFile';
 
 const SUPPORTED_MANIFEST_VERSIONS = Object.freeze([4, 5]);
 

@@ -4,7 +4,6 @@ import sinonChai from 'sinon-chai';
 import fs from 'fs';
 
 import Logger from './../../src/utilitis/logger';
-import ILogger from './../../src/interfaces/ILogger';
 
 
 chai.should();

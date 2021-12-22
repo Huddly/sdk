@@ -1,5 +1,5 @@
-import ICnnControl from '../interfaces/ICnnControl';
-import IDeviceManager from '../interfaces/iDeviceManager';
+import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
+import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import Logger from './../utilitis/logger';
 
 export default class FaseBasedExposureControl implements ICnnControl {

@@ -2,7 +2,7 @@ import crypto from 'crypto';
 import IBoxfishUpgraderFile, {
   IMAGE_TYPES,
   FLASH_ADDR_LOCATION,
-} from './../../interfaces/IBoxfishUpgraderFile';
+} from '@huddly/sdk-interfaces/lib/interfaces/IBoxfishUpgraderFile';
 
 const MARKER = Buffer.from('\0\n--97da1ea4-803a-4979-8e5d-f2aaa0799f4d--\n');
 

@@ -1,4 +1,6 @@
-import DiagnosticsMessage, { DiagnosticsLevel } from './diagnosticsMessage';
+import DiagnosticsMessage, {
+  DiagnosticsLevel,
+} from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
 
 export class DiagnosticsMessageData extends DiagnosticsMessage {
   protected _data: any;
