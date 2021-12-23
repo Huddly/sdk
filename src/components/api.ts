@@ -9,6 +9,13 @@ import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import IDeviceCommonApi from '@huddly/sdk-interfaces/lib/interfaces/IDeviceCommonApi';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
+/**
+ * Control class that implements common functionalities that apply to usb connected Huddly devices.
+ *
+ * @ignore
+ * @class Api
+ * @implements {IDeviceCommonApi}
+ */
 export default class Api implements IDeviceCommonApi {
   transport: IUsbTransport;
   locksmith: Locksmith;

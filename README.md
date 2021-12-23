@@ -99,14 +99,7 @@ If you have a question or found a bug please [open an issue](https://github.com/
 
 
 ## Documentation
-For more details on the rest of the functionality to the sdk check out the documentation on some of the interfaces listed below.
-
- - [SDK](http://developer.huddly.com/classes/HuddlySdk.html#readme)
- - [Device Manager](http://developer.huddly.com/interfaces/IDeviceManager.html)
- - [CNN Controller](http://developer.huddly.com/interfaces/ICnnControl.html#readme)
- - [Detector](http://developer.huddly.com/interfaces/IDetector.html#readme)
- - [Device Upgrader](http://developer.huddly.com/interfaces/IDeviceUpgrader.html#readme)
- - [Camera Switch Service](http://developer.huddly.com/interfaces/IHuddlyService.html#readme)
+For more details on the rest of the functionality to the sdk check out developer.huddly.com for the different classes, interfaces, enums and more which some of them having example code as well.
 
 ## Repo
 Check out the sdk code on github (https://github.com/Huddly/sdk)

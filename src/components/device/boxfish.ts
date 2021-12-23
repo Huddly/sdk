@@ -27,14 +27,61 @@ import FaceBasedExposureControl from '../faceBasedExposureControl';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
+/**
+ * Controller class for Boxfish/IQ camera.
+ *
+ * @export
+ * @class Boxfish
+ * @extends {UvcBaseDevice}
+ * @implements {IDeviceManager}
+ */
 export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
+  /**
+   * Transport instance for communicating with cameras (sending command and reading data)
+   *
+   * @type {IUsbTransport}
+   * @memberof Boxfish
+   */
   transport: IUsbTransport;
+  /**
+   * Common Api wrapper class for invoking common functionality across device controller classes.
+   *
+   * @type {Api}
+   * @memberof Boxfish
+   */
   _api: Api;
+  /**
+   * The uvc control interface for sending standard uvc commands to camera.
+   *
+   * @type {*}
+   * @memberof Boxfish
+   */
   uvcControlInterface: any;
+  /** @ignore */
   locksmith: Locksmith;
+  /**
+   * Event emitter instance emitting attach and detach events for Huddly Cameras.
+   *
+   * @type {EventEmitter}
+   * @memberof Boxfish
+   */
   discoveryEmitter: EventEmitter;
+  /**
+   * Comercial product name for this controller class.
+   *
+   * @type {string}
+   * @memberof Boxfish
+   */
   productName: string = 'Huddly IQ';
 
+  /**
+   * Creates an instance of Boxfish.
+   * @param {*} uvcCameraInstance Uvc camera instance acquired from device-api-uvc discovery manager.
+   * @param {IUsbTransport} transport The transport instance for communicating with the camera.
+   * @param {*} uvcControlInterface Uvc control interface for performing standard uvc control commands.
+   * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach & detach events for Huddly cameras.
+   * @memberof Boxfish
+   */
   constructor(
     uvcCameraInstance: any,
     transport: IUsbTransport,
@@ -53,6 +100,12 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return this._api;
   }
 
+  /**
+   * Initializes the controller class. Must be called before any other commands.
+   *
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof Boxfish
+   */
   async initialize(): Promise<void> {
     this._api = new Api(this.transport, this.locksmith);
     this.transport.init();
@@ -63,10 +116,22 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     }
   }
 
+  /**
+   * Teardown function for cleaning up the state.
+   *
+   * @return {*}  {Promise<any>} Promise that carries out the teardown step.
+   * @memberof Boxfish
+   */
   async closeConnection(): Promise<any> {
     return this.transport.close();
   }
 
+  /**
+   * Get device software and hardware information.
+   *
+   * @return {*}  {Promise<any>} Object representing software & hardware info of the camera. Function must be awaited.
+   * @memberof Boxfish
+   */
   async getInfo(): Promise<any> {
     const info = await this.api.getCameraInfo();
     const status = {
@@ -85,17 +150,34 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return status;
   }
 
+  /** @ignore */
   extractSemanticSoftwareVersion(appVer: string) {
     return appVer.replace(/\D+-/, '');
   }
 
-  async ensureAppMode(currentMode: string, timeout: number = 10000) {
+  /**
+   * Make sure the camera is running on application mode (which is the default mode).
+   *
+   * @param {string} currentMode Current mode on camera.
+   * @return {*} Resolves when the camera boots in app mode.
+   * @memberof Boxfish
+   */
+  async ensureAppMode(currentMode: string, timeout?: number) {
     if (!currentMode || currentMode === 'app') return Promise.resolve();
     else {
       throw new Error(`Cannot set camera to app mode from ${currentMode} mode!`);
     }
   }
 
+  /**
+   * Get application log.
+   *
+   * @param {number} [timeout=60000] Maximum allowed time (in milliseconds) for fetching the log.
+   * @param {number} [retry=1] Number of retries to perform in case something goes wrong.
+   * @param {boolean} [allowLegacy=true] Should allow legacy error log retrival in case the standard procedure fails.
+   * @return {*}  {Promise<any>} A promise which when completed contains the camera application log.
+   * @memberof Boxfish
+   */
   async getErrorLog(
     timeout: number = 60000,
     retry: number = 1,
@@ -104,10 +186,23 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return this.api.getErrorLog(timeout, retry, allowLegacy);
   }
 
+  /**
+   * Erases the application log.
+   *
+   * @param {number} [timeout=60000] Maximum allowed time (in milliseconds) for erasing the log.
+   * @return {*}  {Promise<void>} Resolves when the erase is completed.
+   * @memberof Boxfish
+   */
   async eraseErrorLog(timeout: number = 60000): Promise<void> {
     await this.api.eraseErrorLog(timeout);
   }
 
+  /**
+   * Get current power usage on the camera.
+   *
+   * @return {*}  {Promise<any>} An object containing voltage, current and power usage on camera. Method must be awaited.
+   * @memberof Boxfish
+   */
   async getPowerUsage(): Promise<any> {
     const response = await this.api.sendAndReceiveMessagePack('', {
       send: 'get_power',
@@ -116,6 +211,12 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return response;
   }
 
+  /**
+   * Get current temperature on the camera.
+   *
+   * @return {*}  {Promise<any>} An object containig internal and external temperature values.
+   * @memberof Boxfish
+   */
   async getTemperature(): Promise<any> {
     const response = await this.api.sendAndReceiveMessagePack('', {
       send: 'get_temperature',
@@ -124,6 +225,14 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return response;
   }
 
+  /**
+   * @ignore
+   * Get power monitoring diagnostics (voltage and current).
+   *
+   * @param {*} powerUsage Power usage data retrieved from camera
+   * @return {*}  {Array<DiagnosticsMessage>} Power usage data retrieved from camera
+   * @memberof Boxfish
+   */
   getPowerMonitorDiagnostics(powerUsage: any): Array<DiagnosticsMessage> {
     const minVoltage = 4.6;
     const maxVoltage = 5.25;
@@ -165,6 +274,13 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return diagnostics;
   }
 
+  /**
+   * @ignore
+   * Get diagnostics info on camera
+   *
+   * @return {*}  {Promise<Array<DiagnosticsMessage>>} An array of data representing diagnostics information.
+   * @memberof Boxfish
+   */
   async getDiagnosticsInfo(): Promise<Array<DiagnosticsMessage>> {
     const message = await this.api.sendAndReceiveMessagePack(
       '',
@@ -178,6 +294,12 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return [new DiagnosticsMessageData('USBMODE', 'USB Ok', message.usb)];
   }
 
+  /**
+   * Get diagnostics for power usage on camera.
+   *
+   * @return {*}  {Promise<Array<DiagnosticsMessage>>} An array of data representing the power usage diagnostics.
+   * @memberof Boxfish
+   */
   async getDiagnostics(): Promise<Array<DiagnosticsMessage>> {
     const powerUsage = await this.getPowerUsage();
 
@@ -188,6 +310,13 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return [...powerDiagnostics, ...infoDiagnostics];
   }
 
+  /**
+   * Soft boot camera.
+   *
+   * @param {string} [mode='app'] Tell the camera which mode to boot to.
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof Boxfish
+   */
   async reboot(mode: string = 'app'): Promise<void> {
     await this.locksmith.executeAsyncFunction(async () => {
       await this.transport.clear();
@@ -199,14 +328,32 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     });
   }
 
+  /**
+   * Get camera uptime
+   *
+   * @return {*} Resolves with the uptime information (double in milliseconds)
+   * @memberof Boxfish
+   */
   async uptime() {
     return this.api.getUptime();
   }
 
+  /**
+   * Helper function for getting the respective upgrader controller class for upgrading Huddly Boxfish/IQ
+   *
+   * @return {*}  {Promise<IDeviceUpgrader>} The upgrader controll instance.
+   * @memberof Boxfish
+   */
   async getUpgrader(): Promise<IDeviceUpgrader> {
     return createBoxfishUpgrader(this, this.discoveryEmitter);
   }
 
+  /**
+   * @ignore
+   * Internal API
+   *
+   * @memberof Boxfish
+   */
   async createAndRunFsblUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager) {
     const upgrader = new BoxfishUpgrader(deviceManager, this.discoveryEmitter);
     const mvusbFile = opts.file;
@@ -225,6 +372,12 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     });
   }
 
+  /**
+   * @ignore
+   * Internal API
+   *
+   * @memberof Boxfish
+   */
   async createAndRunUpgrade(
     opts: UpgradeOpts,
     deviceManager: IDeviceManager,
@@ -260,6 +413,13 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     });
   }
 
+  /**
+   * Performs software upgrade (async) on Huddly Boxfish/IQ
+   *
+   * @param {UpgradeOpts} opts Upgrade options for performing the upgrade
+   * @return {*}  {Promise<any>} Resolves when the upgrade is completed. Rejects if something goes wrong.
+   * @memberof Boxfish
+   */
   async upgrade(opts: UpgradeOpts): Promise<any> {
     let upgradeAttempts = 0;
     return new Promise<void>((resolve, reject) => {
@@ -285,6 +445,12 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     });
   }
 
+  /**
+   * @ignore
+   * Internal API
+   *
+   * @memberof Boxfish
+   */
   async upgradeFsbl(opts: UpgradeOpts): Promise<any> {
     try {
       await this.createAndRunFsblUpgrade(opts, this);
@@ -295,18 +461,44 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     }
   }
 
+  /**
+   * Get autozoom control class instance.
+   *
+   * @param {AutozoomControlOpts} opts Autozoom control options.
+   * @return {*}  {ICnnControl} The instance of the autozoom control class.
+   * @memberof Boxfish
+   */
   getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
     return new AutozoomControl(this, opts);
   }
 
+  /**
+   * Get face based exposure control class instance.
+   *
+   * @return {*}  {ICnnControl} The instance of the face-based exposure control class.
+   * @memberof Boxfish
+   */
   getFaceBasedExposureControl(): ICnnControl {
     return new FaceBasedExposureControl(this);
   }
 
+  /**
+   * Get detector control class instance.
+   *
+   * @param {DetectorOpts} [opts] Detector control options.
+   * @return {*}  {IDetector} The instance of the detector control class.
+   * @memberof Boxfish
+   */
   getDetector(opts?: DetectorOpts): IDetector {
     return new Detector(this, opts);
   }
 
+  /**
+   * Get Autozoom/GF state on target
+   *
+   * @return {*}  {Promise<any>} Resolves with information about the GF state when action is completed.
+   * @memberof Boxfish
+   */
   async getState(): Promise<any> {
     const response = await this.api.sendAndReceiveMessagePack('', {
       send: 'camera/get_state',
@@ -315,14 +507,33 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
     return response;
   }
 
+  /**
+   * Set interpolation curve parameter used to zoom on regions when GF is enabled
+   *
+   * @param {InterpolationParams} params The interpolation cruve parameters.
+   * @return {*}  {Promise<any>} Resolves when the interpolation parameters are updated on target.
+   * @memberof Boxfish
+   */
   async setInterpolationParams(params: InterpolationParams): Promise<any> {
     this.api.setInterpolationParameters(params);
   }
 
+  /**
+   * Get interpolation curve parameters from target.
+   *
+   * @return {*}  {Promise<InterpolationParams>} Resolves with the interpolation curve parameters.
+   * @memberof Boxfish
+   */
   async getInterpolationParams(): Promise<InterpolationParams> {
     return this.api.getInterpolationParameters();
   }
 
+  /**
+   * @ignore
+   * Internal API
+   *
+   * @memberof Boxfish
+   */
   async getLatestFirmwareUrl(releaseChannel: ReleaseChannel = ReleaseChannel.STABLE) {
     return this.api.getLatestFirmwareUrl('iq', releaseChannel);
   }

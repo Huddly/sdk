@@ -6,6 +6,12 @@ import IBoxfishUpgraderFile, {
 
 const MARKER = Buffer.from('\0\n--97da1ea4-803a-4979-8e5d-f2aaa0799f4d--\n');
 
+/**
+ * Wrapper class for reading the ".hpk" firmware image.
+ *
+ * @class BoxfishHpk
+ * @implements {IBoxfishUpgraderFile}
+ */
 class BoxfishHpk implements IBoxfishUpgraderFile {
   _buf: Buffer;
   _headerLen: number;

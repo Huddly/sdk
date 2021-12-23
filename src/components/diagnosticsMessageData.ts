@@ -2,6 +2,13 @@ import DiagnosticsMessage, {
   DiagnosticsLevel,
 } from '@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage';
 
+/**
+ * @ignore
+ *
+ * @export
+ * @class DiagnosticsMessageData
+ * @extends {DiagnosticsMessage}
+ */
 export class DiagnosticsMessageData extends DiagnosticsMessage {
   protected _data: any;
   constructor(type: string, message: string, data: any) {
@@ -16,6 +23,13 @@ export class DiagnosticsMessageData extends DiagnosticsMessage {
   }
 }
 
+/**
+ * @ignore
+ *
+ * @export
+ * @class MinMaxDiagnosticsMessage
+ * @extends {DiagnosticsMessage}
+ */
 export class MinMaxDiagnosticsMessage extends DiagnosticsMessage {
   constructor(
     type: string,

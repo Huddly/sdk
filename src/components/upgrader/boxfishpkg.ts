@@ -7,6 +7,13 @@ import IBoxfishUpgraderFile, {
 
 const SUPPORTED_MANIFEST_VERSIONS = Object.freeze([4, 5]);
 
+/**
+ * @ignore
+ * Wrapper class for reading the ".pkg" firmware image.
+ *
+ * @class BoxfishPackage
+ * @implements {IBoxfishUpgraderFile}
+ */
 class BoxfishPackage implements IBoxfishUpgraderFile {
   zipFileBuffer: Buffer;
   files: any = {};

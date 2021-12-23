@@ -33,6 +33,14 @@ const kCRCTable = new Int32Array([
   0x79b737ba, 0x8bdcb4b9, 0x988c474d, 0x6ae7c44e, 0xbe2da0a5, 0x4c4623a6, 0x5f16d052, 0xad7d5351,
 ]);
 
+/**
+ * Helper class for calculating crc32c checksums.
+ *
+ * @ignore
+ * @param {Buffer} buf
+ * @param {*} [initial]
+ * @return {*} Checksum for the given buffer
+ */
 export function calculate(buf: Buffer, initial?) {
   if (!Buffer.isBuffer(buf)) {
     // eslint-disable-next-line

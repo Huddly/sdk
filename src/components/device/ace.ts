@@ -28,26 +28,101 @@ import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as grpc from '@grpc/grpc-js';
 
-// TODO: Not just log status. Instead getMessage() etc.
+/**
+ * @ignore
+ * @interface ErrorInterface
+ */
 interface ErrorInterface {
   message: String;
   stack?: String;
 }
 
+/**
+ * Controller class for L1/Ace camera.
+ *
+ * @export
+ * @class Ace
+ * @implements {IIpDeviceManager}
+ * @implements {IUVCControls}
+ */
 export default class Ace implements IIpDeviceManager, IUVCControls {
+  /**
+   * @ignore
+   * Communication with camera takes place here. Transport instance is there
+   * for api conformance reasons.
+   * @type {IGrpcTransport}
+   * @memberof Ace
+   */
   transport: IGrpcTransport;
+  /** @ignore */
   locksmith: Locksmith;
+  /**
+   * Comercial product name for this controller class.
+   *
+   * @type {string}
+   * @memberof Ace
+   */
   productName: string = 'Huddly L1';
+  /**
+   * Event emitter instance emitting attach and detach events for Huddly Cameras.
+   *
+   * @type {EventEmitter}
+   * @memberof Ace
+   */
   discoveryEmitter: EventEmitter;
+  /**
+   * Device instance retrieved from doing WSDD probing. Take a look at the NetworkDevice
+   * class on device-api-ip module.
+   *
+   * @type {*}
+   * @memberof Ace
+   */
   wsdDevice: any;
 
+  /**
+   * Number representing the connection timeout when connecting to grpc server on ACE
+   *
+   * @private
+   * @type {number}
+   * @memberof Ace
+   */
   private readonly GPRC_CONNECT_TIMEOUT: number = 1; // seconds
+  /**
+   * Port number for connecting to grpc server on ACE
+   *
+   * @private
+   * @type {number}
+   * @memberof Ace
+   */
   private readonly GRPC_PORT: number = 50051;
+  /**
+   * Grpc client instance for communicating with the grpc server running on ACE
+   *
+   * @private
+   * @type {HuddlyServiceClient}
+   * @memberof Ace
+   */
   private huddlyGrpcClient: HuddlyServiceClient;
 
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @readonly
+   * @type {Api}
+   * @memberof Ace
+   */
   get api(): Api {
     throw new Error('Not Supported.');
   }
+
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @readonly
+   * @memberof Ace
+   */
   get uvcControlInterface() {
     throw new Error('Not Supported');
   }
@@ -60,6 +135,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     this.huddlyGrpcClient = client;
   }
 
+  /**
+   * Creates an instance of Ace.
+   * @param {*} wsdDevice The wsdd device instance retrieved during discovery.
+   * @param {IGrpcTransport} transport Grpc transport instance.
+   * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach & detach events for Huddly ACE cameras.
+   * @memberof Ace
+   */
   constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
     this.wsdDevice = wsdDevice;
     this.transport = transport;
@@ -70,6 +152,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     Object.assign(this, wsdDeviceProps);
   }
 
+  /**
+   * Initializes the controller class. Must be called before any other commands.
+   *
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof Ace
+   */
   async initialize(): Promise<void> {
     const deadline = new Date();
     deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
@@ -91,12 +179,26 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     );
   }
 
+  /**
+   * Teardown function for cleaning up the state.
+   *
+   * @return {*}  {Promise<any>} Promise that carries out the teardown step.
+   * @memberof Ace
+   */
   async closeConnection(): Promise<any> {
     this.grpcClient.close();
     return this.transport.close();
   }
 
-  handleError(msg: string, error: ErrorInterface, reject: any) {
+  /**
+   * @ignore
+   *
+   * @param {string} msg Error message
+   * @param {ErrorInterface} error The error object
+   * @param {*} reject Reject function.
+   * @memberof Ace
+   */
+  handleError(msg: string, error: ErrorInterface, reject: any): void {
     if (!error) {
       Logger.error(msg, '', Ace.name);
       reject(msg);
@@ -107,6 +209,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     reject(error.message ? error.message : 'Unknown error');
   }
 
+  /**
+   * Get device software and hardware information.
+   *
+   * @return {*}  {Promise<any>} Object representing software & hardware info of the camera. Function must be awaited.
+   * @memberof Ace
+   */
   getInfo(): Promise<any> {
     return new Promise((resolve, reject) => {
       const infoData = {
@@ -141,6 +249,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get application log.
+   *
+   * @param {number} [timeout] Maximum allowed time (in milliseconds) for fetching the log.
+   * @return {*}  {Promise<any>} A promise which when completed contains the camera application log.
+   * @memberof Ace
+   */
   getErrorLog(timeout?: number): Promise<any> {
     return new Promise(async (resolve, reject) => {
       const logFile = new huddly.LogFile();
@@ -153,6 +268,14 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   * Function that reads the logfile stream from camera through grpc.
+   *
+   * @param {huddly.LogFile} logFile The type of the log to read
+   * @return {*}  {Promise<any>} The log data
+   * @memberof Ace
+   */
   getLogFiles(logFile: huddly.LogFile): Promise<any> {
     return new Promise((resolve, reject) => {
       logFile.setKeepLog(true);
@@ -168,6 +291,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Erases the application log.
+   *
+   * @param {number} [timeout] Maximum allowed time (in milliseconds) for erasing the log.
+   * @return {*}  {Promise<void>} Resolves when the erase is completed.
+   * @memberof Ace
+   */
   eraseErrorLog(timeout?: number): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -180,6 +310,14 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   * Internal function for performing the error log erase through grpc on target.
+   *
+   * @param {huddly.LogFile} logFile The log type to be erased
+   * @return {*}  {Promise<void>} Resolves when the erase is completed.
+   * @memberof Ace
+   */
   eraseLogFile(logFile: huddly.LogFile): Promise<void> {
     return new Promise((resolve, reject) => {
       this.grpcClient.eraseLogFile(logFile, (err, status: huddly.DeviceStatus) => {
@@ -193,6 +331,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Soft boot camera.
+   *
+   * @param {string} [mode] Tell the camera which mode to boot to.
+   * @return {*}  {Promise<void>} Resolves when the action is completed.
+   * @memberof Ace
+   */
   reboot(mode?: string): Promise<void> {
     return new Promise((resolve, reject) => {
       this.grpcClient.reset(new Empty(), (err, status: huddly.DeviceStatus) => {
@@ -206,6 +351,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   *
+   * @return {*}  {Object}
+   * @memberof Ace
+   */
   _getDefaultParams(): Object {
     return {
       suported: true,
@@ -213,10 +364,23 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     };
   }
 
+  /**
+   * Helper function for getting the respective upgrader controller class for upgrading Huddly ACE
+   *
+   * @return {*}  {Promise<IDeviceUpgrader>} The upgrader controll instance.
+   * @memberof Ace
+   */
   getUpgrader(): Promise<IDeviceUpgrader> {
     return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter));
   }
 
+  /**
+   * Performs software upgrade (async) on Huddly ACE
+   *
+   * @param {IUpgradeOpts} opts Upgrade options for performing the upgrade
+   * @return {*}  {Promise<any>} Resolves when the upgrade is completed. Rejects if something goes wrong.
+   * @memberof Ace
+   */
   upgrade(opts: IUpgradeOpts): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getUpgrader()
@@ -231,22 +395,54 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get autozoom control class instance.
+   *
+   * @param {IAutozoomControlOpts} opts Autozoom control options.
+   * @return {*}  {ICnnControl} The instance of the autozoom control class.
+   * @memberof Ace
+   */
   getAutozoomControl(opts: IAutozoomControlOpts): ICnnControl {
     return new IpAutozoomControl(this, opts);
   }
 
+  /**
+   * Get face based exposure control class instance.
+   *
+   * @return {*}  {ICnnControl} The instance of the face-based exposure control class.
+   * @memberof Ace
+   */
   getFaceBasedExposureControl(): ICnnControl {
     return new IpFaceBasedExposureControl(this);
   }
 
+  /**
+   * Get detector control class instance.
+   *
+   * @param {IDetectorOpts} opts Detector control options.
+   * @return {*}  {IDetector} The instance of the detector control class.
+   * @memberof Ace
+   */
   getDetector(opts: IDetectorOpts): IDetector {
     return new IpDetector(this, opts);
   }
 
+  /**
+   * @ignore
+   *
+   * @return {*}  {Promise<DiagnosticsMessage[]>}
+   * @memberof Ace
+   */
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
     throw new Error('Method not implemented.');
   }
 
+  /**
+   * Get Autozoom/GF state on target
+   *
+   * @return {*}  {Promise<any>} Resolves with information about the GF state when action is completed.
+   * @memberof Ace
+   */
   getState(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -265,6 +461,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Generic function for getting status for a specific CnnFeature
+   *
+   * @param {huddly.CnnFeature} cnnFeature The cnn feature type
+   * @return {*}  {Promise<huddly.CNNStatus>} Resolves with the status of the cnn feature
+   * @memberof Ace
+   */
   getCnnFeatureStatus(cnnFeature: huddly.CnnFeature): Promise<huddly.CNNStatus> {
     return new Promise(async (resolve, reject) => {
       this.grpcClient.getCnnFeatureStatus(cnnFeature, (err, cnnStatus: huddly.CNNStatus) => {
@@ -277,10 +480,23 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   *
+   * @return {*}  {Promise<any>}
+   * @memberof Ace
+   */
   getPowerUsage(): Promise<any> {
     throw new Error('Method not implemented.');
   }
 
+  /**
+   * Get specfic temperature type on camera.
+   *
+   * @param {string} [key] The temperature key (internal, external etc.)
+   * @return {*}  {Promise<any>} Resolves with temperature information when action completes.
+   * @memberof Ace
+   */
   getTemperature(key?: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -302,6 +518,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise<huddly.Temperatures>}
+   * @memberof Ace
+   */
   _getTemperatures(): Promise<huddly.Temperatures> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getTemperatures(new Empty(), (err, temperatures: huddly.Temperatures) => {
@@ -314,6 +537,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get temperature information on camera.
+   *
+   * @return {*}  {Promise<any>} Resolves with temperature data when action completes.
+   * @memberof Ace
+   */
   getTemperatures(): Promise<any> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -326,10 +555,23 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @param {ReleaseChannel} releaseChannel
+   * @memberof Ace
+   */
   getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
     throw new Error('Method not implemented.');
   }
 
+  /**
+   * Get current camera slot.
+   *
+   * @return {*}  {Promise<string>} Resolves with slot information when action completes.
+   * @memberof Ace
+   */
   getSlot(): Promise<string> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getBootSlot(new Empty(), (err, slot: huddly.BootSlot) => {
@@ -345,6 +587,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get camera uptime
+   *
+   * @return {*}  {Promise<number>} Resolves with uptime information when the action completes.
+   * @memberof Ace
+   */
   uptime(): Promise<number> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getUptime(new Empty(), (err, uptime: huddly.Uptime) => {
@@ -359,19 +607,52 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
 
   /** UVC Controls to be supported */
 
+  /**
+   * @ignore
+   * Not applicable!
+   *
+   * @param {number} controlNumber
+   * @return {*}  {Promise<Buffer>}
+   * @memberof Ace
+   */
   getXUControl(controlNumber: number): Promise<Buffer> {
     throw new Error('Method not implemented.');
   }
+
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @param {number} controlNumber
+   * @param {*} value
+   * @return {*}  {Promise<any>}
+   * @memberof Ace
+   */
   setXUControl(controlNumber: number, value: any): Promise<any> {
     throw new Error('Method not implemented.');
   }
 
+  /**
+   * Get supported settings on camera.
+   *
+   * @return {*}  {Promise<Object>} Resolves with supported settings data when action completes.
+   * @memberof Ace
+   */
   getSupportedSettings(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       // TODO: Get camera to report this
       resolve(['pan', 'tilt', 'zoom', 'brightness', 'saturation']);
     });
   }
+
+  /**
+   * Get specific setting information from camera.
+   *
+   * @param {string} key The setting key to be fetched.
+   * @param {Boolean} [forceRefresh] Whether the camera should use the cached settings or not.
+   * @return {*}  {Promise<Object>} The setting value for the requested setting key.
+   * @memberof Ace
+   */
   getSetting(key: string, forceRefresh?: Boolean): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -403,6 +684,15 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       }
     });
   }
+
+  /**
+   * Sets specific setting value on camera.
+   *
+   * @param {string} key The setting key to be updated.
+   * @param {*} value The new value to be applied.
+   * @return {*}  {Promise<void>} Resolves when action is completed.
+   * @memberof Ace
+   */
   setSettingValue(key: string, value: any): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -440,6 +730,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get all camera settings.
+   *
+   * @param {Boolean} [forceRefresh] Whether the camera should use the cached settings or not.
+   * @return {*}  {Promise<Object>} Resolves with camera settings when action is completed.
+   * @memberof Ace
+   */
   getSettings(forceRefresh?: Boolean): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -457,6 +754,14 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       }
     });
   }
+
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise<huddly.Saturation>}
+   * @memberof Ace
+   */
   _getSaturation(): Promise<huddly.Saturation> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getSaturation(
@@ -472,6 +777,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get camera saturation setting.
+   *
+   * @return {*}  {Promise<Object>} Resolves with camera saturation settings when action is completed.
+   * @memberof Ace
+   */
   getSaturation(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -489,6 +800,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Update camera saturation setting.
+   *
+   * @param {number} value The new saturation value.
+   * @return {*}  {Promise<void>} Resolves when the action is completed.
+   * @memberof Ace
+   */
   setSaturation(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
       const saturation = new huddly.Saturation();
@@ -507,6 +825,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise<huddly.Brightness>}
+   * @memberof Ace
+   */
   _getBrightness(): Promise<huddly.Brightness> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getBrightness(new Empty(), (err, brightness: huddly.Brightness) => {
@@ -519,6 +844,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get camera brightness setting.
+   *
+   * @return {*}  {Promise<Object>} Resolves with brightness information when action is completed.
+   * @memberof Ace
+   */
   getBrightness(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -537,6 +868,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Set brightness setting on the camera.
+   *
+   * @param {number} value The new brightness value
+   * @return {*}  {Promise<void>} Resolves when the action is completed.
+   * @memberof Ace
+   */
   setBrightness(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
       const brightness = new huddly.Brightness();
@@ -552,6 +890,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Reset settings on the camera.
+   *
+   * @param {String[]} [excludeList=[]] Potential exclusion list
+   * @return {*}  {Promise<any>} Resolves when the action is completed.
+   * @memberof Ace
+   */
   resetSettings(excludeList: String[] = []): Promise<any> {
     // Reset brightness
     return new Promise<void>(async (res, rej) => {
@@ -623,6 +968,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise<huddly.PTZ>}
+   * @memberof Ace
+   */
   _getPanTiltZoom(): Promise<huddly.PTZ> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getPTZ(new Empty(), (err, ptz: huddly.PTZ) => {
@@ -635,6 +987,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get pan, tilt and zoom settings from the camera.
+   *
+   * @return {*}  {Promise<Object>} Resolves wth ptz information when the action is completed.
+   * @memberof Ace
+   */
   getPanTiltZoom(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -670,6 +1028,12 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Get pan and tilt settings from the camera.
+   *
+   * @return {*}  {Promise<Object>} Resolves with pan and tilt data when the action is completed.
+   * @memberof Ace
+   */
   getPanTilt(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -684,6 +1048,14 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
       }
     });
   }
+
+  /**
+   * Update pan and tilt settings on camera.
+   *
+   * @param {Object} panTilt The new pan and tilt value to be updated.
+   * @return {*}  {Promise<void>} Resolves when the action is completed.
+   * @memberof Ace
+   */
   setPanTilt(panTilt: Object): Promise<void> {
     return new Promise(async (resolve, reject) => {
       try {
@@ -696,6 +1068,13 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * Update pan, tilt and zoom settings on the camera.
+   *
+   * @param {Object} panTiltZoom The new ptz value to be updated.
+   * @return {*}  {Promise<void>} Resolves when the action is completed.
+   * @memberof Ace
+   */
   setPanTiltZoom(panTiltZoom: Object): Promise<void> {
     const newPtz = new huddly.PTZ();
     return new Promise((resolve, reject) => {
@@ -738,13 +1117,35 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     });
   }
 
+  /**
+   * @ignore
+   * Not applicable.
+   *
+   * @return {*}  {Promise<void>}
+   * @memberof Ace
+   */
   usbReEnumerate(): Promise<void> {
     throw new Error('Method not implemented.');
   }
+
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @return {*}  {Boolean}
+   * @memberof Ace
+   */
   isAlive(): Boolean {
     throw new Error('Method not implemented.');
   }
 
+  /**
+   * Helper function for checking if two ACE instances are equal or not
+   *
+   * @param {IDeviceManager} manager The other ace instance
+   * @return {*} A boolean representing whether the instance are equal or not.
+   * @memberof Ace
+   */
   equals(manager: IDeviceManager) {
     if (manager instanceof Ace) {
       const otherAce = <Ace>manager;

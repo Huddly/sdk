@@ -18,7 +18,7 @@ const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
 const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
 
 /**
- * Detector class used to configure genius framing on the camera.
+ * Control class for configuring detector and subscribing to detection information.
  *
  * @export
  * @class Detector
@@ -26,25 +26,27 @@ const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
  * @implements {IDetector}
  */
 export default class Detector extends EventEmitter implements IDetector {
+  /** @ignore */
   _deviceManager: IDeviceManager;
+  /** @ignore */
   _detectionHandler: any;
+  /** @ignore */
   _framingHandler: any;
+  /** @ignore */
   _frame: any;
+  /** @ignore */
   _options: DetectorOpts;
+  /** @ignore */
   _defaultLabelWhiteList: Array<String> = ['head', 'person'];
+  /** @ignore */
   _subscriptionsSetup: boolean = false;
+  /** @ignore */
   _detectorInitialized: boolean = false;
+  /** @ignore */
   _previewStreamStarted: boolean = false;
+  /** @ignore */
   _usePeopleCount: boolean = false;
 
-  /**
-   * Creates an instance of Detector.
-   * @param {IDeviceManager} manager An instance of the IDeviceManager (for example
-   * the Boxfish implementation of IDeviceManager) for communicating with the device.
-   * @param {*} logger Logger class for logging messages produced from the detector.
-   * @param {DetectorOpts} options options detector.
-   * @memberof Detector
-   */
   constructor(manager: IDeviceManager, options?: DetectorOpts) {
     super();
     this._deviceManager = manager;
@@ -53,6 +55,12 @@ export default class Detector extends EventEmitter implements IDetector {
     this.setMaxListeners(50);
   }
 
+  /**
+   * @ignore
+   *
+   * @param {DetectorOpts} options
+   * @memberof Detector
+   */
   _validateOptions(options: DetectorOpts) {
     const currentSetOpts = this._options;
     this._options = {
@@ -65,6 +73,13 @@ export default class Detector extends EventEmitter implements IDetector {
     this._options.includeRawDetections = (options && options.includeRawDetections) || false;
   }
 
+  /**
+   * @ignore
+   *
+   * @readonly
+   * @type {IUsbTransport}
+   * @memberof Detector
+   */
   get transport(): IUsbTransport {
     if (TypeHelper.instanceOfUsbTransport(this._deviceManager.transport)) {
       return <IUsbTransport>this._deviceManager.transport;
@@ -73,8 +88,9 @@ export default class Detector extends EventEmitter implements IDetector {
   }
 
   /**
-   * @ignore
-   * Check `IDetector` interface for method documentation.
+   * Convenience function for setting detection and/or framing data event listeners.
+   *
+   * @return {*}  {Promise<any>} Resolves when detector initialization is completed.
    * @memberof Detector
    */
   async init(): Promise<any> {
@@ -131,6 +147,11 @@ export default class Detector extends EventEmitter implements IDetector {
     Logger.debug('Detector class initialized and ready', 'IQ Detector');
   }
 
+  /**
+   * @ignore
+   *
+   * @memberof Detector
+   */
   _setupDetectionHandler() {
     this._detectionHandler = (detectionBuffer) => {
       const rawDetections = Api.decode(detectionBuffer.payload, 'messagepack');
@@ -142,6 +163,14 @@ export default class Detector extends EventEmitter implements IDetector {
     };
   }
 
+  /**
+   * Helper function for updating the initial detector options specified when
+   * instantiating the Detector class.
+   *
+   * @param {DetectorOpts} options The new detection options to be used.
+   * @return {*}  {Promise<any>} Resolves when the new options have been applied and detector is initialized.
+   * @memberof Detector
+   */
   async updateOpts(options: DetectorOpts): Promise<any> {
     this._validateOptions(options);
     await this.teardownDetectorSubscriptions();
@@ -149,6 +178,12 @@ export default class Detector extends EventEmitter implements IDetector {
     return this.init();
   }
 
+  /**
+   * Control command for tearing down the detector object.
+   *
+   * @return {*}  {Promise<void>} Resolves when the teardown process is completed.
+   * @memberof Detector
+   */
   async destroy(): Promise<void> {
     if (!this._detectorInitialized) {
       Logger.warn('Detector already destroyed', 'IQ Detector');

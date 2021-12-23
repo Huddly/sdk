@@ -14,20 +14,42 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 const PREVIEW_IMAGE_SIZE = { width: 832, height: 480 };
 
+/**
+ * Control class for configuring detector and subscribing to detection information.
+ *
+ * @export
+ * @class IpDetector
+ * @extends {EventEmitter}
+ * @implements {IDetector}
+ */
 export default class IpDetector extends EventEmitter implements IDetector {
+  /** @ignore */
   _deviceManager: IIpDeviceManager;
+  /** @ignore */
   _detectionHandler: any;
+  /** @ignore */
   _framingHandler: any;
+  /** @ignore */
   _frame: any;
+  /** @ignore */
   _options: DetectorOpts;
+  /** @ignore */
   _intervalId: NodeJS.Timeout;
+  /** @ignore */
   _defaultLabelWhiteList: Array<String> = ['head', 'person'];
+  /** @ignore */
   _subscriptionsSetup: boolean = false;
+  /** @ignore */
   _detectorInitialized: boolean = false;
+  /** @ignore */
   _previewStreamStarted: boolean = false;
+  /** @ignore */
   _usePeopleCount: boolean = false;
+  /** @ignore */
   _UPDATE_INTERVAL: number = 500; // ms
+  /** @ignore */
   _detectorWasStarted: boolean = false;
+  /** @ignore */
   _lastTimestamp: number = undefined;
 
   constructor(manager: IIpDeviceManager, options?: DetectorOpts) {
@@ -37,6 +59,12 @@ export default class IpDetector extends EventEmitter implements IDetector {
     this._validateOptions(this._options);
   }
 
+  /**
+   * Convenience function for setting detection and/or framing data event listeners.
+   *
+   * @return {*}  {Promise<any>} Resolves when detector initialization is completed.
+   * @memberof IpDetector
+   */
   async init(): Promise<any> {
     if (this._detectorInitialized) {
       Logger.warn('Detector already initialized', 'L1 Detector');
@@ -56,6 +84,12 @@ export default class IpDetector extends EventEmitter implements IDetector {
     Logger.debug('Detector class initialized and ready', 'L1 Detector');
   }
 
+  /**
+   * @ignore
+   *
+   * @param {DetectorOpts} options
+   * @memberof IpDetector
+   */
   _validateOptions(options: DetectorOpts) {
     if (options.convertDetections && options.convertDetections === DetectionConvertion.FRAMING) {
       Logger.warn(
@@ -72,6 +106,11 @@ export default class IpDetector extends EventEmitter implements IDetector {
     this._options.includeRawDetections = (options && options.includeRawDetections) || false;
   }
 
+  /**
+   * @ignore
+   *
+   * @memberof IpDetector
+   */
   _setupDetectionHandler() {
     // A negative timestamp means the IMX has not received any detections
     const detectionsAreInvalid = ({ timestamp }) => timestamp < 0.0;
@@ -111,6 +150,13 @@ export default class IpDetector extends EventEmitter implements IDetector {
     };
   }
 
+  /**
+   * Fetches detection information from camera.
+   *
+   * @return {*}  {Promise<huddly.Detections>} An object representing detection data retreived from the camera.
+   * The object type is described in the IP camera proto file.
+   * @memberof IpDetector
+   */
   _getDetections(): Promise<huddly.Detections> {
     return new Promise((resolve, reject) => {
       this._deviceManager.grpcClient.getDetections(
@@ -127,6 +173,12 @@ export default class IpDetector extends EventEmitter implements IDetector {
     });
   }
 
+  /**
+   * Control command for starting detection feature.
+   *
+   * @return {*}  {Promise<void>} Resolves when the detection feature is started.
+   * @memberof IpDetector
+   */
   _startDetections(): Promise<void> {
     if (this._detectorWasStarted) {
       Logger.error('Detector already started', '', 'L1 Detector');
@@ -152,6 +204,12 @@ export default class IpDetector extends EventEmitter implements IDetector {
     });
   }
 
+  /**
+   * Control command for stopping detection feature.
+   *
+   * @return {*}  {Promise<void>} Resolves when the detection feature is stopped.
+   * @memberof IpDetector
+   */
   _stopDetections(): Promise<void> {
     if (!this._detectorWasStarted) {
       Logger.error('Detector has not been started', '', 'L1 Detector');
@@ -177,6 +235,14 @@ export default class IpDetector extends EventEmitter implements IDetector {
     });
   }
 
+  /**
+   * Helper function for updating the initial detector options specified when
+   * instantiating the Detector class.
+   *
+   * @param {DetectorOpts} options The new detection options to be used.
+   * @return {*}  {Promise<any>} Resolves when the new options have been applied and detector is initialized.
+   * @memberof IpDetector
+   */
   async updateOpts(options: DetectorOpts): Promise<any> {
     this._validateOptions(options);
     if (this._intervalId) {
@@ -186,6 +252,12 @@ export default class IpDetector extends EventEmitter implements IDetector {
     return this.init();
   }
 
+  /**
+   * Control command for tearing down the detector object.
+   *
+   * @return {*}  {Promise<void>} Resolves when the teardown process is completed.
+   * @memberof IpDetector
+   */
   async destroy(): Promise<void> {
     if (!this._detectorInitialized) {
       Logger.warn('Detector already destroyed', 'L1 Detector');
@@ -202,12 +274,14 @@ export default class IpDetector extends EventEmitter implements IDetector {
   }
 
   /**
-   * @ignore
-   * Normalizes and filters detection objects so they are relative to image size
+   * Normalizes and filters detection objects so they are relative to image size.
    *
-   * @param {detections} Array of detections
-   * @returns {detections} Converted detections
-   * @memberof Detector
+   * @ignore
+   *
+   * @param {Array<any>} detections Array of detections
+   * @param {DetectorOpts} [opts] Returns an array of detections
+   * @return {*}  {Array<any>}
+   * @memberof IpDetector
    */
   convertDetections(detections: Array<any>, opts?: DetectorOpts): Array<any> {
     const converterOpts = {

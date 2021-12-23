@@ -11,6 +11,12 @@ import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 const BINARY_APPLICATION = 'huddly.bin';
 const BINARY_BOOT = 'huddly_boot.bin';
 
+/**
+ * @ignore
+ *
+ * @param {*} pkgAsBuffer
+ * @return {*} Object of buffers
+ */
 const getBinaries = async (pkgAsBuffer) => {
   if (pkgAsBuffer === null) return {};
   const pkg = await JSZip.loadAsync(pkgAsBuffer);
@@ -28,12 +34,26 @@ const getBinaries = async (pkgAsBuffer) => {
   };
 };
 
+/**
+ * Controller class for instrumenting the upgrade process on Huddly GO camera.
+ *
+ * @export
+ * @class HuddlyGoUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
+ */
 export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpgrader {
+  /** @ignore */
   _devInstance: any;
+  /** @ignore */
   _cameraDiscovery: EventEmitter;
+  /** @ignore */
   _hidApi: any;
+  /** @ignore */
   options: any = {};
+  /** @ignore */
   bootTimeout: number = 30 * 1000; // 30 seconds
+  /** @ignore */
   private _upgradeStatus: UpgradeStatus;
 
   constructor(devInstance: any, cameraDiscovery: EventEmitter, hidAPI: any) {
@@ -43,6 +63,12 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     this._hidApi = hidAPI;
   }
 
+  /**
+   * Initializes the upgrader with the necessary options.
+   *
+   * @param {UpgradeOpts} opts The upgrade options required for performing a firmware upgrade on Huddly GO
+   * @memberof HuddlyGoUpgrader
+   */
   init(opts: UpgradeOpts): void {
     this.options.file = opts.file;
     if (opts.bootTimeout) {
@@ -50,11 +76,25 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     }
   }
 
+  /**
+   * @ignore
+   * Helper function for firing upgrade progress status events
+   *
+   * @param {string} [statusString] The status of the upgrade to be reported.
+   * @memberof HuddlyGoUpgrader
+   */
   emitProgressStatus(statusString?: string) {
     if (statusString) this._upgradeStatus.statusString = statusString;
     this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
   }
 
+  /**
+   * Starts the upgrade process on the Huddly GO camera and also reports upgrade status to the consumer
+   * using events.
+   *
+   * @return {*}  {Promise<void>} Void function that relies on events for communicating the upgrade result/progress.
+   * @memberof HuddlyGoUpgrader
+   */
   async start(): Promise<void> {
     const step = new UpgradeStatusStep('Upgrading camera');
     this._upgradeStatus = new UpgradeStatus([step]);
@@ -67,6 +107,14 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     this.emitProgressStatus('Upgrade completed');
   }
 
+  /**
+   * @ignore
+   * Start the upgrade procedure on the Huddly GO camera without setting up upgrade status. Plase use
+   * `start()` when you want to invoke the proper upgrade with status reporting.
+   *
+   * @return {*}  {Promise<any>} Resolves when the upgrade is completed.
+   * @memberof HuddlyGoUpgrader
+   */
   async doUpgrade(): Promise<any> {
     const hidEventEmitter = new EventEmitter();
     let bootTimeout;

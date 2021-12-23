@@ -1,5 +1,12 @@
 import { Readable } from 'stream';
 
+/**
+ * Helper class used for reading information from a .cpio file
+ *
+ * @ignore
+ * @class BufferStream
+ * @extends {Readable}
+ */
 export default class BufferStream extends Readable {
   /**
    * Copy of the original buffer to be converted into a readable stream

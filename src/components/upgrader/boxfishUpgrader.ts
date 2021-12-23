@@ -22,6 +22,17 @@ import { createBoxfishUpgraderFile } from './../upgrader/boxfishUpgraderFactory'
 
 import { HPK_SUPPORT_VERSION } from './../upgrader/boxfishUpgraderFactory';
 
+/**
+ * @deprecated
+ * @ignore
+ *
+ * Controller class for instrumenting the upgrade process on the Huddly IQ cameras (legacy).
+ *
+ * @export
+ * @class BoxfishUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
+ */
 export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgrader {
   _cameraManager: IDeviceManager;
   _sdkDeviceDisoveryEmitter: EventEmitter;

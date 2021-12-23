@@ -18,7 +18,10 @@ import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 /**
- * Enum describing the different upgrade steps
+ * Enum describing the different upgrade steps for L1.
+ *
+ * @export
+ * @enum {number}
  */
 export enum UpgradeSteps {
   FLASH = 0,
@@ -27,10 +30,16 @@ export enum UpgradeSteps {
 }
 
 /**
- * Ace upgrade helper class that implements IDeviceUpgrader.
+ * Controller class for instrumenting the upgrade process on Huddly L1 camera.
+ *
+ * @export
+ * @class AceUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
  */
 export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader {
   /**
+   * @ignore
    * Camera manager instance for Ace
    *
    * @type {IDeviceManager}
@@ -39,6 +48,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   _cameraManager: IDeviceManager;
 
   /**
+   * @ignore
    * Event emitter object that emits ATTACH & DETACH events for Ace devices on the network
    *
    * @type {EventEmitter}
@@ -64,6 +74,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   bootTimeout: number = 30 * 1000; // 30 seconds
 
   /**
+   * @ignore
    * Upgrade status object used to emit upgrade progress throughout the whole upgrade process.
    *
    * @type {UpgradeStatus}
@@ -88,10 +99,10 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
-   * Creates a new instance of AceUpgrader
-   * @param manager An instance of IDeviceManager setup for an Ace network device
-   * @param sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH & DETACH events for Ace devices on the network
-   * @param logger Logger instance used to log messages in predefined format
+   * Creates a new instance of AceUpgrader.
+   * @param {IDeviceManager} manager An instance of IDeviceManager setup for an Ace network device.
+   * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH & DETACH events for Ace devices on the network
+   * @memberof AceUpgrader
    */
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
     super();
@@ -101,7 +112,9 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
 
   /**
    * Method for initializing the upgrade and setting up the proper callbacks and event listeners.
-   * @param opts Options required to carry out and facilitate the upgrade process
+   *
+   * @param {IUpgradeOpts} opts Options required to carry out and facilitate the upgrade process
+   * @memberof AceUpgrader
    */
   init(opts: IUpgradeOpts): void {
     this.options = opts;
@@ -117,6 +130,8 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
    * Sets up event listeners for ATTACH & DETACH for when the device under upgrade
    * is rebooted as part of the process itself. This method helps indetify when the
    * booted camera comes up so that the upgrade process can continue to completion.
+   *
+   * @memberof AceUpgrader
    */
   registerHotPlugEvents(): void {
     this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, async (devManager) => {
@@ -138,8 +153,11 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
+   * @ignore
    * Helper function for emitting upgrade progress events
-   * @param statusString A message accompanying the progress event
+   *
+   * @param {string} [statusString] A message accompanying the progress event
+   * @memberof AceUpgrader
    */
   emitProgressStatus(statusString?: string) {
     if (statusString) this._upgradeStatus.statusString = statusString;
@@ -147,7 +165,10 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
-   * Performs the complete upgrade process synchronously
+   * Perform the complete upgrade process synchronously
+   *
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof AceUpgrader
    */
   async start(): Promise<void> {
     const firstUploadStatusStep = new UpgradeStatusStep('Executing software upgrade', 30);
@@ -231,9 +252,14 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
+   * @ignore
+   *
    * Does a verification of the current version state of the camera. It does a version state fetch
    * and matches that with the one given as parameter.
-   * @param expectedState The expected state that the camera should be in.
+   *
+   * @param {number} expectedState The expected state that the camera should be in.
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof AceUpgrader
    * @throws {AceUpgraderError} Device not running in expected state.
    */
   async verifyVersionState(expectedState: number): Promise<void> {
@@ -253,8 +279,12 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
+   * @ignore
    * Helper function for reading the version string from the provided CPIO file
    * and matching that with whatever version the camera is currently running.
+   *
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof AceUpgrader
    */
   async verifyVersion(): Promise<void> {
     const extract = cpio.extract();
@@ -298,8 +328,11 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
 
   /**
    * @ignore
-   * @param curretSlot Slot from which the camera has booted
-   * @returns Expected slot
+   * Calculate expected slot based on current slot.
+   *
+   * @param {string} curretSlot Current slot that the camera has booted from.
+   * @return {*}  {string} The next slot the camera will boot after upgrade.
+   * @memberof AceUpgrader
    */
   calculateExpectedSlot(curretSlot: string): string {
     if (!['A', 'B', 'C'].includes(curretSlot)) {
@@ -317,7 +350,11 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
 
   /**
    * @ignore
-   * @param slotBeforeUpgrade Slot from which the camera booted before running upgrade
+   * Verify that the camera has booted from the expected slot after upgrade.
+   *
+   * @param {string} slotBeforeUpgrade The old slot that the camera started the upgrade from.
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof AceUpgrader
    */
   async verifySlot(slotBeforeUpgrade: string): Promise<void> {
     const expectedSlot: string = this.calculateExpectedSlot(slotBeforeUpgrade);
@@ -331,9 +368,10 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
-   * Helper function that fetches the version state from the device
-   * @returns A promise that completes when the version retrieval is successful
-   * or rejects if not.
+   * Helper function that fetches the version state from the device.
+   *
+   * @return {*}  {Promise<number>} Resolves with the version state when the action is completed.
+   * @memberof AceUpgrader
    */
   getVersionState(): Promise<number> {
     return new Promise((resolve) => {
@@ -355,9 +393,10 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
-   * Helper function that fetches the firmware version string from the device
-   * @returns A promise that completes when the firmware version retrieval is successful
-   * or rejects if not.
+   * Helper function that fetches the firmware version string from the device.
+   *
+   * @return {*}  {Promise<string>} Resolves with the version straing when the action is completed.
+   * @memberof AceUpgrader
    */
   getVersion(): Promise<string> {
     return new Promise((resolve) => {
@@ -381,10 +420,11 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   /**
    * A helper function that makes it possible to peform the upgrade substeps such as FLASH and COMMITT by
    * reading the cpio file and sending the data over to the camera using grpc streams.
-   * @param step Represents the upgrade substep to be run on the device
-   * @param stepName A string represnetation of the upgrade substep for debugging perpuses
-   * @returns A promise that completes when the upgrade substep is successfully carried out
-   * or rejects if not
+   *
+   * @param {UpgradeSteps} step Represents the upgrade substep to be run on the device.
+   * @param {string} stepName A string represnetation of the upgrade substep for debugging purposes.
+   * @return {*}  {Promise<string>} Resolve with upgrade status message when the action is completed.
+   * @memberof AceUpgrader
    */
   performUpgradeStep(step: UpgradeSteps, stepName: string): Promise<string> {
     const extract = cpio.extract();
@@ -455,18 +495,22 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
+   * @ignore
    * Performs a firmware write/flash step using the provided cpio image
-   * @returns A promise that completes when the flash step completes successfully
-   * or rejects when the flash step fails.
+   *
+   * @return {*}  {Promise<string>} Resolves with flash status message when the action is completed.
+   * @memberof AceUpgrader
    */
   async flash(): Promise<string> {
     return this.performUpgradeStep(UpgradeSteps.FLASH, 'FLASH');
   }
 
   /**
-   * Performs a software reboot on the device
-   * @returns A promise that completes when the device reboots successfully
-   * or rejects if reboot fails.
+   * @ignore
+   * Performs a software reboot on the device.
+   *
+   * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
+   * @memberof AceUpgrader
    */
   reboot(): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -494,9 +538,11 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
-   * Performs a firmware verification step using the provided cpio image
-   * @returns A promise that completes when the commit step completes successfully
-   * or rejects when the commit step fails.
+   * @ignore
+   * Performs a firmware verification step using the provided cpio image.
+   *
+   * @return {*}  {Promise<string>} Resolves with commit status message when the action is completed.
+   * @memberof AceUpgrader
    */
   async commit(): Promise<string> {
     return this.performUpgradeStep(UpgradeSteps.COMMIT, 'COMMIT');
@@ -510,9 +556,10 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
   }
 
   /**
-   * Performs the complete upgrade process asynchronously
-   * @returns A promise that completes when the upgrade finishes successfully
-   * or rejects when the upgrade fails.
+   * Perform the complete upgrade process asynchronously
+   *
+   * @return {*}  {Promise<void>} Resolves when the upgrade process is completed. Rejects if upgrade failes.
+   * @memberof AceUpgrader
    */
   doUpgrade(): Promise<void> {
     return new Promise<void>((resolve, reject) => {
