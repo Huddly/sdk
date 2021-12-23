@@ -21,15 +21,15 @@ const createDummyManager = () => {
     grpcConnectionDeadlineSeconds: () => {},
     close: () => {}
   };
-  dummyManager.wsdDevice = {
-    serialNumber: '1245',
-    mac: 'FF:FF:FF:FF:FF:FF'
-  };
-  dummyManager.transport.grpcClient = {
+  dummyManager.grpcClient = {
     getDeviceVersion: sinon.stub(),
     upgradeDevice: sinon.stub(),
     upgradeVerify: sinon.stub(),
     reset: sinon.stub()
+  };
+  dummyManager.wsdDevice = {
+    serialNumber: '1245',
+    mac: 'FF:FF:FF:FF:FF:FF'
   };
   return dummyManager;
 };
