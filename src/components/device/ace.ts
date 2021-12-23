@@ -43,8 +43,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
 
   private readonly GPRC_CONNECT_TIMEOUT: number = 1; // seconds
   private readonly GRPC_PORT: number = 50051;
-  private devMode: boolean = false;
-  private devModeGrpcClient?: HuddlyServiceClient;
+  private huddlyGrpcClient: HuddlyServiceClient;
 
   get api(): Api {
     throw new Error('Not Supported.');
@@ -54,10 +53,11 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
   }
 
   get grpcClient(): HuddlyServiceClient {
-    if (this.devMode && this.devModeGrpcClient) {
-      return this.devModeGrpcClient;
-    }
-    return this.transport.grpcClient;
+    return this.huddlyGrpcClient;
+  }
+
+  set grpcClient(client: HuddlyServiceClient) {
+    this.huddlyGrpcClient = client;
   }
 
   constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
@@ -70,34 +70,25 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
     Object.assign(this, wsdDeviceProps);
   }
 
-  async initialize(developmentMode: boolean = false): Promise<void> {
-    if (developmentMode) {
-      this.devMode = true;
-      Logger.debug('Initializing ACE in development mode!', Ace.name);
-      const deadline = new Date();
-      deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
-      this.devModeGrpcClient = new HuddlyServiceClient(
-        `${this.wsdDevice.ip}:${this.GRPC_PORT}`,
-        grpc.ChannelCredentials.createInsecure()
-      );
+  async initialize(): Promise<void> {
+    const deadline = new Date();
+    deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
+    this.huddlyGrpcClient = new HuddlyServiceClient(
+      `${this.wsdDevice.ip}:${this.GRPC_PORT}`,
+      grpc.ChannelCredentials.createInsecure()
+    );
 
-      return new Promise<void>((resolve, reject) =>
-        this.devModeGrpcClient.waitForReady(deadline, (error) => {
-          if (error) {
-            Logger.error(`Connection failed with GPRC server on ACE. Reason: ${error}`, Ace.name);
-            reject(error);
-          } else {
-            Logger.debug(`Connection established`, Ace.name);
-            // Override transport service client
-            this.transport.overrideGrpcClient(this.devModeGrpcClient);
-            Logger.debug('Ace development initialization completed!', Ace.name);
-            resolve();
-          }
-        })
-      );
-    }
-    Logger.debug('Ace will run in production mode', Ace.name);
-    return Promise.resolve();
+    return new Promise<void>((resolve, reject) =>
+      this.huddlyGrpcClient.waitForReady(deadline, (error) => {
+        if (error) {
+          Logger.error(`Connection failed with GPRC server on ACE. Reason: ${error}`, Ace.name);
+          reject(error);
+        } else {
+          Logger.debug(`Connection established`, Ace.name);
+          resolve();
+        }
+      })
+    );
   }
 
   async closeConnection(): Promise<any> {

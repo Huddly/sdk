@@ -67,42 +67,14 @@ const cnnStatusDummy = new huddly.CNNStatus();
 const autozoomStatus = new huddly.AZStatus();
 autozoomStatus.setAzEnabled(true);
 cnnStatusDummy.setAzStatus(autozoomStatus);
+const deviceVersion = new huddly.DeviceVersion();
+deviceVersion.setVersion('1.2.3');
 
 const mockedStream = new PassThrough();
 class DummyTransport extends EventEmitter implements IGrpcTransport {
   device: any;
   grpcConnectionDeadlineSeconds: number;
-  grpcClient: any = {
-    getSaturation: (empty: Empty, cb: any) => {
-      cb(undefined, saturationDummy);
-    },
-    setSaturation: (saturation: huddly.Saturation, cb: any) => {
-      cb(undefined, statusDummy);
-    },
-    getBrightness: (empty: Empty, cb: any) => {
-      cb(undefined, brightnessDummy);
-    },
-    setBrightness: (brightness: huddly.Brightness, cb: any) => {
-      cb(undefined, statusDummy);
-    },
-    getPTZ: (empty: Empty, cb: any) => {
-      cb(undefined, ptzDummy);
-    },
-    setPTZ: (ptz: huddly.PTZ, cb: any) => {
-      cb(undefined, statusDummy);
-    },
-    getTemperatures: (empty: Empty, cb: any) => {
-      cb(undefined, temperaturesDummy);
-    },
-    getLogFiles: () => mockedStream,
-    eraseLogFile: (logFile: huddly.LogFile, cb: any) => {
-      cb(undefined, statusDummy);
-    },
-    getCnnFeatureStatus: (empty: Empty, cb: any) => {
-      cb(undefined, cnnStatusDummy);
-    },
-    close: () => {}
-  };
+  grpcClient: any;
   overrideGrpcClient(client: HuddlyServiceClient): void {
     // Ignore call
   }
@@ -113,6 +85,41 @@ class DummyTransport extends EventEmitter implements IGrpcTransport {
     return Promise.resolve();
   }
 }
+
+const grpcClient: any = {
+  getSaturation: (empty: Empty, cb: any) => {
+    cb(undefined, saturationDummy);
+  },
+  setSaturation: (saturation: huddly.Saturation, cb: any) => {
+    cb(undefined, statusDummy);
+  },
+  getBrightness: (empty: Empty, cb: any) => {
+    cb(undefined, brightnessDummy);
+  },
+  setBrightness: (brightness: huddly.Brightness, cb: any) => {
+    cb(undefined, statusDummy);
+  },
+  getPTZ: (empty: Empty, cb: any) => {
+    cb(undefined, ptzDummy);
+  },
+  setPTZ: (ptz: huddly.PTZ, cb: any) => {
+    cb(undefined, statusDummy);
+  },
+  getTemperatures: (empty: Empty, cb: any) => {
+    cb(undefined, temperaturesDummy);
+  },
+  getLogFiles: () => mockedStream,
+  eraseLogFile: (logFile: huddly.LogFile, cb: any) => {
+    cb(undefined, statusDummy);
+  },
+  getCnnFeatureStatus: (empty: Empty, cb: any) => {
+    cb(undefined, cnnStatusDummy);
+  },
+  getDeviceVersion: (empty: Empty, cb: any) => {
+    cb(undefined, deviceVersion);
+  },
+  close: () => {}
+};
 
 describe('Ace', () => {
   const dummyError = { message: 'Bad', stack: 'Line33' };
@@ -128,6 +135,7 @@ describe('Ace', () => {
     warnStub = sinon.stub(Logger, 'warn');
     errorStub = sinon.stub(Logger, 'error');
     infoStub = sinon.stub(Logger, 'info');
+    device.grpcClient = grpcClient;
   });
 
   afterEach(() => {
@@ -152,79 +160,60 @@ describe('Ace', () => {
 
     describe('grpcClient', () => {
       let waitForReadyStub;
-      let overrideClientSpy;
       afterEach(() => {
         waitForReadyStub?.restore();
-        overrideClientSpy?.restore();
       });
 
-      it('should return development grpc client when in development mode', async () => {
+      it('should return grpc client', async () => {
         waitForReadyStub = sinon
           .stub(HuddlyServiceClient.prototype, 'waitForReady')
           .callsFake((deadline, cb) => {
             cb(undefined);
           });
-        overrideClientSpy = sinon.spy(DummyTransport.prototype, 'overrideGrpcClient');
-        await device.initialize(true);
+        await device.initialize();
         const client = device.grpcClient;
         expect(client).to.not.be.undefined;
-        expect(overrideClientSpy.called).to.equal(true);
-      });
-      it('should return transport grpc client implementation when not in dev mode', () => {
-        const client = device.grpcClient;
-        expect(client).to.deep.equal(dummyTransport.grpcClient);
       });
     });
   });
 
   describe('#initialize', () => {
-    describe('devMode = True', () => {
-      let waitForReadyStub;
-      afterEach(() => {
-        waitForReadyStub?.restore();
-      });
-      it('should resolve when grpcclinet connects successfully', () => {
-        waitForReadyStub = sinon
-          .stub(HuddlyServiceClient.prototype, 'waitForReady')
-          .callsFake((deadline, cb) => {
-            cb(undefined);
-          });
-        const initPromise = device.initialize(true);
-        return expect(initPromise).to.be.fulfilled;
-      });
-      it('should reject when grpc client is unable to connect', () => {
-        waitForReadyStub = sinon
-          .stub(HuddlyServiceClient.prototype, 'waitForReady')
-          .callsFake((deadline, cb) => {
-            cb('Uuups, could not connect!');
-          });
-        const initPromise = device.initialize(true);
-        return expect(initPromise).to.eventually.be.rejectedWith('Uuups, could not connect!');
-      });
+    let waitForReadyStub;
+    afterEach(() => {
+      waitForReadyStub?.restore();
     });
-    describe('devMode = False', () => {
-      it('should just resolve', async () => {
-        const initPromise = device.initialize();
-        return expect(initPromise).to.be.fulfilled;
-      });
+    it('should resolve when grpcclinet connects successfully', () => {
+      waitForReadyStub = sinon
+        .stub(HuddlyServiceClient.prototype, 'waitForReady')
+        .callsFake((deadline, cb) => {
+          cb(undefined);
+        });
+      const initPromise = device.initialize();
+      return expect(initPromise).to.be.fulfilled;
+    });
+    it('should reject when grpc client is unable to connect', () => {
+      waitForReadyStub = sinon
+        .stub(HuddlyServiceClient.prototype, 'waitForReady')
+        .callsFake((deadline, cb) => {
+          cb('Uuups, could not connect!');
+        });
+      const initPromise = device.initialize();
+      return expect(initPromise).to.eventually.be.rejectedWith('Uuups, could not connect!');
     });
   });
 
   describe('#closeConnection', () => {
     let grpcCloseSpy;
-    let transportCloseSpy;
     beforeEach(() => {
-      grpcCloseSpy = sinon.spy(dummyTransport.grpcClient, 'close');
-      transportCloseSpy = sinon.spy(dummyTransport, 'close');
+      grpcCloseSpy = sinon.spy(grpcClient, 'close');
+      device.grpcClient = grpcClient;
     });
     afterEach(() => {
       grpcCloseSpy.restore();
-      transportCloseSpy.restore();
     });
     it('should close grpc client and transport', () => {
       device.closeConnection();
       expect(grpcCloseSpy.called).to.equal(true);
-      expect(transportCloseSpy.called).to.equal(true);
     });
   });
 
@@ -262,7 +251,8 @@ describe('Ace', () => {
           }
         };
         device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
-        dummyTransport.grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
+        device.grpcClient = grpcClient;
+        grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
           const deviceVersion = new huddly.DeviceVersion();
           deviceVersion.setVersion('1.2.3-abc');
           cb(undefined, deviceVersion);
@@ -285,7 +275,8 @@ describe('Ace', () => {
           infoObject: () => {}
         };
         device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
-        dummyTransport.grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
+        device.grpcClient = grpcClient;
+        grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
           cb(dummyError);
         };
         const infoPromise = device.getInfo();
@@ -296,7 +287,8 @@ describe('Ace', () => {
           infoObject: () => {}
         };
         device = new Ace(wsddDeviceObj, dummyTransport, new EventEmitter());
-        dummyTransport.grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
+        device.grpcClient = grpcClient;
+        grpcClient.getDeviceVersion = (empty: Empty, cb: any) => {
           const deviceVersion = new huddly.DeviceVersion();
           deviceVersion.setVersion('1.2.3-abc');
           cb(undefined, deviceVersion);
@@ -320,7 +312,7 @@ describe('Ace', () => {
       expect(temperatures).to.be.instanceof(huddly.Temperatures);
     });
     it('should reject with error if there is an issue', async () => {
-      dummyTransport.grpcClient.getTemperatures = (empty: Empty, cb: any) => {
+      grpcClient.getTemperatures = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
       device._getTemperatures().catch(err => expect(err).to.equal('error'));
@@ -384,14 +376,14 @@ describe('Ace', () => {
   });
   describe('#setSaturation', () => {
     it('should attempt to set saturation with correct type', async () => {
-      sinon.spy(dummyTransport.grpcClient, 'setSaturation');
+      sinon.spy(grpcClient, 'setSaturation');
       await device.setSaturation(99);
-      const arg = dummyTransport.grpcClient.setSaturation.args[0][0];
+      const arg = grpcClient.setSaturation.args[0][0];
       expect(arg).to.be.instanceof(huddly.Saturation);
       expect(arg.getSaturation()).to.equal(99);
     });
     it('should handle error if there is an issue', async () => {
-      dummyTransport.grpcClient.setSaturation = (empty: Empty, cb: any) => {
+      grpcClient.setSaturation = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
       device.setSaturation(10).catch(err => expect(err).to.equal(dummyError.message));
@@ -404,7 +396,7 @@ describe('Ace', () => {
       expect(saturation).to.be.instanceof(huddly.Saturation);
     });
     it('should reject with error if there is an issue', async () => {
-      dummyTransport.grpcClient.getSaturation = (empty: Empty, cb: any) => {
+      grpcClient.getSaturation = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
       device._getSaturation().catch(err => expect(err).to.equal('error'));
@@ -423,14 +415,14 @@ describe('Ace', () => {
   });
   describe('#setBrightness', () => {
     it('should attempt to set brightness with correct type', async () => {
-      sinon.spy(dummyTransport.grpcClient, 'setBrightness');
+      sinon.spy(grpcClient, 'setBrightness');
       await device.setBrightness(5);
-      const arg = dummyTransport.grpcClient.setBrightness.args[0][0];
+      const arg = grpcClient.setBrightness.args[0][0];
       expect(arg).to.be.instanceof(huddly.Brightness);
       expect(arg.getBrightness()).to.equal(5);
     });
     it('should handle error if there is an issue', async () => {
-      dummyTransport.grpcClient.setBrightness = (empty: Empty, cb: any) => {
+      grpcClient.setBrightness = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
       device.setBrightness(10).catch(err => expect(err).to.equal(dummyError.message));
@@ -443,7 +435,7 @@ describe('Ace', () => {
       expect(brightness).to.be.instanceof(huddly.Brightness);
     });
     it('should reject with error if there is an issue', async () => {
-      dummyTransport.grpcClient.getBrightness = (empty: Empty, cb: any) => {
+      grpcClient.getBrightness = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
       device._getBrightness().catch(err => expect(err).to.equal('error'));
@@ -468,7 +460,7 @@ describe('Ace', () => {
     let setPtzSpy;
     beforeEach(() => {
       getPtzStub = sinon.stub(device, '_getPanTiltZoom');
-      setPtzSpy = sinon.spy(dummyTransport.grpcClient, 'setPTZ');
+      setPtzSpy = sinon.spy(grpcClient, 'setPTZ');
     });
     afterEach(() => {
       getPtzStub.restore();
@@ -563,7 +555,7 @@ describe('Ace', () => {
     describe('on grpc failure', () => {
       it('should handle error if there is an issue', async () => {
         getPtzStub.resolves(ptzDummy);
-        dummyTransport.grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
+        grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
           cb(dummyError, undefined);
         };
         const badPromise = device.setPanTiltZoom({ pan: 1});
@@ -580,7 +572,7 @@ describe('Ace', () => {
       expect(ptz).to.be.instanceof(huddly.PTZ);
     });
     it('should handle error if there is an issue', async () => {
-      dummyTransport.grpcClient.getPTZ = (empty: Empty, cb: any) => {
+      grpcClient.getPTZ = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
       device._getPanTiltZoom().catch(err => expect(err).to.equal('error'));
@@ -692,7 +684,7 @@ describe('Ace', () => {
     appLog.setFile(huddly.LogFiles.APP);
 
     it('should attempt to retrieve the log of the given type', async () => {
-      sinon.spy(dummyTransport.grpcClient, 'getLogFiles');
+      sinon.spy(grpcClient, 'getLogFiles');
       device.getLogFiles(appLog).then(log => {
         expect(device.grpcClient.getLogFiles).to.have.been.calledWith(appLog);
         expect(log).to.equal('test');
@@ -739,15 +731,15 @@ describe('Ace', () => {
       cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
     });
     it('should attempt to get a given cnn feature', async () => {
-      sinon.spy(dummyTransport.grpcClient, 'getCnnFeatureStatus');
+      sinon.spy(grpcClient, 'getCnnFeatureStatus');
       const cnnFeatureStatus = await device.getCnnFeatureStatus(cnnFeature);
-      const arg = dummyTransport.grpcClient.getCnnFeatureStatus.args[0][0];
+      const arg = grpcClient.getCnnFeatureStatus.args[0][0];
       expect(arg).to.be.instanceof(huddly.CnnFeature);
       expect(arg.getFeature()).to.equal(huddly.Feature.AUTOZOOM);
       expect(cnnFeatureStatus).to.be.instanceof(huddly.CNNStatus);
     });
     it('should handle error if something happens', async () => {
-      dummyTransport.grpcClient.getCnnFeatureStatus = (empty: Empty, cb: any) => {
+      grpcClient.getCnnFeatureStatus = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
       device.getCnnFeatureStatus(cnnFeature).catch(err => {
@@ -771,14 +763,14 @@ describe('Ace', () => {
     const logFile = new huddly.LogFile();
     logFile.setFile(huddly.LogFiles.APP);
     it('should attempt to erease a given log', async () => {
-      sinon.spy(dummyTransport.grpcClient, 'eraseLogFile');
+      sinon.spy(grpcClient, 'eraseLogFile');
       await device.eraseLogFile(logFile);
-      const arg = dummyTransport.grpcClient.eraseLogFile.args[0][0];
+      const arg = grpcClient.eraseLogFile.args[0][0];
       expect(arg).to.be.instanceof(huddly.LogFile);
       expect(arg.getFile()).to.equal(huddly.LogFiles.APP);
     });
     it('should reject error if there is an issue', async () => {
-      dummyTransport.grpcClient.eraseLogFile = (empty: Empty, cb: any) => {
+      grpcClient.eraseLogFile = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
       device.eraseLogFile(logFile).catch(err => expect(err.meessage).to.equal(dummyError.message));
@@ -803,7 +795,7 @@ describe('Ace', () => {
   describe('#reboot', () => {
     describe('on success', () => {
       it('should request device reboot', () => {
-        dummyTransport.grpcClient.reset = (empty: Empty, cb: any) => {
+        grpcClient.reset = (empty: Empty, cb: any) => {
           const deviceStatus = new huddly.DeviceStatus();
           deviceStatus.setCode(huddly.StatusCode.OK);
           deviceStatus.setMessage('All Good');
@@ -815,7 +807,7 @@ describe('Ace', () => {
     });
     describe('on error', () => {
       it('should reject when device cannot be rebooted', () => {
-        dummyTransport.grpcClient.reset = (empty: Empty, cb: any) => {
+        grpcClient.reset = (empty: Empty, cb: any) => {
           cb(dummyError);
         };
         const resetPromise = device.reboot();
@@ -900,7 +892,7 @@ describe('Ace', () => {
   describe('#getSlot', () => {
     describe('on success', () => {
       it('should request device slot', () => {
-        dummyTransport.grpcClient.getBootSlot = (empty: Empty, cb: any) => {
+        grpcClient.getBootSlot = (empty: Empty, cb: any) => {
           const bootSlot = new huddly.BootSlot();
           bootSlot.setSlot(huddly.Slot.A);
           cb(undefined, bootSlot);
@@ -911,7 +903,7 @@ describe('Ace', () => {
     });
     describe('on error', () => {
       it('should reject when device slot cannot be fetched', () => {
-        dummyTransport.grpcClient.getBootSlot = (empty: Empty, cb: any) => {
+        grpcClient.getBootSlot = (empty: Empty, cb: any) => {
           cb(dummyError);
         };
         const resetPromise = device.getSlot();
@@ -922,7 +914,7 @@ describe('Ace', () => {
   describe('#uptime', () => {
     describe('on success', () => {
       it('should request device uptime', () => {
-        dummyTransport.grpcClient.getUptime = (empty: Empty, cb: any) => {
+        grpcClient.getUptime = (empty: Empty, cb: any) => {
           const uptime = new huddly.Uptime();
           uptime.setUptime(200);
           cb(undefined, uptime);
@@ -933,7 +925,7 @@ describe('Ace', () => {
     });
     describe('on error', () => {
       it('should reject when device uptime cannot be fetched', () => {
-        dummyTransport.grpcClient.getUptime = (empty: Empty, cb: any) => {
+        grpcClient.getUptime = (empty: Empty, cb: any) => {
           cb(dummyError);
         };
         const resetPromise = device.uptime();
