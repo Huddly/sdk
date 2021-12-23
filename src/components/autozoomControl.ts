@@ -5,8 +5,17 @@ import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import Api from './api';
 
+/**
+ * Control class for configuring the Genius Framing feature of the camera.
+ *
+ * @export
+ * @class AutozoomControl
+ * @implements {ICnnControl}
+ */
 export default class AutozoomControl implements ICnnControl {
+  /** @ignore */
   _deviceManager: IDeviceManager;
+  /** @ignore */
   _options: AutozoomControlOpts;
 
   constructor(manager: IDeviceManager, options?: AutozoomControlOpts) {
@@ -17,8 +26,10 @@ export default class AutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Convenience function for setting up the camera for starting/stopping cnn feature.
+   * Should be called before any other methods.
+   *
+   * @return {*}  {Promise<any>} Resolves when the initialisation is completed.
    * @memberof AutozoomControl
    */
   async init(): Promise<any> {
@@ -37,6 +48,14 @@ export default class AutozoomControl implements ICnnControl {
     }
   }
 
+  /**
+   * Helper function for updating the initial detector options specified when
+   * instantiating the Detector class.
+   *
+   * @param {AutozoomControlOpts} options The new az control options to be used.
+   * @return {*}  {Promise<any>} Resolves when the new options have been applied and detector is initialized.
+   * @memberof AutozoomControl
+   */
   updateOpts(options: AutozoomControlOpts): Promise<any> {
     const currentSetOpts = this._options;
     this._options = {
@@ -47,8 +66,10 @@ export default class AutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Enables the cnn feature persistently. The enable state is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs=2000] Max time (in milliseconds) for the camera to respond to enable az control.
+   * @return {*}  {Promise<void>} Resolves when feature is successfully enabled.
    * @memberof AutozoomControl
    */
   async enable(idleTimeMs: number = 2000): Promise<void> {
@@ -89,8 +110,10 @@ export default class AutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Disables the cnn feature persistently. The disabled state is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs=2000] Max time (in milliseconds) for the camera to respond to disable az control.
+   * @return {*}  {Promise<void>} Resolves when feature is successfully disabled.
    * @memberof AutozoomControl
    */
   async disable(idleTimeMs: number = 2000): Promise<void> {
@@ -131,8 +154,9 @@ export default class AutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.
+   *
+   * @return {*}  {Promise<Boolean>} Resolves to true if cnn features is enabled
    * @memberof AutozoomControl
    */
   async isEnabled(): Promise<Boolean> {
@@ -147,6 +171,7 @@ export default class AutozoomControl implements ICnnControl {
    * NOTE: For persistent enable of autozoom feature you
    * need to call the `enable` method.
    *
+   * @return {*}  {Promise<void>} Resolves when autozoom controler is started.
    * @memberof AutozoomControl
    */
   async start(): Promise<void> {
@@ -170,7 +195,7 @@ export default class AutozoomControl implements ICnnControl {
    * NOTE: For persistent disable of autozoom feature you
    * need to call the `disable` method.
    *
-   * @returns {Promise<void>} A void function.
+   * @return {*}  {Promise<void>} Resolves when the autozoom control is stopped.
    * @memberof AutozoomControl
    */
   async stop(): Promise<void> {
@@ -191,8 +216,8 @@ export default class AutozoomControl implements ICnnControl {
   /**
    * Checks if autozoom is running on the camera. Returns true if yes, false otherwise.
    *
-   * @returns {Promise<Boolean>} Boolean representation of the running state
-   * of autozoom feature.
+   * @return {*}  {Promise<Boolean>} Resolves with information whether az control is running
+   * or not.
    * @memberof AutozoomControl
    */
   async isRunning(): Promise<Boolean> {

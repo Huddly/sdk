@@ -21,6 +21,13 @@ export function createFactory(): IDeviceFactory {
   return DeviceFactory;
 }
 
+/**
+ * Factory class for controlling what device controller implementation is supported for the corresponding
+ * device VendorID and ProductID.
+ *
+ * @export
+ * @class DeviceFactory
+ */
 export default class DeviceFactory {
   /**
    * Get a concrete transport implementation on the IHuddlyDeviceAPI

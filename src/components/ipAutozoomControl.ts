@@ -5,8 +5,17 @@ import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
+/**
+ * Control class for configuring the Genius Framing feature of the camera.
+ *
+ * @export
+ * @class IpAutozoomControl
+ * @implements {ICnnControl}
+ */
 export default class IpAutozoomControl implements ICnnControl {
+  /** @ignore */
   _deviceManager: IIpDeviceManager;
+  /** @ignore */
   _options: AutozoomControlOpts;
 
   constructor(manager: IIpDeviceManager, options?: AutozoomControlOpts) {
@@ -17,8 +26,10 @@ export default class IpAutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Convenience function for setting up the camera for starting/stopping cnn feature.
+   * Should be called before any other methods.
+   *
+   * @return {*}  {Promise<any>} Resolves when the initialisation is completed.
    * @memberof IpAutozoomControl
    */
   async init(): Promise<any> {
@@ -38,11 +49,13 @@ export default class IpAutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Enables the cnn feature persistently. The enable state is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs]  Not used for IpAutozoomControl
+   * @return {*}  {Promise<void>} Resolves when feature is successfully enabled.
    * @memberof IpAutozoomControl
    */
-  async enable(idleTimeMs: number = 2000): Promise<void> {
+  async enable(idleTimeMs?: number): Promise<void> {
     if (!(await this.isEnabled())) {
       // Only stop if az is running
       return new Promise((resolve, reject) => {
@@ -71,11 +84,13 @@ export default class IpAutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Disables the cnn feature persistently. The disabled state is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs] Not used for IpAutozoomControl
+   * @return {*}  {Promise<void>} Resolves when feature is successfully disabled.
    * @memberof IpAutozoomControl
    */
-  async disable(idleTimeMs: number = 2000): Promise<void> {
+  async disable(idleTimeMs?: number): Promise<void> {
     if (await this.isEnabled()) {
       // Only stop if az is running
       return new Promise((resolve, reject) => {
@@ -104,8 +119,9 @@ export default class IpAutozoomControl implements ICnnControl {
   }
 
   /**
-   * @ignore
-   * Check `ICnnControl` interface for method documentation.
+   * Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.
+   *
+   * @return {*}  {Promise<Boolean>} Resolves to true if cnn features is enabled
    * @memberof IpAutozoomControl
    */
   async isEnabled(): Promise<Boolean> {
@@ -115,6 +131,13 @@ export default class IpAutozoomControl implements ICnnControl {
     return azStatus.getAzStatus().getAzEnabled();
   }
 
+  /**
+   * @deprecated
+   * @ignore
+   *
+   * @return {*}  {Promise<void>}
+   * @memberof IpAutozoomControl
+   */
   async start(): Promise<void> {
     // Not required. The `enable` method takes care of autozoom persistency across boot and also starting autozoom at the same time.
     Logger.warn(
@@ -123,6 +146,13 @@ export default class IpAutozoomControl implements ICnnControl {
     );
   }
 
+  /**
+   * @deprecated
+   * @ignore
+   *
+   * @return {*}  {Promise<void>}
+   * @memberof IpAutozoomControl
+   */
   async stop(): Promise<void> {
     // Not required. The `enable` method takes care of autozoom persistency across boot and also stopping autozoom at the same time.
     Logger.warn(

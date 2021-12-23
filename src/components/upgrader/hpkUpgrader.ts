@@ -16,13 +16,28 @@ import HPKUpgradeError from './../../error/hpkUpgradeError';
 const MAX_UPLOAD_ATTEMPTS = 5;
 const REBOOT_TIMEOUT = 20000;
 
+/**
+ * Controller class for instrumenting the upgrade process on Huddly IQ camera.
+ *
+ * @export
+ * @class HPKUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
+ */
 export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
+  /** @ignore */
   verboseStatusLog: boolean;
+  /** @ignore */
   _cameraManager: IDeviceManager;
+  /** @ignore */
   _sdkDeviceDiscoveryEmitter: EventEmitter;
+  /** @ignore */
   _fileBuffer: Buffer;
+  /** @ignore */
   _upgradeStatus: UpgradeStatus;
+  /** @ignore */
   _production_upgrade: boolean;
+  /** @ignore */
   private _statusMessageTimeout: number = 10000;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
@@ -31,7 +46,12 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this._sdkDeviceDiscoveryEmitter = sdkDeviceDiscoveryEmitter;
     this._production_upgrade = false;
   }
-
+  /**
+   * Initializes the upgrader with the necessary options.
+   *
+   * @param {UpgradeOpts} opts The upgrade options required for performing a firmware upgrade on Huddly IQ.
+   * @memberof HPKUpgrader
+   */
   init(opts: UpgradeOpts) {
     if (opts.verboseStatusLog !== undefined) {
       this.verboseStatusLog = opts.verboseStatusLog;
@@ -47,6 +67,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this.registerHotPlugEvents();
   }
 
+  /**
+   * @ignore
+   *
+   * On camera attach handler.
+   *
+   * @param {IDeviceManager} devManager Controller class for the attached device.
+   * @memberof HPKUpgrader
+   */
   onAttach = (devManager: IDeviceManager) => {
     if (
       devManager &&
@@ -58,6 +86,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   };
 
+  /**
+   * @ignore
+   *
+   * On camera detach handler.
+   *
+   * @param {*} deviceSerial Serial number of the detached device.
+   * @memberof HPKUpgrader
+   */
   onDetach = (deviceSerial) => {
     if (this._cameraManager && deviceSerial === this._cameraManager['serialNumber']) {
       try {
@@ -69,17 +105,37 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this.emit('UPGRADE_REBOOT');
   };
 
+  /**
+   * @ignore
+   * Subsribes for ATTACH and DETACH camera events since the upgrade involves booting the camera in between upgrade steps.
+   *
+   * @memberof HPKUpgrader
+   */
   registerHotPlugEvents() {
     this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, this.onAttach);
 
     this._sdkDeviceDiscoveryEmitter.on(CameraEvents.DETACH, this.onDetach);
   }
 
+  /**
+   * @ignore
+   * Unsubsribes for ATTACH and DETACH camera events since the upgrade involves booting the camera in between upgrade steps.
+   *
+   * @memberof HPKUpgrader
+   */
   deRegisterHotPlugEvents() {
     this._sdkDeviceDiscoveryEmitter.removeListener(CameraEvents.ATTACH, this.onAttach);
     this._sdkDeviceDiscoveryEmitter.removeListener(CameraEvents.DETACH, this.onDetach);
   }
 
+  /**
+   * @ignore
+   * Uploads the firmware image on target.
+   *
+   * @param {Buffer} hpkBuffer The buffer stream of the firmware image (.hpk)
+   * @param {UpgradeStatusStep} uploadStatusStep Status step representing the progress of the upload process.
+   * @memberof HPKUpgrader
+   */
   async upload(hpkBuffer: Buffer, uploadStatusStep: UpgradeStatusStep) {
     let tryAgain = true;
     let attempt = 0;
@@ -114,6 +170,13 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
+  /**
+   * Starts the upgrade process on the Huddly IQ camera and also reports upgrade status to the consumer
+   * using events.
+   *
+   * @return {*}  {Promise<void>} Void function that relies on events for communicating the upgrade result/progress.
+   * @memberof HPKUpgrader
+   */
   async start(): Promise<void> {
     const firstUploadStatusStep = new UpgradeStatusStep('Uploading software', 5);
     const executingHpkStep = new UpgradeStatusStep('Executing upgrade package', 1);
@@ -193,11 +256,29 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
+  /**
+   * @ignore
+   * Helper function for firing upgrade progress status events.
+   *
+   * @param {string} [statusString] The status of the upgrade to be reported.
+   * @memberof HPKUpgrader
+   */
   emitProgressStatus(statusString?: string) {
     if (statusString) this._upgradeStatus.statusString = statusString;
     this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
   }
 
+  /**
+   * @ignore
+   *
+   * Queries the camera for the firmware upload status, performs a software boot when the firmware upload is completed
+   * and then resolves when the camera comes back up correctly after the upload.
+   *
+   * @param {UpgradeStatusStep} completionStatusStep The upgrade status step reporting the progress of the hpk upload completion.
+   * @param {UpgradeStatusStep} rebootStatusStep The upgrade status step reporting the progress of the soft reboot on target.
+   * @return {*}  {Promise<boolean>} Resolves when the process is completed.
+   * @memberof HPKUpgrader
+   */
   async awaitHPKCompletion(
     completionStatusStep: UpgradeStatusStep,
     rebootStatusStep: UpgradeStatusStep
@@ -284,6 +365,13 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     return reboot;
   }
 
+  /**
+   * Invokes an internal camera api that instruments the camera to load and run the uploaded firmware image on target.
+   *
+   * @param {UpgradeStatusStep} runStatusStep The upgrade status step reporting the progress of the firmware loading on target.
+   * @return {*}  {Promise<void>} Resolves when the process is completed.
+   * @memberof HPKUpgrader
+   */
   async runHPKScript(runStatusStep: UpgradeStatusStep): Promise<void> {
     Logger.debug('RUN hpk');
     runStatusStep.progress = 1;
@@ -311,6 +399,16 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
+  /**
+   * Uploads firmware image to the camera and makes sure the camera loads it.
+   *
+   * @param {UpgradeStatusStep} uploadStatusStep The upload step reporting the upload of the firmware image on target.
+   * @param {UpgradeStatusStep} runStatusStep The step reporting the load of the firmware image into one of the boot slots on target.
+   * @param {UpgradeStatusStep} completionStatusStep The step reporting when all the other steps are finished and upgrade is completed.
+   * @param {UpgradeStatusStep} rebootStatusStep  The step reporing the status of camera being rebooted and then coming back up.
+   * @return {*}  {Promise<boolean>}  Resolves when the process is completed.
+   * @memberof HPKUpgrader
+   */
   async doUpgrade(
     uploadStatusStep: UpgradeStatusStep,
     runStatusStep: UpgradeStatusStep,
@@ -337,6 +435,13 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
   }
 
+  /**
+   * Validates the firmware image uploaded to the camera before commanding the camera to always start
+   * booting with the new update firmware.
+   *
+   * @return {*}  {Promise<boolean>} Resolves when the validation process is completed
+   * @memberof HPKUpgrader
+   */
   async upgradeIsValid(): Promise<boolean> {
     try {
       const response = await this._cameraManager.getState();

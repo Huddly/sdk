@@ -5,18 +5,49 @@ const _filterDetections = (objectFilter: Array<String>, detections: Array<any>):
     ? detections
     : detections.filter(({ label }) => objectFilter.some((x) => x === label));
 
+/**
+ *
+ * @ignore
+ * @interface ImageSize
+ */
 interface ImageSize {
   width: number;
   height: number;
 }
 
+/**
+ * Interface describing the detecton converter options available to the user.
+ */
 interface ConverterOpts {
+  /**
+   * Provide the image dimensions that the frame data will be calculated
+   * relative to.
+   */
   preview_image_size: ImageSize;
+  /**
+   * Provide one of the DetectionConvertion Enum which specifies
+   * whether the detection coordinates are relative or absolute to
+   * framing dimensions.
+   */
   convertDetections?: DetectionConvertion;
+  /**
+   * Detection type filter. Can be for example, "head". "person"!
+   */
   objectFilter?: Array<String>;
+
+  /**
+   * Provide frame object with x,y and width,height data that the detection
+   * objects will be drawn relative to.
+   */
   frame?: any;
 }
 
+/**
+ * Helper class for converting detection data based on given conversion options
+ *
+ * @export
+ * @class DetectionsConverter
+ */
 export default class DetectionsConverter {
   _detections: Array<any>;
   _framingBBox: { x: number; y: number; height: number; width: number };

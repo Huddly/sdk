@@ -1,3 +1,4 @@
+/** @ignore @type {any} */
 const ErrorCodes = {
   UPGRADE_UPLOAD: 17,
   UPGRADE_STATUS_TIMEOUT: 12,

@@ -1,9 +1,8 @@
 ## How to use the detector interface!
 
-In order to use the detector interface you need to make sure that the autozoom feature is enabled on the camera (see the [ICnnControl](http://developer.huddly.com/interfaces/ICnnControl.html#readme) interface for documentation on how to do it).
+In order to use the detector interface you need to make sure that the autozoom feature is enabled on the camera (see the [ICnnControl](https://github.com/Huddly/sdk-interfaces/blob/main/src/interfaces/ICnnControl.ts)) interface for documentation on how to do it).
 
-The detector interface allows you to subscribe to detection and/or framing data from the camera. From version **0.4.0** we support getting detection data from Detector without having to stream the camera on the host machine.  
-**NOTE** that this is the default behavior now.
+The detector interface allows you to subscribe to detection and/or framing data from the camera. Detector supports also getting detection data from Detector without having to stream the camera on the host machine.
 
 It is still possible to get detections the old way, where you only get detection when streaming the camera on the host machine. We show you below how to do that!
 ```javascript
