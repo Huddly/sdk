@@ -1,0 +1,1201 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li >HPKUpgrader</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/components/upgrader/hpkUpgrader.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Controller class for instrumenting the upgrade process on Huddly IQ camera.</p>
+
+            </p>
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+            </p>
+
+            <p class="comment">
+                <h3>Implements</h3>
+            </p>
+            <p class="comment">
+                        <code>IDeviceUpgrader</code>
+            </p>
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#doUpgrade" >doUpgrade</a>
+                            </li>
+                            <li>
+                                <a href="#init" >init</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#runHPKScript" >runHPKScript</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#start" >start</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#upgradeIsValid" >upgradeIsValid</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:41</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>manager</td>
+                                                  
+                                                        <td>
+                                                                    <code>IDeviceManager</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>sdkDeviceDiscoveryEmitter</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="doUpgrade"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>doUpgrade</b></span>
+                        <a href="#doUpgrade"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>doUpgrade(uploadStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>, runStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>, completionStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>, rebootStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="412"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:412</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Uploads firmware image to the camera and makes sure the camera loads it.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>uploadStatusStep</td>
+                                    <td>
+                                                <code><a href="../classes/UpgradeStatusStep.html" target="_self" >UpgradeStatusStep</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The upload step reporting the upload of the firmware image on target.</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>runStatusStep</td>
+                                    <td>
+                                                <code><a href="../classes/UpgradeStatusStep.html" target="_self" >UpgradeStatusStep</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The step reporting the load of the firmware image into one of the boot slots on target.</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>completionStatusStep</td>
+                                    <td>
+                                                <code><a href="../classes/UpgradeStatusStep.html" target="_self" >UpgradeStatusStep</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The step reporting when all the other steps are finished and upgrade is completed.</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>rebootStatusStep</td>
+                                    <td>
+                                                <code><a href="../classes/UpgradeStatusStep.html" target="_self" >UpgradeStatusStep</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The step reporing the status of camera being rebooted and then coming back up.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<boolean>}  Resolves when the process is completed.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>init(opts: UpgradeOpts)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="55"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:55</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Initializes the upgrader with the necessary options.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                            <code>UpgradeOpts</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The upgrade options required for performing a firmware upgrade on Huddly IQ.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="runHPKScript"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>runHPKScript</b></span>
+                        <a href="#runHPKScript"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>runHPKScript(runStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="375"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:375</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Invokes an internal camera api that instruments the camera to load and run the uploaded firmware image on target.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>runStatusStep</td>
+                                    <td>
+                                                <code><a href="../classes/UpgradeStatusStep.html" target="_self" >UpgradeStatusStep</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The upgrade status step reporting the progress of the firmware loading on target.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when the process is completed.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="start"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
+                        <a href="#start"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>start()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="180"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:180</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Starts the upgrade process on the Huddly IQ camera and also reports upgrade status to the consumer
+using events.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Void function that relies on events for communicating the upgrade result/progress.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="upgradeIsValid"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>upgradeIsValid</b></span>
+                        <a href="#upgradeIsValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>upgradeIsValid()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="445"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:445</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Validates the firmware image uploaded to the camera before commanding the camera to always start
+booting with the new update firmware.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<boolean>} Resolves when the validation process is completed</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+    </div>
+
+    <div class="tab-pane fade " id="c-readme">
+        <p><h2 id="upgrader-usage">Upgrader Usage</h2>
+<p>In order to perform a software upgarde on the camera, this interface should be used. Please note that there is a convenience function in the <code>IDeviceManager</code> for performing the upgrade, but if you want to implement your own handler then this documentation needs to be reviewed.</p>
+<p>Each upgrader class (BoxfishUpgrader, HuddlyGoUpgrader, AceUPgrader) requires some options that should be provided when initializing it:</p>
+<div><pre class="line-numbers"><code class="language-javascript">const upgrader = cameraManager.getUpgrader();
+const upgradeOptions = {
+  file: fs.readSync(&#39;/path/to/firmware/image&#39;),
+  bootTimeout: 60 // Default is 60 seconds
+  verboseStatusLog: true // Default is true
+}; // See the `IUpgraderOpts` for explanation of each option
+
+// Initialize upgrader
+upgrader.init(upgraderOptions);</code></pre></div><p>After you have initialized the upgrader, then you can proceed with starting the upgrade process.</p>
+<div><pre class="line-numbers"><code class="language-javascript">// Start the upgrade process
+upgrader.start();</code></pre></div><p>During the upgrade process, the upgrader class will emit the following events:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th>Event</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UPGRADE_START</code></td>
+<td align="left">Fired when upgrade is initiated.</td>
+</tr>
+<tr>
+<td><code>UPGRADE_COMPLETE</code></td>
+<td align="left">Fired when upgrade is completed successfully.</td>
+</tr>
+<tr>
+<td><code>UPGRADE_FAILED</code></td>
+<td align="left">Fired when something fails during upgrade. The handler contains the error trace of the upgrade failure.</td>
+</tr>
+<tr>
+<td><code>TIMEOUT</code></td>
+<td align="left">Fired when the camera does not come back up after reboot (reboot is necessary to complete the upgrade sequence.</td>
+</tr>
+<tr>
+<td><code>UPGRADE_PROGRESS</code></td>
+<td align="left">Fired when constantly during the upgrade process providing with information on how far the upgrade process is from completion.</td>
+</tr>
+</tbody>
+</table>
+<p>The events above can be used as shown below:</p>
+<div><pre class="line-numbers"><code class="language-javascript">
+const onUpgradeStartHandler = () =&gt; {
+  // Do something.... Inform your system that upgrade has started
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeFailedHandler = (e) =&gt; {
+  // Upgrade has failed. Print error log to debug the reason
+  console.error(e);
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeCompleteHandler = () =&gt; {
+  // Hurrayyy! Sucessfully upgraded your Huddly camera
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeTimeoutHandler = () =&gt; {
+  // Ups! Looks like the camera did not come back up after rebooting during upgrade.
+  // This also means that the new software that was loaded into the camera will be discarded.
+  // Try to initiate upgrade again.
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeProgressHandler = (progress) =&gt; {
+  // The progress object contains the following information:
+  /*
+   * status: A string representation of how far the upgrade progress has come (ex. Uploading firmware on the device)
+   * progress: A numerical value representing the percentage of upgrade completion (ex 30)
+   */
+  console.log(`Upgrade Progress: ${progress.progress} %`)
+}
+
+upgrader.once(&#39;UPGRADE_START&#39;, onUpgradeStartHandler);
+upgrader.once(&#39;UPGRADE_FAILED&#39;, onUpgradeFailedHandler);
+upgrader.once(&#39;UPGRADE_COMPLETE&#39;, onUpgradeCompleteHandler);
+upgrader.once(&#39;TIMEOUT&#39;, onUpgradeTimeoutHandler);
+upgrader.on(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+
+// Finally start the upgrade after having setup all the listeners
+upgrader.start();</code></pre></div></p>
+    </div>
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
+
+import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
+import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import UpgradeOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+
+import CameraEvents from &#x27;./../../utilitis/events&#x27;;
+import Api from &#x27;../api&#x27;;
+import Boxfish from &#x27;./../device/boxfish&#x27;;
+import BoxfishHpk from &#x27;./boxfishhpk&#x27;;
+import UpgradeStatus, { UpgradeStatusStep } from &#x27;./upgradeStatus&#x27;;
+import ErrorCodes from &#x27;./../../error/errorCodes&#x27;;
+import HPKUpgradeError from &#x27;./../../error/hpkUpgradeError&#x27;;
+
+const MAX_UPLOAD_ATTEMPTS &#x3D; 5;
+const REBOOT_TIMEOUT &#x3D; 20000;
+
+/**
+ * Controller class for instrumenting the upgrade process on Huddly IQ camera.
+ *
+ * @export
+ * @class HPKUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
+ */
+export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader {
+  /** @ignore */
+  verboseStatusLog: boolean;
+  /** @ignore */
+  _cameraManager: IDeviceManager;
+  /** @ignore */
+  _sdkDeviceDiscoveryEmitter: EventEmitter;
+  /** @ignore */
+  _fileBuffer: Buffer;
+  /** @ignore */
+  _upgradeStatus: UpgradeStatus;
+  /** @ignore */
+  _production_upgrade: boolean;
+  /** @ignore */
+  private _statusMessageTimeout: number &#x3D; 10000;
+
+  constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
+    super();
+    this._cameraManager &#x3D; manager;
+    this._sdkDeviceDiscoveryEmitter &#x3D; sdkDeviceDiscoveryEmitter;
+    this._production_upgrade &#x3D; false;
+  }
+  /**
+   * Initializes the upgrader with the necessary options.
+   *
+   * @param {UpgradeOpts} opts The upgrade options required for performing a firmware upgrade on Huddly IQ.
+   * @memberof HPKUpgrader
+   */
+  init(opts: UpgradeOpts) {
+    if (opts.verboseStatusLog !&#x3D;&#x3D; undefined) {
+      this.verboseStatusLog &#x3D; opts.verboseStatusLog;
+    }
+    if (opts.statusMessageTimeout) {
+      this._statusMessageTimeout &#x3D; opts.statusMessageTimeout;
+    }
+    if (opts.production_upgrade) {
+      this._production_upgrade &#x3D; opts.production_upgrade;
+    }
+
+    this._fileBuffer &#x3D; opts.file;
+    this.registerHotPlugEvents();
+  }
+
+  /**
+   * @ignore
+   *
+   * On camera attach handler.
+   *
+   * @param {IDeviceManager} devManager Controller class for the attached device.
+   * @memberof HPKUpgrader
+   */
+  onAttach &#x3D; (devManager: IDeviceManager) &#x3D;&gt; {
+    if (
+      devManager &amp;&amp;
+      devManager instanceof Boxfish &amp;&amp;
+      this._cameraManager[&#x27;serialNumber&#x27;] &#x3D;&#x3D;&#x3D; devManager[&#x27;serialNumber&#x27;]
+    ) {
+      this._cameraManager &#x3D; devManager;
+      this.emit(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;);
+    }
+  };
+
+  /**
+   * @ignore
+   *
+   * On camera detach handler.
+   *
+   * @param {*} deviceSerial Serial number of the detached device.
+   * @memberof HPKUpgrader
+   */
+  onDetach &#x3D; (deviceSerial) &#x3D;&gt; {
+    if (this._cameraManager &amp;&amp; deviceSerial &#x3D;&#x3D;&#x3D; this._cameraManager[&#x27;serialNumber&#x27;]) {
+      try {
+        this._cameraManager.transport.close();
+      } catch (e) {
+        // Error on close is ok
+      }
+    }
+    this.emit(&#x27;UPGRADE_REBOOT&#x27;);
+  };
+
+  /**
+   * @ignore
+   * Subsribes for ATTACH and DETACH camera events since the upgrade involves booting the camera in between upgrade steps.
+   *
+   * @memberof HPKUpgrader
+   */
+  registerHotPlugEvents() {
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, this.onAttach);
+
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.DETACH, this.onDetach);
+  }
+
+  /**
+   * @ignore
+   * Unsubsribes for ATTACH and DETACH camera events since the upgrade involves booting the camera in between upgrade steps.
+   *
+   * @memberof HPKUpgrader
+   */
+  deRegisterHotPlugEvents() {
+    this._sdkDeviceDiscoveryEmitter.removeListener(CameraEvents.ATTACH, this.onAttach);
+    this._sdkDeviceDiscoveryEmitter.removeListener(CameraEvents.DETACH, this.onDetach);
+  }
+
+  /**
+   * @ignore
+   * Uploads the firmware image on target.
+   *
+   * @param {Buffer} hpkBuffer The buffer stream of the firmware image (.hpk)
+   * @param {UpgradeStatusStep} uploadStatusStep Status step representing the progress of the upload process.
+   * @memberof HPKUpgrader
+   */
+  async upload(hpkBuffer: Buffer, uploadStatusStep: UpgradeStatusStep) {
+    let tryAgain &#x3D; true;
+    let attempt &#x3D; 0;
+    uploadStatusStep.progress &#x3D; 1;
+    while (tryAgain &amp;&amp; attempt &lt; MAX_UPLOAD_ATTEMPTS) {
+      try {
+        const m &#x3D; await this._cameraManager.api.sendAndReceiveMessagePack(
+          { name: &#x27;upgrade.hpk&#x27;, file_data: hpkBuffer },
+          {
+            send: &#x27;hcp/write&#x27;,
+            receive: &#x27;hcp/write_reply&#x27;,
+          },
+          10000
+        );
+        const { status } &#x3D; m;
+        if (status !&#x3D;&#x3D; 0) {
+          throw new HPKUpgradeError(
+            &#x60;Upload hpk failed with status ${status}&#x60;,
+            ErrorCodes.UPGRADE_UPLOAD
+          );
+        }
+        uploadStatusStep.progress &#x3D; 100;
+        this.emitProgressStatus();
+        tryAgain &#x3D; false;
+      } catch (e) {
+        Logger.error(&#x60;Failed uploading hpk file ${e} attemt ${attempt}&#x60;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+        attempt +&#x3D; 1;
+      }
+    }
+    if (tryAgain &amp;&amp; attempt &gt;&#x3D; MAX_UPLOAD_ATTEMPTS) {
+      throw new HPKUpgradeError(&#x27;Upgrading HPK: Could not upload hpk&#x27;, ErrorCodes.UPGRADE_UPLOAD);
+    }
+  }
+
+  /**
+   * Starts the upgrade process on the Huddly IQ camera and also reports upgrade status to the consumer
+   * using events.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function that relies on events for communicating the upgrade result/progress.
+   * @memberof HPKUpgrader
+   */
+  async start(): Promise&lt;void&gt; {
+    const firstUploadStatusStep &#x3D; new UpgradeStatusStep(&#x27;Uploading software&#x27;, 5);
+    const executingHpkStep &#x3D; new UpgradeStatusStep(&#x27;Executing upgrade package&#x27;, 1);
+    const runningHpkStep &#x3D; new UpgradeStatusStep(&#x27;Running upgrade procedures&#x27;, 80);
+    const rebootStep &#x3D; new UpgradeStatusStep(&#x27;Rebooting camera&#x27;, 3);
+    const secondUploadStatusStep &#x3D; new UpgradeStatusStep(&#x27;Uploading software to verify&#x27;, 3);
+    const executingHpkVerificationStep &#x3D; new UpgradeStatusStep(
+      &#x27;Executing verification of new software&#x27;,
+      1
+    );
+    const runningHpkVerificationStep &#x3D; new UpgradeStatusStep(&#x27;Verifying new software&#x27;, 3);
+
+    this._upgradeStatus &#x3D; new UpgradeStatus([
+      firstUploadStatusStep,
+      executingHpkStep,
+      runningHpkStep,
+      rebootStep,
+      secondUploadStatusStep,
+      executingHpkVerificationStep,
+      runningHpkVerificationStep,
+    ]);
+    this.emitProgressStatus(&#x27;Starting upgrade&#x27;);
+    Logger.debug(&#x27;Starting Upgrade&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+    this.emit(CameraEvents.UPGRADE_START);
+    let upgradeTimoutId: NodeJS.Timer;
+    this.once(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;, async () &#x3D;&gt; {
+      Logger.debug(&#x27;Camera successfully booted after upgrade&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+      rebootStep.progress &#x3D; 100;
+      clearTimeout(upgradeTimoutId);
+      try {
+        Logger.debug(&#x27;Verifying new software&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        this.emitProgressStatus(&#x27;Verifying new software&#x27;);
+        // Wait two seconds to allow drivers to attach properly to the USB endpoint
+        await new Promise((resolve) &#x3D;&gt; setTimeout(resolve, 2000));
+        await this.doUpgrade(
+          secondUploadStatusStep,
+          executingHpkVerificationStep,
+          runningHpkVerificationStep,
+          rebootStep
+        );
+        Logger.debug(&#x27;Upgrade Completed&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        this.emitProgressStatus(&#x27;Upgrade complete&#x27;);
+        await this.deRegisterHotPlugEvents();
+        this.emit(CameraEvents.UPGRADE_COMPLETE);
+      } catch (e) {
+        await this.deRegisterHotPlugEvents();
+        this.emit(CameraEvents.UPGRADE_FAILED, e);
+        throw e;
+      }
+    });
+
+    try {
+      Logger.debug(&#x27;Loading new sw to the camera&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+      this.emitProgressStatus(&#x27;Loading new software to camera&#x27;);
+      const rebooted &#x3D; await this.doUpgrade(
+        firstUploadStatusStep,
+        executingHpkStep,
+        runningHpkStep,
+        rebootStep
+      );
+      upgradeTimoutId &#x3D; setTimeout(
+        () &#x3D;&gt;
+          this.emit(
+            CameraEvents.UPGRADE_FAILED,
+            new HPKUpgradeError(&#x27;Did not come back after reboot&#x27;, ErrorCodes.UPGRADE_REBOOT_FAILED)
+          ),
+        REBOOT_TIMEOUT
+      );
+      if (!rebooted) {
+        clearTimeout(upgradeTimoutId);
+        this.emit(CameraEvents.UPGRADE_COMPLETE);
+      }
+    } catch (e) {
+      Logger.error(&#x27;Upgrade failed&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+      this.emit(CameraEvents.UPGRADE_FAILED, e);
+      throw e;
+    }
+  }
+
+  /**
+   * @ignore
+   * Helper function for firing upgrade progress status events.
+   *
+   * @param {string} [statusString] The status of the upgrade to be reported.
+   * @memberof HPKUpgrader
+   */
+  emitProgressStatus(statusString?: string) {
+    if (statusString) this._upgradeStatus.statusString &#x3D; statusString;
+    this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
+  }
+
+  /**
+   * @ignore
+   *
+   * Queries the camera for the firmware upload status, performs a software boot when the firmware upload is completed
+   * and then resolves when the camera comes back up correctly after the upload.
+   *
+   * @param {UpgradeStatusStep} completionStatusStep The upgrade status step reporting the progress of the hpk upload completion.
+   * @param {UpgradeStatusStep} rebootStatusStep The upgrade status step reporting the progress of the soft reboot on target.
+   * @return {*}  {Promise&lt;boolean&gt;} Resolves when the process is completed.
+   * @memberof HPKUpgrader
+   */
+  async awaitHPKCompletion(
+    completionStatusStep: UpgradeStatusStep,
+    rebootStatusStep: UpgradeStatusStep
+  ): Promise&lt;boolean&gt; {
+    const reboot &#x3D; await this._cameraManager.api.withSubscribe&lt;boolean&gt;(
+      [&#x27;upgrader/status&#x27;],
+      () &#x3D;&gt;
+        new Promise((resolve, reject) &#x3D;&gt; {
+          const startTimeout &#x3D; () &#x3D;&gt; {
+            return setTimeout(() &#x3D;&gt; {
+              Logger.debug(
+                &#x60;Upgrade failure: no status message within ${this._statusMessageTimeout}&#x60;,
+                &#x27;Boxfish HPK Upgrader&#x27;
+              );
+              reject(
+                new HPKUpgradeError(
+                  &#x60;Upgrading HPK: no status message within ${this._statusMessageTimeout}&#x60;,
+                  ErrorCodes.UPGRADE_STATUS_TIMEOUT
+                )
+              );
+            }, this._statusMessageTimeout);
+          };
+
+          let totalProgressPoints &#x3D; 1;
+          let elapsedPoints &#x3D; 0;
+          let messageTimeoutIt &#x3D; startTimeout();
+          let lastTime &#x3D; Date.now();
+          let lastOperation: undefined | string &#x3D; undefined;
+          this._cameraManager.transport.on(&#x27;upgrader/status&#x27;, async (message) &#x3D;&gt; {
+            clearTimeout(messageTimeoutIt);
+            const statusMessage &#x3D; Api.decode(message.payload, &#x27;messagepack&#x27;);
+            totalProgressPoints &#x3D; statusMessage.total_points || totalProgressPoints;
+            if (statusMessage.operation &#x3D;&#x3D;&#x3D; &#x27;done&#x27; &amp;&amp; statusMessage.reboot) {
+              resolve(true);
+              return;
+            } else if (statusMessage.operation &#x3D;&#x3D;&#x3D; &#x27;done&#x27;) {
+              resolve(false);
+              return;
+            }
+            if (statusMessage.error_count &gt; 0) {
+              return reject(
+                new HPKUpgradeError(
+                  &#x60;Failed during upgrade ${statusMessage}&#x60;,
+                  ErrorCodes.UPGRADE_FAILED
+                )
+              );
+            }
+            const now &#x3D; Date.now();
+            const deltaT &#x3D; now - lastTime;
+            lastTime &#x3D; now;
+            elapsedPoints &#x3D; statusMessage.elapsed_points || elapsedPoints;
+            const progressPercentage &#x3D; (elapsedPoints / totalProgressPoints) * 100;
+            if (statusMessage.operation !&#x3D;&#x3D; lastOperation || deltaT &gt;&#x3D; 1000) {
+              Logger.info(
+                &#x60;Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${
+                  statusMessage.operation
+                }\r&#x60;,
+                &#x27;Boxfish HPK Upgrader&#x27;
+              );
+            }
+            lastOperation &#x3D; statusMessage.operation;
+            completionStatusStep.operation &#x3D; statusMessage.operation;
+            completionStatusStep.progress &#x3D;
+              Math.ceil(progressPercentage) &gt; 100 ? 100 : Math.ceil(progressPercentage);
+            this.emitProgressStatus();
+
+            messageTimeoutIt &#x3D; startTimeout();
+          });
+        })
+    );
+
+    if (reboot) {
+      Logger.debug(&#x27;Rebooting camera after upgrade&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+      rebootStatusStep.progress &#x3D; 1;
+      rebootStatusStep.operation &#x3D; &#x27;Issuing reboot command&#x27;;
+      await this._cameraManager.reboot();
+      try {
+        await this._cameraManager.transport.close();
+      } catch (e) {
+        Logger.error(&#x27;Failed while closing the device on reboot&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+      }
+    }
+
+    return reboot;
+  }
+
+  /**
+   * Invokes an internal camera api that instruments the camera to load and run the uploaded firmware image on target.
+   *
+   * @param {UpgradeStatusStep} runStatusStep The upgrade status step reporting the progress of the firmware loading on target.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the process is completed.
+   * @memberof HPKUpgrader
+   */
+  async runHPKScript(runStatusStep: UpgradeStatusStep): Promise&lt;void&gt; {
+    Logger.debug(&#x27;RUN hpk&#x27;);
+    runStatusStep.progress &#x3D; 1;
+    try {
+      const runMessage &#x3D; await this._cameraManager.api.sendAndReceiveMessagePack(
+        { filename: &#x27;upgrade.hpk&#x27; },
+        {
+          send: &#x27;hpk/run&#x27;,
+          receive: &#x27;hpk/run_reply&#x27;,
+        },
+        15000
+      );
+      if (runMessage.string &#x3D;&#x3D;&#x3D; &#x27;Success&#x27;) {
+        Logger.debug(&#x27;RUN hpk complete&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        runStatusStep.progress &#x3D; 100;
+        this.emitProgressStatus();
+        return;
+      } else {
+        Logger.error(&#x60;HPK run failed ${JSON.stringify(runMessage)}&#x60;, &#x27;&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        throw new HPKUpgradeError(&#x60;run failed ${runMessage}&#x60;, ErrorCodes.UPGRADE_RUN_FAILED);
+      }
+    } catch (e) {
+      Logger.error(&#x27;Unable to run the hpk script&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+      throw new HPKUpgradeError(&#x60;Could not run hpk ${e}&#x60;, ErrorCodes.UPGRADE_RUN_FAILED);
+    }
+  }
+
+  /**
+   * Uploads firmware image to the camera and makes sure the camera loads it.
+   *
+   * @param {UpgradeStatusStep} uploadStatusStep The upload step reporting the upload of the firmware image on target.
+   * @param {UpgradeStatusStep} runStatusStep The step reporting the load of the firmware image into one of the boot slots on target.
+   * @param {UpgradeStatusStep} completionStatusStep The step reporting when all the other steps are finished and upgrade is completed.
+   * @param {UpgradeStatusStep} rebootStatusStep  The step reporing the status of camera being rebooted and then coming back up.
+   * @return {*}  {Promise&lt;boolean&gt;}  Resolves when the process is completed.
+   * @memberof HPKUpgrader
+   */
+  async doUpgrade(
+    uploadStatusStep: UpgradeStatusStep,
+    runStatusStep: UpgradeStatusStep,
+    completionStatusStep: UpgradeStatusStep,
+    rebootStatusStep: UpgradeStatusStep
+  ): Promise&lt;boolean&gt; {
+    Logger.info(&#x27;Upgrading HPK&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+    const hpkBuffer &#x3D; this._fileBuffer;
+    try {
+      if (!BoxfishHpk.isHpk(this._fileBuffer)) {
+        throw new HPKUpgradeError(
+          &#x27;HPK upgrader file is not a valid hpk file&#x27;,
+          ErrorCodes.UPGRADE_INVALID_FILE
+        );
+      }
+      await this.upload(hpkBuffer, uploadStatusStep);
+      const completedPromise &#x3D; this.awaitHPKCompletion(completionStatusStep, rebootStatusStep);
+      await this.runHPKScript(runStatusStep);
+      return await completedPromise;
+    } catch (e) {
+      Logger.error(&#x27;Failed performing hpk upgrade on boxfish device&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+      this.deRegisterHotPlugEvents();
+      throw e;
+    }
+  }
+
+  /**
+   * Validates the firmware image uploaded to the camera before commanding the camera to always start
+   * booting with the new update firmware.
+   *
+   * @return {*}  {Promise&lt;boolean&gt;} Resolves when the validation process is completed
+   * @memberof HPKUpgrader
+   */
+  async upgradeIsValid(): Promise&lt;boolean&gt; {
+    try {
+      const response &#x3D; await this._cameraManager.getState();
+
+      Logger.info(&#x60;Upgrade status ${response.string}&#x60;, &#x27;Boxfish HPK Upgrader&#x27;);
+      if (response.status &#x3D;&#x3D;&#x3D; 10) {
+        // EMMC is not ready lets wait and try again
+        await new Promise((resolve) &#x3D;&gt; setTimeout(resolve, 1000));
+        return await this.upgradeIsValid();
+      }
+      if (!this._production_upgrade) {
+        return response.status &#x3D;&#x3D;&#x3D; 0;
+      } else {
+        // When flashing the boxfish-prod.hpk we can ignore the cnn emmc error
+        return response.status &#x3D;&#x3D;&#x3D; 0 || response.status &#x3D;&#x3D;&#x3D; 3;
+      }
+    } catch (e) {
+      return false;
+    }
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'HPKUpgrader.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

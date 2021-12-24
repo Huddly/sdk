@@ -1,0 +1,1484 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li>Classes</li>
+  <li >AceUpgrader</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="active">
+            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        </li>
+        <li >
+            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="c-info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/components/upgrader/aceUpgrader.ts</code>
+        </p>
+
+
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Controller class for instrumenting the upgrade process on Huddly L1 camera.</p>
+
+            </p>
+
+            <p class="comment">
+                <h3>Extends</h3>
+            </p>
+            <p class="comment">
+                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+            </p>
+
+            <p class="comment">
+                <h3>Implements</h3>
+            </p>
+            <p class="comment">
+                        <code>IDeviceUpgrader</code>
+            </p>
+
+
+            <section>
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#bootTimeout" >bootTimeout</a>
+                            </li>
+                            <li>
+                                <a href="#options" >options</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#doUpgrade" >doUpgrade</a>
+                            </li>
+                            <li>
+                                <a href="#getVersion" >getVersion</a>
+                            </li>
+                            <li>
+                                <a href="#getVersionState" >getVersionState</a>
+                            </li>
+                            <li>
+                                <a href="#init" >init</a>
+                            </li>
+                            <li>
+                                <a href="#performUpgradeStep" >performUpgradeStep</a>
+                            </li>
+                            <li>
+                                <a href="#registerHotPlugEvents" >registerHotPlugEvents</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#start" >start</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#aceManager" >aceManager</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:99</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates a new instance of AceUpgrader.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>manager</td>
+                                                  
+                                                        <td>
+                                                                    <code>IDeviceManager</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>An instance of IDeviceManager setup for an Ace network device.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>sdkDeviceDiscoveryEmitter</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Event emitter object that emits ATTACH &amp; DETACH events for Ace devices on the network</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section>
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="bootTimeout"></a>
+                    <span class="name">
+                        <span ><b>bootTimeout</b></span>
+                        <a href="#bootTimeout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>30 * 1000</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="74" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:74</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Defines the maximum amount of time (in seconds) that the camera is allowed to use for
+booting after firmware upgrade.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="options"></a>
+                    <span class="name">
+                        <span ><b>options</b></span>
+                        <a href="#options"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>IUpgradeOpts</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="65" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:65</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The upgrader options necessary to perform the firmware upgrade</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+</section>
+
+            <section>
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="doUpgrade"></a>
+                    <span class="name">
+                        <span ><b>doUpgrade</b></span>
+                        <a href="#doUpgrade"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>doUpgrade()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="564"
+                            class="link-to-prism">src/components/upgrader/aceUpgrader.ts:564</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Perform the complete upgrade process asynchronously</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when the upgrade process is completed. Rejects if upgrade failes.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVersion"></a>
+                    <span class="name">
+                        <span ><b>getVersion</b></span>
+                        <a href="#getVersion"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getVersion()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="401"
+                            class="link-to-prism">src/components/upgrader/aceUpgrader.ts:401</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Helper function that fetches the firmware version string from the device.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<string>} Resolves with the version straing when the action is completed.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getVersionState"></a>
+                    <span class="name">
+                        <span ><b>getVersionState</b></span>
+                        <a href="#getVersionState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getVersionState()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="376"
+                            class="link-to-prism">src/components/upgrader/aceUpgrader.ts:376</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Helper function that fetches the version state from the device.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<number>} Resolves with the version state when the action is completed.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>init(opts: IUpgradeOpts)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">src/components/upgrader/aceUpgrader.ts:119</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Method for initializing the upgrade and setting up the proper callbacks and event listeners.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                            <code>IUpgradeOpts</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Options required to carry out and facilitate the upgrade process</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="performUpgradeStep"></a>
+                    <span class="name">
+                        <span ><b>performUpgradeStep</b></span>
+                        <a href="#performUpgradeStep"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>performUpgradeStep(step: <a href="../undefineds/UpgradeSteps.html" target="_self">UpgradeSteps</a>, stepName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="429"
+                            class="link-to-prism">src/components/upgrader/aceUpgrader.ts:429</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A helper function that makes it possible to peform the upgrade substeps such as FLASH and COMMITT by
+reading the cpio file and sending the data over to the camera using grpc streams.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>step</td>
+                                    <td>
+                                                <code><a href="../miscellaneous/enumerations.html#UpgradeSteps" target="_self" >UpgradeSteps</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Represents the upgrade substep to be run on the device.</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>stepName</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>A string represnetation of the upgrade substep for debugging purposes.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<string>} Resolve with upgrade status message when the action is completed.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="registerHotPlugEvents"></a>
+                    <span class="name">
+                        <span ><b>registerHotPlugEvents</b></span>
+                        <a href="#registerHotPlugEvents"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>registerHotPlugEvents()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">src/components/upgrader/aceUpgrader.ts:136</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Sets up event listeners for ATTACH &amp; DETACH for when the device under upgrade
+is rebooted as part of the process itself. This method helps indetify when the
+booted camera comes up so that the upgrade process can continue to completion.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="start"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
+                        <a href="#start"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>start()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/components/upgrader/aceUpgrader.ts:173</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Perform the complete upgrade process synchronously</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Void function. Use <code>await</code> when calling this method.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+            <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="aceManager"></a>
+                        <span class="name"><b>aceManager</b><a href="#aceManager"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>aceManager()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:92</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Helper getter that typecasts the _cameraManager member which is of type IDeviceManager into its
+concrete implementation Ace</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../classes/Ace.html" target="_self" >Ace</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
+    </div>
+
+    <div class="tab-pane fade " id="c-readme">
+        <p><h2 id="upgrader-usage">Upgrader Usage</h2>
+<p>In order to perform a software upgarde on the camera, this interface should be used. Please note that there is a convenience function in the <code>IDeviceManager</code> for performing the upgrade, but if you want to implement your own handler then this documentation needs to be reviewed.</p>
+<p>Each upgrader class (BoxfishUpgrader, HuddlyGoUpgrader, AceUpgrader) requires some options that should be provided when initializing it:</p>
+<div><pre class="line-numbers"><code class="language-javascript">const upgrader = cameraManager.getUpgrader();
+const upgradeOptions = {
+  file: fs.readSync(&#39;/path/to/firmware/image&#39;),
+  bootTimeout: 60 // Default is 60 seconds
+  verboseStatusLog: true // Default is true
+}; // See the `IUpgraderOpts` for explanation of each option
+
+// Initialize upgrader
+upgrader.init(upgraderOptions);</code></pre></div><p>After you have initialized the upgrader, then you can proceed with starting the upgrade process.</p>
+<div><pre class="line-numbers"><code class="language-javascript">// Start the upgrade process
+upgrader.start();</code></pre></div><p>During the upgrade process, the upgrader class will emit the following events:</p>
+<table class="table table-bordered compodoc-table">
+<thead>
+<tr>
+<th>Event</th>
+<th align="left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><code>UPGRADE_START</code></td>
+<td align="left">Fired when upgrade is initiated.</td>
+</tr>
+<tr>
+<td><code>UPGRADE_COMPLETE</code></td>
+<td align="left">Fired when upgrade is completed successfully.</td>
+</tr>
+<tr>
+<td><code>UPGRADE_FAILED</code></td>
+<td align="left">Fired when something fails during upgrade. The handler contains the error trace of the upgrade failure.</td>
+</tr>
+<tr>
+<td><code>TIMEOUT</code></td>
+<td align="left">Fired when the camera does not come back up after reboot (reboot is necessary to complete the upgrade sequence.</td>
+</tr>
+<tr>
+<td><code>UPGRADE_PROGRESS</code></td>
+<td align="left">Fired when constantly during the upgrade process providing with information on how far the upgrade process is from completion.</td>
+</tr>
+</tbody>
+</table>
+<p>The events above can be used as shown below:</p>
+<div><pre class="line-numbers"><code class="language-javascript">
+const onUpgradeStartHandler = () =&gt; {
+  // Do something.... Inform your system that upgrade has started
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeFailedHandler = (e) =&gt; {
+  // Upgrade has failed. Print error log to debug the reason
+  console.error(e);
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeCompleteHandler = () =&gt; {
+  // Hurrayyy! Sucessfully upgraded your Huddly camera
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeTimeoutHandler = () =&gt; {
+  // Ups! Looks like the camera did not come back up after rebooting during upgrade.
+  // This also means that the new software that was loaded into the camera will be discarded.
+  // Try to initiate upgrade again.
+  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+}
+
+const onUpgradeProgressHandler = (progress) =&gt; {
+  // The progress object contains the following information:
+  /*
+   * status: A string representation of how far the upgrade progress has come (ex. Uploading firmware on the device)
+   * progress: A numerical value representing the percentage of upgrade completion (ex 30)
+   */
+  console.log(`Upgrade Progress: ${progress.progress} %`)
+}
+
+upgrader.once(&#39;UPGRADE_START&#39;, onUpgradeStartHandler);
+upgrader.once(&#39;UPGRADE_FAILED&#39;, onUpgradeFailedHandler);
+upgrader.once(&#39;UPGRADE_COMPLETE&#39;, onUpgradeCompleteHandler);
+upgrader.once(&#39;TIMEOUT&#39;, onUpgradeTimeoutHandler);
+upgrader.on(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
+
+// Finally start the upgrade after having setup all the listeners
+upgrader.start();</code></pre></div></p>
+    </div>
+
+    <div class="tab-pane fade  tab-source-code" id="c-source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
+import cpio from &#x27;cpio-stream&#x27;;
+
+import IUpgradeOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts&#x27;;
+import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
+import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+
+import UpgradeStatus, { UpgradeStatusStep } from &#x27;./upgradeStatus&#x27;;
+import AceUpgraderError from &#x27;./../../error/AceUpgraderError&#x27;;
+import CameraEvents from &#x27;./../../utilitis/events&#x27;;
+import Ace from &#x27;./../../components/device/ace&#x27;;
+import * as grpc from &#x27;@grpc/grpc-js&#x27;;
+import ErrorCodes from &#x27;./../../../src/error/errorCodes&#x27;;
+import BufferStream from &#x27;./../../utilitis/bufferStream&#x27;;
+
+import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
+import { Empty } from &#x27;google-protobuf/google/protobuf/empty_pb&#x27;;
+
+/**
+ * Enum describing the different upgrade steps for L1.
+ *
+ * @export
+ * @enum {number}
+ */
+export enum UpgradeSteps {
+  FLASH &#x3D; 0,
+  REBOOT &#x3D; 1,
+  COMMIT &#x3D; 2,
+}
+
+/**
+ * Controller class for instrumenting the upgrade process on Huddly L1 camera.
+ *
+ * @export
+ * @class AceUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
+ */
+export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader {
+  /**
+   * @ignore
+   * Camera manager instance for Ace
+   *
+   * @type {IDeviceManager}
+   * @memberof AceUpgrader
+   */
+  _cameraManager: IDeviceManager;
+
+  /**
+   * @ignore
+   * Event emitter object that emits ATTACH &amp; DETACH events for Ace devices on the network
+   *
+   * @type {EventEmitter}
+   * @memberof AceUpgrader
+   */
+  _sdkDeviceDiscoveryEmitter: EventEmitter;
+
+  /**
+   * The upgrader options necessary to perform the firmware upgrade
+   *
+   * @type {IUpgradeOpts}
+   * @memberof AceUpgrader
+   */
+  options: IUpgradeOpts;
+
+  /**
+   * Defines the maximum amount of time (in seconds) that the camera is allowed to use for
+   * booting after firmware upgrade.
+   *
+   * @type {IUpgradeOpts}
+   * @memberof AceUpgrader
+   */
+  bootTimeout: number &#x3D; 30 * 1000; // 30 seconds
+
+  /**
+   * @ignore
+   * Upgrade status object used to emit upgrade progress throughout the whole upgrade process.
+   *
+   * @type {UpgradeStatus}
+   * @memberof AceUpgrader
+   */
+  _upgradeStatus: UpgradeStatus;
+
+  /**
+   * Helper getter that typecasts the _cameraManager member which is of type IDeviceManager into its
+   * concrete implementation Ace
+   *
+   * @type {Ace}
+   * @memberof AceUpgrader
+   */
+  get aceManager(): Ace {
+    if (this._cameraManager instanceof Ace) {
+      return &lt;Ace&gt;this._cameraManager;
+    }
+    throw new Error(
+      &#x60;Ace upgrader initialized with wrong camera manager! Manager is not instance of Ace but &#x3D;&gt; ${this._cameraManager.constructor.name}&#x60;
+    );
+  }
+
+  /**
+   * Creates a new instance of AceUpgrader.
+   * @param {IDeviceManager} manager An instance of IDeviceManager setup for an Ace network device.
+   * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH &amp; DETACH events for Ace devices on the network
+   * @memberof AceUpgrader
+   */
+  constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
+    super();
+    this._cameraManager &#x3D; manager;
+    this._sdkDeviceDiscoveryEmitter &#x3D; sdkDeviceDiscoveryEmitter;
+  }
+
+  /**
+   * Method for initializing the upgrade and setting up the proper callbacks and event listeners.
+   *
+   * @param {IUpgradeOpts} opts Options required to carry out and facilitate the upgrade process
+   * @memberof AceUpgrader
+   */
+  init(opts: IUpgradeOpts): void {
+    this.options &#x3D; opts;
+
+    if (opts.bootTimeout) {
+      this.bootTimeout &#x3D; opts.bootTimeout * 1000;
+    }
+
+    this.registerHotPlugEvents();
+  }
+
+  /**
+   * Sets up event listeners for ATTACH &amp; DETACH for when the device under upgrade
+   * is rebooted as part of the process itself. This method helps indetify when the
+   * booted camera comes up so that the upgrade process can continue to completion.
+   *
+   * @memberof AceUpgrader
+   */
+  registerHotPlugEvents(): void {
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, async (devManager) &#x3D;&gt; {
+      if (devManager &amp;&amp; devManager instanceof Ace) {
+        const aceDeviceMng: Ace &#x3D; &lt;Ace&gt;devManager;
+        if (aceDeviceMng.equals(this._cameraManager)) {
+          this._cameraManager &#x3D; devManager;
+          this.emit(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;);
+        }
+      }
+    });
+
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
+      if (d &amp;&amp; this.aceManager.wsdDevice.serialNumber &#x3D;&#x3D;&#x3D; d.serialNumber) {
+        this.aceManager.closeConnection();
+        this.emit(&#x27;UPGRADE_REBOOT&#x27;);
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Helper function for emitting upgrade progress events
+   *
+   * @param {string} [statusString] A message accompanying the progress event
+   * @memberof AceUpgrader
+   */
+  emitProgressStatus(statusString?: string) {
+    if (statusString) this._upgradeStatus.statusString &#x3D; statusString;
+    this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
+  }
+
+  /**
+   * Perform the complete upgrade process synchronously
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof AceUpgrader
+   */
+  async start(): Promise&lt;void&gt; {
+    const firstUploadStatusStep &#x3D; new UpgradeStatusStep(&#x27;Executing software upgrade&#x27;, 30);
+    const rebootStep &#x3D; new UpgradeStatusStep(&#x27;Rebooting camera&#x27;, 60);
+    const verificationStep &#x3D; new UpgradeStatusStep(&#x27;Verifying new software&#x27;, 10);
+
+    this._upgradeStatus &#x3D; new UpgradeStatus([firstUploadStatusStep, rebootStep, verificationStep]);
+
+    try {
+      // Check that camera is running in Normal/Verified state
+      await this.verifyVersionState(huddly.VersionState.VERIFIED);
+
+      Logger.debug(&#x27;Starting Upgrade&#x27;, AceUpgrader.name);
+      this.emitProgressStatus(&#x27;Starting upgrade&#x27;);
+      this.emit(CameraEvents.UPGRADE_START);
+
+      firstUploadStatusStep.progress &#x3D; 50;
+      this.emitProgressStatus();
+      Logger.debug(&#x27;Flashing firmware ...&#x27;, AceUpgrader.name);
+      await this.flash();
+      firstUploadStatusStep.progress &#x3D; 100;
+      Logger.debug(&#x27;Flash completed!&#x27;, AceUpgrader.name);
+
+      rebootStep.progress &#x3D; 1;
+      this.emitProgressStatus(&#x27;Rebooting camera&#x27;);
+      await this.reboot();
+
+      // Start interval for emitting upgrade progress events while camera is booting up
+      const rebootUpgradeProgress &#x3D; setInterval(() &#x3D;&gt; {
+        if (rebootStep.progress &gt;&#x3D; 95) {
+          // Last 5% will be completed upon camera coming up after reboot
+          clearInterval(rebootUpgradeProgress);
+          return;
+        }
+        rebootStep.progress +&#x3D; 5;
+        this.emitProgressStatus();
+      }, 1000);
+
+      // Timeout if the camera does not come back up after bootTimeout seconds have passed!
+      const bootTimeout &#x3D; setTimeout(() &#x3D;&gt; {
+        clearTimeout(bootTimeout);
+        clearInterval(rebootUpgradeProgress);
+        this.emit(CameraEvents.TIMEOUT, &#x27;Camera did not come back up after upgrade!&#x27;);
+      }, this.bootTimeout);
+
+      this.once(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;, async () &#x3D;&gt; {
+        Logger.debug(&#x27;Camera successfully booted after upgrade&#x27;, AceUpgrader.name);
+        clearInterval(rebootUpgradeProgress);
+        try {
+          rebootStep.progress &#x3D; 100;
+          this.emitProgressStatus();
+
+          // Check that camera comes up in Unverified state
+          await this.verifyVersionState(huddly.VersionState.UNVERIFIED);
+
+          // Check that the camera comes up with expected version
+          await this.verifyVersion();
+
+          verificationStep.progress &#x3D; 50;
+          Logger.debug(&#x27;Verifying new software&#x27;, AceUpgrader.name);
+          this.emitProgressStatus(&#x27;Verifying new software&#x27;);
+          await this.commit();
+
+          // Check that camera comes up in Committed state
+          await this.verifyVersionState(huddly.VersionState.VERIFIED);
+          verificationStep.progress &#x3D; 100;
+
+          Logger.debug(&#x27;Upgrade Completed&#x27;, AceUpgrader.name);
+          this.emitProgressStatus(&#x27;Upgrade complete&#x27;);
+          clearTimeout(bootTimeout);
+          this.emit(CameraEvents.UPGRADE_COMPLETE, this._cameraManager);
+        } catch (e) {
+          clearTimeout(bootTimeout);
+          // Upgrade fail event is already emitted
+        }
+      });
+    } catch {
+      // Exeption handling and error event emitting is done on the individual steps within the try block
+      // Ignore errors here
+    }
+  }
+
+  /**
+   * @ignore
+   *
+   * Does a verification of the current version state of the camera. It does a version state fetch
+   * and matches that with the one given as parameter.
+   *
+   * @param {number} expectedState The expected state that the camera should be in.
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof AceUpgrader
+   * @throws {AceUpgraderError} Device not running in expected state.
+   */
+  async verifyVersionState(expectedState: number): Promise&lt;void&gt; {
+    const currentState: number &#x3D; await this.getVersionState();
+    if (currentState !&#x3D;&#x3D; expectedState) {
+      const currentStateStr: string &#x3D; Object.keys(huddly.VersionState).find(
+        (key) &#x3D;&gt; huddly.VersionState[key] &#x3D;&#x3D;&#x3D; currentState
+      );
+      const expectedStateStr: string &#x3D; Object.keys(huddly.VersionState).find(
+        (key) &#x3D;&gt; huddly.VersionState[key] &#x3D;&#x3D;&#x3D; expectedState
+      );
+      const errMsg &#x3D; &#x60;Device not running in expected state. Expected ${expectedStateStr} | Got ${currentStateStr}&#x60;;
+      Logger.error(errMsg, undefined, AceUpgrader.name);
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_FAILED);
+    }
+  }
+
+  /**
+   * @ignore
+   * Helper function for reading the version string from the provided CPIO file
+   * and matching that with whatever version the camera is currently running.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof AceUpgrader
+   */
+  async verifyVersion(): Promise&lt;void&gt; {
+    const extract &#x3D; cpio.extract();
+    const currentVersion: string &#x3D; await this.getVersion();
+    const expcetedVersion: string &#x3D; await new Promise((resolve) &#x3D;&gt; {
+      let expcetedVersion: string &#x3D; &#x27;N/A&#x27;;
+      const readTimeout: NodeJS.Timeout &#x3D; setTimeout(() &#x3D;&gt; {
+        Logger.warn(&#x27;Unable to read version string from cpio file within 1s time frame&#x27;, Ace.name);
+        resolve(&#x27;N/A&#x27;);
+      }, 1000);
+      extract.on(&#x27;entry&#x27;, (header: any, stream: any, cb: any) &#x3D;&gt; {
+        stream.on(&#x27;end&#x27;, () &#x3D;&gt; {
+          cb();
+          if (header.name &#x3D;&#x3D;&#x3D; &#x27;version&#x27;) {
+            extract.emit(&#x27;finish&#x27;);
+          }
+        });
+        if (header.name &#x3D;&#x3D; &#x27;version&#x27;) {
+          stream.on(&#x27;data&#x27;, (verionStr: any) &#x3D;&gt; {
+            expcetedVersion &#x3D; verionStr;
+          });
+        }
+        stream.resume();
+      });
+      extract.on(&#x27;finish&#x27;, () &#x3D;&gt; {
+        extract.destroy();
+        clearTimeout(readTimeout);
+        resolve(expcetedVersion);
+      });
+
+      new BufferStream(this.options.file).pipe(extract);
+    });
+
+    if (currentVersion.toString() !&#x3D; expcetedVersion.toString()) {
+      const errMsg: string &#x3D; &#x60;Camera running wrong version! Expected ${expcetedVersion} but got ${currentVersion}&#x60;;
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      Logger.error(errMsg, undefined, AceUpgrader.name);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_VERSION_MISMATCH);
+    }
+  }
+
+  /**
+   * @ignore
+   * Calculate expected slot based on current slot.
+   *
+   * @param {string} curretSlot Current slot that the camera has booted from.
+   * @return {*}  {string} The next slot the camera will boot after upgrade.
+   * @memberof AceUpgrader
+   */
+  calculateExpectedSlot(curretSlot: string): string {
+    if (![&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;].includes(curretSlot)) {
+      throw new AceUpgraderError(&#x60;Unexpected slot: ${curretSlot}&#x60;, 1);
+    }
+
+    if ([&#x27;B&#x27;, &#x27;C&#x27;].includes(curretSlot)) {
+      return &#x27;A&#x27;;
+    }
+
+    if (curretSlot &#x3D;&#x3D;&#x3D; &#x27;A&#x27;) {
+      return &#x27;B&#x27;;
+    }
+  }
+
+  /**
+   * @ignore
+   * Verify that the camera has booted from the expected slot after upgrade.
+   *
+   * @param {string} slotBeforeUpgrade The old slot that the camera started the upgrade from.
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof AceUpgrader
+   */
+  async verifySlot(slotBeforeUpgrade: string): Promise&lt;void&gt; {
+    const expectedSlot: string &#x3D; this.calculateExpectedSlot(slotBeforeUpgrade);
+    const currentSlot: string &#x3D; await this.aceManager.getSlot();
+    if (expectedSlot !&#x3D;&#x3D; currentSlot) {
+      const errMsg: string &#x3D; &#x60;Camera booted from wrong slot! Expected ${expectedSlot} but got ${currentSlot}&#x60;;
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      Logger.error(errMsg, undefined, AceUpgrader.name);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_WRONG_BOOT_SLOT);
+    }
+  }
+
+  /**
+   * Helper function that fetches the version state from the device.
+   *
+   * @return {*}  {Promise&lt;number&gt;} Resolves with the version state when the action is completed.
+   * @memberof AceUpgrader
+   */
+  getVersionState(): Promise&lt;number&gt; {
+    return new Promise((resolve) &#x3D;&gt; {
+      this.aceManager.grpcClient.getDeviceVersion(
+        new Empty(),
+        (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) &#x3D;&gt; {
+          if (err) {
+            Logger.error(
+              &#x60;Unable to get device version state! Error msg: ${err.message}&#x60;,
+              err.stack,
+              AceUpgrader.name
+            );
+            resolve(undefined);
+          }
+          resolve(deviceVersion.getVersionState());
+        }
+      );
+    });
+  }
+
+  /**
+   * Helper function that fetches the firmware version string from the device.
+   *
+   * @return {*}  {Promise&lt;string&gt;} Resolves with the version straing when the action is completed.
+   * @memberof AceUpgrader
+   */
+  getVersion(): Promise&lt;string&gt; {
+    return new Promise((resolve) &#x3D;&gt; {
+      this.aceManager.grpcClient.getDeviceVersion(
+        new Empty(),
+        (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) &#x3D;&gt; {
+          if (err) {
+            Logger.error(
+              &#x60;Unable to get device version! Error msg: ${err.message}&#x60;,
+              err.stack,
+              AceUpgrader.name
+            );
+            resolve(undefined);
+          }
+          resolve(deviceVersion.getVersion());
+        }
+      );
+    });
+  }
+
+  /**
+   * A helper function that makes it possible to peform the upgrade substeps such as FLASH and COMMITT by
+   * reading the cpio file and sending the data over to the camera using grpc streams.
+   *
+   * @param {UpgradeSteps} step Represents the upgrade substep to be run on the device.
+   * @param {string} stepName A string represnetation of the upgrade substep for debugging purposes.
+   * @return {*}  {Promise&lt;string&gt;} Resolve with upgrade status message when the action is completed.
+   * @memberof AceUpgrader
+   */
+  performUpgradeStep(step: UpgradeSteps, stepName: string): Promise&lt;string&gt; {
+    const extract &#x3D; cpio.extract();
+
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const readTimeout: NodeJS.Timeout &#x3D; setTimeout(() &#x3D;&gt; {
+        const errMsg &#x3D; &#x60;Unable to perform upgrade step ${step} within given time of 10 seconds&#x60;;
+        Logger.warn(errMsg, Ace.name);
+        this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+        reject(errMsg);
+      }, 10000);
+
+      const upgradeStepCompleteCb &#x3D; (err: grpc.ServiceError, deviceStatus: huddly.DeviceStatus) &#x3D;&gt; {
+        clearTimeout(readTimeout);
+        if (err !&#x3D; undefined) {
+          this.emit(CameraEvents.UPGRADE_FAILED, err);
+          Logger.error(
+            &#x60;Unable to perform ${stepName} step on device!&#x60;,
+            err.message,
+            AceUpgrader.name
+          );
+          reject(err.details);
+          return;
+        }
+        resolve(
+          &#x60;${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}&#x60;
+        );
+      };
+
+      let stream: grpc.ClientWritableStream&lt;huddly.Chunk&gt;;
+      switch (step) {
+        case UpgradeSteps.FLASH:
+          stream &#x3D; this.aceManager.grpcClient.upgradeDevice(upgradeStepCompleteCb);
+          break;
+        case UpgradeSteps.COMMIT:
+          stream &#x3D; this.aceManager.grpcClient.upgradeVerify(upgradeStepCompleteCb);
+          break;
+        default:
+          const upgradeStepStr: string &#x3D; Object.keys(UpgradeSteps).find(
+            (key) &#x3D;&gt; UpgradeSteps[key] &#x3D;&#x3D;&#x3D; step
+          );
+          clearTimeout(readTimeout);
+          throw new AceUpgraderError(
+            &#x60;Unknown upgrade step ${upgradeStepStr}&#x60;,
+            ErrorCodes.UPGRADE_FAILED
+          );
+      }
+
+      extract.on(&#x27;entry&#x27;, (header: any, cpioStream: any, cb: any) &#x3D;&gt; {
+        if (header.name !&#x3D;&#x3D; &#x27;image.itb&#x27;) {
+          return;
+        }
+        cpioStream.on(&#x27;end&#x27;, () &#x3D;&gt; {
+          cb();
+          extract.destroy();
+          stream.end();
+        });
+        cpioStream.on(&#x27;data&#x27;, (chunk: Buffer) &#x3D;&gt; {
+          const huddlyChunk &#x3D; new huddly.Chunk();
+          huddlyChunk.setContent(chunk);
+          stream.write(huddlyChunk);
+        });
+        cpioStream.resume(); // auto drain
+      });
+
+      new BufferStream(this.options.file).pipe(extract);
+    });
+  }
+
+  /**
+   * @ignore
+   * Performs a firmware write/flash step using the provided cpio image
+   *
+   * @return {*}  {Promise&lt;string&gt;} Resolves with flash status message when the action is completed.
+   * @memberof AceUpgrader
+   */
+  async flash(): Promise&lt;string&gt; {
+    return this.performUpgradeStep(UpgradeSteps.FLASH, &#x27;FLASH&#x27;);
+  }
+
+  /**
+   * @ignore
+   * Performs a software reboot on the device.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof AceUpgrader
+   */
+  reboot(): Promise&lt;void&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      Logger.debug(&#x27;Rebooting camera....&#x27;, AceUpgrader.name);
+      this.aceManager.grpcClient.reset(
+        new Empty(),
+        (err: grpc.ServiceError, status: huddly.DeviceStatus) &#x3D;&gt; {
+          if (err || status.getCode() !&#x3D;&#x3D; huddly.StatusCode.OK) {
+            this.emit(CameraEvents.UPGRADE_FAILED, err);
+            Logger.error(&#x60;Reboot failed!&#x60;, err, AceUpgrader.name);
+            if (status &#x3D;&#x3D; undefined) {
+              reject(&#x60;Reboot failed! Error: code [${err.code}] Details [${err.details}]&#x60;);
+            } else {
+              reject(
+                &#x60;Reboot failed! DeviceStatus: code [${status.getCode()}] Msg [${status.getMessage()}]&#x60;
+              );
+            }
+            return;
+          }
+          this.aceManager.closeConnection();
+          resolve();
+        }
+      );
+    });
+  }
+
+  /**
+   * @ignore
+   * Performs a firmware verification step using the provided cpio image.
+   *
+   * @return {*}  {Promise&lt;string&gt;} Resolves with commit status message when the action is completed.
+   * @memberof AceUpgrader
+   */
+  async commit(): Promise&lt;string&gt; {
+    return this.performUpgradeStep(UpgradeSteps.COMMIT, &#x27;COMMIT&#x27;);
+  }
+
+  /**
+   * @ignore
+   */
+  upgradeIsValid(): Promise&lt;boolean&gt; {
+    throw new Error(&#x27;Method not supported!&#x27;);
+  }
+
+  /**
+   * Perform the complete upgrade process asynchronously
+   *
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the upgrade process is completed. Rejects if upgrade failes.
+   * @memberof AceUpgrader
+   */
+  doUpgrade(): Promise&lt;void&gt; {
+    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+      this.once(CameraEvents.UPGRADE_COMPLETE, () &#x3D;&gt; resolve());
+      this.once(CameraEvents.UPGRADE_FAILED, (e) &#x3D;&gt; reject(e));
+      this.start();
+    });
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'AceUpgrader.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

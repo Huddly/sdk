@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >Detector</li>
+  <li >IpDetector</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -64,7 +64,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/components/detector.ts</code>
+            <code>src/components/ipDetector.ts</code>
         </p>
 
 
@@ -105,6 +105,15 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                <a href="#_getDetections" >_getDetections</a>
+                            </li>
+                            <li>
+                                <a href="#_startDetections" >_startDetections</a>
+                            </li>
+                            <li>
+                                <a href="#_stopDetections" >_stopDetections</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Async</span>
                                 <a href="#destroy" >destroy</a>
                             </li>
@@ -134,12 +143,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IDeviceManager, options?: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
+<code>constructor(manager: IIpDeviceManager, options?: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="48" class="link-to-prism">src/components/detector.ts:48</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/components/ipDetector.ts:53</a></div>
                             </td>
                         </tr>
 
@@ -160,7 +169,7 @@
                                                         <td>manager</td>
                                                   
                                                         <td>
-                                                                    <code>IDeviceManager</code>
+                                                                    <code>IIpDeviceManager</code>
                                                         </td>
                                                   
                                                     <td>
@@ -199,6 +208,143 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="_getDetections"></a>
+                    <span class="name">
+                        <span ><b>_getDetections</b></span>
+                        <a href="#_getDetections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>_getDetections()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="160"
+                            class="link-to-prism">src/components/ipDetector.ts:160</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Fetches detection information from camera.</p>
+<p>The object type is described in the IP camera proto file.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;huddly.Detections&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise&lt;huddly.Detections&gt;} An object representing detection data retreived from the camera.
+The object type is described in the IP camera proto file.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_startDetections"></a>
+                    <span class="name">
+                        <span ><b>_startDetections</b></span>
+                        <a href="#_startDetections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>_startDetections()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="182"
+                            class="link-to-prism">src/components/ipDetector.ts:182</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Control command for starting detection feature.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when the detection feature is started.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_stopDetections"></a>
+                    <span class="name">
+                        <span ><b>_stopDetections</b></span>
+                        <a href="#_stopDetections"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>_stopDetections()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="213"
+                            class="link-to-prism">src/components/ipDetector.ts:213</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Control command for stopping detection feature.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when the detection feature is stopped.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="destroy"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -217,8 +363,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="187"
-                            class="link-to-prism">src/components/detector.ts:187</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="261"
+                            class="link-to-prism">src/components/ipDetector.ts:261</a></div>
                 </td>
             </tr>
 
@@ -264,8 +410,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="96"
-                            class="link-to-prism">src/components/detector.ts:96</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="68"
+                            class="link-to-prism">src/components/ipDetector.ts:68</a></div>
                 </td>
             </tr>
 
@@ -311,8 +457,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="174"
-                            class="link-to-prism">src/components/detector.ts:174</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="246"
+                            class="link-to-prism">src/components/ipDetector.ts:246</a></div>
                 </td>
             </tr>
 
@@ -380,7 +526,7 @@ instantiating the Detector class.</p>
     <div class="tab-pane fade " id="c-readme">
         <p><h2 id="how-to-use-the-detector-interface">How to use the detector interface!</h2>
 <p>In order to use the detector interface you need to make sure that the autozoom feature is enabled on the camera (see the <a href="https://github.com/Huddly/sdk-interfaces/blob/main/src/interfaces/ICnnControl.ts">ICnnControl</a>) interface for documentation on how to do it).</p>
-<p>The detector interface allows you to subscribe to detection and/or framing data from the camera. From version <strong>0.4.0</strong> we support getting detection data from Detector without having to stream the camera on the host machine.<br><strong>NOTE</strong> that this is the default behavior now.</p>
+<p>The detector interface allows you to subscribe to detection and/or framing data from the camera. Detector supports also getting detection data from Detector without having to stream the camera on the host machine.</p>
 <p>It is still possible to get detections the old way, where you only get detection when streaming the camera on the host machine. We show you below how to do that!</p>
 <div><pre class="line-numbers"><code class="language-javascript">/*
 We suppose that the sdk has been initialized and autozoom feature is enabled
@@ -469,35 +615,32 @@ await detector.destroy();
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
-
 import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
-import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import IIpDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager&#x27;;
 import DetectorOpts, {
   DetectionConvertion,
 } from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts&#x27;;
-import IUsbTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUsbTransport&#x27;;
 import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
 
-import Api from &#x27;./api&#x27;;
 import CameraEvents from &#x27;./../utilitis/events&#x27;;
-import semver from &#x27;semver&#x27;;
-import TypeHelper from &#x27;./../utilitis/typehelper&#x27;;
 import DetectionsConverter from &#x27;./../utilitis/detectionsConverter&#x27;;
+import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
+import throttle from &#x27;./../utilitis/throttle&#x27;;
+import { Empty } from &#x27;google-protobuf/google/protobuf/empty_pb&#x27;;
 
-const PREVIEW_IMAGE_SIZE &#x3D; { width: 640, height: 480 };
-const LATEST_WITHOUT_PEOPLE_COUNT &#x3D; &#x27;1.3.14&#x27;;
+const PREVIEW_IMAGE_SIZE &#x3D; { width: 832, height: 480 };
 
 /**
  * Control class for configuring detector and subscribing to detection information.
  *
  * @export
- * @class Detector
+ * @class IpDetector
  * @extends {EventEmitter}
  * @implements {IDetector}
  */
-export default class Detector extends EventEmitter implements IDetector {
+export default class IpDetector extends EventEmitter implements IDetector {
   /** @ignore */
-  _deviceManager: IDeviceManager;
+  _deviceManager: IIpDeviceManager;
   /** @ignore */
   _detectionHandler: any;
   /** @ignore */
@@ -506,6 +649,8 @@ export default class Detector extends EventEmitter implements IDetector {
   _frame: any;
   /** @ignore */
   _options: DetectorOpts;
+  /** @ignore */
+  _intervalId: NodeJS.Timeout;
   /** @ignore */
   _defaultLabelWhiteList: Array&lt;String&gt; &#x3D; [&#x27;head&#x27;, &#x27;person&#x27;];
   /** @ignore */
@@ -516,29 +661,63 @@ export default class Detector extends EventEmitter implements IDetector {
   _previewStreamStarted: boolean &#x3D; false;
   /** @ignore */
   _usePeopleCount: boolean &#x3D; false;
+  /** @ignore */
+  _UPDATE_INTERVAL: number &#x3D; 500; // ms
+  /** @ignore */
+  _detectorWasStarted: boolean &#x3D; false;
+  /** @ignore */
+  _lastTimestamp: number &#x3D; undefined;
 
-  constructor(manager: IDeviceManager, options?: DetectorOpts) {
+  constructor(manager: IIpDeviceManager, options?: DetectorOpts) {
     super();
     this._deviceManager &#x3D; manager;
-    this._options &#x3D; {};
-    this._validateOptions(options);
-    this.setMaxListeners(50);
+    this._options &#x3D; options || {};
+    this._validateOptions(this._options);
+  }
+
+  /**
+   * Convenience function for setting detection and/or framing data event listeners.
+   *
+   * @return {*}  {Promise&lt;any&gt;} Resolves when detector initialization is completed.
+   * @memberof IpDetector
+   */
+  async init(): Promise&lt;any&gt; {
+    if (this._detectorInitialized) {
+      Logger.warn(&#x27;Detector already initialized&#x27;, &#x27;L1 Detector&#x27;);
+      return;
+    }
+    Logger.debug(&#x27;Initializing detector class&#x27;, &#x27;L1 Detector&#x27;);
+
+    this._setupDetectionHandler();
+    if (!this._options.DOWS) {
+      await this._startDetections();
+    }
+    this._intervalId &#x3D; setInterval(
+      () &#x3D;&gt; this._getDetections().then(this._detectionHandler),
+      this._UPDATE_INTERVAL
+    );
+    this._detectorInitialized &#x3D; true;
+    Logger.debug(&#x27;Detector class initialized and ready&#x27;, &#x27;L1 Detector&#x27;);
   }
 
   /**
    * @ignore
    *
    * @param {DetectorOpts} options
-   * @memberof Detector
+   * @memberof IpDetector
    */
   _validateOptions(options: DetectorOpts) {
+    if (options.convertDetections &amp;&amp; options.convertDetections &#x3D;&#x3D;&#x3D; DetectionConvertion.FRAMING) {
+      Logger.warn(
+        &#x27;FRAMING opt is not fully supported on L1 yet. Convertion may not work as intended&#x27;,
+        &#x27;L1 Detector&#x27;
+      );
+    }
     const currentSetOpts &#x3D; this._options;
     this._options &#x3D; {
       ...currentSetOpts,
       ...options,
     };
-    this._options.convertDetections &#x3D;
-      (options &amp;&amp; options.convertDetections) || DetectionConvertion.RELATIVE;
     this._options.DOWS &#x3D; (options &amp;&amp; options.DOWS) || false;
     this._options.includeRawDetections &#x3D; (options &amp;&amp; options.includeRawDetections) || false;
   }
@@ -546,91 +725,130 @@ export default class Detector extends EventEmitter implements IDetector {
   /**
    * @ignore
    *
-   * @readonly
-   * @type {IUsbTransport}
-   * @memberof Detector
-   */
-  get transport(): IUsbTransport {
-    if (TypeHelper.instanceOfUsbTransport(this._deviceManager.transport)) {
-      return &lt;IUsbTransport&gt;this._deviceManager.transport;
-    }
-    throw new Error(&#x27;Unable to talk to device. Tarnsport must be UsbTransport compatible&#x27;);
-  }
-
-  /**
-   * Convenience function for setting detection and/or framing data event listeners.
-   *
-   * @return {*}  {Promise&lt;any&gt;} Resolves when detector initialization is completed.
-   * @memberof Detector
-   */
-  async init(): Promise&lt;any&gt; {
-    if (this._detectorInitialized) {
-      Logger.warn(&#x27;Detector already initialized&#x27;, &#x27;IQ Detector&#x27;);
-      return;
-    }
-
-    const cameraInfo &#x3D; await this._deviceManager.getInfo();
-    try {
-      this._usePeopleCount &#x3D; semver.gt(cameraInfo.version, LATEST_WITHOUT_PEOPLE_COUNT);
-    } catch (err) {
-      Logger.warn(&#x27;Unable to test camera version with semver.&#x27;);
-      this._usePeopleCount &#x3D; false;
-    }
-
-    Logger.debug(&#x27;Initializing detector class&#x27;, &#x27;IQ Detector&#x27;);
-    this._setupDetectionHandler();
-
-    if (!this._framingHandler) {
-      this._framingHandler &#x3D; (frameBuffer) &#x3D;&gt; {
-        const frame &#x3D; Api.decode(frameBuffer.payload, &#x27;messagepack&#x27;);
-        this.emit(CameraEvents.FRAMING, frame);
-        this._frame &#x3D; frame;
-      };
-    }
-
-    if (!this._options.DOWS) {
-      if (this._usePeopleCount) {
-        Logger.debug(&#x27;Sending people_count start command&#x27;, &#x27;IQ Detector&#x27;);
-        await this.transport.write(&#x27;people_count/start&#x27;, Api.encode({ STREAMING_ONLY: false }));
-      } else {
-        Logger.debug(&#x27;Sending detector start command&#x27;, &#x27;IQ Detector&#x27;);
-        await await this.transport.write(&#x27;detector/start&#x27;);
-      }
-      await this.setupDetectorSubscriptions({
-        detectionListener: true,
-        framingListener: false,
-      });
-      this._previewStreamStarted &#x3D; true;
-    } else {
-      Logger.debug(
-        &#x27;Setting up detection event listeners. \n\n** NB ** Host application must stream main in order to get detection events&#x27;,
-        &#x27;IQ Detector&#x27;
-      );
-
-      if (this._usePeopleCount) {
-        await this.transport.write(&#x27;people_count/start&#x27;, Api.encode({ STREAMING_ONLY: true }));
-      }
-
-      await this.setupDetectorSubscriptions();
-    }
-    this._detectorInitialized &#x3D; true;
-    Logger.debug(&#x27;Detector class initialized and ready&#x27;, &#x27;IQ Detector&#x27;);
-  }
-
-  /**
-   * @ignore
-   *
-   * @memberof Detector
+   * @memberof IpDetector
    */
   _setupDetectionHandler() {
+    // A negative timestamp means the IMX has not received any detections
+    const detectionsAreInvalid &#x3D; ({ timestamp }) &#x3D;&gt; timestamp &lt; 0.0;
+    // A timestamp of 0 is the default value, which will be the case for older L1-versions which do not set the timestamp
+    const detectionsAreStale &#x3D; ({ timestamp }) &#x3D;&gt;
+      timestamp !&#x3D;&#x3D; 0 &amp;&amp; timestamp &#x3D;&#x3D;&#x3D; this._lastTimestamp;
+
+    const throttledInvalidWarning &#x3D; throttle(() &#x3D;&gt; {
+      Logger.warn(
+        &#x27;Invalid detections received, ensure detector is running / autozoom is on and stream is open.&#x27;,
+        &#x27;L1 Detector&#x27;
+      );
+    }, 10000);
+
     this._detectionHandler &#x3D; (detectionBuffer) &#x3D;&gt; {
-      const rawDetections &#x3D; Api.decode(detectionBuffer.payload, &#x27;messagepack&#x27;);
-      const convertedDetections &#x3D; this.convertDetections(rawDetections.predictions, this._options);
+      const rawDetections &#x3D; detectionBuffer.toObject();
+      if (detectionsAreInvalid(rawDetections)) {
+        throttledInvalidWarning();
+        return;
+      }
+      if (detectionsAreStale(rawDetections)) {
+        return;
+      }
+      this._lastTimestamp &#x3D; rawDetections.timestamp;
+      const convertedDetections &#x3D; this.convertDetections(
+        rawDetections.detectionsList,
+        this._options
+      );
       this.emit(CameraEvents.DETECTIONS, convertedDetections);
       if (this._options.includeRawDetections) {
+        // Workaround until this is fixed camera side
+        if (rawDetections.detectionsList[0] &amp;&amp; rawDetections.detectionsList[0].label &#x3D;&#x3D;&#x3D; &#x27;NULL&#x27;) {
+          rawDetections.detectionsList &#x3D; [];
+        }
         this.emit(CameraEvents.RAW_DETECTIONS, rawDetections);
       }
     };
+  }
+
+  /**
+   * Fetches detection information from camera.
+   *
+   * @return {*}  {Promise&lt;huddly.Detections&gt;} An object representing detection data retreived from the camera.
+   * The object type is described in the IP camera proto file.
+   * @memberof IpDetector
+   */
+  _getDetections(): Promise&lt;huddly.Detections&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this._deviceManager.grpcClient.getDetections(
+        new Empty(),
+        (err, detections: huddly.Detections) &#x3D;&gt; {
+          if (err !&#x3D; undefined) {
+            Logger.error(&#x27;Unable to get detections&#x27;, err.stack || &#x27;&#x27;);
+            reject(err.message || &#x27;Unknown error&#x27;);
+            return;
+          }
+          resolve(detections);
+        }
+      );
+    });
+  }
+
+  /**
+   * Control command for starting detection feature.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the detection feature is started.
+   * @memberof IpDetector
+   */
+  _startDetections(): Promise&lt;void&gt; {
+    if (this._detectorWasStarted) {
+      Logger.error(&#x27;Detector already started&#x27;, &#x27;&#x27;, &#x27;L1 Detector&#x27;);
+      return;
+    }
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const cnnFeature &#x3D; new huddly.CnnFeature();
+      cnnFeature.setFeature(huddly.Feature.DETECTOR);
+      cnnFeature.setMode(huddly.Mode.START);
+      this._deviceManager.grpcClient.setCnnFeature(
+        cnnFeature,
+        (err, status: huddly.DeviceStatus) &#x3D;&gt; {
+          if (err !&#x3D; undefined) {
+            Logger.error(&#x27;Unable to start detections on L1&#x27;, err.stack || &#x27;&#x27;, &#x27;L1 Detector&#x27;);
+            reject(err.message);
+            return;
+          }
+          Logger.info(status.toString());
+          this._detectorWasStarted &#x3D; true;
+          resolve();
+        }
+      );
+    });
+  }
+
+  /**
+   * Control command for stopping detection feature.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the detection feature is stopped.
+   * @memberof IpDetector
+   */
+  _stopDetections(): Promise&lt;void&gt; {
+    if (!this._detectorWasStarted) {
+      Logger.error(&#x27;Detector has not been started&#x27;, &#x27;&#x27;, &#x27;L1 Detector&#x27;);
+      return;
+    }
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const cnnFeature &#x3D; new huddly.CnnFeature();
+      cnnFeature.setFeature(huddly.Feature.DETECTOR);
+      cnnFeature.setMode(huddly.Mode.STOP);
+      this._deviceManager.grpcClient.setCnnFeature(
+        cnnFeature,
+        (err, status: huddly.DeviceStatus) &#x3D;&gt; {
+          if (err !&#x3D; undefined) {
+            Logger.error(&#x27;Unable to stop detections on L1&#x27;, err.stack || &#x27;&#x27;, &#x27;L1 Detector&#x27;);
+            reject(err.message);
+            return;
+          }
+          Logger.info(status.toString());
+          this._detectorWasStarted &#x3D; false;
+          resolve();
+        }
+      );
+    });
   }
 
   /**
@@ -639,11 +857,13 @@ export default class Detector extends EventEmitter implements IDetector {
    *
    * @param {DetectorOpts} options The new detection options to be used.
    * @return {*}  {Promise&lt;any&gt;} Resolves when the new options have been applied and detector is initialized.
-   * @memberof Detector
+   * @memberof IpDetector
    */
   async updateOpts(options: DetectorOpts): Promise&lt;any&gt; {
     this._validateOptions(options);
-    await this.teardownDetectorSubscriptions();
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
+    }
     this._detectorInitialized &#x3D; false;
     return this.init();
   }
@@ -652,130 +872,37 @@ export default class Detector extends EventEmitter implements IDetector {
    * Control command for tearing down the detector object.
    *
    * @return {*}  {Promise&lt;void&gt;} Resolves when the teardown process is completed.
-   * @memberof Detector
+   * @memberof IpDetector
    */
   async destroy(): Promise&lt;void&gt; {
     if (!this._detectorInitialized) {
-      Logger.warn(&#x27;Detector already destroyed&#x27;, &#x27;IQ Detector&#x27;);
+      Logger.warn(&#x27;Detector already destroyed&#x27;, &#x27;L1 Detector&#x27;);
       return;
     }
-
-    if (this._usePeopleCount) {
-      await this.transport.write(&#x27;people_count/stop&#x27;);
+    if (this._intervalId) {
+      clearInterval(this._intervalId);
     }
-
-    if (!this._options.DOWS &amp;&amp; this._previewStreamStarted) {
-      Logger.debug(
-        &#x27;IQ Detector teardown by stopping detection generation on previewstream, unsubscribing to events and unregistering listeners&#x27;,
-        &#x27;IQ Detector&#x27;
-      );
-      // Send &#x60;[people_count/detector]/stop&#x60; only if &#x60;[people_count/detector]/start&#x60; was called previously
-      if (!this._usePeopleCount) {
-        await this.transport.write(&#x27;detector/stop&#x27;);
-      }
-      this._previewStreamStarted &#x3D; false;
-      await this.teardownDetectorSubscriptions({
-        detectionListener: true,
-        framingListener: false,
-      });
-    } else {
-      if (this._usePeopleCount) {
-        Logger.debug(
-          &#x27;IQ Detector teardown by  unsubscribing to events and unregistering listeners&#x27;
-        );
-      }
-      Logger.debug(
-        &#x60;IQ Detector teardown by ${
-          this._usePeopleCount ? &#x27;stopping detection generation on previewstream,&#x27; : &#x27;&#x27;
-        } unsubscribing to events and unregistering listeners&#x60;
-      );
-      await this.teardownDetectorSubscriptions();
+    if (this._detectorWasStarted) {
+      Logger.debug(&#x27;Sending stop-cnn Detector command&#x27;, &#x27;L1 Detector&#x27;);
+      await this._stopDetections();
     }
     this._detectorInitialized &#x3D; false;
   }
 
   /**
-   * @ignore
-   * Convenience function for setting up detection and framing
-   * data listeners and subscribing to camera events that send
-   * such data to the host.
+   * Normalizes and filters detection objects so they are relative to image size.
    *
-   * @param {*} [listenerConfigOpts&#x3D;{
-   *       detectionListener: true,
-   *       framingListener: true,
-   *     }]
-   * @memberof Detector
-   */
-  async setupDetectorSubscriptions(
-    listenerConfigOpts: any &#x3D; {
-      detectionListener: true,
-      framingListener: true,
-    }
-  ) {
-    try {
-      // Detection listener setup
-      if (!this._subscriptionsSetup &amp;&amp; listenerConfigOpts.detectionListener) {
-        await this.transport.subscribe(&#x27;autozoom/predictions&#x27;);
-        this.transport.on(&#x27;autozoom/predictions&#x27;, this._detectionHandler);
-      }
-      // Framing listener setup
-      if (!this._subscriptionsSetup &amp;&amp; listenerConfigOpts.framingListener) {
-        await this.transport.subscribe(&#x27;autozoom/framing&#x27;);
-        this.transport.on(&#x27;autozoom/framing&#x27;, this._framingHandler);
-      }
-      this._subscriptionsSetup &#x3D; true;
-    } catch (e) {
-      await this.transport.unsubscribe(&#x27;autozoom/predictions&#x27;);
-      await this.transport.unsubscribe(&#x27;autozoom/framing&#x27;);
-      Logger.error(&#x27;Something went wrong getting predictions!&#x27;, e, &#x27;IQ Detector&#x27;);
-      this._subscriptionsSetup &#x3D; false;
-    }
-  }
-
-  /**
    * @ignore
-   * Convenience function for tearing down all the setup listeners
-   * for detection and framing data and unsubscribes from getting
-   * detection events from camera.
    *
-   * @param {*} [listenerConfigOpts&#x3D;{
-   *       detectionListener: true,
-   *       framingListener: true,
-   *     }]
-   * @memberof Detector
-   */
-  async teardownDetectorSubscriptions(
-    listenerConfigOpts: any &#x3D; {
-      detectionListener: true,
-      framingListener: true,
-    }
-  ) {
-    // Detection listener teardown
-    if (this._subscriptionsSetup &amp;&amp; listenerConfigOpts.detectionListener) {
-      await this.transport.unsubscribe(&#x27;autozoom/predictions&#x27;);
-      this.transport.removeListener(&#x27;autozoom/predictions&#x27;, this._detectionHandler);
-    }
-
-    // Framing listener teardown
-    if (this._subscriptionsSetup &amp;&amp; listenerConfigOpts.framingListener) {
-      await this.transport.unsubscribe(&#x27;autozoom/framing&#x27;);
-      this.transport.removeListener(&#x27;autozoom/framing&#x27;, this._framingHandler);
-    }
-    this._subscriptionsSetup &#x3D; false;
-  }
-
-  /**
-   * @ignore
-   * Normalizes and filters detection objects so they are relative to image size
-   *
-   * @param {detections} Array of detections
-   * @returns {detections} Converted detections
-   * @memberof Detector
+   * @param {Array&lt;any&gt;} detections Array of detections
+   * @param {DetectorOpts} [opts] Returns an array of detections
+   * @return {*}  {Array&lt;any&gt;}
+   * @memberof IpDetector
    */
   convertDetections(detections: Array&lt;any&gt;, opts?: DetectorOpts): Array&lt;any&gt; {
     const converterOpts &#x3D; {
-      frame: this._frame,
-      preview_image_size: PREVIEW_IMAGE_SIZE,
+      frame: { ...this._frame },
+      preview_image_size: { ...PREVIEW_IMAGE_SIZE },
       ...opts,
     };
     return new DetectionsConverter(detections, converterOpts).convert();
@@ -809,7 +936,7 @@ export default class Detector extends EventEmitter implements IDetector {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'Detector.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IpDetector.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

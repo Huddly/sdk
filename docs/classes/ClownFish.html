@@ -43,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >HuddlyGo</li>
+  <li >ClownFish</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -61,7 +61,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/components/device/huddlygo.ts</code>
+            <code>src/components/device/clownfish.ts</code>
         </p>
 
 
@@ -69,7 +69,7 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Controller class for HuddlyGO camera.</p>
+                <p>Controller class for Huddly IQ/ONE camera.</p>
 
             </p>
 
@@ -77,15 +77,9 @@
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                        <code><a href="../classes/UvcBaseDevice.html" target="_self" >UvcBaseDevice</a></code>
+                        <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
             </p>
 
-            <p class="comment">
-                <h3>Implements</h3>
-            </p>
-            <p class="comment">
-                        <code>IDeviceManager</code>
-            </p>
 
 
             <section>
@@ -101,19 +95,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#api" >api</a>
+                                <a href="#_api" >_api</a>
                             </li>
                             <li>
                                 <a href="#discoveryEmitter" >discoveryEmitter</a>
                             </li>
                             <li>
-                                <a href="#hidApi" >hidApi</a>
-                            </li>
-                            <li>
                                 <a href="#productName" >productName</a>
-                            </li>
-                            <li>
-                                <a href="#softwareVersion" >softwareVersion</a>
                             </li>
                             <li>
                                 <a href="#transport" >transport</a>
@@ -146,6 +134,12 @@
                                 <a href="#eraseErrorLog" >eraseErrorLog</a>
                             </li>
                             <li>
+                                <a href="#getAutozoomControl" >getAutozoomControl</a>
+                            </li>
+                            <li>
+                                <a href="#getDetector" >getDetector</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Async</span>
                                 <a href="#getDiagnostics" >getDiagnostics</a>
                             </li>
@@ -154,8 +148,15 @@
                                 <a href="#getErrorLog" >getErrorLog</a>
                             </li>
                             <li>
+                                <a href="#getFaceBasedExposureControl" >getFaceBasedExposureControl</a>
+                            </li>
+                            <li>
                                     <span class="modifier">Async</span>
                                 <a href="#getInfo" >getInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getInterpolationParams" >getInterpolationParams</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -163,7 +164,7 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getSoftwareVersion" >getSoftwareVersion</a>
+                                <a href="#getState" >getState</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -175,15 +176,15 @@
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getWhitePointAdjust" >getWhitePointAdjust</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
                                 <a href="#initialize" >initialize</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#reboot" >reboot</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setInterpolationParams" >setInterpolationParams</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
@@ -253,18 +254,18 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(uvcCameraInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, transport: IUsbTransport, uvcControlInterface: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, hidAPI: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+<code>constructor(uvcCameraInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, transport: IUsbTransport, uvcControlInterface: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/components/device/huddlygo.ts:109</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/components/device/clownfish.ts:52</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Creates an instance of HuddlyGo.</p>
+                            <div class="io-description"><p>Creates an instance of ClownFish.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -327,22 +328,6 @@
                                                         </td>
                                                 </tr>
                                                 <tr>
-                                                        <td>hidAPI</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <p>HID instance used for performing sw upgrade.</p>
-
-                                                        </td>
-                                                </tr>
-                                                <tr>
                                                         <td>cameraDiscoveryEmitter</td>
                                                   
                                                         <td>
@@ -376,10 +361,10 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="api"></a>
+                    <a name="_api"></a>
                     <span class="name">
-                        <span ><b>api</b></span>
-                        <a href="#api"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>_api</b></span>
+                        <a href="#_api"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
@@ -389,9 +374,16 @@
 
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/components/device/huddlygo.ts:68</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:29</a></code>
+</div>
                         </td>
                     </tr>
 
@@ -421,47 +413,22 @@
 
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="102" class="link-to-prism">src/components/device/huddlygo.ts:102</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:45</a></code>
+</div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Event emitter instance emitting attach and detach events for Huddly Cameras.</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="hidApi"></a>
-                    <span class="name">
-                        <span ><b>hidApi</b></span>
-                        <a href="#hidApi"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="82" class="link-to-prism">src/components/device/huddlygo.ts:82</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Node HID API used aiding the upgrade process on Huddly GO.</p>
 </div>
                 </td>
             </tr>
@@ -487,50 +454,25 @@
                 </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;Huddly GO&#x27;</code>
+                        <i>Default value : </i><code>&#x27;Huddly IQ&#x27;</code>
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="109" class="link-to-prism">src/components/device/huddlygo.ts:109</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:52</a></code>
+</div>
                         </td>
                     </tr>
 
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Comercial product name for this controller class.</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="softwareVersion"></a>
-                    <span class="name">
-                        <span ><b>softwareVersion</b></span>
-                        <a href="#softwareVersion"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/components/device/huddlygo.ts:95</a></div>
-                        </td>
-                    </tr>
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Camera software version.</p>
 </div>
                 </td>
             </tr>
@@ -554,9 +496,16 @@
 
                     </td>
                 </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                            </td>
+                        </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="61" class="link-to-prism">src/components/device/huddlygo.ts:61</a></div>
+                                <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:22</a></code>
+</div>
                         </td>
                     </tr>
 
@@ -594,7 +543,7 @@
                         </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in         <code><a href="../classes/UvcBaseDevice.html#source" target="_self" >UvcBaseDevice:75</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/UvcBaseDevice.html#source" target="_self" >UvcBaseDevice:36</a></code>
 </div>
                         </td>
                     </tr>
@@ -637,8 +586,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="153"
-                            class="link-to-prism">src/components/device/huddlygo.ts:153</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:125</a></code>
+</div>
                 </td>
             </tr>
 
@@ -684,8 +639,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="214"
-                            class="link-to-prism">src/components/device/huddlygo.ts:214</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:165</a></code>
+</div>
                 </td>
             </tr>
 
@@ -744,11 +705,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
-                        <p>{Promise<any>} Resolves when the camera boots in app mode.</p>
+                        <p>Resolves when the camera boots in app mode.</p>
 
                     </div>
                 </td>
@@ -777,8 +738,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="239"
-                            class="link-to-prism">src/components/device/huddlygo.ts:239</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:196</a></code>
+</div>
                 </td>
             </tr>
 
@@ -842,6 +809,172 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getAutozoomControl"></a>
+                    <span class="name">
+                        <span ><b>getAutozoomControl</b></span>
+                        <a href="#getAutozoomControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAutozoomControl(opts: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:471</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get autozoom control class instance.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                                <code><a href="../classes/AutozoomControl.html" target="_self" >AutozoomControlOpts</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Autozoom control options.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>ICnnControl</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{ICnnControl} The instance of the autozoom control class.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDetector"></a>
+                    <span class="name">
+                        <span ><b>getDetector</b></span>
+                        <a href="#getDetector"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDetector(opts?: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:492</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get detector control class instance.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                                <code><a href="../classes/Detector.html" target="_self" >DetectorOpts</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                    <td>
+                                        <p>Detector control options.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Detector.html" target="_self" >IDetector</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{IDetector} The instance of the detector control class.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getDiagnostics"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
@@ -860,15 +993,21 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="345"
-                            class="link-to-prism">src/components/device/huddlygo.ts:345</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:303</a></code>
+</div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Get diagnostics for power usage on camera</p>
+                    <div class="io-description"><p>Get diagnostics for power usage on camera.</p>
 </div>
 
                     <div>
@@ -900,15 +1039,21 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getErrorLog(timeout: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                    <code>getErrorLog(timeout: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, retry: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, allowLegacy: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="228"
-                            class="link-to-prism">src/components/device/huddlygo.ts:228</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:181</a></code>
+</div>
                 </td>
             </tr>
 
@@ -951,6 +1096,44 @@
 
                                     </td>
                                 </tr>
+                                <tr>
+                                    <td>retry</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>1</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Number of retries to perform in case something goes wrong.</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>allowLegacy</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>true</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Should allow legacy error log retrival in case the standard procedure fails.</p>
+
+                                    </td>
+                                </tr>
                             </tbody>
                         </table>
                     </div>
@@ -962,6 +1145,57 @@
                     </div>
                     <div class="io-description">
                         <p>{Promise<any>} A promise which when completed contains the camera application log.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFaceBasedExposureControl"></a>
+                    <span class="name">
+                        <span ><b>getFaceBasedExposureControl</b></span>
+                        <a href="#getFaceBasedExposureControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFaceBasedExposureControl()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:481</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get face based exposure control class instance.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>ICnnControl</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{ICnnControl} The instance of the face-based exposure control class.</p>
 
                     </div>
                 </td>
@@ -990,8 +1224,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="194"
-                            class="link-to-prism">src/components/device/huddlygo.ts:194</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:135</a></code>
+</div>
                 </td>
             </tr>
 
@@ -1009,6 +1249,59 @@
                     </div>
                     <div class="io-description">
                         <p>{Promise<any>} Object representing software &amp; hardware info of the camera. Function must be awaited.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getInterpolationParams"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getInterpolationParams</b></span>
+                        <a href="#getInterpolationParams"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getInterpolationParams()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:527</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get interpolation curve parameters from target.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;InterpolationParams&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<InterpolationParams>} Resolves with the interpolation curve parameters.</p>
 
                     </div>
                 </td>
@@ -1037,8 +1330,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="249"
-                            class="link-to-prism">src/components/device/huddlygo.ts:249</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:206</a></code>
+</div>
                 </td>
             </tr>
 
@@ -1051,11 +1350,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>An object containing voltage, current and power usage on camera. Method must be awaited.</p>
+                        <p>{Promise<any>} An object containing voltage, current and power usage on camera. Method must be awaited.</p>
 
                     </div>
                 </td>
@@ -1066,75 +1365,49 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getSoftwareVersion"></a>
+                    <a name="getState"></a>
                     <span class="name">
                         <span class="modifier">Async</span>
-                        <span ><b>getSoftwareVersion</b></span>
-                        <a href="#getSoftwareVersion"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>getState</b></span>
+                        <a href="#getState"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getSoftwareVersion(retryAttempts)</code>
+                    <code>getState()</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="164"
-                            class="link-to-prism">src/components/device/huddlygo.ts:164</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:502</a></code>
+</div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Fetches firmware version from target/camera.</p>
+                    <div class="io-description"><p>Get Autozoom/GF state on target</p>
 </div>
 
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Optional</td>
-                                    <td>Default value</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>retryAttempts</td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-                                    <td>
-                                        <code>FETCH_UX_CONTROLS_ATTEMPTS</code>
-                                    </td>
-
-                                    <td>
-                                        <p>Number of attemts to retry in case the command fails.</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>The retrieved firmware version running on target.</p>
+                        <p>{Promise<any>} Resolves with information about the GF state when action is completed.</p>
 
                     </div>
                 </td>
@@ -1163,8 +1436,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="280"
-                            class="link-to-prism">src/components/device/huddlygo.ts:280</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:220</a></code>
+</div>
                 </td>
             </tr>
 
@@ -1177,11 +1456,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
                     </div>
                     <div class="io-description">
-                        <p>An object containig internal and external temperature values.</p>
+                        <p>{Promise<any>} An object containig internal and external temperature values.</p>
 
                     </div>
                 </td>
@@ -1210,15 +1489,21 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="466"
-                            class="link-to-prism">src/components/device/huddlygo.ts:466</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:347</a></code>
+</div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Helper function for getting the respective upgrader controller class for upgrading Huddly GO</p>
+                    <div class="io-description"><p>Helper function for getting the respective upgrader controller class for upgrading Huddly Boxfish/IQ</p>
 </div>
 
                     <div>
@@ -1229,53 +1514,6 @@
                     </div>
                     <div class="io-description">
                         <p>{Promise<IDeviceUpgrader>} The upgrader controll instance.</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getWhitePointAdjust"></a>
-                    <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>getWhitePointAdjust</b></span>
-                        <a href="#getWhitePointAdjust"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getWhitePointAdjust()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="359"
-                            class="link-to-prism">src/components/device/huddlygo.ts:359</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Get white balance/point adjustment information.</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>unknown</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>An object representing the white balance/point adjustment for red and blue channels.</p>
 
                     </div>
                 </td>
@@ -1304,8 +1542,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="142"
-                            class="link-to-prism">src/components/device/huddlygo.ts:142</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:109</a></code>
+</div>
                 </td>
             </tr>
 
@@ -1351,8 +1595,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="378"
-                            class="link-to-prism">src/components/device/huddlygo.ts:378</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:320</a></code>
+</div>
                 </td>
             </tr>
 
@@ -1371,6 +1621,7 @@
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Default value</td>
                                     <td>Description</td>
                                 </tr>
                             </thead>
@@ -1385,6 +1636,9 @@
                                         No
                                     </td>
 
+                                    <td>
+                                        <code>&#x27;app&#x27;</code>
+                                    </td>
 
                                     <td>
                                         <p>Tell the camera which mode to boot to.</p>
@@ -1402,6 +1656,91 @@
                     </div>
                     <div class="io-description">
                         <p>{Promise<void>} Void function. Use <code>await</code> when calling this method.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setInterpolationParams"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>setInterpolationParams</b></span>
+                        <a href="#setInterpolationParams"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setInterpolationParams(params: InterpolationParams)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:517</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Set interpolation curve parameter used to zoom on regions when GF is enabled</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>params</td>
+                                    <td>
+                                            <code>InterpolationParams</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The interpolation cruve parameters.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<any>} Resolves when the interpolation parameters are updated on target.</p>
 
                     </div>
                 </td>
@@ -1430,15 +1769,21 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="477"
-                            class="link-to-prism">src/components/device/huddlygo.ts:477</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:423</a></code>
+</div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Performs software upgrade (async) on Huddly GO</p>
+                    <div class="io-description"><p>Performs software upgrade (async) on Huddly Boxfish/IQ</p>
 </div>
 
                     <div class="io-description">
@@ -1509,8 +1854,14 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="456"
-                            class="link-to-prism">src/components/device/huddlygo.ts:456</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/Boxfish.html" target="_self" >Boxfish</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/Boxfish.html#source" target="_self" >Boxfish:337</a></code>
+</div>
                 </td>
             </tr>
 
@@ -1523,11 +1874,11 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;number&gt;</code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
-                        <p>{Promise<number>} Resolves with the uptime information (double in milliseconds)</p>
+                        <p>Resolves with the uptime information (double in milliseconds)</p>
 
                     </div>
                 </td>
@@ -2552,576 +2903,72 @@
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
 
-import IUsbTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUsbTransport&#x27;;
-import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
-import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
-import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
-import UpgradeOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts&#x27;;
-import InterpolationParams from &#x27;@huddly/sdk-interfaces/lib/interfaces/IInterpolationParams&#x27;;
-import ICnnControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/ICnnControl&#x27;;
-import ReleaseChannel from &#x27;@huddly/sdk-interfaces/lib/enums/ReleaseChannel&#x27;;
-import HuddlyHEX from &#x27;@huddly/sdk-interfaces/lib/enums/HuddlyHex&#x27;;
-import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
-
-import Api from &#x27;../api&#x27;;
-import UvcBaseDevice from &#x27;./uvcbase&#x27;;
+import Api from &#x27;./../api&#x27;;
 import Locksmith from &#x27;./../locksmith&#x27;;
-import CameraEvents from &#x27;./../../utilitis/events&#x27;;
-import HuddlyGoUpgrader from &#x27;./../upgrader/huddlygoUpgrader&#x27;;
-import DiagnosticsMessage from &#x27;@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage&#x27;;
-import { MinMaxDiagnosticsMessage } from &#x27;../diagnosticsMessageData&#x27;;
-
-const FETCH_UX_CONTROLS_ATTEMPTS &#x3D; 10;
+import Boxfish from &#x27;./boxfish&#x27;;
+import IUsbTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUsbTransport&#x27;;
 
 /**
- * @ignore
- */
-const round &#x3D; (number: number, decimals: number): number &#x3D;&gt; {
-  const factor: number &#x3D; 10 ** decimals;
-  return Math.round(number * factor) / factor;
-};
-
-/**
- * @ignore
- */
-const parseSoftwareVersion &#x3D; (versionInfo) &#x3D;&gt; {
-  if (versionInfo &#x3D;&#x3D;&#x3D; null) return &#x27;0.0.4&#x27;;
-  const appVersionBuffer &#x3D; versionInfo.slice(1, 4); // First byte is unused
-  appVersionBuffer.reverse(); // Least signiticant first. ask Torleiv
-  const appVersion &#x3D; appVersionBuffer.join(&#x27;.&#x27;); // Make it semver
-  const bootVersionBuffer &#x3D; versionInfo.slice(5, 8); // First byte is unused
-  bootVersionBuffer.reverse();
-  const bootVersion &#x3D; bootVersionBuffer.join(&#x27;.&#x27;);
-  return { mv2_boot: bootVersion, mv2_app: appVersion };
-};
-
-/**
- * Controller class for HuddlyGO camera.
+ * Controller class for Huddly IQ/ONE camera.
  *
  * @export
- * @class HuddlyGo
- * @extends {UvcBaseDevice}
- * @implements {IDeviceManager}
+ * @class ClownFish
+ * @extends {Boxfish}
  */
-export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
+export default class ClownFish extends Boxfish {
   /**
    * Transport instance for communicating with cameras (sending command and reading data)
    *
    * @type {IUsbTransport}
-   * @memberof HuddlyGo
+   * @memberof ClownFish
    */
   transport: IUsbTransport;
   /**
    * Common Api wrapper class for invoking common functionality across device controller classes.
    *
    * @type {Api}
-   * @memberof HuddlyGo
+   * @memberof ClownFish
    */
-  api: Api;
+  _api: Api;
   /**
    * The uvc control interface for sending standard uvc commands to camera.
    *
    * @type {*}
-   * @memberof HuddlyGo
+   * @memberof ClownFish
    */
   uvcControlInterface: any;
-  /**
-   * Node HID API used aiding the upgrade process on Huddly GO.
-   *
-   * @type {*}
-   * @memberof HuddlyGo
-   */
-  hidApi: any;
-  /**
-   * @ignore
-   * @type {Locksmith}
-   * @memberof HuddlyGo
-   */
+  /** @ignore */
   locksmith: Locksmith;
-  /**
-   * Camera software version.
-   *
-   * @type {*}
-   * @memberof HuddlyGo
-   */
-  softwareVersion: any;
   /**
    * Event emitter instance emitting attach and detach events for Huddly Cameras.
    *
    * @type {EventEmitter}
-   * @memberof HuddlyGo
+   * @memberof ClownFish
    */
   discoveryEmitter: EventEmitter;
   /**
    * Comercial product name for this controller class.
    *
    * @type {string}
-   * @memberof HuddlyGo
+   * @memberof ClownFish
    */
-  productName: string &#x3D; &#x27;Huddly GO&#x27;;
+  productName: string &#x3D; &#x27;Huddly IQ&#x27;;
 
   /**
-   * Creates an instance of HuddlyGo.
+   * Creates an instance of ClownFish.
    * @param {*} uvcCameraInstance Uvc camera instance acquired from device-api-uvc discovery manager.
    * @param {IUsbTransport} transport The transport instance for communicating with the camera.
    * @param {*} uvcControlInterface Uvc control interface for performing standard uvc control commands.
-   * @param {*} hidAPI HID instance used for performing sw upgrade.
    * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach &amp; detach events for Huddly cameras.
-   * @memberof HuddlyGo
+   * @memberof ClownFish
    */
   constructor(
     uvcCameraInstance: any,
     transport: IUsbTransport,
     uvcControlInterface: any,
-    hidAPI: any,
     cameraDiscoveryEmitter: EventEmitter
   ) {
-    super(uvcCameraInstance, uvcControlInterface);
-
-    this.transport &#x3D; transport;
-    this.uvcControlInterface &#x3D; uvcControlInterface;
-    this.hidApi &#x3D; hidAPI;
-    this.locksmith &#x3D; new Locksmith();
-    this.discoveryEmitter &#x3D; cameraDiscoveryEmitter;
-  }
-
-  /**
-   * Initializes the controller class. Must be called before any other commands.
-   *
-   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
-   * @memberof HuddlyGo
-   */
-  async initialize(): Promise&lt;void&gt; {
-    this.api &#x3D; new Api(this.transport, this.locksmith);
-    this.softwareVersion &#x3D; await this.getSoftwareVersion();
-  }
-
-  /**
-   * Teardown function for cleaning up the state.
-   *
-   * @return {*}  {Promise&lt;any&gt;} Promise that carries out the teardown step.
-   * @memberof HuddlyGo
-   */
-  async closeConnection(): Promise&lt;any&gt; {
-    return this.transport.close();
-  }
-
-  /**
-   * Fetches firmware version from target/camera.
-   *
-   * @param {*} [retryAttempts&#x3D;FETCH_UX_CONTROLS_ATTEMPTS] Number of attemts to retry in case the command fails.
-   * @return {*} The retrieved firmware version running on target.
-   * @memberof HuddlyGo
-   */
-  async getSoftwareVersion(retryAttempts &#x3D; FETCH_UX_CONTROLS_ATTEMPTS) {
-    let fetchAttemts &#x3D; 0;
-    let err;
-    do {
-      try {
-        fetchAttemts +&#x3D; 1;
-        const versionInfo &#x3D; await this.getXUControl(19);
-        const softwareVersion &#x3D; parseSoftwareVersion(versionInfo);
-        return softwareVersion;
-      } catch (e) {
-        err &#x3D; e;
-        Logger.error(
-          &#x60;Failed parsing/reading the software version on GO! Retry Attempts left: ${
-            fetchAttemts - retryAttempts
-          }&#x60;,
-          e,
-          &#x27;HuddlyGO API&#x27;
-        );
-      }
-    } while (fetchAttemts &lt; retryAttempts);
-    Logger.error(&#x27;Unable to retrieve software version from camera!&#x27;, err, &#x27;HuddlyGO API&#x27;);
-    throw new Error(&#x27;Failed to retrieve software version from camera&#x27;);
-  }
-
-  /**
-   * Get device software and hardware information.
-   *
-   * @return {*}  {Promise&lt;any&gt;} Object representing software &amp; hardware info of the camera. Function must be awaited.
-   * @memberof HuddlyGo
-   */
-  async getInfo(): Promise&lt;any&gt; {
-    const status &#x3D; this.uvcCamera;
-    status.softwareVersion &#x3D; this.softwareVersion;
-    status.temperature &#x3D; await this.getTemperature();
-    status.powerUsage &#x3D; await this.getPowerUsage();
-    status.version &#x3D; this.softwareVersion.mv2_app;
-    status.vendorId &#x3D; this[&#x27;vendorId&#x27;] || HuddlyHEX.VID;
-    status.name &#x3D; this.productName;
-    status.productId &#x3D; this[&#x27;productId&#x27;] || HuddlyHEX.GO_PID;
-    //    status.uptime &#x3D; await this.uptime();
-    return status;
-  }
-
-  /**
-   * Make sure the camera is running on application mode (which is the default mode).
-   *
-   * @param {string} currentMode Current mode on camera.
-   * @return {*}  {Promise&lt;any&gt;} Resolves when the camera boots in app mode.
-   * @memberof HuddlyGo
-   */
-  async ensureAppMode(currentMode: string, timeout?: number): Promise&lt;any&gt; {
-    if (!currentMode || currentMode &#x3D;&#x3D;&#x3D; &#x27;app&#x27;) return Promise.resolve();
-    else {
-      throw new Error(&#x60;Cannot set camera to app mode from ${currentMode} mode!&#x60;);
-    }
-  }
-
-  /**
-   * Get application log.
-   *
-   * @param {number} [timeout&#x3D;60000] Maximum allowed time (in milliseconds) for fetching the log.
-   * @return {*}  {Promise&lt;any&gt;} A promise which when completed contains the camera application log.
-   * @memberof HuddlyGo
-   */
-  async getErrorLog(timeout: number &#x3D; 60000): Promise&lt;any&gt; {
-    return this.api.getErrorLog(timeout);
-  }
-
-  /**
-   * Erases the application log.
-   *
-   * @param {number} [timeout&#x3D;60000] Maximum allowed time (in milliseconds) for erasing the log.
-   * @return {*}  {Promise&lt;void&gt;} Resolves when the erase is completed.
-   * @memberof HuddlyGo
-   */
-  async eraseErrorLog(timeout: number &#x3D; 60000): Promise&lt;void&gt; {
-    await this.api.eraseErrorLog(timeout);
-  }
-
-  /**
-   * Get current power usage on the camera.
-   *
-   * @return {*} An object containing voltage, current and power usage on camera. Method must be awaited.
-   * @memberof HuddlyGo
-   */
-  async getPowerUsage() {
-    const buffVal &#x3D; await this.getXUControl(3);
-    let ret;
-    if (buffVal) {
-      ret &#x3D; {
-        voltage: {
-          min: round(buffVal.readFloatLE(0), 3),
-          curr: round(buffVal.readFloatLE(4), 3),
-          max: round(buffVal.readFloatLE(8), 3),
-        },
-        current: {
-          min: round(buffVal.readFloatLE(12), 3),
-          curr: round(buffVal.readFloatLE(16), 3),
-          max: round(buffVal.readFloatLE(20), 3),
-        },
-        power: {
-          min: round(buffVal.readFloatLE(24), 3),
-          curr: round(buffVal.readFloatLE(28), 3),
-          max: round(buffVal.readFloatLE(32), 3),
-        },
-      };
-    }
-    return ret;
-  }
-
-  /**
-   * Get current temperature on the camera.
-   *
-   * @return {*} An object containig internal and external temperature values.
-   * @memberof HuddlyGo
-   */
-  async getTemperature() {
-    const buffVal &#x3D; await this.getXUControl(2);
-    let ret;
-    if (buffVal) {
-      ret &#x3D; {
-        internal: {
-          curr: round(buffVal.readFloatLE(0), 2),
-          min: round(buffVal.readFloatLE(4), 2),
-          max: round(buffVal.readFloatLE(8), 2),
-        },
-        external: {
-          curr: round(buffVal.readFloatLE(12), 2),
-          min: round(buffVal.readFloatLE(16), 2),
-          max: round(buffVal.readFloatLE(20), 2),
-        },
-      };
-    }
-    return ret;
-  }
-
-  /**
-   * @ignore
-   * Get power monitoring diagnostics (voltage and current).
-   *
-   * @param {*} powerUsage Power usage data retrieved from camera
-   * @return {*}  {Array&lt;DiagnosticsMessage&gt;} Diagnostics array.
-   * @memberof HuddlyGo
-   */
-  getPowerMonitorDiagnostics(powerUsage: any): Array&lt;DiagnosticsMessage&gt; {
-    const minVoltage &#x3D; 4.6;
-    const maxVoltage &#x3D; 5.25;
-    const maxCurrent &#x3D; 0.955;
-    const minCurrent &#x3D; 0;
-    const voltageTip &#x3D; &#x27;Check your cables&#x27;;
-
-    const voltage &#x3D; new MinMaxDiagnosticsMessage(
-      &#x27;Voltage&#x27;,
-      minVoltage,
-      maxVoltage,
-      powerUsage.voltage.min,
-      powerUsage.voltage.max,
-      powerUsage.voltage.curr,
-      voltageTip,
-      voltageTip
-    );
-
-    const current &#x3D; new MinMaxDiagnosticsMessage(
-      &#x27;Current&#x27;,
-      minCurrent,
-      maxCurrent,
-      powerUsage.current.min,
-      powerUsage.current.max,
-      powerUsage.current.curr,
-      voltageTip,
-      voltageTip
-    );
-    return [voltage, current];
-  }
-
-  /**
-   * Get diagnostics for power usage on camera
-   *
-   * @return {*}  {Promise&lt;Array&lt;DiagnosticsMessage&gt;&gt;} An array of data representing the power usage diagnostics.
-   * @memberof HuddlyGo
-   */
-  async getDiagnostics(): Promise&lt;Array&lt;DiagnosticsMessage&gt;&gt; {
-    const powerUsage &#x3D; await this.getPowerUsage();
-
-    const powerDiagnostics &#x3D; this.getPowerMonitorDiagnostics(powerUsage);
-
-    return powerDiagnostics;
-  }
-
-  /**
-   * Get white balance/point adjustment information.
-   *
-   * @return {*} An object representing the white balance/point adjustment for red and blue channels.
-   * @memberof HuddlyGo
-   */
-  async getWhitePointAdjust() {
-    const buffVal &#x3D; await this.getXUControl(4);
-    let ret;
-    if (buffVal) {
-      ret &#x3D; {
-        red: round(buffVal.readFloatLE(0), 3),
-        blue: round(buffVal.readFloatLE(4), 3),
-      };
-    }
-    return ret;
-  }
-
-  /**
-   * Soft boot camera.
-   *
-   * @param {string} mode Tell the camera which mode to boot to.
-   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
-   * @memberof HuddlyGo
-   */
-  async reboot(mode: string): Promise&lt;void&gt; {
-    let bootValue;
-    switch (mode) {
-      case &#x27;bl&#x27;:
-        bootValue &#x3D; 0x1399;
-        break;
-      case &#x27;app&#x27;:
-      default:
-        bootValue &#x3D; 0x3;
-        break;
-    }
-    await this.transport.stopEventLoop();
-    await this.setXUControl(17, 0x3974);
-    await this.setXUControl(17, bootValue);
-  }
-
-  /**
-   * @ignore
-   * Sets camera mode on camera.
-   *
-   * @param {*} mode New mode
-   * @memberof HuddlyGo
-   */
-  async setCameraMode(mode) {
-    if (mode &#x3D;&#x3D;&#x3D; undefined || mode &#x3D;&#x3D;&#x3D; null) {
-      throw new Error(&#x27;camera mode undefined&#x27;);
-    }
-    let cameraMode &#x3D; 0;
-    switch (mode) {
-      case &#x27;normal&#x27;:
-        cameraMode &#x3D; 0;
-        break;
-      case &#x27;dual&#x27;:
-        cameraMode &#x3D; 1;
-        break;
-      case &#x27;high-res&#x27;:
-        cameraMode &#x3D; 2;
-        break;
-      default:
-        throw new Error(&#x60;Unknown camera mode ${mode}&#x60;);
-    }
-    await this.setXUControl(1, 0x3974);
-    await this.setXUControl(1, 0x8eb0);
-    await this.setXUControl(1, cameraMode);
-    await this.reboot(&#x27;app&#x27;);
-  }
-
-  /**
-   * @ignore
-   * Get the current camera mode on camera.
-   *
-   * @return {*} Current camera mode.
-   * @memberof HuddlyGo
-   */
-  async getCameraMode() {
-    const xuCtrl &#x3D; 1;
-    const buffer &#x3D; await this.getXUControl(xuCtrl);
-    if (!buffer) {
-      return &#x27;normal&#x27;;
-    }
-    switch (buffer.readUIntLE(0, 2)) {
-      case 0x00:
-        return &#x27;normal&#x27;;
-      case 0x01:
-        return &#x27;dual&#x27;;
-      case 0x02:
-        return &#x27;high-res&#x27;;
-      default:
-        return &#x27;unknown&#x27;;
-    }
-  }
-
-  /**
-   * Get camera uptime
-   *
-   * @return {*}  {Promise&lt;number&gt;} Resolves with the uptime information (double in milliseconds)
-   * @memberof HuddlyGo
-   */
-  async uptime(): Promise&lt;number&gt; {
-    return this.api.getUptime();
-  }
-
-  /**
-   * Helper function for getting the respective upgrader controller class for upgrading Huddly GO
-   *
-   * @return {*}  {Promise&lt;IDeviceUpgrader&gt;} The upgrader controll instance.
-   * @memberof HuddlyGo
-   */
-  async getUpgrader(): Promise&lt;IDeviceUpgrader&gt; {
-    return new HuddlyGoUpgrader(this, this.discoveryEmitter, this.hidApi);
-  }
-
-  /**
-   * Performs software upgrade (async) on Huddly GO
-   *
-   * @param {UpgradeOpts} opts Upgrade options for performing the upgrade
-   * @return {*}  {Promise&lt;any&gt;} Resolves when the upgrade is completed. Rejects if something goes wrong.
-   * @memberof HuddlyGo
-   */
-  async upgrade(opts: UpgradeOpts): Promise&lt;any&gt; {
-    const upgrader &#x3D; await this.getUpgrader();
-    upgrader.init(opts);
-    upgrader.start();
-    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
-      upgrader.once(CameraEvents.UPGRADE_COMPLETE, () &#x3D;&gt; {
-        resolve();
-      });
-      upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) &#x3D;&gt; {
-        Logger.error(&#x27;Upgrade Failed&#x27;, reason, &#x27;HuddlyGO API&#x27;);
-        reject(reason);
-      });
-      upgrader.once(CameraEvents.TIMEOUT, (reason) &#x3D;&gt; {
-        Logger.error(&#x27;Upgrader returned a timeout event&#x27;, reason, &#x27;HuddlyGO API&#x27;);
-        reject(reason);
-      });
-    });
-  }
-
-  /**
-   * @ignore
-   * Not supported for Huddly GO
-   *
-   * @memberof HuddlyGo
-   */
-  getAutozoomControl(): ICnnControl {
-    Logger.warn(&#x27;Attempting to call method [getAutozoomControl] on HuddlyGO&#x27;, &#x27;HuddlyGO API&#x27;);
-    throw new Error(&#x27;Autozoom is not supported on Huddly GO cameras!&#x27;);
-  }
-
-  /**
-   * @ignore
-   * Not supported for Huddly GO
-   *
-   * @memberof HuddlyGo
-   */
-  getFaceBasedExposureControl(): ICnnControl {
-    Logger.warn(
-      &#x27;Attempting to call method [getFaceBasedExposureControl] on HuddlyGO&#x27;,
-      &#x27;HuddlyGO API&#x27;
-    );
-    throw new Error(&#x27;FaceBased  is not supported on Huddly GO cameras!&#x27;);
-  }
-
-  /**
-   * @ignore
-   * Not supported for Huddly GO
-   *
-   * @memberof HuddlyGo
-   */
-  getDetector(): IDetector {
-    Logger.warn(&#x27;Attempting to call method [getDetector] on HuddlyGO&#x27;, &#x27;HuddlyGO API&#x27;);
-    throw new Error(&#x27;Detections are not supported on Huddly GO camera!&#x27;);
-  }
-
-  /**
-   * @ignore
-   * Not supported for Huddly GO
-   *
-   * @memberof HuddlyGo
-   */
-  getState(): Promise&lt;any&gt; {
-    Logger.warn(&#x27;Attempting to call method [getState] on HuddlyGO&#x27;, &#x27;HuddlyGO API&#x27;);
-    throw new Error(&#x27;State is not supported on Huddly GO camera&#x27;);
-  }
-
-  /**
-   * @ignore
-   * Not supported for Huddly GO
-   *
-   * @memberof HuddlyGo
-   */
-  async setInterpolationParams(params: InterpolationParams): Promise&lt;any&gt; {
-    Logger.warn(&#x27;Attempting to call method [setInterpolationParams] on HuddlyGO&#x27;, &#x27;HuddlyGO API&#x27;);
-    throw new Error(&#x27;Interpolation parameters are not supported on Huddly GO camera&#x27;);
-  }
-
-  /**
-   * @ignore
-   * Not supported for Huddly GO
-   *
-   * @memberof HuddlyGo
-   */
-  async getInterpolationParams(): Promise&lt;InterpolationParams&gt; {
-    Logger.warn(&#x27;Attempting to call method [getInterpolationParams] on HuddlyGO&#x27;, &#x27;HuddlyGO API&#x27;);
-    throw new Error(&#x27;Interpolation parameters are not supported on Huddly GO camera&#x27;);
-  }
-
-  /**
-   * @ignore
-   * Not supported for Huddly GO
-   *
-   * @memberof HuddlyGo
-   */
-  async getLatestFirmwareUrl(releaseChannel: ReleaseChannel &#x3D; ReleaseChannel.STABLE) {
-    return this.api.getLatestFirmwareUrl(&#x27;go&#x27;, releaseChannel);
+    super(uvcCameraInstance, transport, uvcControlInterface, cameraDiscoveryEmitter);
   }
 }
 </code></pre>
@@ -3152,7 +2999,7 @@ export default class HuddlyGo extends UvcBaseDevice implements IDeviceManager {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'HuddlyGo.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ClownFish.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
