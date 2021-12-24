@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -42,12 +43,15 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>AutozoomControl</li>
+  <li >AutozoomControl</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li >
+            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
         </li>
         <li >
             <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
@@ -64,12 +68,20 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Control class for configuring the Genius Framing feature of the camera.</p>
+
+            </p>
+
 
             <p class="comment">
                 <h3>Implements</h3>
             </p>
             <p class="comment">
-                            <code><a href="../interfaces/IAutozoomControl.html" target="_self" >IAutozoomControl</a></code>
+                        <code>ICnnControl</code>
             </p>
 
 
@@ -77,26 +89,6 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#_deviceManager">_deviceManager</a>
-                            </li>
-                            <li>
-                                <a href="#_logger">_logger</a>
-                            </li>
-                            <li>
-                                <a href="#_options">_options</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -107,7 +99,35 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#updateOpts">updateOpts</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#disable" >disable</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#enable" >enable</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#init" >init</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isEnabled" >isEnabled</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isRunning" >isRunning</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#start" >start</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#stop" >stop</a>
+                            </li>
+                            <li>
+                                <a href="#updateOpts" >updateOpts</a>
                             </li>
                         </ul>
                     </td>
@@ -127,12 +147,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: <a href="../interfaces/IDeviceManager.html">IDeviceManager</a>, logger: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, options?: <a href="../interfaces/AutozoomControlOpts.html">AutozoomControlOpts</a>)</code>
+<code>constructor(manager: IDeviceManager, options?: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/components/autozoomControl.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/components/autozoomControl.ts:19</a></div>
                             </td>
                         </tr>
 
@@ -153,19 +173,7 @@
                                                         <td>manager</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../interfaces/IDeviceManager.html" target="_self" >IDeviceManager</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>logger</td>
-                                                  
-                                                        <td>
-                                                                        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                                    <code>IDeviceManager</code>
                                                         </td>
                                                   
                                                     <td>
@@ -177,7 +185,7 @@
                                                         <td>options</td>
                                                   
                                                         <td>
-                                                                        <code><a href="../interfaces/AutozoomControlOpts.html" target="_self" >AutozoomControlOpts</a></code>
+                                                                        <code><a href="../classes/AutozoomControl.html" target="_self" >AutozoomControlOpts</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -194,93 +202,6 @@
         </table>
 </section>
 
-            <section>
-    
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="_deviceManager"></a>
-                        <span class="name">
-                            <b>
-                            _deviceManager</b>
-                            <a href="#_deviceManager"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="../interfaces/IDeviceManager.html" target="_self" >IDeviceManager</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/components/autozoomControl.ts:7</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="_logger"></a>
-                        <span class="name">
-                            <b>
-                            _logger</b>
-                            <a href="#_logger"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/components/autozoomControl.ts:8</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="_options"></a>
-                        <span class="name">
-                            <b>
-                            _options</b>
-                            <a href="#_options"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="../interfaces/AutozoomControlOpts.html" target="_self" >AutozoomControlOpts</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/components/autozoomControl.ts:9</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-</section>
 
             <section>
     
@@ -291,48 +212,460 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="updateOpts"></a>
+                    <a name="disable"></a>
                     <span class="name">
-                        <b>
-                            updateOpts
-                        </b>
-                        <a href="#updateOpts"><span class="icon ion-ios-link"></span></a>
+                        <span class="modifier">Async</span>
+                        <span ><b>disable</b></span>
+                        <a href="#disable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>updateOpts(options: <a href="../interfaces/AutozoomControlOpts.html">AutozoomControlOpts</a>)</code>
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>disable(idleTimeMs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="40"
-                            class="link-to-prism">src/components/autozoomControl.ts:40</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">src/components/autozoomControl.ts:119</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
+                    <div class="io-description"><p>Disables the cnn feature persistently. The disabled state is persistent on camera reboot/power cycle.</p>
+</div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Default value</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>idleTimeMs</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>2000</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Max time (in milliseconds) for the camera to respond to disable az control.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when feature is successfully disabled.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="enable"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>enable</b></span>
+                        <a href="#enable"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>enable(idleTimeMs: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="75"
+                            class="link-to-prism">src/components/autozoomControl.ts:75</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Enables the cnn feature persistently. The enable state is persistent on camera reboot/power cycle.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>idleTimeMs</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>2000</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Max time (in milliseconds) for the camera to respond to enable az control.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when feature is successfully enabled.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>init()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="35"
+                            class="link-to-prism">src/components/autozoomControl.ts:35</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Convenience function for setting up the camera for starting/stopping cnn feature.
+Should be called before any other methods.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<any>} Resolves when the initialisation is completed.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isEnabled"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>isEnabled</b></span>
+                        <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isEnabled()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="162"
+                            class="link-to-prism">src/components/autozoomControl.ts:162</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<Boolean>} Resolves to true if cnn features is enabled</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="isRunning"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>isRunning</b></span>
+                        <a href="#isRunning"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>isRunning()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="223"
+                            class="link-to-prism">src/components/autozoomControl.ts:223</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Checks if autozoom is running on the camera. Returns true if yes, false otherwise.</p>
+<p>or not.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<Boolean>} Resolves with information whether az control is running
+or not.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="start"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
+                        <a href="#start"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>start()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="177"
+                            class="link-to-prism">src/components/autozoomControl.ts:177</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Starts autozoom feature on the camera. User <code>Detector</code> class
+for setting up detections and/or framing event listeners.</p>
+<p>NOTE: For persistent enable of autozoom feature you
+need to call the <code>enable</code> method.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when autozoom controler is started.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stop"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>stop</b></span>
+                        <a href="#stop"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>stop()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="201"
+                            class="link-to-prism">src/components/autozoomControl.ts:201</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Stops autozoom feature on the camera.</p>
+<p>NOTE: For persistent disable of autozoom feature you
+need to call the <code>disable</code> method.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Resolves when the autozoom control is stopped.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="updateOpts"></a>
+                    <span class="name">
+                        <span ><b>updateOpts</b></span>
+                        <a href="#updateOpts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>updateOpts(options: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="59"
+                            class="link-to-prism">src/components/autozoomControl.ts:59</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Helper function for updating the initial detector options specified when
+instantiating the Detector class.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
                                     <td>options</td>
                                     <td>
-                                                <code><a href="../interfaces/AutozoomControlOpts.html" target="_self" >AutozoomControlOpts</a></code>
+                                                <code><a href="../classes/AutozoomControl.html" target="_self" >AutozoomControlOpts</a></code>
                                     </td>
 
                                     <td>
@@ -340,6 +673,10 @@
                                     </td>
 
 
+                                    <td>
+                                        <p>The new az control options to be used.</p>
+
+                                    </td>
                                 </tr>
                             </tbody>
                         </table>
@@ -351,7 +688,8 @@
 
                     </div>
                     <div class="io-description">
-                        
+                        <p>{Promise<any>} Resolves when the new options have been applied and detector is initialized.</p>
+
                     </div>
                 </td>
             </tr>
@@ -365,34 +703,73 @@
 
     </div>
 
+    <div class="tab-pane fade " id="c-readme">
+        <p><h1 id="genius-framing-controller">Genius Framing Controller</h1>
+<p>Below you can find an example on how to get started with Genius Framing (GF) on Huddly cameras that support the feature. Follow the steps below to enable or disable GF:</p>
+<div><pre class="line-numbers"><code class="language-javascript">...
+// We assume the sdk has been initialized and camera manager instance acquired
+...
+
+/**
+ * Get an autozoom control instance from the initialized camera manager.
+ * For custom autozoom, `getAutozoomControl` accepts some options which are
+ * documented on the `IAutozoomControlOpts` interface.
+ */
+const autozoomCtrl = cameraManager.getAutozoomControl();
+
+// Always call init before doing anything
+await autozoomCtrl.init();
+
+/* Enable autozoom cnn feature on the camera (persistent across camera booting) */
+await autozoomCtrl.enable();
+
+...
+// Your code goes here
+...
+
+/* Disable autozoom cnn feature on the camera (persistent across camera booting) */
+await autozoomCtrl.disable();</code></pre></div><p><strong>NOTE</strong>: For subscribing for detection and/or framing events you need to use the <code>Detector</code> class.</p>
+</p>
+    </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IAutozoomControl from &#x27;../interfaces/IAutozoomControl&#x27;;
-import AutozoomControlOpts from &#x27;../interfaces/IAutozoomControlOpts&#x27;;
-import IDeviceManager from &#x27;../interfaces/iDeviceManager&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import AutozoomControlOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts&#x27;;
+import ICnnControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/ICnnControl&#x27;;
+import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+
 import Api from &#x27;./api&#x27;;
 
-export default class AutozoomControl implements IAutozoomControl {
+/**
+ * Control class for configuring the Genius Framing feature of the camera.
+ *
+ * @export
+ * @class AutozoomControl
+ * @implements {ICnnControl}
+ */
+export default class AutozoomControl implements ICnnControl {
+  /** @ignore */
   _deviceManager: IDeviceManager;
-  _logger: any;
+  /** @ignore */
   _options: AutozoomControlOpts;
 
-  constructor(manager: IDeviceManager, logger: any, options?: AutozoomControlOpts) {
+  constructor(manager: IDeviceManager, options?: AutozoomControlOpts) {
     this._deviceManager &#x3D; manager;
-    this._logger &#x3D; logger;
     this._options &#x3D; options || {
       shouldAutoFrame: true,
     };
   }
 
   /**
-   * @ignore
-   * Check &#x60;IAutozoomControl&#x60; interface for method documentation.
+   * Convenience function for setting up the camera for starting/stopping cnn feature.
+   * Should be called before any other methods.
+   *
+   * @return {*}  {Promise&lt;any&gt;} Resolves when the initialisation is completed.
    * @memberof AutozoomControl
    */
   async init(): Promise&lt;any&gt; {
     if (this._options.shouldAutoFrame !&#x3D;&#x3D; undefined &amp;&amp; this._options.shouldAutoFrame !&#x3D;&#x3D; null) {
-      this._logger.debug(
+      Logger.debug(
         &#x60;Initializing autozoom with framing config option AUTO_PTZ: ${this._options.shouldAutoFrame}&#x60;,
         &#x27;Autozoom Control&#x27;
       );
@@ -406,6 +783,14 @@ export default class AutozoomControl implements IAutozoomControl {
     }
   }
 
+  /**
+   * Helper function for updating the initial detector options specified when
+   * instantiating the Detector class.
+   *
+   * @param {AutozoomControlOpts} options The new az control options to be used.
+   * @return {*}  {Promise&lt;any&gt;} Resolves when the new options have been applied and detector is initialized.
+   * @memberof AutozoomControl
+   */
   updateOpts(options: AutozoomControlOpts): Promise&lt;any&gt; {
     const currentSetOpts &#x3D; this._options;
     this._options &#x3D; {
@@ -416,12 +801,14 @@ export default class AutozoomControl implements IAutozoomControl {
   }
 
   /**
-   * @ignore
-   * Check &#x60;IAutozoomControl&#x60; interface for method documentation.
+   * Enables the cnn feature persistently. The enable state is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs&#x3D;2000] Max time (in milliseconds) for the camera to respond to enable az control.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when feature is successfully enabled.
    * @memberof AutozoomControl
    */
   async enable(idleTimeMs: number &#x3D; 2000): Promise&lt;void&gt; {
-    this._logger.debug(&#x27;Enabling autozoom persistently&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;Enabling autozoom persistently&#x27;, &#x27;Autozoom Control&#x27;);
 
     await this._deviceManager.api.sendAndReceive(
       Buffer.alloc(0),
@@ -438,7 +825,7 @@ export default class AutozoomControl implements IAutozoomControl {
      * info. It is necessary to query the isEnabled more
      * than once to have a legitimate assertion.
      */
-    const promise &#x3D; new Promise(async (resolve, reject) &#x3D;&gt; {
+    const promise &#x3D; new Promise&lt;void&gt;(async (resolve, reject) &#x3D;&gt; {
       let retry &#x3D; 3;
       while (retry) {
         const isEnabled &#x3D; await this.isEnabled();
@@ -454,16 +841,18 @@ export default class AutozoomControl implements IAutozoomControl {
     });
 
     await promise;
-    this._logger.debug(&#x27;Autozoom enabled persistently&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;Autozoom enabled persistently&#x27;, &#x27;Autozoom Control&#x27;);
   }
 
   /**
-   * @ignore
-   * Check &#x60;IAutozoomControl&#x60; interface for method documentation.
+   * Disables the cnn feature persistently. The disabled state is persistent on camera reboot/power cycle.
+   *
+   * @param {number} [idleTimeMs&#x3D;2000] Max time (in milliseconds) for the camera to respond to disable az control.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when feature is successfully disabled.
    * @memberof AutozoomControl
    */
   async disable(idleTimeMs: number &#x3D; 2000): Promise&lt;void&gt; {
-    this._logger.debug(&#x27;Disabling autozoom persistently&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;Disabling autozoom persistently&#x27;, &#x27;Autozoom Control&#x27;);
 
     await this._deviceManager.api.sendAndReceive(
       Buffer.alloc(0),
@@ -480,7 +869,7 @@ export default class AutozoomControl implements IAutozoomControl {
      * info. It is necessary to query the isEnabled more
      * than once to have a legitimate assertion.
      */
-    const promise &#x3D; new Promise(async (resolve, reject) &#x3D;&gt; {
+    const promise &#x3D; new Promise&lt;void&gt;(async (resolve, reject) &#x3D;&gt; {
       let retry &#x3D; 3;
       while (retry) {
         const isEnabled &#x3D; await this.isEnabled();
@@ -496,12 +885,13 @@ export default class AutozoomControl implements IAutozoomControl {
     });
 
     await promise;
-    this._logger.debug(&#x27;Autozoom disabled persistently&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;Autozoom disabled persistently&#x27;, &#x27;Autozoom Control&#x27;);
   }
 
   /**
-   * @ignore
-   * Check &#x60;IAutozoomControl&#x60; interface for method documentation.
+   * Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.
+   *
+   * @return {*}  {Promise&lt;Boolean&gt;} Resolves to true if cnn features is enabled
    * @memberof AutozoomControl
    */
   async isEnabled(): Promise&lt;Boolean&gt; {
@@ -510,14 +900,19 @@ export default class AutozoomControl implements IAutozoomControl {
   }
 
   /**
-   * @ignore
-   * Check &#x60;IAutozoomControl&#x60; interface for method documentation.
+   * Starts autozoom feature on the camera. User &#x60;Detector&#x60; class
+   * for setting up detections and/or framing event listeners.
+   *
+   * NOTE: For persistent enable of autozoom feature you
+   * need to call the &#x60;enable&#x60; method.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Resolves when autozoom controler is started.
    * @memberof AutozoomControl
    */
   async start(): Promise&lt;void&gt; {
     if (!(await this.isRunning())) {
       // Only start if not already started
-      this._logger.debug(&#x27;Starting Autozoom&#x27;, &#x27;Autozoom Control&#x27;);
+      Logger.debug(&#x27;Starting Autozoom&#x27;, &#x27;Autozoom Control&#x27;);
       await this._deviceManager.api.sendAndReceive(
         Buffer.alloc(0),
         {
@@ -530,14 +925,18 @@ export default class AutozoomControl implements IAutozoomControl {
   }
 
   /**
-   * @ignore
-   * Check &#x60;IAutozoomControl&#x60; interface for method documentation.
+   * Stops autozoom feature on the camera.
+   *
+   * NOTE: For persistent disable of autozoom feature you
+   * need to call the &#x60;disable&#x60; method.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the autozoom control is stopped.
    * @memberof AutozoomControl
    */
   async stop(): Promise&lt;void&gt; {
     if (await this.isRunning()) {
       // Only stop if az is running
-      this._logger.debug(&#x27;Stopping Autozoom&#x27;, &#x27;Autozoom Control&#x27;);
+      Logger.debug(&#x27;Stopping Autozoom&#x27;, &#x27;Autozoom Control&#x27;);
       await this._deviceManager.api.sendAndReceive(
         Buffer.alloc(0),
         {
@@ -550,8 +949,10 @@ export default class AutozoomControl implements IAutozoomControl {
   }
 
   /**
-   * @ignore
-   * Check &#x60;IAutozoomControl&#x60; interface for method documentation.
+   * Checks if autozoom is running on the camera. Returns true if yes, false otherwise.
+   *
+   * @return {*}  {Promise&lt;Boolean&gt;} Resolves with information whether az control is running
+   * or not.
    * @memberof AutozoomControl
    */
   async isRunning(): Promise&lt;Boolean&gt; {
@@ -570,7 +971,7 @@ export default class AutozoomControl implements IAutozoomControl {
   async uploadBlob(blobBuffer: Buffer): Promise&lt;void&gt; {
     const status &#x3D; await this._deviceManager.api.getAutozoomStatus();
     if (!status[&#x27;network-configured&#x27;]) {
-      this._logger.debug(&#x27;Uploading cnn blob&#x27;, &#x27;Autozoom Control&#x27;);
+      Logger.debug(&#x27;Uploading cnn blob&#x27;, &#x27;Autozoom Control&#x27;);
       await this._deviceManager.api.sendAndReceive(
         blobBuffer,
         {
@@ -579,9 +980,9 @@ export default class AutozoomControl implements IAutozoomControl {
         },
         60000
       );
-      this._logger.debug(&#x27;Cnn blob has been uploaded. Unlocking the stream!&#x27;, &#x27;Autozoom Control&#x27;);
+      Logger.debug(&#x27;Cnn blob has been uploaded. Unlocking the stream!&#x27;, &#x27;Autozoom Control&#x27;);
     } else {
-      this._logger.debug(&#x27;Cnn blob already configured on the camera&#x27;, &#x27;Autozoom Control&#x27;);
+      Logger.debug(&#x27;Cnn blob already configured on the camera&#x27;, &#x27;Autozoom Control&#x27;);
     }
   }
 
@@ -594,7 +995,7 @@ export default class AutozoomControl implements IAutozoomControl {
    * @memberof AutozoomControl
    */
   async setDetectorConfig(config: JSON): Promise&lt;void&gt; {
-    this._logger.debug(&#x27;Sending detector config!&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;Sending detector config!&#x27;, &#x27;Autozoom Control&#x27;);
     await this._deviceManager.api.sendAndReceive(
       Api.encode(config),
       {
@@ -603,7 +1004,7 @@ export default class AutozoomControl implements IAutozoomControl {
       },
       6000
     );
-    this._logger.debug(&#x27;Detector config sent!&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;Detector config sent!&#x27;, &#x27;Autozoom Control&#x27;);
   }
 
   /**
@@ -616,7 +1017,7 @@ export default class AutozoomControl implements IAutozoomControl {
    * @memberof AutozoomControl
    */
   async uploadFramingConfig(config: any): Promise&lt;void&gt; {
-    this._logger.debug(&#x27;Uploading new framing config&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;Uploading new framing config&#x27;, &#x27;Autozoom Control&#x27;);
     await this._deviceManager.api.sendAndReceive(
       Api.encode(config),
       {
@@ -625,7 +1026,7 @@ export default class AutozoomControl implements IAutozoomControl {
       },
       60000
     );
-    this._logger.debug(&#x27;New framing config uploaded on the camera.&#x27;, &#x27;Autozoom Control&#x27;);
+    Logger.debug(&#x27;New framing config uploaded on the camera.&#x27;, &#x27;Autozoom Control&#x27;);
   }
 }
 </code></pre>
@@ -634,14 +1035,14 @@ export default class AutozoomControl implements IAutozoomControl {
 
 
 
-                   
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -661,9 +1062,9 @@ export default class AutozoomControl implements IAutozoomControl {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

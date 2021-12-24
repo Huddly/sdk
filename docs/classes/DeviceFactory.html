@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -42,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>DeviceFactory</li>
+  <li >DeviceFactory</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -64,6 +65,15 @@
         </p>
 
 
+            <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Factory class for controlling what device controller implementation is supported for the corresponding
+device VendorID and ProductID.</p>
+
+            </p>
+
 
 
 
@@ -83,27 +93,22 @@
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDevice">getDevice</a>
+                                <a href="#getDevice" >getDevice</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDeviceUpgrader">getDeviceUpgrader</a>
+                                <a href="#getHIDInterface" >getHIDInterface</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getHIDInterface">getHIDInterface</a>
+                                <a href="#getTransportImplementation" >getTransportImplementation</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getTransportImplementation">getTransportImplementation</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Static</span>
-                                    <span class="modifier">Async</span>
-                                <a href="#getUVCControlInterface">getUVCControlInterface</a>
+                                <a href="#getUVCControlInterface" >getUVCControlInterface</a>
                             </li>
                         </ul>
                     </td>
@@ -121,676 +126,515 @@
 
             <section>
     
-        <h3 id="methods">
-            Methods
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getDevice"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                                <span class="modifier">Async</span>
-                            getDevice
-                            </b>
-                            <a href="#getDevice"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getDevice(productId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, logger: <a href="../classes/Logger.html">DefaultLogger</a>, preferredDeviceApi: <a href="../interfaces/IHuddlyDeviceAPI.html">IHuddlyDeviceAPI</a>, secondaryDeviceApis: <a href="../interfaces/IHuddlyDeviceAPI.html">Array<IHuddlyDeviceAPI></a>, devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, doInitialize: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
-                    </td>
-                </tr>
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDevice"></a>
+                    <span class="name">
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getDevice</b></span>
+                        <a href="#getDevice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getDevice(productId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, preferredDeviceApi: IHuddlyDeviceAPI, secondaryDeviceApis: Array<IHuddlyDeviceAPI>, devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+                </td>
+            </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="155" class="link-to-prism">src/components/device/factory.ts:155</a></div>
-                            </td>
-                        </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="159"
+                            class="link-to-prism">src/components/device/factory.ts:159</a></div>
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Function that selects the appropriate transport implementation and uvc control interface
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Function that selects the appropriate transport implementation and uvc control interface
 and returns a concrete implementation of the IDeviceManager</p>
-</div>
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Default value</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>productId</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                        </td>
-
-                                                        <td>
-                                                                <code><p>A usb device product id to distinct betweern different huddly products</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>logger</td>
-                                                        <td>
-                                                                    <code><a href="../classes/Logger.html" target="_self" >DefaultLogger</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                        </td>
-
-                                                        <td>
-                                                                <code><p>The logger class used for logging messages on console</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>preferredDeviceApi</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >IHuddlyDeviceAPI</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                        </td>
-
-                                                        <td>
-                                                                <code><p>The main IHuddlyDeviceAPI used for communicating
-with the camera</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>secondaryDeviceApis</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >Array&lt;IHuddlyDeviceAPI&gt;</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                        </td>
-
-                                                        <td>
-                                                                <code><p>Fallback IHuddlyDeviceAPI-s in case the
-main interface does not work</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>devInstance</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                        </td>
-
-                                                        <td>
-                                                                <code><p>An object that represents the usb device which is discovered
+<p>with the camera
+main interface does not work
 on the concrete implementation of the IHuddlyDeviceApi</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>doInitialize</td>
-                                                        <td>
-                                                                    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                        <td>
-                                                                <code>true</code>
-                                                        </td>
-
-                                                        <td>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/IDeviceManager.html" target="_self" >Promise&lt;IDeviceManager&gt;</a></code>
-
-                            </div>
-                                <div class="io-description">
-                                    <p>Returns a concrete implementation of the IDeviceManger</p>
-
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getDeviceUpgrader"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                                <span class="modifier">Async</span>
-                            getDeviceUpgrader
-                            </b>
-                            <a href="#getDeviceUpgrader"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getDeviceUpgrader(cameraManager: <a href="../interfaces/IDeviceManager.html">IDeviceManager</a>, cameraDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>, preferredDeviceApi: <a href="../interfaces/IHuddlyDeviceAPI.html">IHuddlyDeviceAPI</a>, secondaryDeviceApis: <a href="../interfaces/IHuddlyDeviceAPI.html">Array<IHuddlyDeviceAPI></a>, logger: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="124" class="link-to-prism">src/components/device/factory.ts:124</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Function that returns an upgrader object for a given devInstance</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>cameraManager</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IDeviceManager.html" target="_self" >IDeviceManager</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>productId</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
 
-                                                        <td>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>cameraDiscoveryEmitter</td>
-                                                        <td>
-                                                                    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                                    <td>
+                                        No
+                                    </td>
 
-                                                        <td>
-                                                                <code><p>The eventEmitter that will allow the upgrader object to see attach/detach events</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>preferredDeviceApi</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >IHuddlyDeviceAPI</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>The main IHuddlyDeviceAPI used for communicating
+                                    <td>
+                                        <p>A usb device product id to distinct betweern different huddly products</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>preferredDeviceApi</td>
+                                    <td>
+                                            <code>IHuddlyDeviceAPI</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The main IHuddlyDeviceAPI used for communicating
 with the camera</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>secondaryDeviceApis</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >Array&lt;IHuddlyDeviceAPI&gt;</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>Fallback IHuddlyDeviceAPI-s in case the
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>secondaryDeviceApis</td>
+                                    <td>
+                                            <code>Array&lt;IHuddlyDeviceAPI&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Fallback IHuddlyDeviceAPI-s in case the
 main interface does not work</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>logger</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>Logger</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/IDeviceUpgrader.html" target="_self" >Promise&lt;IDeviceUpgrader&gt;</a></code>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>devInstance</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getHIDInterface"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                                <span class="modifier">Async</span>
-                            getHIDInterface
-                            </b>
-                            <a href="#getHIDInterface"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getHIDInterface(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, preferredDeviceApi: <a href="../interfaces/IHuddlyDeviceAPI.html">IHuddlyDeviceAPI</a>, secondaryDeviceApis: <a href="../interfaces/IHuddlyDeviceAPI.html">Array<IHuddlyDeviceAPI></a>)</code>
-                    </td>
-                </tr>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="97" class="link-to-prism">src/components/device/factory.ts:97</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Get a HID api implementation for the device</p>
-</div>
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>device</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                        <td>
-                                                                <code><p>An object that represents the usb device which is discovered
+                                    <td>
+                                        <p>An object that represents the usb device which is discovered
 on the concrete implementation of the IHuddlyDeviceApi</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>preferredDeviceApi</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >IHuddlyDeviceAPI</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>The main IHuddlyDeviceAPI used for communicating
-with the camera</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>secondaryDeviceApis</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >Array&lt;IHuddlyDeviceAPI&gt;</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>cameraDiscoveryEmitter</td>
+                                    <td>
+                                                <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                    </td>
 
-                                                        <td>
-                                                                <code><p>Fallback IHuddlyDeviceAPI-s in case the
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;IDeviceManager&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Returns a concrete implementation of the IDeviceManger</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getHIDInterface"></a>
+                    <span class="name">
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getHIDInterface</b></span>
+                        <a href="#getHIDInterface"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getHIDInterface(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, preferredDeviceApi: IHuddlyDeviceAPI, secondaryDeviceApis: Array<IHuddlyDeviceAPI>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="123"
+                            class="link-to-prism">src/components/device/factory.ts:123</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get a HID api implementation for the device</p>
+<p>on the concrete implementation of the IHuddlyDeviceApi
+with the camera
 main interface does not work</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                            </div>
-                                <div class="io-description">
-                                    <p>Returns the device class that is used for UVC controls</p>
-
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getTransportImplementation"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                                <span class="modifier">Async</span>
-                            getTransportImplementation
-                            </b>
-                            <a href="#getTransportImplementation"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getTransportImplementation(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, preferredDeviceApi: <a href="../interfaces/IHuddlyDeviceAPI.html">IHuddlyDeviceAPI</a>, secondaryDeviceApis: <a href="../interfaces/IHuddlyDeviceAPI.html">Array<IHuddlyDeviceAPI></a>)</code>
-                    </td>
-                </tr>
-
-
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="31" class="link-to-prism">src/components/device/factory.ts:31</a></div>
-                            </td>
-                        </tr>
-
-
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Get a concrete transport implementation on the IHuddlyDeviceAPI</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>device</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>device</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                                        <td>
-                                                                <code><p>An object that reperesents the usb device which is discovered
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>An object that represents the usb device which is discovered
+on the concrete implementation of the IHuddlyDeviceApi</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>preferredDeviceApi</td>
+                                    <td>
+                                            <code>IHuddlyDeviceAPI</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The main IHuddlyDeviceAPI used for communicating
+with the camera</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>secondaryDeviceApis</td>
+                                    <td>
+                                            <code>Array&lt;IHuddlyDeviceAPI&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Fallback IHuddlyDeviceAPI-s in case the
+main interface does not work</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Returns the device class that is used for UVC controls</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTransportImplementation"></a>
+                    <span class="name">
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getTransportImplementation</b></span>
+                        <a href="#getTransportImplementation"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getTransportImplementation(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, preferredDeviceApi: IHuddlyDeviceAPI, secondaryDeviceApis: Array<IHuddlyDeviceAPI>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="46"
+                            class="link-to-prism">src/components/device/factory.ts:46</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get a concrete transport implementation on the IHuddlyDeviceAPI</p>
+<p>on the concrete implementation of the IHuddlyDeviceAPI
+with the camera
+main interface does not work
+to the device</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>device</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>An object that reperesents the usb device which is discovered
 on the concrete implementation of the IHuddlyDeviceAPI</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>preferredDeviceApi</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >IHuddlyDeviceAPI</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>The main IHuddlyDeviceAPI used for communicating
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>preferredDeviceApi</td>
+                                    <td>
+                                            <code>IHuddlyDeviceAPI</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The main IHuddlyDeviceAPI used for communicating
 with the camera</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>secondaryDeviceApis</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >Array&lt;IHuddlyDeviceAPI&gt;</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>Fallback IHuddlyDeviceAPI-s in case the
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>secondaryDeviceApis</td>
+                                    <td>
+                                            <code>Array&lt;IHuddlyDeviceAPI&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Fallback IHuddlyDeviceAPI-s in case the
 main interface does not work</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="../interfaces/ITransport.html" target="_self" >Promise&lt;ITransport&gt;</a></code>
 
-                            </div>
-                                <div class="io-description">
-                                    <p>Returns the transport implementation for the device used to talk
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;ITransport&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Returns the transport implementation for the device used to talk
 to the device</p>
 
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="getUVCControlInterface"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Static</span>
-                                <span class="modifier">Async</span>
-                            getUVCControlInterface
-                            </b>
-                            <a href="#getUVCControlInterface"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>getUVCControlInterface(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, preferredDeviceApi: <a href="../interfaces/IHuddlyDeviceAPI.html">IHuddlyDeviceAPI</a>, secondaryDeviceApis: <a href="../interfaces/IHuddlyDeviceAPI.html">Array<IHuddlyDeviceAPI></a>)</code>
-                    </td>
-                </tr>
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUVCControlInterface"></a>
+                    <span class="name">
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getUVCControlInterface</b></span>
+                        <a href="#getUVCControlInterface"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getUVCControlInterface(device: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, preferredDeviceApi: IHuddlyDeviceAPI, secondaryDeviceApis: Array<IHuddlyDeviceAPI>)</code>
+                </td>
+            </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="63" class="link-to-prism">src/components/device/factory.ts:63</a></div>
-                            </td>
-                        </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="85"
+                            class="link-to-prism">src/components/device/factory.ts:85</a></div>
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="col-md-4">
-                            <div class="io-description"><p>Get an instance of the device which can be used to issue standard UVC control commands</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get an instance of the device which can be used to issue standard UVC control commands</p>
+<p>on the concrete implementation of the IHuddlyDeviceApi
+with the camera
+main interface does not work</p>
 </div>
 
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                                    <td>Description</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>device</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>device</td>
+                                    <td>
+                                                <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                    </td>
 
-                                                        <td>
-                                                                <code><p>An object that represents the usb device which is discovered
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>An object that represents the usb device which is discovered
 on the concrete implementation of the IHuddlyDeviceApi</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>preferredDeviceApi</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >IHuddlyDeviceAPI</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>The main IHuddlyDeviceAPI used for communicating
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>preferredDeviceApi</td>
+                                    <td>
+                                            <code>IHuddlyDeviceAPI</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>The main IHuddlyDeviceAPI used for communicating
 with the camera</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                                <tr>
-                                                        <td>secondaryDeviceApis</td>
-                                                        <td>
-                                                                    <code><a href="../interfaces/IHuddlyDeviceAPI.html" target="_self" >Array&lt;IHuddlyDeviceAPI&gt;</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
 
-                                                        <td>
-                                                                <code><p>Fallback IHuddlyDeviceAPI-s in case the
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>secondaryDeviceApis</td>
+                                    <td>
+                                            <code>Array&lt;IHuddlyDeviceAPI&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Fallback IHuddlyDeviceAPI-s in case the
 main interface does not work</p>
-</code>
-                                                        </td>
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
-                            </div>
-                                <div class="io-description">
-                                    <p>Returns the device class that is used for UVC controls</p>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
 
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+                    </div>
+                    <div class="io-description">
+                        <p>Returns the device class that is used for UVC controls</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
-
 
 
 
@@ -800,22 +644,37 @@ main interface does not work</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ITransport from &#x27;./../../interfaces/iTransport&#x27;;
-import IHuddlyDeviceAPI from &#x27;./../../interfaces/iHuddlyDeviceAPI&#x27;;
-import DefaultLogger from &#x27;./../../utilitis/logger&#x27;;
-import IDeviceManager from &#x27;./../../interfaces/iDeviceManager&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ITransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/ITransport&#x27;;
+import IUsbTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUsbTransport&#x27;;
+import IHuddlyDeviceAPI from &#x27;@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceAPI&#x27;;
+import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import IDeviceFactory from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceFactory&#x27;;
+import IGrpcTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport&#x27;;
+import HuddlyHEX from &#x27;@huddly/sdk-interfaces/lib/enums/HuddlyHex&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+
+// Device Manager Imports
 import HuddlyGo from &#x27;./huddlygo&#x27;;
 import Boxfish from &#x27;./boxfish&#x27;;
+import Dwarffish from &#x27;./dwarffish&#x27;;
+import Clownfish from &#x27;./clownfish&#x27;;
+import DartFish from &#x27;./dartfish&#x27;;
+import Ace from &#x27;./ace&#x27;;
+
 import { EventEmitter } from &#x27;events&#x27;;
-import HuddlyGoUpgrader from &#x27;./../upgrader/huddlygoUpgrader&#x27;;
-import BoxfishUpgrader from &#x27;./../upgrader/boxfishUpgrader&#x27;;
-import IDeviceUpgrader from &#x27;./../../interfaces/IDeviceUpgrader&#x27;;
 
-export const HUDDLY_GO_PID &#x3D; 0x11;
-export const HUDDLY_BOXFISH_PID &#x3D; 0x21;
+export function createFactory(): IDeviceFactory {
+  return DeviceFactory;
+}
 
+/**
+ * Factory class for controlling what device controller implementation is supported for the corresponding
+ * device VendorID and ProductID.
+ *
+ * @export
+ * @class DeviceFactory
+ */
 export default class DeviceFactory {
-
   /**
    * Get a concrete transport implementation on the IHuddlyDeviceAPI
    *
@@ -833,11 +692,16 @@ export default class DeviceFactory {
   static async getTransportImplementation(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;): Promise&lt;ITransport&gt; {
+    secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;
+  ): Promise&lt;ITransport&gt; {
     const mainTransport &#x3D; await preferredDeviceApi.getValidatedTransport(device);
     if (mainTransport) {
       return mainTransport;
     }
+    Logger.warn(
+      &#x27;Transport init on main device api failed. Falling back to secondary device apis&#x27;,
+      &#x27;SDK DeviceFactory&#x27;
+    );
 
     for (const deviceApi of secondaryDeviceApis) {
       const fallbackTransport &#x3D; await deviceApi.getValidatedTransport(device);
@@ -846,7 +710,9 @@ export default class DeviceFactory {
       }
     }
 
-    throw new Error(&#x60;Unable to find appropriate transport implementation for device: ${JSON.stringify(device)}&#x60;);
+    throw new Error(
+      &#x60;Unable to find appropriate transport implementation for device: ${JSON.stringify(device)}&#x60;
+    );
   }
 
   /**
@@ -865,11 +731,15 @@ export default class DeviceFactory {
   static async getUVCControlInterface(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;): Promise&lt;any&gt; {
-
+    secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;
+  ): Promise&lt;any&gt; {
     if (await preferredDeviceApi.isUVCControlsSupported(device)) {
       return preferredDeviceApi.getUVCControlAPIForDevice(device);
     }
+
+    /**
+     * Main device api does not support uvc control interface
+     */
 
     for (const deviceApi of secondaryDeviceApis) {
       if (await deviceApi.isUVCControlsSupported(device)) {
@@ -877,9 +747,9 @@ export default class DeviceFactory {
       }
     }
 
-    // throw new Error(&#x60;Unable to find appropriate uvc control api for ${device}&#x60;);
-    // TODO: Log a warning that none of device api-s support uvc control interface
-    // Boxfish.ts should handle to not use uvc commands when device-api is usb
+    /**
+     * None of the device api&#x27;s support uvc control interface
+     */
     return undefined;
   }
 
@@ -899,43 +769,22 @@ export default class DeviceFactory {
   static async getHIDInterface(
     device: any,
     preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;): Promise&lt;any&gt; {
+    secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;
+  ): Promise&lt;any&gt; {
     if (await preferredDeviceApi.isHIDSupported(device)) {
       return preferredDeviceApi.getHIDAPIForDevice(device);
     }
+
+    Logger.warn(&#x27;Preferred device api does not support HID interface&#x27;, &#x27;SDK DeviceFactory&#x27;);
+
     for (const deviceApi of secondaryDeviceApis) {
       if (await deviceApi.isHIDSupported(device)) {
         return deviceApi.getHIDAPIForDevice(device);
       }
     }
-    throw new Error(&#x60;Unable to find appropriate HID interface for device: ${JSON.stringify(device)}&#x60;);
-  }
-
-
-  /**
-   * Function that returns an upgrader object for a given devInstance
-   *
-   * @param devInstance The device instance retrived from IHuddlyDeviceAPI
-   * @param cameraDiscoveryEmitter The eventEmitter that will allow the upgrader object to see attach/detach events
-   * @param preferredDeviceApi The main IHuddlyDeviceAPI used for communicating
-   * with the camera
-   * @param secondaryDeviceApis Fallback IHuddlyDeviceAPI-s in case the
-   * main interface does not work
-   * @param logger Logger
-   */
-  static async getDeviceUpgrader(
-    cameraManager: IDeviceManager,
-    cameraDiscoveryEmitter: EventEmitter,
-    preferredDeviceApi: IHuddlyDeviceAPI,
-    secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;,
-    logger: any): Promise&lt;IDeviceUpgrader&gt; {
-    if (cameraManager instanceof HuddlyGo) {
-      const hidApi &#x3D; await this.getHIDInterface(cameraManager, preferredDeviceApi, secondaryDeviceApis);
-      return new HuddlyGoUpgrader(cameraManager, cameraDiscoveryEmitter, hidApi, logger);
-    } else if (cameraManager instanceof Boxfish) {
-      return new BoxfishUpgrader(cameraManager, cameraDiscoveryEmitter, logger);
-    }
-    throw new Error(&#x27;Upgrader not implemented&#x27;);
+    throw new Error(
+      &#x60;Unable to find appropriate HID interface for device: ${JSON.stringify(device)}&#x60;
+    );
   }
 
   /**
@@ -944,7 +793,6 @@ export default class DeviceFactory {
    *
    * @static
    * @param {number} productId A usb device product id to distinct betweern different huddly products
-   * @param {DefaultLogger} logger The logger class used for logging messages on console
    * @param {IHuddlyDeviceAPI} preferredDeviceApi The main IHuddlyDeviceAPI used for communicating
    * with the camera
    * @param {Array&lt;IHuddlyDeviceAPI&gt;} secondaryDeviceApis Fallback IHuddlyDeviceAPI-s in case the
@@ -956,34 +804,77 @@ export default class DeviceFactory {
    */
   static async getDevice(
     productId: number,
-    logger: DefaultLogger,
     preferredDeviceApi: IHuddlyDeviceAPI,
     secondaryDeviceApis: Array&lt;IHuddlyDeviceAPI&gt;,
     devInstance: any,
-    doInitialize: boolean &#x3D; true): Promise&lt;IDeviceManager&gt; {
+    cameraDiscoveryEmitter: EventEmitter
+  ): Promise&lt;IDeviceManager&gt; {
     const transport &#x3D; await this.getTransportImplementation(
       devInstance,
       preferredDeviceApi,
-      secondaryDeviceApis);
+      secondaryDeviceApis
+    );
 
     const uvcControlInterface &#x3D; await this.getUVCControlInterface(
       devInstance,
       preferredDeviceApi,
-      secondaryDeviceApis);
+      secondaryDeviceApis
+    );
 
-    let device;
+    let device: IDeviceManager;
     switch (productId) {
-      case HUDDLY_GO_PID:
-        // const hidInterface &#x3D; await this.getHIDInterface(devInstance, preferredDeviceApi, secondaryDeviceApis);
-        device &#x3D; new HuddlyGo(devInstance, transport, uvcControlInterface, logger);
+      case HuddlyHEX.GO_PID:
+        const hidApi &#x3D; await this.getHIDInterface(
+          devInstance,
+          preferredDeviceApi,
+          secondaryDeviceApis
+        );
+        device &#x3D; new HuddlyGo(
+          devInstance,
+          &lt;IUsbTransport&gt;transport,
+          uvcControlInterface,
+          hidApi,
+          cameraDiscoveryEmitter
+        );
         break;
-      case HUDDLY_BOXFISH_PID:
-        device &#x3D; new Boxfish(devInstance, transport, uvcControlInterface, logger);
+      case HuddlyHEX.CLOWNFISH_PID:
+        device &#x3D; new Clownfish(
+          devInstance,
+          &lt;IUsbTransport&gt;transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
+        break;
+      case HuddlyHEX.BOXFISH_PID:
+        device &#x3D; new Boxfish(
+          devInstance,
+          &lt;IUsbTransport&gt;transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
+        break;
+      case HuddlyHEX.DWARFFISH_PID:
+        device &#x3D; new Dwarffish(
+          devInstance,
+          &lt;IUsbTransport&gt;transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
+        break;
+      case HuddlyHEX.DARTFISH_PID:
+        device &#x3D; new DartFish(
+          devInstance,
+          &lt;IUsbTransport&gt;transport,
+          uvcControlInterface,
+          cameraDiscoveryEmitter
+        );
+        break;
+      case HuddlyHEX.L1_PID:
+        device &#x3D; new Ace(devInstance, &lt;IGrpcTransport&gt;transport, cameraDiscoveryEmitter);
         break;
       default:
-        throw new Error(&#x60;Unsupported Device. USB ProductId: ${devInstance.deviceDescriptor.idProduct}&#x60;);
+        throw new Error(&#x60;Unsupported Device. USB ProductId: ${productId}&#x60;);
     }
-    if (doInitialize) await device.initialize();
     return device;
   }
 }
@@ -997,9 +888,10 @@ export default class DeviceFactory {
 
 
 
+
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -1019,9 +911,9 @@ export default class DeviceFactory {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

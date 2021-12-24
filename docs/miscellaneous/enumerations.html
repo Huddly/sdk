@@ -59,10 +59,10 @@
                 <td class="col-md-4">
                     <ul class="index-list">
                         <li>
-                            <a href="#DetectionConvertion" title="src/interfaces/IDetectorOpts.ts" ><b>DetectionConvertion</b>&nbsp;&nbsp;&nbsp;(src/.../IDetectorOpts.ts)</a>
+                            <a href="#ServiceCameraActions" title="src/components/service/cameraSwitchService.ts" ><b>ServiceCameraActions</b>&nbsp;&nbsp;&nbsp;(src/.../cameraSwitchService.ts)</a>
                         </li>
                         <li>
-                            <a href="#DiagnosticsLevel" title="src/components/diagnosticsMessage.ts" ><b>DiagnosticsLevel</b>&nbsp;&nbsp;&nbsp;(src/.../diagnosticsMessage.ts)</a>
+                            <a href="#UpgradeSteps" title="src/components/upgrader/aceUpgrader.ts" ><b>UpgradeSteps</b>&nbsp;&nbsp;&nbsp;(src/.../aceUpgrader.ts)</a>
                         </li>
                     </ul>
                 </td>
@@ -71,77 +71,90 @@
     </table>
 </section>
 
-    <h3>src/interfaces/IDetectorOpts.ts</h3>
+    <h3>src/components/service/cameraSwitchService.ts</h3>
     <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="DetectionConvertion"></a>
-                        <span class="name "><b>DetectionConvertion</b><a href="#DetectionConvertion"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="ServiceCameraActions"></a>
+                        <span class="name "><b>ServiceCameraActions</b><a href="#ServiceCameraActions"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Local enum describing service camera actions used to simplify api calls
+towards the service through GRPC</p>
+</div>
+                        </td>
+                    </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;RELATIVE
+                                &nbsp;ACTIVE
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>RELATIVE</code>
+                                <i>Value : </i><code>0</code>
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;FRAMING
+                                &nbsp;DEFAULT
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>FRAMING</code>
+                                <i>Value : </i><code>1</code>
                             </td>
                         </tr>
             </tbody>
         </table>
 </section>
-    <h3>src/components/diagnosticsMessage.ts</h3>
+    <h3>src/components/upgrader/aceUpgrader.ts</h3>
     <section>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="DiagnosticsLevel"></a>
-                        <span class="name "><b>DiagnosticsLevel</b><a href="#DiagnosticsLevel"><span class="icon ion-ios-link"></span></a></span>
+                        <a name="UpgradeSteps"></a>
+                        <span class="name "><b>UpgradeSteps</b><a href="#UpgradeSteps"><span class="icon ion-ios-link"></span></a></span>
                     </td>
                 </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <div class="io-description"><p>Enum describing the different upgrade steps for L1.</p>
+</div>
+                        </td>
+                    </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;INFO
+                                &nbsp;FLASH
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>INFO</code>
+                                <i>Value : </i><code>0</code>
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;WARN
+                                &nbsp;REBOOT
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>WARN</code>
+                                <i>Value : </i><code>1</code>
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                &nbsp;ERROR
+                                &nbsp;COMMIT
                             </td>
                         </tr>
                         <tr>
                             <td class="col-md-4">
-                                <i>Value : </i><code>ERROR</code>
+                                <i>Value : </i><code>2</code>
                             </td>
                         </tr>
             </tbody>

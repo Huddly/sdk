@@ -8,7 +8,8 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
     </head>
     <body>
 
@@ -42,7 +43,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>HuddlyGoUpgrader</li>
+  <li >HuddlyGoUpgrader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -65,17 +66,25 @@
 
 
             <p class="comment">
+                <h3>Description</h3>
+            </p>
+            <p class="comment">
+                <p>Controller class for instrumenting the upgrade process on Huddly GO camera.</p>
+
+            </p>
+
+            <p class="comment">
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
             </p>
 
             <p class="comment">
                 <h3>Implements</h3>
             </p>
             <p class="comment">
-                        <code><a href="../interfaces/IDeviceUpgrader.html" target="_self" >IDeviceUpgrader</a></code>
+                        <code>IDeviceUpgrader</code>
             </p>
 
 
@@ -83,35 +92,6 @@
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <h6><b>Properties</b></h6>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <ul class="index-list">
-                            <li>
-                                <a href="#_cameraDiscovery">_cameraDiscovery</a>
-                            </li>
-                            <li>
-                                <a href="#_devInstance">_devInstance</a>
-                            </li>
-                            <li>
-                                <a href="#_hidApi">_hidApi</a>
-                            </li>
-                            <li>
-                                <a href="#bootTimeout">bootTimeout</a>
-                            </li>
-                            <li>
-                                <a href="#logger">logger</a>
-                            </li>
-                            <li>
-                                <a href="#options">options</a>
-                            </li>
-                        </ul>
-                    </td>
-                </tr>
 
                 <tr>
                     <td class="col-md-4">
@@ -122,19 +102,19 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#doUpgrade">doUpgrade</a>
-                            </li>
-                            <li>
-                                <a href="#init">init</a>
+                                <a href="#init" >init</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#postUpgrade">postUpgrade</a>
+                                <a href="#postUpgrade" >postUpgrade</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#start">start</a>
+                                <a href="#start" >start</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#upgradeIsValid" >upgradeIsValid</a>
                             </li>
                         </ul>
                     </td>
@@ -154,12 +134,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscovery: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>, hidAPI: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, logger: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>constructor(devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscovery: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>, hidAPI: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:30</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:57</a></div>
                             </td>
                         </tr>
 
@@ -180,7 +160,7 @@
                                                         <td>devInstance</td>
                                                   
                                                         <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                                        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -192,7 +172,7 @@
                                                         <td>cameraDiscovery</td>
                                                   
                                                         <td>
-                                                                    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -204,19 +184,7 @@
                                                         <td>hidAPI</td>
                                                   
                                                         <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                  
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-                                                </tr>
-                                                <tr>
-                                                        <td>logger</td>
-                                                  
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                                        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -233,423 +201,215 @@
         </table>
 </section>
 
-            <section>
-    
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="_cameraDiscovery"></a>
-                        <span class="name">
-                            <b>
-                            _cameraDiscovery
-                            </b>
-                            <a href="#_cameraDiscovery"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <code>_cameraDiscovery:     <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:26</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="_devInstance"></a>
-                        <span class="name">
-                            <b>
-                            _devInstance
-                            </b>
-                            <a href="#_devInstance"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <code>_devInstance:     <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:25</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="_hidApi"></a>
-                        <span class="name">
-                            <b>
-                            _hidApi
-                            </b>
-                            <a href="#_hidApi"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <code>_hidApi:     <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:27</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="bootTimeout"></a>
-                        <span class="name">
-                            <b>
-                            bootTimeout
-                            </b>
-                            <a href="#bootTimeout"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <code>bootTimeout:     <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>(30 * 1000)</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="30" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:30</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="logger"></a>
-                        <span class="name">
-                            <b>
-                            logger
-                            </b>
-                            <a href="#logger"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <code>logger:     <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:28</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="options"></a>
-                        <span class="name">
-                            <b>
-                            options
-                            </b>
-                            <a href="#options"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <code>options:     <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-</code>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>{}</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="29" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:29</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-</section>
 
             <section>
     
-        <h3 id="methods">
-            Methods
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="doUpgrade"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Async</span>
-                            doUpgrade
-                            </b>
-                            <a href="#doUpgrade"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>doUpgrade()</code>
-                    </td>
-                </tr>
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="init"></a>
+                    <span class="name">
+                        <span ><b>init</b></span>
+                        <a href="#init"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>init(opts: UpgradeOpts)</code>
+                </td>
+            </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="53" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:53</a></div>
-                            </td>
-                        </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="72"
+                            class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:72</a></div>
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="col-md-4">
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Initializes the upgrader with the necessary options.</p>
+</div>
 
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                            <code>UpgradeOpts</code>
+                                    </td>
 
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="init"></a>
-                        <span class="name">
-                            <b>
-                            init
-                            </b>
-                            <a href="#init"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-<code>init(opts: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
-                    </td>
-                </tr>
+                                    <td>
+                                        No
+                                    </td>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="40" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:40</a></div>
-                            </td>
-                        </tr>
+                                    <td>
+                                        <p>The upgrade options required for performing a firmware upgrade on Huddly GO</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="postUpgrade"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>postUpgrade</b></span>
+                        <a href="#postUpgrade"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>postUpgrade()</code>
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                    <b>Parameters :</b>
-                                    <table class="params">
-                                        <thead>
-                                            <tr>
-                                                <td>Name</td>
-                                                    <td>Type</td>
-                                                <td>Optional</td>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                                <tr>
-                                                        <td>opts</td>
-                                                        <td>
-                                                                    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-                                                        </td>
-                                                    
-                                                    <td>
-                                                            No
-                                                    </td>
-                                                    
-
-                                                </tr>
-                                        </tbody>
-                                    </table>
-                            </div>
-                            <div>
-                            </div>
-                            <div class="io-description">
-                                <b>Returns : </b>    <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
-
-                            </div>
-                                <div class="io-description">
-                                    
-                                </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="postUpgrade"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Async</span>
-                            postUpgrade
-                            </b>
-                            <a href="#postUpgrade"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>postUpgrade()</code>
-                    </td>
-                </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="170"
+                            class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:170</a></div>
+                </td>
+            </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="100" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:100</a></div>
-                            </td>
-                        </tr>
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="start"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
+                        <a href="#start"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>start()</code>
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="col-md-4">
-
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="start"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Async</span>
-                            start
-                            </b>
-                            <a href="#start"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                            <span class="modifier-icon icon ion-ios-reset"></span>
-                        <code>start()</code>
-                    </td>
-                </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="98"
+                            class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:98</a></div>
+                </td>
+            </tr>
 
 
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:47</a></div>
-                            </td>
-                        </tr>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Starts the upgrade process on the Huddly GO camera and also reports upgrade status to the consumer
+using events.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Void function that relies on events for communicating the upgrade result/progress.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="upgradeIsValid"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>upgradeIsValid</b></span>
+                        <a href="#upgradeIsValid"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>upgradeIsValid()</code>
+                </td>
+            </tr>
 
 
-                <tr>
-                    <td class="col-md-4">
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="175"
+                            class="link-to-prism">src/components/upgrader/huddlygoUpgrader.ts:175</a></div>
+                </td>
+            </tr>
 
-                            <div class="io-description">
-                                <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
 
-                            </div>
-                    </td>
-                </tr>
-            </tbody>
-        </table>
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
-
 
 
 
@@ -660,70 +420,136 @@
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
-import IDeviceUpgrader from &#x27;./../../interfaces/IDeviceUpgrader&#x27;;
-import CameraEvents from &#x27;./../../utilitis/events&#x27;;
 import JSZip from &#x27;jszip&#x27;;
+
+import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
+import UpgradeOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+
+import CameraEvents from &#x27;./../../utilitis/events&#x27;;
+import UpgradeStatus, { UpgradeStatusStep } from &#x27;./upgradeStatus&#x27;;
 
 const BINARY_APPLICATION &#x3D; &#x27;huddly.bin&#x27;;
 const BINARY_BOOT &#x3D; &#x27;huddly_boot.bin&#x27;;
 
+/**
+ * @ignore
+ *
+ * @param {*} pkgAsBuffer
+ * @return {*} Object of buffers
+ */
 const getBinaries &#x3D; async (pkgAsBuffer) &#x3D;&gt; {
   if (pkgAsBuffer &#x3D;&#x3D;&#x3D; null) return {};
   const pkg &#x3D; await JSZip.loadAsync(pkgAsBuffer);
 
-  const mv2AppFile &#x3D; pkg.files[BINARY_APPLICATION] ? BINARY_APPLICATION : &#x60;bin/${BINARY_APPLICATION}&#x60;;
+  const mv2AppFile &#x3D; pkg.files[BINARY_APPLICATION]
+    ? BINARY_APPLICATION
+    : &#x60;bin/${BINARY_APPLICATION}&#x60;;
   const mv2BootFile &#x3D; pkg.files[BINARY_BOOT] ? BINARY_BOOT : &#x60;bin/${BINARY_BOOT}&#x60;;
 
   const mv2 &#x3D; await pkg.files[mv2AppFile].async(&#x27;nodebuffer&#x27;);
   const mv2_boot &#x3D; await pkg.files[mv2BootFile].async(&#x27;nodebuffer&#x27;);
   return {
     mv2,
-    mv2_boot
+    mv2_boot,
   };
 };
 
+/**
+ * Controller class for instrumenting the upgrade process on Huddly GO camera.
+ *
+ * @export
+ * @class HuddlyGoUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
+ */
 export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpgrader {
+  /** @ignore */
   _devInstance: any;
+  /** @ignore */
   _cameraDiscovery: EventEmitter;
+  /** @ignore */
   _hidApi: any;
-  logger: any;
+  /** @ignore */
   options: any &#x3D; {};
-  bootTimeout: number &#x3D; (30 * 1000); // 30 seconds
+  /** @ignore */
+  bootTimeout: number &#x3D; 30 * 1000; // 30 seconds
+  /** @ignore */
+  private _upgradeStatus: UpgradeStatus;
 
-  constructor(devInstance: any, cameraDiscovery: EventEmitter, hidAPI: any, logger: any) {
+  constructor(devInstance: any, cameraDiscovery: EventEmitter, hidAPI: any) {
     super();
     this._devInstance &#x3D; devInstance;
     this._cameraDiscovery &#x3D; cameraDiscovery;
     this._hidApi &#x3D; hidAPI;
-    this.logger &#x3D; logger;
   }
 
-  init(opts: any): void {
+  /**
+   * Initializes the upgrader with the necessary options.
+   *
+   * @param {UpgradeOpts} opts The upgrade options required for performing a firmware upgrade on Huddly GO
+   * @memberof HuddlyGoUpgrader
+   */
+  init(opts: UpgradeOpts): void {
     this.options.file &#x3D; opts.file;
     if (opts.bootTimeout) {
       this.bootTimeout &#x3D; opts.bootTimeout * 1000;
     }
   }
 
-  async start(): Promise&lt;void&gt; {
-    this.emit(CameraEvents.UPGRADE_START);
-    this.doUpgrade();
+  /**
+   * @ignore
+   * Helper function for firing upgrade progress status events
+   *
+   * @param {string} [statusString] The status of the upgrade to be reported.
+   * @memberof HuddlyGoUpgrader
+   */
+  emitProgressStatus(statusString?: string) {
+    if (statusString) this._upgradeStatus.statusString &#x3D; statusString;
+    this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
   }
 
+  /**
+   * Starts the upgrade process on the Huddly GO camera and also reports upgrade status to the consumer
+   * using events.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function that relies on events for communicating the upgrade result/progress.
+   * @memberof HuddlyGoUpgrader
+   */
+  async start(): Promise&lt;void&gt; {
+    const step &#x3D; new UpgradeStatusStep(&#x27;Upgrading camera&#x27;);
+    this._upgradeStatus &#x3D; new UpgradeStatus([step]);
+    this.emitProgressStatus(&#x27;Starting upgrade&#x27;);
+    this.emit(CameraEvents.UPGRADE_START);
+    step.progress &#x3D; 1;
+    this.emitProgressStatus();
+    await this.doUpgrade();
+    step.progress &#x3D; 100;
+    this.emitProgressStatus(&#x27;Upgrade completed&#x27;);
+  }
 
+  /**
+   * @ignore
+   * Start the upgrade procedure on the Huddly GO camera without setting up upgrade status. Plase use
+   * &#x60;start()&#x60; when you want to invoke the proper upgrade with status reporting.
+   *
+   * @return {*}  {Promise&lt;any&gt;} Resolves when the upgrade is completed.
+   * @memberof HuddlyGoUpgrader
+   */
   async doUpgrade(): Promise&lt;any&gt; {
     const hidEventEmitter &#x3D; new EventEmitter();
     let bootTimeout;
     this._hidApi.registerForHotplugEvents(hidEventEmitter);
-    const upgradePromise &#x3D; new Promise(async (resolve, reject) &#x3D;&gt; {
+    const upgradePromise &#x3D; new Promise&lt;void&gt;(async (resolve, reject) &#x3D;&gt; {
       const binaries &#x3D; await getBinaries(this.options.file);
       hidEventEmitter.on(&#x27;HID_ATTACH&#x27;, () &#x3D;&gt; {
-        this.logger.debug(&#x27;HID Device attached&#x27;);
+        Logger.debug(&#x27;HID Device attached&#x27;, &#x27;HuddlyGO Upgrader&#x27;);
         hidEventEmitter.removeAllListeners(&#x27;HID_ATTACH&#x27;);
         this._hidApi.upgrade(binaries);
       });
 
       hidEventEmitter.on(&#x27;UPGRADE_FAILED&#x27;, (msg) &#x3D;&gt; {
+        Logger.info(&#x27;HID Upgrade failed&#x27;, &#x27;HuddlyGO Upgrader&#x27;);
         hidEventEmitter.removeAllListeners(&#x27;UPGRADE_FAILED&#x27;);
         hidEventEmitter.removeAllListeners(&#x27;UPGRADE_COMPLETE&#x27;);
         this.emit(CameraEvents.UPGRADE_FAILED);
@@ -731,13 +557,15 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
         return reject(msg);
       });
 
-      hidEventEmitter.on(&#x27;UPGRADE_PROGRESS&#x27;, msg &#x3D;&gt; {
-        this.logger.debug(msg);
+      hidEventEmitter.on(&#x27;UPGRADE_PROGRESS&#x27;, (msg) &#x3D;&gt; {
+        Logger.info(msg, &#x27;HuddlyGO Upgrader&#x27;);
       });
+
       hidEventEmitter.on(&#x27;UPGRADE_COMPLETE&#x27;, async () &#x3D;&gt; {
         bootTimeout &#x3D; setTimeout(() &#x3D;&gt; {
           clearTimeout(bootTimeout);
           this.emit(CameraEvents.TIMEOUT, &#x27;Camera did not come back up after upgrade!&#x27;);
+          Logger.info(&#x27;HID Upgrade timed out&#x27;, &#x27;HuddlyGO Upgrader&#x27;);
         }, this.bootTimeout);
 
         await this._hidApi.rebootInAppMode();
@@ -747,10 +575,12 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
         hidEventEmitter.removeAllListeners(&#x27;UPGRADE_COMPLETE&#x27;);
         clearTimeout(bootTimeout);
         this.emit(CameraEvents.UPGRADE_COMPLETE);
+        Logger.info(&#x27;Upgrade successful&#x27;, &#x27;HuddlyGO Upgrader&#x27;);
         return resolve();
       });
 
       // this.eventEmitter.emit(CameraEvents.UPGRADE_START);
+      Logger.debug(&#x27;Booting the camera into bootloader mode&#x27;, &#x27;HuddlyGO Upgrader&#x27;);
       this._devInstance.reboot(&#x27;bl&#x27;);
 
       this._hidApi.startScanner(100); // set low scan interval
@@ -762,7 +592,13 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
     // Huddly Go does not require any post upgrade checks!
     return Promise.resolve();
   }
-}</code></pre>
+
+  async upgradeIsValid(): Promise&lt;boolean&gt; {
+    // Huddly Go does valid check works!
+    return Promise.resolve(true);
+  }
+}
+</code></pre>
     </div>
 </div>
 
@@ -772,9 +608,10 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
 
 
 
+
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -794,9 +631,9 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

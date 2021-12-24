@@ -99,7 +99,7 @@ If you have a question or found a bug please [open an issue](https://github.com/
 
 
 ## Documentation
-For more details on the rest of the functionality to the sdk check out developer.huddly.com for the different classes, interfaces, enums and more which some of them having example code as well.
+For more details on the rest of the functionality to the sdk check out [developer.huddly.com](http://developer.huddly.com) for the different classes, interfaces, enums and more which some of them having example code as well.
 
 ## Repo
 Check out the sdk code on github (https://github.com/Huddly/sdk)
