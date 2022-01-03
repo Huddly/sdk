@@ -205,7 +205,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     this.once('UPGRADE_REBOOT_COMPLETE', async () => {
       Logger.debug('Camera successfully booted after upgrade', 'Boxfish HPK Upgrader');
       rebootStep.progress = 100;
-      clearTimeout(upgradeTimoutId);
+      global.clearTimeout(upgradeTimoutId);
       try {
         Logger.debug('Verifying new software', 'Boxfish HPK Upgrader');
         this.emitProgressStatus('Verifying new software');
@@ -237,7 +237,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         runningHpkStep,
         rebootStep
       );
-      upgradeTimoutId = setTimeout(
+      upgradeTimoutId = global.setTimeout(
         () =>
           this.emit(
             CameraEvents.UPGRADE_FAILED,

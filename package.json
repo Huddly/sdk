@@ -103,7 +103,7 @@
     "cpio-stream": "git+https://git@github.com/Huddly/cpio-stream.git",
     "@huddly/sdk-interfaces": "^0.1.2",
     "google-protobuf": "^3.17.3",
-    "jszip": "3.2.2",
+    "jszip": "^3.7.1",
     "msgpack-lite": "~0.1.26",
     "p-queue": "^6.6.2",
     "semver": "^7.3.5",
