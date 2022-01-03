@@ -76,7 +76,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
     if (!this._options.DOWS) {
       await this._startDetections();
     }
-    this._intervalId = setInterval(
+    this._intervalId = global.setInterval(
       () => this._getDetections().then(this._detectionHandler),
       this._UPDATE_INTERVAL
     );

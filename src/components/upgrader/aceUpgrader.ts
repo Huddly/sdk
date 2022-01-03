@@ -291,7 +291,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
     const currentVersion: string = await this.getVersion();
     const expcetedVersion: string = await new Promise((resolve) => {
       let expcetedVersion: string = 'N/A';
-      const readTimeout: NodeJS.Timeout = setTimeout(() => {
+      const readTimeout: NodeJS.Timeout = global.setTimeout(() => {
         Logger.warn('Unable to read version string from cpio file within 1s time frame', Ace.name);
         resolve('N/A');
       }, 1000);
@@ -430,7 +430,7 @@ export default class AceUpgrader extends EventEmitter implements IDeviceUpgrader
     const extract = cpio.extract();
 
     return new Promise((resolve, reject) => {
-      const readTimeout: NodeJS.Timeout = setTimeout(() => {
+      const readTimeout: NodeJS.Timeout = global.setTimeout(() => {
         const errMsg = `Unable to perform upgrade step ${step} within given time of 10 seconds`;
         Logger.warn(errMsg, Ace.name);
         this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
