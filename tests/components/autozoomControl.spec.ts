@@ -3,6 +3,7 @@ import { expect } from 'chai';
 
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
+import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
 
 import AutozoomControl from '../../src/components/autozoomControl';
 import Api from '../../src/components/api';
@@ -19,11 +20,15 @@ describe('AutozoomControl', () => {
 
   describe('#init', () => {
     let uploadFramingConfigStub;
+    let getAutozoomStatusStub;
+
     beforeEach(() => {
       uploadFramingConfigStub = sinon.stub(AutozoomControl.prototype, 'uploadFramingConfig');
+      getAutozoomStatusStub = sinon.stub(deviceManager.api, 'getAutozoomStatus').resolves({});
     });
     afterEach(() => {
       uploadFramingConfigStub.restore();
+      getAutozoomStatusStub.restore();
     });
 
     describe('on shouldAutoFrame option set', () => {
@@ -55,14 +60,111 @@ describe('AutozoomControl', () => {
   });
 
   describe('#updateOpts', () => {
-    it('should update old opts with new opts and call init to reconfigure autozoom', () => {
-      const newOpts: AutozoomControlOpts = {
-        shouldAutoFrame: false,
-      };
-      const initSpy = sinon.spy(autozoomControl, 'init');
-      autozoomControl.updateOpts(newOpts);
-      expect(autozoomControl._options).to.deep.equals(newOpts);
-      expect(initSpy.called).to.equals(true);
+    describe('on changes to `shouldAutoFrame`', () => {
+      it('should update old opts with new opts and call init to reconfigure autozoom', () => {
+        const newOpts = {
+          shouldAutoFrame: false,
+        };
+        const initSpy = sinon.spy(autozoomControl, 'init');
+        autozoomControl.updateOpts(newOpts);
+        expect(autozoomControl._options).to.deep.equals({
+          shouldAutoFrame: false,
+          mode: undefined,
+        });
+        expect(initSpy.called).to.equals(true);
+      });
+    });
+    describe('on `shouldAutoFrame` set, but not changed', () => {
+      it('should not call init to reconfigure autozoom', async () => {
+        const newOpts = {
+          shouldAutoFrame: true,
+        };
+        const initSpy = sinon.spy(autozoomControl, 'init');
+        autozoomControl.updateOpts(newOpts);
+        expect(initSpy.called).to.equals(false);
+      });
+    });
+    describe('on `shouldAutoFrame` not set', () => {
+      it('should not call init to reconfigure autozoom', async () => {
+        const newOpts = {};
+        const initSpy = sinon.spy(autozoomControl, 'init');
+        autozoomControl.updateOpts(newOpts);
+        expect(initSpy.called).to.equals(false);
+      });
+    });
+
+    describe('on changes to `autozoomMode`', () => {
+      let getAutozoomStatusStub;
+
+      beforeEach(() => {
+        getAutozoomStatusStub = sinon.stub(deviceManager.api, 'getAutozoomStatus').resolves({});
+      });
+      afterEach(() => {
+        getAutozoomStatusStub.restore();
+      });
+
+      describe('on target set-mode successfully', () => {
+        it('should update this._options', async () => {
+          autozoomControl = new AutozoomControl(deviceManager, { mode: AutozoomModes.NORMAL });
+          const newOpts = {
+            mode: AutozoomModes.PLAZA,
+          };
+          const stub = sinon.stub(deviceManager.api, 'sendAndReceiveMessagePack');
+          stub.resolves({ 'autozoom-mode': 'plaza' });
+          await autozoomControl.updateOpts(newOpts);
+          expect(autozoomControl._options.mode).to.equals(AutozoomModes.PLAZA);
+          expect(
+            stub.calledWith(
+              { mode: AutozoomModes.PLAZA },
+              {
+                send: 'autozoom/set-mode',
+                receive: 'autozoom/set-mode_reply',
+              }
+            )
+          );
+        });
+      });
+      describe('on target set-mode failure', () => {
+        it('should not update this._options and return reject', async () => {
+          autozoomControl = new AutozoomControl(deviceManager, { mode: AutozoomModes.NORMAL });
+          const newOpts = {
+            mode: AutozoomModes.PLAZA,
+          };
+          const stub = sinon.stub(deviceManager.api, 'sendAndReceiveMessagePack');
+          stub.rejects();
+          const spy = sinon.spy(autozoomControl, 'updateOpts');
+          try {
+            await autozoomControl.updateOpts(newOpts);
+          } catch {
+            // pass
+          }
+          expect(spy.threw());
+          expect(autozoomControl._options.mode).to.equal(AutozoomModes.NORMAL);
+        });
+      });
+    });
+    describe('on `autozoomMode` set, but not changed', () => {
+      it('should not send a request to change autozoomMode on the camera', async () => {
+        autozoomControl = new AutozoomControl(deviceManager, { mode: AutozoomModes.NORMAL });
+        const newOpts = {
+          mode: AutozoomModes.NORMAL,
+        };
+        const spy = sinon.spy(deviceManager.api, 'sendAndReceiveMessagePack');
+        await autozoomControl.updateOpts(newOpts);
+        expect(autozoomControl._options.mode).to.equals(AutozoomModes.NORMAL);
+        expect(spy.called).to.equal(false);
+      });
+    });
+    describe('on `autozoomMode` not set', () => {
+      it('should not send a request to change autozoomMode on the camera', async () => {
+        const newOpts = {
+          mode: undefined,
+        };
+        const spy = sinon.spy(deviceManager.api, 'sendAndReceiveMessagePack');
+        await autozoomControl.updateOpts(newOpts);
+        expect(autozoomControl._options.mode).to.equals(undefined);
+        expect(spy.called).to.equal(false);
+      });
     });
   });
 
@@ -86,7 +188,7 @@ describe('AutozoomControl', () => {
         await autozoomControl.enable(10);
         expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
           send: 'autozoom/enable',
-          receive: 'autozoom/enable_reply'
+          receive: 'autozoom/enable_reply',
         });
       });
 
@@ -109,9 +211,13 @@ describe('AutozoomControl', () => {
 
       it('should throw error when all retries result disabled state', async () => {
         sendAndReceiveStub.resolves();
-        isEnabledStub.onFirstCall().resolves(false)
-          .onSecondCall().resolves(false)
-          .onThirdCall().resolves(false);
+        isEnabledStub
+          .onFirstCall()
+          .resolves(false)
+          .onSecondCall()
+          .resolves(false)
+          .onThirdCall()
+          .resolves(false);
         try {
           await autozoomControl.enable();
         } catch (e) {
@@ -128,7 +234,7 @@ describe('AutozoomControl', () => {
         await autozoomControl.disable(10);
         expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
           send: 'autozoom/disable',
-          receive: 'autozoom/disable_reply'
+          receive: 'autozoom/disable_reply',
         });
         expect(isEnabledStub.callCount).to.equals(1);
       });
@@ -152,9 +258,13 @@ describe('AutozoomControl', () => {
 
       it('should throw error when all retries result in enabled state', async () => {
         sendAndReceiveStub.resolves();
-        isEnabledStub.onFirstCall().resolves(true)
-          .onSecondCall().resolves(true)
-          .onThirdCall().resolves(true);
+        isEnabledStub
+          .onFirstCall()
+          .resolves(true)
+          .onSecondCall()
+          .resolves(true)
+          .onThirdCall()
+          .resolves(true);
         try {
           await autozoomControl.disable();
         } catch (e) {
@@ -180,7 +290,7 @@ describe('AutozoomControl', () => {
         serial: '12344t5o4132',
         name: 'Huddly Camera',
         vendor: 1234,
-        autozoom_enabled: false
+        autozoom_enabled: false,
       };
       prodInfoStub.resolves(prodInfoRes);
       const isEnabled = await autozoomControl.isEnabled();
@@ -210,7 +320,7 @@ describe('AutozoomControl', () => {
           await autozoomControl.start();
           expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
             send: 'autozoom/start',
-            receive: 'autozoom/start_reply'
+            receive: 'autozoom/start_reply',
           });
           expect(sendAndReceiveStub.getCall(0).args[2]).to.equals(3000);
         });
@@ -231,7 +341,7 @@ describe('AutozoomControl', () => {
           await autozoomControl.stop();
           expect(sendAndReceiveStub.getCall(0).args[1]).to.deep.equals({
             send: 'autozoom/stop',
-            receive: 'autozoom/stop_reply'
+            receive: 'autozoom/stop_reply',
           });
           expect(sendAndReceiveStub.getCall(0).args[2]).to.equals(3000);
         });
@@ -280,7 +390,7 @@ describe('AutozoomControl', () => {
     describe('on network not configured', () => {
       beforeEach(() => {
         autozoomStatusStub.resolves({
-          'network-configured': false
+          'network-configured': false,
         });
       });
       it('should call appropriate api message for blob upload', async () => {
@@ -288,7 +398,7 @@ describe('AutozoomControl', () => {
         expect(sendReceiveStub.getCall(0).args[0].compare(Buffer.from(''))).to.equals(0);
         expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
           send: 'network-blob',
-          receive: 'network-blob_reply'
+          receive: 'network-blob_reply',
         });
         expect(sendReceiveStub.getCall(0).args[2]).to.equals(60000);
       });
@@ -296,7 +406,7 @@ describe('AutozoomControl', () => {
     describe('on network configured', () => {
       beforeEach(() => {
         autozoomStatusStub.resolves({
-          'network-configured': true
+          'network-configured': true,
         });
       });
       it('should do nothing', async () => {
@@ -325,7 +435,7 @@ describe('AutozoomControl', () => {
         expect(sendReceiveStub.getCall(0).args[0]).to.equals('Dummy Config');
         expect(sendReceiveStub.getCall(0).args[1]).to.deep.equals({
           send: 'detector/config',
-          receive: 'detector/config_reply'
+          receive: 'detector/config_reply',
         });
         expect(sendReceiveStub.getCall(0).args[2]).to.equals(6000);
       });

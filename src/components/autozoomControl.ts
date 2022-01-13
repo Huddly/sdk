@@ -2,6 +2,7 @@ import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoom
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
+import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
 
 import Api from './api';
 
@@ -22,6 +23,7 @@ export default class AutozoomControl implements ICnnControl {
     this._deviceManager = manager;
     this._options = options || {
       shouldAutoFrame: true,
+      mode: undefined,
     };
   }
 
@@ -33,6 +35,19 @@ export default class AutozoomControl implements ICnnControl {
    * @memberof AutozoomControl
    */
   async init(): Promise<any> {
+    Logger.info('Fetching autozoom state...', 'Autozoom Control');
+    const azStatus = await this._deviceManager.api.getAutozoomStatus();
+    // Default to NORMAL for cameras without autozoom-mode support.
+    const currentMode = azStatus['autozoom-mode'] || AutozoomModes.NORMAL;
+    if (currentMode !== this._options.mode) {
+      Logger.info(`Setting autozoom-mode to: '${this._options.mode}'`, 'Autozoom Control');
+      try {
+        this._setMode(this._options.mode);
+      } catch (e) {
+        Logger.warn(`Failed in setting autozoom-mode: ${e}.`);
+        this._options.mode = undefined;
+      }
+    }
     if (this._options.shouldAutoFrame !== undefined && this._options.shouldAutoFrame !== null) {
       Logger.debug(
         `Initializing autozoom with framing config option AUTO_PTZ: ${this._options.shouldAutoFrame}`,
@@ -56,13 +71,37 @@ export default class AutozoomControl implements ICnnControl {
    * @return {*}  {Promise<any>} Resolves when the new options have been applied and detector is initialized.
    * @memberof AutozoomControl
    */
-  updateOpts(options: AutozoomControlOpts): Promise<any> {
-    const currentSetOpts = this._options;
-    this._options = {
-      ...currentSetOpts,
-      ...options,
-    };
-    return this.init();
+  async updateOpts(newOpts: AutozoomControlOpts): Promise<any> {
+    const prevOpts = this._options;
+    const nextOpts = { ...prevOpts, ...newOpts };
+    this._validateOptions(nextOpts);
+
+    if (nextOpts.mode !== prevOpts.mode) {
+      try {
+        await this._setMode(newOpts.mode);
+      } catch (e) {
+        Logger.error('Failed in updating opts:', e);
+        return Promise.reject(e);
+      }
+    }
+    this._options = nextOpts;
+
+    if (nextOpts.shouldAutoFrame !== prevOpts.shouldAutoFrame) {
+      await this.init();
+    }
+  }
+
+  private _validateOptions(options: AutozoomControlOpts) {
+    if (
+      options.shouldAutoFrame === false &&
+      options.mode &&
+      options.mode !== AutozoomModes.NORMAL
+    ) {
+      const modeName = options.mode;
+      throw Error(
+        `AutozoomMode '${modeName}' does not support option 'shouldAutoFrame' set to ${options.shouldAutoFrame}!`
+      );
+    }
   }
 
   /**
@@ -249,6 +288,40 @@ export default class AutozoomControl implements ICnnControl {
     } else {
       Logger.debug('Cnn blob already configured on the camera', 'Autozoom Control');
     }
+  }
+
+  async _setMode(mode: AutozoomModes) {
+    const azStatus = await this._deviceManager.api.getAutozoomStatus();
+    // Default to NORMAL for cameras without autozoom-mode support.
+    const currentMode = azStatus['autozoom-mode'] || AutozoomModes.NORMAL;
+    if (currentMode === mode) {
+      Logger.info(`Camera already in autozoom-mode: '${mode}'`, 'Autozoom Control');
+      return currentMode;
+    }
+
+    const modeKeys = {
+      normal: 0,
+      plaza: 1,
+      plaza_duplicate: 2,
+    };
+    Logger.debug(
+      `Sending autozoom/set-mode request with param '{ mode: ${modeKeys[mode]} }'`,
+      'Autozoom Control'
+    );
+    const response = await this._deviceManager.api.sendAndReceiveMessagePack(
+      { mode: modeKeys[mode] },
+      {
+        send: 'autozoom/set-mode',
+        receive: 'autozoom/set-mode_reply',
+      }
+    );
+    Logger.debug(`Received autozoom/set-mode response: ${JSON.stringify(response)}`);
+    if (response['autozoom-mode'] !== mode) {
+      throw new Error(
+        `Could not set autozoomMode '${mode}': Target replied with mode '${response['autozoom-mode']}'`
+      );
+    }
+    return response['autozoom-mode'];
   }
 
   /**
