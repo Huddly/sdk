@@ -1,3 +1,27 @@
+#### 0.6.5 (2022-01-26)
+
+##### Chores
+
+*  use https for forked cpio-stream (works better in CI) ([ec19a005](https://github.com/Huddly/sdk/commit/ec19a005001774dd9cd9bed8eabf8d99c392a791))
+*  bump @huddly/sdk-interfaces to v0.1.1 ([8aa12a96](https://github.com/Huddly/sdk/commit/8aa12a9625b55454024b5c0d81d043d497938ee9))
+
+##### Documentation Changes
+
+*  Update the documentation html files ([20c3883d](https://github.com/Huddly/sdk/commit/20c3883d653b3ddbba5f435f9ff1bf32cd9a61e5))
+*  Update jsdocs after interface restructuring ([6dc971f2](https://github.com/Huddly/sdk/commit/6dc971f2e95c67d972f926c658a007d1228361d7))
+
+##### New Features
+
+*  Support new autozoom mode 'Plaza' (aka 'Gallery View') on IQ ([5551c9b5](https://github.com/Huddly/sdk/commit/5551c9b5d2d25283139ce03685a1791f41b26e51))
+*  switch to github actions from travis ([740f09da](https://github.com/Huddly/sdk/commit/740f09dade45b44c9294000f3d72ecdb00490ef3))
+*  Refactor our interfaces to separate repo/npm ([d83fdd6e](https://github.com/Huddly/sdk/commit/d83fdd6e2882c512e7eae824ac23ae09f20ba1c6))
+
+##### Refactors
+
+*  Grpc client init only on Ace.ts ([796a34e8](https://github.com/Huddly/sdk/commit/796a34e88143842e8298abb90b641c7daed20406))
+*  Use Logger and HuddlyHex from sdk-interfaces ([a4a7c48d](https://github.com/Huddly/sdk/commit/a4a7c48d300aa1e7d8295fec080b415ab98ee777))
+*  remove compodoc command on package.json ([1813bfec](https://github.com/Huddly/sdk/commit/1813bfec52f0373c3ea2a332c9cb60d9c6bea1f0))
+
 #### 0.6.4 (2021-12-16)
 
 ##### Chores
