@@ -36,7 +36,8 @@ export default class AutozoomControl implements ICnnControl {
    */
   async init(): Promise<any> {
     Logger.info('Fetching autozoom state...', 'Autozoom Control');
-    const azStatus = await this._deviceManager.api.getAutozoomStatus();
+    // Might take longer than 500ms to get the az controller status initially
+    const azStatus = await this._deviceManager.api.getAutozoomStatus(5000);
     // Default to NORMAL for cameras without autozoom-mode support.
     const currentMode = azStatus['autozoom-mode'] || AutozoomModes.NORMAL;
     if (currentMode !== this._options.mode) {
