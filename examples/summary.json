@@ -1,45 +1,5 @@
 [
   {
-    "title": "Examples",
-    "file": "README.md",
-    "children": [
-      {
-        "title": "Peoplecount in a meeting room",
-        "file": "ga_peoplecount/README.md"
-      },
-      {
-        "title": "REST api",
-        "file": "rest/README.md",
-        "children": [
-          {
-            "title": "Get detections",
-            "file": "rest/documentation/detector_get.md"
-          },
-          {
-            "title": "Detector start",
-            "file": "rest/documentation/detector_start.md"
-          },
-          {
-            "title": "Detector stop",
-            "file": "rest/documentation/detector_stop.md"
-          },
-          {
-            "title": "Camera info",
-            "file": "rest/documentation/info.md"
-          },
-          {
-            "title": "Upgrade",
-            "file": "rest/documentation/upgrade.md"
-          },
-          {
-            "title": "Upgrade status",
-            "file": "rest/documentation/upgrade_status.md"
-          }
-        ]
-      }
-    ]
-  },
-  {
     "title": "Detector",
     "file": "detector_doc/detector.md",
     "children": [
@@ -48,13 +8,5 @@
         "file": "detector_doc/previous_detectors.md"
       }
     ]
-  },
-  {
-    "title": "Canvas",
-    "file": "canvas_doc/canvas.md"
-  },
-  {
-    "title": "Huddly L1",
-    "file": "huddly_l1/l1_docs.md"
   }
 ]
