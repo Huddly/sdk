@@ -692,7 +692,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
     if (!this._options.DOWS) {
       await this._startDetections();
     }
-    this._intervalId &#x3D; setInterval(
+    this._intervalId &#x3D; global.setInterval(
       () &#x3D;&gt; this._getDetections().then(this._detectionHandler),
       this._UPDATE_INTERVAL
     );

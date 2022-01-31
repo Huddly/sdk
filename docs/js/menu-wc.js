@@ -59,41 +59,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="additional-pages"' : 'id="xs-additional-pages"' }>
                                     <li class="chapter inner">
-                                        <a data-type="chapter-link" href="additional-documentation/examples.html" data-context-id="additional">
-                                            <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
-                                            'data-target="#additional-page-8ca1d4e00aecfd0c791bb89268726675"' : 'data-target="#xs-additional-page-8ca1d4e00aecfd0c791bb89268726675"' }>
-                                                <span class="link-name">Examples</span>
-                                                <span class="icon ion-ios-arrow-down"></span>
-                                            </div>
-                                        </a>
-                                        <ul class="links collapse" ${ isNormalMode ? 'id="additional-page-8ca1d4e00aecfd0c791bb89268726675"' : 'id="xs-additional-page-8ca1d4e00aecfd0c791bb89268726675"' }>
-                                            <li class="link for-chapter2">
-                                                <a href="additional-documentation/examples/peoplecount-in-a-meeting-room.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Peoplecount in a meeting room</a>
-                                            </li>
-                                            <li class="link for-chapter2">
-                                                <a href="additional-documentation/examples/rest-api.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">REST api</a>
-                                            </li>
-                                            <li class="link for-chapter3">
-                                                <a href="additional-documentation/examples/rest-api/get-detections.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Get detections</a>
-                                            </li>
-                                            <li class="link for-chapter3">
-                                                <a href="additional-documentation/examples/rest-api/detector-start.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Detector start</a>
-                                            </li>
-                                            <li class="link for-chapter3">
-                                                <a href="additional-documentation/examples/rest-api/detector-stop.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Detector stop</a>
-                                            </li>
-                                            <li class="link for-chapter3">
-                                                <a href="additional-documentation/examples/rest-api/camera-info.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Camera info</a>
-                                            </li>
-                                            <li class="link for-chapter3">
-                                                <a href="additional-documentation/examples/rest-api/upgrade.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Upgrade</a>
-                                            </li>
-                                            <li class="link for-chapter3">
-                                                <a href="additional-documentation/examples/rest-api/upgrade-status.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Upgrade status</a>
-                                            </li>
-                                        </ul>
-                                    </li>
-                                    <li class="chapter inner">
                                         <a data-type="chapter-link" href="additional-documentation/detector.html" data-context-id="additional">
                                             <div class="menu-toggler linked" data-toggle="collapse" ${ isNormalMode ?
                                             'data-target="#additional-page-a028636532e4612c39dedd405fdc32ff"' : 'data-target="#xs-additional-page-a028636532e4612c39dedd405fdc32ff"' }>
@@ -106,12 +71,6 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                                                 <a href="additional-documentation/detector/previous-detectors.html" data-type="entity-link" data-context="sub-entity" data-context-id="additional">Previous Detectors</a>
                                             </li>
                                         </ul>
-                                    </li>
-                                    <li class="link ">
-                                        <a href="additional-documentation/canvas.html" data-type="entity-link" data-context-id="additional">Canvas</a>
-                                    </li>
-                                    <li class="link ">
-                                        <a href="additional-documentation/huddly-l1.html" data-type="entity-link" data-context-id="additional">Huddly L1</a>
                                     </li>
                         </ul>
                     </li>
