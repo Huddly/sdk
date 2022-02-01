@@ -14,6 +14,7 @@ import Dwarffish from './dwarffish';
 import Clownfish from './clownfish';
 import DartFish from './dartfish';
 import Ace from './ace';
+import See from './see';
 
 import { EventEmitter } from 'events';
 
@@ -225,6 +226,9 @@ export default class DeviceFactory {
         break;
       case HuddlyHEX.L1_PID:
         device = new Ace(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);
+        break;
+      case HuddlyHEX.S1_PID:
+        device = new See(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);
         break;
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${productId}`);
