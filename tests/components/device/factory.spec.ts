@@ -15,6 +15,7 @@ import Dwarffish from './../../../src/components/device/dwarffish';
 import Clownfish from './../../../src/components/device/clownfish';
 import DartFish from './../../../src/components/device/dartfish';
 import Ace from './../../../src/components/device/ace';
+import See from './../../../src/components/device/see';
 import HuddlyHex from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 chai.should();
@@ -179,10 +180,10 @@ describe('DeviceFactory', () => {
     });
 
     describe('Boxfish', () => {
-      it('should initialize boxfish device when product id is 0x21', async () => {
+      it(`should initialize boxfish device when product id is ${HuddlyHex.BOXFISH_PID}`, async () => {
         const dummyIQDevice = {
           deviceDescriptor: {
-            idProduct: 0x21
+            idProduct: HuddlyHex.BOXFISH_PID
           }
         };
         const deviceManager = await DeviceFactory.getDevice(
@@ -196,10 +197,10 @@ describe('DeviceFactory', () => {
     });
 
     describe('Dwarffish', () => {
-      it('should initialize boxfish device when product id is 0x21', async () => {
+      it(`should initialize boxfish device when product id is ${HuddlyHex.DWARFFISH_PID}`, async () => {
         const dummyDwarffishDevice = {
           deviceDescriptor: {
-            idProduct: 0x51
+            idProduct: HuddlyHex.DWARFFISH_PID
           }
         };
         const deviceManager = await DeviceFactory.getDevice(
@@ -212,10 +213,10 @@ describe('DeviceFactory', () => {
       });
     });
     describe('Clownfish', () => {
-      it('should initialize clownfish device when product id is 0x31', async () => {
+      it(`should initialize clownfish device when product id is ${HuddlyHex.CLOWNFISH_PID}`, async () => {
         const dummyClownfishDevice = {
           deviceDescriptor: {
-            idProduct: 0x31
+            idProduct: HuddlyHex.CLOWNFISH_PID
           }
         };
         const deviceManager = await DeviceFactory.getDevice(
@@ -229,10 +230,10 @@ describe('DeviceFactory', () => {
     });
 
     describe('Dartfish', () => {
-      it('should initialize dartfish/canvas device when product id is 0x41', async () => {
+      it(`should initialize dartfish/canvas device when product id is ${HuddlyHex.DARTFISH_PID}`, async () => {
         const dummyDartfishDevice = {
           deviceDescriptor: {
-            idProduct: 0x41
+            idProduct: HuddlyHex.DARTFISH_PID
           }
         };
         const deviceManager = await DeviceFactory.getDevice(
@@ -246,7 +247,7 @@ describe('DeviceFactory', () => {
     });
 
     describe('Ace', () => {
-      it('should initialize Ace/L1 device when product id is 0x3E9', async () => {
+      it(`should initialize Ace/L1 device when product id is ${HuddlyHex.L1_PID}`, async () => {
         const dummyAceDevice = {
           deviceDescriptor: {
             idProduct: HuddlyHex.L1_PID
@@ -262,11 +263,28 @@ describe('DeviceFactory', () => {
       });
     });
 
+    describe('See', () => {
+      it(`should initialize See/S1 device when product id is ${HuddlyHex.S1_PID}`, async () => {
+        const dummyAceDevice = {
+          deviceDescriptor: {
+            idProduct: HuddlyHex.S1_PID
+          }
+        };
+        const deviceManager = await DeviceFactory.getDevice(
+          dummyAceDevice.deviceDescriptor.idProduct,
+          dummyDeviceApis[0],
+          dummyDeviceApis,
+          dummyAceDevice,
+          discoveryEmitter);
+        expect(deviceManager).to.be.instanceof(See);
+      });
+    });
+
     describe('HuddlyGo', () => {
-      it('should initialize huddlygo device when product id is 0x11', async () => {
+      it(`should initialize huddlygo device when product id is ${HuddlyHex.GO_PID}`, async () => {
         const dummyGODevice = {
           deviceDescriptor: {
-            idProduct: 0x11
+            idProduct: HuddlyHex.GO_PID
           }
         };
         const deviceManager = await DeviceFactory.getDevice(
