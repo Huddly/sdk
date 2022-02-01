@@ -100,6 +100,7 @@
     "@huddly/camera-proto": "1.0.11",
     "@huddly/camera-switch-proto": "0.0.6",
     "@huddly/sdk-interfaces": "^0.1.2",
+    "chalk": "^4.1.2",
     "cpio-stream": "git+https://git@github.com/Huddly/cpio-stream.git",
     "google-protobuf": "^3.17.3",
     "jszip": "^3.7.1",
