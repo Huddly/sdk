@@ -48,3 +48,4 @@ jobs:
       - run: npm run build
       - run: npm run tslint
       - run: npm run prettier-check
+      - run: npm run audit-check
