@@ -1,5 +1,16 @@
 const chalk = require('chalk');
-const { execSync } = require("child_process");
+const { execSync } = require('child_process');
+
+/**
+ * Any whitelisted advisories that should be ignored during the
+ * vulnerability check should be added here. Make sure the
+ * "github_advisory_id" is provided as the whitelist value. These
+ * values can be found when running `npm audit --json` under the
+ * "advisories" sub key.
+ *
+ * Ex: "GHSA-jg8v-48h5-wgxg"
+ */
+const ADVISORY_WHITELIST = [];
 
 /**
  * Runs `npm audit` and checks the output for vulnerabilities. Currently
@@ -8,29 +19,43 @@ const { execSync } = require("child_process");
  */
 function checkForVulnerabilities() {
   try {
-    const stdout = execSync(`npm audit --production --json`);
+    const stdout = execSync('npm audit --production --json || true');
     const vulnerabilityReportJson = JSON.parse(stdout.toString());
-    const vulnerabilityData = vulnerabilityReportJson['metadata']['vulnerabilities'];
+    const vulnerabilityData = vulnerabilityReportJson['advisories'];
     let shouldFail = false;
-    Object.keys(vulnerabilityData).forEach((severity) => {
-      if (['moderate', 'high', 'critical'].includes(severity) && vulnerabilityData[severity] > 0) {
-        console.log(chalk.redBright(`Npm found ${vulnerabilityData[severity]} ${severity} vulnerabilities.`));
-        shouldFail = true;
+    let skippedChecks = 0;
+    Object.keys(vulnerabilityData).forEach((advisoryKey) => {
+      let advisory = vulnerabilityData[advisoryKey];
+
+      if (['moderate', 'high', 'critical'].includes(advisory['severity'])) {
+        if (!ADVISORY_WHITELIST.includes(advisory['github_advisory_id'])) {
+          console.log(
+            chalk.redBright(
+              `Security vulnerability found on "${advisory['module_name']}" with [${advisory['severity']}] severity!`
+            )
+          );
+          shouldFail = true;
+        } else {
+          skippedChecks += 1;
+        }
       }
     });
     if (shouldFail) {
-      console.log(chalk.redBright(`Please make sure to fix the above vulnerabilities!`));
-      process.exit(1)
+      console.log(chalk.redBright(`\nPlease make sure to fix the above vulnerabilities!`));
+      console.log(chalk.blueBright('Try `npm audit --fix` for potential fixes.\n'));
+      process.exit(1);
     } else {
       console.log(chalk.greenBright('No dependency vulnerabilities found!'));
+      if (skippedChecks > 0) {
+        console.log(
+          chalk.yellowBright(`!!NOTE!! ${skippedChecks} whitelisted advisories detected.`)
+        );
+      }
     }
   } catch (e) {
     console.error('Unable to parse npm audit output!');
-    if (e.stdout !== undefined) {
-        console.error(e.stdout.toString())
-    }
-    console.error(e)
-    process.exit(1)
+    console.error(e.stdout.toString());
+    process.exit(1);
   }
 }
 
