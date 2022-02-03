@@ -10,6 +10,9 @@ on:
   pull_request:
     branches:
       - '*'
+  schedule:
+    # Trigger workflow run every workday (Mon-Fri) at 0700
+    - cron:  '0 7 * * 1,2,3,4,5'
 
 jobs:
   build:
