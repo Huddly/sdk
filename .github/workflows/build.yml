@@ -52,3 +52,20 @@ jobs:
       - run: npm run tslint
       - run: npm run prettier-check
       - run: npm run audit-check
+
+  slack-notify:
+    name: "Notify Failure"
+    runs-on: ubuntu-latest
+    needs: [ build ]
+    if: always() && (needs.build.result == 'failure') && (github.ref == 'refs/heads/master')
+    steps:
+      - name: Slack Notification
+        uses: rtCamp/action-slack-notify@v2
+        env:
+          SLACK_CHANNEL: sdk
+          SLACK_COLOR: "#ff5050"
+          SLACK_ICON: https://www.huddly.com/content/uploads/2018/10/huddly-logo-white-300x300.png?size=48
+          SLACK_MESSAGE: 'SDK build pipeline failed on master! Attention needed.'
+          SLACK_TITLE: SDK Build Failed!
+          SLACK_USERNAME: "Github Actions"
+          SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
