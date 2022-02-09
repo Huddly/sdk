@@ -17,14 +17,15 @@ Huddly SDK works with the following NodeJS releases: (Needs to support NAPI v3 )
 - Node 10
 - Node 11
 - Node 12
-- Node 14 (Latest)
+- Node 14
+- Node 16
 
 We recommend using nvm as your node version manager [https://github.com/creationix/nvm](https://github.com/creationix/nvm).
 
 After you've setup nvm run
 ```bash
-  nvm install 14
-  nvm use 14
+  nvm install 16
+  nvm use 16
 ```
 
 ## Getting started
