@@ -21,7 +21,7 @@ function checkForVulnerabilities() {
   try {
     const stdout = execSync('npm audit --production --json || true');
     const vulnerabilityReportJson = JSON.parse(stdout.toString());
-    const vulnerabilityData = vulnerabilityReportJson['advisories'];
+    const vulnerabilityData = vulnerabilityReportJson['advisories'] || {};
     let shouldFail = false;
     let skippedChecks = 0;
     Object.keys(vulnerabilityData).forEach((advisoryKey) => {
