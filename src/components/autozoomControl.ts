@@ -19,12 +19,16 @@ export default class AutozoomControl implements ICnnControl {
   /** @ignore */
   _options: AutozoomControlOpts;
 
+  private readonly _defaultOpts: AutozoomControlOpts = {
+    shouldAutoFrame: true,
+    mode: AutozoomModes.NORMAL,
+  };
+
   constructor(manager: IDeviceManager, options?: AutozoomControlOpts) {
     this._deviceManager = manager;
-    this._options = options || {
-      shouldAutoFrame: true,
-      mode: undefined,
-    };
+    this._options = { ...this._defaultOpts, ...options };
+
+    this._validateOptions(this._options);
   }
 
   /**
@@ -93,11 +97,15 @@ export default class AutozoomControl implements ICnnControl {
   }
 
   private _validateOptions(options: AutozoomControlOpts) {
-    if (
-      options.shouldAutoFrame === false &&
-      options.mode &&
-      options.mode !== AutozoomModes.NORMAL
-    ) {
+    if (!Object.values(AutozoomModes).includes(options.mode)) {
+      throw Error(`The following mode is not supported on autozoom controller: ${options.mode}`);
+    }
+
+    if (typeof options.shouldAutoFrame !== 'boolean') {
+      throw Error(`Option 'shouldAutoFrame' cannot not be set to ${options.shouldAutoFrame}`);
+    }
+
+    if (!options.shouldAutoFrame && options.mode !== AutozoomModes.NORMAL) {
       const modeName = options.mode;
       throw Error(
         `AutozoomMode '${modeName}' does not support option 'shouldAutoFrame' set to ${options.shouldAutoFrame}!`
@@ -291,7 +299,7 @@ export default class AutozoomControl implements ICnnControl {
     }
   }
 
-  async _setMode(mode: AutozoomModes) {
+  private async _setMode(mode: AutozoomModes) {
     const azStatus = await this._deviceManager.api.getAutozoomStatus();
     // Default to NORMAL for cameras without autozoom-mode support.
     const currentMode = azStatus['autozoom-mode'] || AutozoomModes.NORMAL;
