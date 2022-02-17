@@ -1,3 +1,38 @@
+#### 0.6.6 (2022-02-17)
+
+##### Chores
+
+*  Build & Test sdk with Node16 ([40345f48](https://github.com/Huddly/sdk/commit/40345f48b523c7f080a519c29db04654189978f2))
+* **package.json:**  updated jszip dependency ([f178ed67](https://github.com/Huddly/sdk/commit/f178ed676677fd0ae7e9ecf6d59ea29eb5fc5b1d))
+* **deps:**  bump node-fetch from 2.6.5 to 2.6.7 ([2357c03e](https://github.com/Huddly/sdk/commit/2357c03e25f219b108ee840d0dc7cfee384ded8b))
+
+##### Documentation Changes
+
+* **Readme.md:**  Direct users to sdk code sample repo ([f22a72f9](https://github.com/Huddly/sdk/commit/f22a72f9851b4425dd03d3a6b04541bc2fbe89ff))
+*  Update docs html files ([37707e88](https://github.com/Huddly/sdk/commit/37707e88933ee40c47ca2d37b58180efcbcdf9ac))
+*  Remove code samples from sdk repo ([ac031a96](https://github.com/Huddly/sdk/commit/ac031a9649dbb2b1933e2ec881983faf976c6781))
+
+##### New Features
+
+*  Slack notify when build fails (master) ([7dda4da1](https://github.com/Huddly/sdk/commit/7dda4da1a33e1d3c839520f1d032ffcf4d651fc1))
+*  Cron trigger master branch (Mon-Fri @ 0700) ([607c90b0](https://github.com/Huddly/sdk/commit/607c90b0a7b21dfe618c574d802e83106b2b99e8))
+*  Allow audit check to have a whitelist ([bafbbffe](https://github.com/Huddly/sdk/commit/bafbbffe6c19068bf0b9f2b383fae3ce9e7521cc))
+*  Introduce dependency audit-check ([d7b5fa53](https://github.com/Huddly/sdk/commit/d7b5fa53a5866bb3a7125d6723bb36faf909840a))
+
+##### Bug Fixes
+
+*  Vulnerability check bugfix for node16 ([13533872](https://github.com/Huddly/sdk/commit/13533872fd3cad7b2255a56ca73cd8090a3f9ed7))
+*  vulnerabilities & remove cz-conventional-changelog ([15cd40f5](https://github.com/Huddly/sdk/commit/15cd40f5e85b2f4064e5d5506e1099edc5f615c2))
+* **az-controllere:**  Increase timeout for az status call ([70aec20b](https://github.com/Huddly/sdk/commit/70aec20b2d92d430fad05c48d6806d2e6c9a74aa))
+
+##### Other Changes
+
+*  Init & setMode should be backward-compatible ([4a57e3fd](https://github.com/Huddly/sdk/commit/4a57e3fd67b283a086e9e48e93cd66ca5ff83223))
+
+##### Tests
+
+*  Install chalk-js for terminal styling ([b00fbf57](https://github.com/Huddly/sdk/commit/b00fbf57ff92dddf93374d83276d4b1cd6024a6c))
+
 #### 0.6.5 (2022-01-26)
 
 ##### Chores
