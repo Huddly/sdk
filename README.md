@@ -95,6 +95,26 @@ sdk.on('ATTACH', (newDevice) => {
   cameraManager.getInfo().then(console.log);
 });
 ```
+
+## Automate updates
+To always get the latest release of the SDK and the corresponding transport libraries (`@huddly/device-api-*`) you can add some extra steps to your build pipeline to do just that. Npm facilitates this for you by simply running an update command as below:
+
+```bash
+npm update @huddly/sdk
+```
+The command above will make sure that your project is using the latest release of `@huddly/sdk`. Keep in mind that the command above will make changes to your `package.json` and `package-lock.json` files to compensate for the new changes (if any).
+
+In case you always want the latest patch updates on the library you can use the tilde `~` prefix in front of the version on the package.json file:
+```json
+"@huddly/sdk": "~0.6.5"
+```
+The above version scheme will use releases from `0.6.5` to `<0.7.0`. Another alternative is to use caret `^` symbol in front of the version string which tells npm to use all future minor/patch versions without incrementing the major version. For example:
+
+```json
+"@huddly/sdk": "^0.6.5"
+```
+will use releases from `0.6.5` to `<1.0.0`. Major updates will have to be updated manually due to the potential of breaking changes involved with the new update.
+
 ## Issues
 If you have a question or found a bug please [open an issue](https://github.com/Huddly/sdk/issues). Thank you
 
