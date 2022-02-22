@@ -86,7 +86,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
    * @type {number}
    * @memberof Ace
    */
-  private readonly GPRC_CONNECT_TIMEOUT: number = 1; // seconds
+  private readonly GPRC_CONNECT_TIMEOUT: number = 3; // seconds
   /**
    * Port number for connecting to grpc server on ACE
    *
