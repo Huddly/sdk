@@ -264,6 +264,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         resolve(await this.getLogFiles(logFile));
       } catch (err) {
         this.handleError('Unable to get error log', err, reject);
+        return;
       }
     });
   }
@@ -306,6 +307,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         resolve(await this.eraseLogFile(logFile));
       } catch (err) {
         this.handleError(`Unable to erase log file`, err, reject);
+        return;
       }
     });
   }
@@ -796,6 +798,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         });
       } catch (e) {
         this.handleError('Unable to get saturation value', e, reject);
+        return;
       }
     });
   }
@@ -817,6 +820,7 @@ export default class Ace implements IIpDeviceManager, IUVCControls {
         (err: ErrorInterface, deviceStatus: huddly.DeviceStatus) => {
           if (err != undefined) {
             this.handleError('Unable to set saturation', err, reject);
+            return;
           }
           Logger.info(deviceStatus.toString());
           resolve();
