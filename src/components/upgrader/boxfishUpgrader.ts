@@ -163,47 +163,12 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     return this.sendReceive('upgrader/allocate', { args: { size } });
   }
 
-  async legacyWriteBuf(buf: Buffer, offset: number = 0): Promise<any> {
-    Logger.debug('Falling back to legacy async file transfer', 'Boxfish PKG Upgrader');
-    const sendData = {
-      size: buf.length,
-      offset,
-    };
-    const command = {
-      send: 'upgrader/write',
-      send_data: Api.encode(sendData),
-      receive: 'upgrader/write_reply',
-    };
-    return this._cameraManager.api.asyncFileTransfer(command, buf);
-  }
-
-  async writeBuffProbe(): Promise<boolean> {
-    try {
-      await this.sendReceive('upgrader/write_buf', {
-        args: { data: Buffer.alloc(1), offset: 0 },
-        receiveEncoding: 'string',
-      });
-      return true;
-    } catch (e) {
-      Logger.error('Signle Write Buffer not supported in this firmware', e, 'Boxfish PKG Upgrader');
-      return false;
-    }
-  }
-
   async writeBuf(buf: Buffer, offset: number = 0): Promise<any> {
-    if (this.writeBufSupport === undefined) {
-      this.writeBufSupport = await this.writeBuffProbe();
-    }
-
-    if (this.writeBufSupport) {
-      const result = await this.sendReceive('upgrader/write_buf', {
-        args: { data: buf, offset },
-        receiveEncoding: 'messagepack',
-        timeout: 60000,
-      });
-      return result;
-    }
-    return this.legacyWriteBuf(buf, offset);
+    return this.sendReceive('upgrader/write_buf', {
+      args: { data: buf, offset },
+      receiveEncoding: 'messagepack',
+      timeout: 60000,
+    });
   }
 
   async sendReceive(cmd: string, options: any = {}): Promise<any> {
