@@ -19,7 +19,6 @@ import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 export default class Api implements IDeviceCommonApi {
   transport: IUsbTransport;
   locksmith: Locksmith;
-  setProdInfoMsgPackSupport: boolean = true;
   getErrorLogMsgPackSupport: boolean = true;
 
   constructor(transport: IUsbTransport, locksmith: Locksmith) {
@@ -114,223 +113,27 @@ export default class Api implements IDeviceCommonApi {
     }
   }
 
-  async fileTransfer(
-    data: Buffer,
-    subscribedMessages: Array<string>,
-    timeout: number = 60000
-  ): Promise<any> {
-    const clearListeners = () => {
-      subscribedMessages.forEach((msg) => {
-        this.transport.removeAllListeners(msg);
-        this.transport.setEventLoopReadSpeed();
-        Logger.debug('Clearing out all file transfer listeners', 'SDK API');
-      });
-    };
-
-    return new Promise((resolve, reject) => {
-      const timeoutTimer = setTimeout(() => {
-        clearListeners();
-        Logger.error(
-          `Timing out since file transfer did not resolve after ${timeout} ms`,
-          '',
-          'SDK API'
-        );
-        reject(new Error('Timeout'));
-      }, timeout);
-
-      Logger.debug('Setting up async_file_transfer/* listeners', 'SDK API');
-      if (subscribedMessages.indexOf('async_file_transfer/data') >= 0) {
-        this.transport.on('async_file_transfer/data', async (msgPacket) => {
-          this.transport.setEventLoopReadSpeed(1);
-          await this.transport.write('async_file_transfer/data_reply');
-          const bufferComposition = Buffer.concat([data, msgPacket.payload]);
-          data = bufferComposition;
-        });
-      }
-
-      if (subscribedMessages.indexOf('async_file_transfer/receive') >= 0) {
-        this.transport.on('async_file_transfer/receive', async (msgPacket) => {
-          this.transport.setEventLoopReadSpeed(1);
-          if (msgPacket.payload.length !== 4) {
-            clearListeners();
-            clearTimeout(timeoutTimer);
-            reject(new Error('Data length is not 4, unable to proceed!'));
-          } else {
-            const length = Api.decode(msgPacket.payload, 'int');
-            const slice = data.slice(0, length);
-            await this.transport.write('async_file_transfer/receive_reply', slice);
-            data = data.slice(length);
-          }
-        });
-      }
-
-      if (subscribedMessages.indexOf('async_file_transfer/done') >= 0) {
-        this.transport.on('async_file_transfer/done', async (buffer) => {
-          clearListeners();
-          clearTimeout(timeoutTimer);
-          resolve(data);
-        });
-      }
-
-      if (subscribedMessages.indexOf('async_file_transfer/timeout') >= 0) {
-        this.transport.on('async_file_transfer/timeout', async (buffer) => {
-          clearListeners();
-          clearTimeout(timeoutTimer);
-          Logger.debug(
-            'Received a async_file_transfer/timeout message from camera. Timing out!',
-            'SDK API'
-          );
-          reject(new Error('Timeout'));
-        });
-      }
-    });
-  }
-
-  async asyncFileTransfer(
-    command: any,
-    data: Buffer = Buffer.alloc(0),
-    timeout: number = 5000
-  ): Promise<any> {
-    const res = await this.locksmith.executeAsyncFunction(async () => {
-      const subscribeMsgs = [
-        'async_file_transfer/data',
-        'async_file_transfer/receive',
-        'async_file_transfer/done',
-        'async_file_transfer/timeout',
-      ];
-      const transferRes = await this.withSubscribe(subscribeMsgs, async () => {
-        return new Promise(async (resolve, reject) => {
-          this.fileTransfer(data, subscribeMsgs)
-            .then((result) => {
-              resolve(result);
-            })
-            .catch((reason) => reject(reason));
-          const status = await this.sendAndReceive(
-            command.send_data ? command.send_data : Buffer.alloc(0),
-            command,
-            timeout
-          );
-          if (!status || !status['payload']) {
-            throw Error(
-              `Failed to get status. Status: ${JSON.stringify(status)} ${command['send']}`
-            );
-          }
-        });
-      });
-      return transferRes;
-    });
-    return res;
-  }
-
-  async getProductInfoLegacy(): Promise<any> {
-    const command = {
-      send: 'prodinfo/get',
-      receive: 'prodinfo/get_status',
-    };
-    const res = await this.asyncFileTransfer(command);
-    const prodInfo = Api.decode(res, 'messagepack');
-    return prodInfo;
-  }
-
   async getProductInfo(): Promise<any> {
-    if (!this.setProdInfoMsgPackSupport) {
-      return this.getProductInfoLegacy();
-    }
-
-    try {
-      const info = await this.sendAndReceiveMessagePack(
-        Buffer.from(''),
-        {
-          send: 'prodinfo/get_msgpack',
-          receive: 'prodinfo/get_msgpack_reply',
-        },
-        1000
-      );
-      this.setProdInfoMsgPackSupport = true;
-      if (!info) {
-        this.setProdInfoMsgPackSupport = false;
-        return this.getProductInfoLegacy();
-      }
-      return info;
-    } catch (e) {
-      this.setProdInfoMsgPackSupport = false;
-      Logger.debug(
-        'Prodinfo MessagePack not supported on this device. Using legacy procedure!',
-        'SDK API'
-      );
-      return this.getProductInfoLegacy();
-    }
-  }
-
-  async setProductInfoLegacy(newProdInfoData: any): Promise<void> {
-    await this.locksmith.executeAsyncFunction(async () => {
-      const asyncFileTransferMessages = [
-        'async_file_transfer/data',
-        'async_file_transfer/receive',
-        'async_file_transfer/done',
-        'async_file_transfer/timeout',
-      ];
-      const data = Api.encode(newProdInfoData);
-      const length = Api.encode({ size: data.length });
-      const command = {
-        send: 'prodinfo/set',
-        send_data: length,
-        receive: 'prodinfo/set_done',
-      };
-      await this.transport.clear();
-      try {
-        await this.transport.subscribe(command.receive);
-        await this.withSubscribe(
-          asyncFileTransferMessages,
-          async () =>
-            new Promise(async (resolve, reject) => {
-              this.fileTransfer(data, asyncFileTransferMessages);
-              const res = await this.sendAndReceive(
-                command.send_data ? command.send_data : Buffer.alloc(0),
-                command
-              );
-              if (res && res.payload) {
-                const errorCode = Api.decode(res.payload, 'messagepack');
-                if (errorCode === 0) {
-                  resolve(true);
-                } else {
-                  reject(`Set Product Info command failed with error code ${errorCode}`);
-                }
-              } else {
-                reject('No response received from camera during Set Product Info command');
-              }
-            })
-        );
-      } finally {
-        await this.transport.unsubscribe(command.receive);
-      }
-    });
+    return this.sendAndReceiveMessagePack(
+      Buffer.from(''),
+      {
+        send: 'prodinfo/get_msgpack',
+        receive: 'prodinfo/get_msgpack_reply',
+      },
+      1000
+    );
   }
 
   async setProductInfo(newProdInfoData: any): Promise<void> {
-    if (!this.setProdInfoMsgPackSupport) {
-      return this.setProductInfoLegacy(newProdInfoData);
-    }
-
-    try {
-      await this.transport.clear();
-      await this.sendAndReceive(
-        Api.encode(newProdInfoData),
-        {
-          send: 'prodinfo/set_msgpack',
-          receive: 'prodinfo/set_msgpack_reply',
-        },
-        10000
-      );
-      return Promise.resolve();
-    } catch (e) {
-      this.setProdInfoMsgPackSupport = false;
-      Logger.debug(
-        'SetProdinfo MessagePack not supported on this device. Using legacy procedure!',
-        'SDK API'
-      );
-      return this.setProductInfoLegacy(newProdInfoData);
-    }
+    await this.transport.clear();
+    await this.sendAndReceive(
+      Api.encode(newProdInfoData),
+      {
+        send: 'prodinfo/set_msgpack',
+        receive: 'prodinfo/set_msgpack_reply',
+      },
+      10000
+    );
   }
 
   static encode(payload: any): Buffer {
@@ -392,41 +195,7 @@ export default class Api implements IDeviceCommonApi {
     return info;
   }
 
-  async getErrorLogLegacy(timeout: number): Promise<any> {
-    Logger.debug('Start retrieving the error log', 'SDK API');
-    const res = await this.locksmith.executeAsyncFunction(async () => {
-      Logger.debug('Clearing transport pipes', 'SDK API');
-      await this.transport.clear();
-      const subscribeMsgs = [
-        'async_file_transfer/data',
-        'async_file_transfer/done',
-        'async_file_transfer/timeout',
-      ];
-
-      const result = await this.withSubscribe(
-        subscribeMsgs,
-        async () => {
-          return new Promise((resolve, reject) => {
-            this.fileTransfer(Buffer.alloc(0), subscribeMsgs, timeout)
-              .then((result) => {
-                resolve(result.toString('ascii'));
-              })
-              .catch((reason) => reject(reason));
-            Logger.debug('Sending "error_logger/read" message', 'SDK API');
-            this.transport.write('error_logger/read');
-          });
-        },
-        true
-      );
-      return result;
-    });
-    return res;
-  }
-
   async getErrorLog(timeout: number, retry: number = 1, allowLegacy: boolean = true): Promise<any> {
-    if (!this.getErrorLogMsgPackSupport && allowLegacy) {
-      return this.getErrorLogLegacy(timeout);
-    }
     try {
       const result = await this.sendAndReceiveMessagePack(
         Buffer.from(''),
@@ -447,13 +216,6 @@ export default class Api implements IDeviceCommonApi {
       if (retry > 0) {
         Logger.debug('Retrying getErrorLog', 'SDK API');
         return this.getErrorLog(timeout, retry - 1, allowLegacy);
-      } else if (allowLegacy) {
-        this.getErrorLogMsgPackSupport = false;
-        Logger.debug(
-          'ErrorLog MessagePack not supported on this device. Using legacy procedure!',
-          'SDK API'
-        );
-        return this.getErrorLogLegacy(timeout);
       } else {
         throw e;
       }
