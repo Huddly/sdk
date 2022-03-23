@@ -15,6 +15,7 @@ import Dwarffish from './../../../src/components/device/dwarffish';
 import Clownfish from './../../../src/components/device/clownfish';
 import DartFish from './../../../src/components/device/dartfish';
 import Ace from './../../../src/components/device/ace';
+import HuddlyHex from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 chai.should();
 chai.use(sinonChai);
@@ -248,7 +249,7 @@ describe('DeviceFactory', () => {
       it('should initialize Ace/L1 device when product id is 0x3E9', async () => {
         const dummyAceDevice = {
           deviceDescriptor: {
-            idProduct: 0x3E9
+            idProduct: HuddlyHex.L1_PID
           }
         };
         const deviceManager = await DeviceFactory.getDevice(
