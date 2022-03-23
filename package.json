@@ -79,8 +79,8 @@
     "eslint-plugin-jsx-a11y": "^6.4.1",
     "eslint-plugin-react": "^7.24.0",
     "generate-changelog": "^1.8.0",
-    "grpc-tools": "^1.11.1",
     "grpc_tools_node_protoc_ts": "^5.3.0",
+    "grpc-tools": "^1.11.1",
     "http2": "^3.3.7",
     "mocha": "^9.2.0",
     "nock": "^12.0.3",
@@ -102,13 +102,12 @@
     "@huddly/camera-switch-proto": "0.0.6",
     "@huddly/sdk-interfaces": "^0.1.2",
     "chalk": "^4.1.2",
-    "cpio-stream": "git+https://git@github.com/Huddly/cpio-stream.git",
+    "cpio-stream": "^1.4.3",
     "google-protobuf": "^3.17.3",
     "jszip": "^3.7.1",
     "msgpack-lite": "~0.1.26",
     "p-queue": "^6.6.2",
     "semver": "^7.3.5",
     "source-map-support": "^0.5.19"
-  },
-  "peerDependencies": {}
+  }
 }
