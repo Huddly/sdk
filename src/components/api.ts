@@ -113,7 +113,7 @@ export default class Api implements IDeviceCommonApi {
   }
 
   async getProductInfo(): Promise<any> {
-    return this.sendAndReceiveMessagePack(
+    const prodInfo = await this.sendAndReceiveMessagePack(
       Buffer.from(''),
       {
         send: 'prodinfo/get_msgpack',
@@ -121,6 +121,10 @@ export default class Api implements IDeviceCommonApi {
       },
       1000
     );
+    if (!prodInfo) {
+      return Promise.reject('Product info data retreived is empty or undefined!');
+    }
+    return prodInfo;
   }
 
   async setProductInfo(newProdInfoData: any): Promise<void> {
