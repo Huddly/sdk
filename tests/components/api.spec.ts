@@ -1,6 +1,7 @@
 import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
+import chaiAsPromised from 'chai-as-promised';
 import * as msgpack from 'msgpack-lite';
 import nock from 'nock';
 
@@ -12,6 +13,8 @@ import Locksmith from './../../src/components/locksmith';
 
 chai.should();
 chai.use(sinonChai);
+chai.use(chaiAsPromised);
+chai.use(require('chai-things'));
 
 class NodeUsbTransport implements ITransport {
   device: any;
@@ -97,180 +100,23 @@ describe('API', () => {
     });
   });
 
-  describe('#fileTransfer', () => {
-    describe('on async_file_transfer/data', () => {
-      const subscribeMsgs = ['async_file_transfer/data', 'async_file_transfer/done'];
-      it('should write async_file_transfer/data_reply', async () => {
-        transport.on.withArgs('async_file_transfer/data').onCall(0).callsFake((msg, cb) => cb({ payload: Buffer.from('Test') }));
-        transport.on.withArgs('async_file_transfer/done').onCall(0).callsFake((msg, cb) => cb());
-        await api.fileTransfer(Buffer.from('123'), subscribeMsgs);
-        expect(transport.write.firstCall.args[0]).to.equals('async_file_transfer/data_reply');
-      });
-
-      it('should concat current buffer with result payload and make recursive call', async () => {
-        const payload = Buffer.from('Jimmy!');
-        transport.on.withArgs('async_file_transfer/data').onCall(0).callsFake((msg, cb) => cb({ payload }));
-
-        transport.on.withArgs('async_file_transfer/done').onCall(0).callsFake((msg, cb) => {
-          setTimeout(() => { // Done should be called sometime after async_file_transfer/data
-            cb();
-          }, 100);
-        });
-
-        const res = await api.fileTransfer(Buffer.from('Hello '), subscribeMsgs);
-        expect(res.toString('utf8')).to.equals('Hello Jimmy!');
-      });
-    });
-
-    describe('on async_file_transfer/receive', () => {
-      const subscribeMsgs = ['async_file_transfer/receive', 'async_file_transfer/done'];
-      it('should write async_file_transfer/receive_reply with header info', async () => {
-        const payload = Buffer.alloc(4);
-        payload.writeInt32LE(5, 0);
-        transport.on.withArgs('async_file_transfer/receive').onCall(0).callsFake((msg, cb) => cb({ payload }));
-        transport.on.withArgs('async_file_transfer/done').onCall(0).callsFake((msg, cb) => cb());
-        await api.fileTransfer(Buffer.concat([Buffer.alloc(5, 0x00), Buffer.from('Hello Huddly')]), subscribeMsgs);
-        expect(transport.write.firstCall.args[0]).to.equals('async_file_transfer/receive_reply');
-      });
-
-      it('should make recursive call with buffer payload', async () => {
-        const payload = Buffer.alloc(4);
-        payload.writeInt32LE(5, 0);
-        const expectedResult = 'Hello Huddly';
-        transport.on.withArgs('async_file_transfer/receive').onCall(0).callsFake((msg, cb) => cb({ payload }));
-        transport.on.withArgs('async_file_transfer/done').onCall(0).callsFake((msg, cb) => {
-          setTimeout(() => { // Done should be called sometime after async_file_transfer/receive
-            cb();
-          }, 100);
-        });
-        const res = await api.fileTransfer(Buffer.concat([Buffer.alloc(5, 0x00), Buffer.from('Hello Huddly')]), subscribeMsgs);
-        expect(res.toString('utf8')).to.equals(expectedResult);
-      });
-
-      it('should throw error when data length is not 4 on receive', async () => {
-        const payload = Buffer.alloc(0);
-        try {
-          transport.on.withArgs('async_file_transfer/receive').onCall(0).callsFake((msg, cb) => cb({ payload }));
-          await api.fileTransfer(Buffer.alloc(5, 0x00), subscribeMsgs);
-          expect(true).to.equals(false);
-        } catch (e) {
-          expect(e.message).to.equals('Data length is not 4, unable to proceed!');
-          expect(transport.removeAllListeners.callCount).to.equals(2);
-          expect(transport.removeAllListeners.getCall(0).args[0]).to.equals('async_file_transfer/receive');
-          expect(transport.removeAllListeners.getCall(1).args[0]).to.equals('async_file_transfer/done');
-        }
-      });
-    });
-
-    describe('on async_file_transfer/done', () => {
-      const subscribeMsgs = ['async_file_transfer/done'];
-      it('should return the accumulated buffer', async () => {
-        const payload = Buffer.alloc(0);
-        transport.on.withArgs('async_file_transfer/done').onCall(0).callsFake((msg, cb) => cb({ payload }));
-        const res = await api.fileTransfer(Buffer.from('Just a message'), subscribeMsgs);
-        expect(res.toString('utf8')).to.equals('Just a message');
-      });
-    });
-    describe('on async_file_transfer/timeout', () => {
-      const subscribeMsgs = ['async_file_transfer/timeout'];
-      it('should throw error with timeout message', async () => {
-        const payload = Buffer.alloc(0);
-        try {
-          transport.on.withArgs('async_file_transfer/timeout').onCall(0).callsFake((msg, cb) => cb({ payload }));
-          await api.fileTransfer(Buffer.alloc(0), subscribeMsgs);
-          expect(true).to.equals(false);
-        } catch (e) {
-          expect(e.message).to.equals('Timeout');
-          expect(transport.removeAllListeners.callCount).to.equals(1);
-          expect(transport.removeAllListeners.getCall(0).args[0]).to.equals('async_file_transfer/timeout');
-        }
-      });
-    });
-
-    describe('on no response', () => {
-      it('should timeout if none of the filetransfer messages are resolved within given time limit', async () => {
-        try {
-          await api.fileTransfer(Buffer.alloc(0), [], 1000);
-          expect(true).to.equals(false);
-        } catch (e) {
-          expect(e.message).to.equals('Timeout');
-        }
-      });
-    });
-  });
-
-  describe('#asyncFileTransfer', () => {
-    let fileTransferStub;
-    let sendReceiveStub;
-    beforeEach(() => {
-      fileTransferStub = sinon.stub(api, 'fileTransfer');
-      sendReceiveStub = sinon.stub(api, 'sendAndReceive');
-    });
-    afterEach(() => {
-      fileTransferStub.restore();
-      sendReceiveStub.restore();
-    });
-    it('should subscribe/unsubscribe to async_file_transfer messages', async () => {
-      const subscribeMsgs = ['async_file_transfer/data', 'async_file_transfer/receive', 'async_file_transfer/done', 'async_file_transfer/timeout'];
-      const withSubscribySpy = sinon.spy(api, 'withSubscribe');
-      fileTransferStub.resolves(Buffer.alloc(1, 0xa0));
-      sendReceiveStub.returns(Promise.resolve({ message: '', payload: Buffer.alloc(1, 0x00) }));
-      await api.asyncFileTransfer({ send: 'hello/send', receive: 'hello/reply' });
-      expect(withSubscribySpy.firstCall.args[0]).to.deep.equals(subscribeMsgs);
-    });
-
-    it('should make a sendAndReceive call to check status', async () => {
-      fileTransferStub.resolves(Buffer.alloc(1, 0xa0));
-      const msg = { send: 'hello/send', receive: 'hello/reply' };
-      sendReceiveStub.returns(Promise.resolve({ message: '', payload: Buffer.alloc(1, 0xa0) }));
-      const reply = await api.asyncFileTransfer(msg);
-      expect(reply.compare(Buffer.alloc(1, 0xa0))).to.equals(0);
-      expect(sendReceiveStub.firstCall.args[0].compare(Buffer.alloc(0))).to.equals(0);
-      expect(sendReceiveStub.firstCall.args[1]).to.deep.equals(msg);
-      expect(sendReceiveStub.firstCall.args[2]).to.deep.equals(5000); // Default timeout on #asyncFileTransfer
-    });
-  });
-
-  describe('#getProductInfoLegacy', () => {
-    let asyncFileTransferStub;
-    beforeEach(() => { asyncFileTransferStub = sinon.stub(api, 'asyncFileTransfer'); });
-    afterEach(() => { asyncFileTransferStub.restore(); });
-
-    it('should call #asyncFileTransfer with prodinfo commands and decode result', async () => {
-      asyncFileTransferStub.returns(Promise.resolve(msgpack.encode('Production Info: Test')));
-      const prodinfo = await api.getProductInfoLegacy();
-      expect(asyncFileTransferStub.callCount).to.equals(1);
-      expect(asyncFileTransferStub.firstCall.args[0]).to.deep.equals({ send: 'prodinfo/get', receive: 'prodinfo/get_status' });
-      expect(prodinfo).to.equals('Production Info: Test');
-    });
-  });
-
   describe('#getProductionInfo', () => {
-    let getProdLegacy;
     let sendAndReceiveMsgPackStub;
     beforeEach(() => {
-      getProdLegacy = sinon.stub(api, 'getProductInfoLegacy');
-      sendAndReceiveMsgPackStub = sinon.stub(api, 'sendAndReceiveMessagePack');
+      sendAndReceiveMsgPackStub = sinon.stub(Api.prototype, 'sendAndReceiveMessagePack');
     });
     afterEach(() => {
-      getProdLegacy.restore();
       sendAndReceiveMsgPackStub.restore();
     });
 
-    it('should fallback to legacy when msgpack not supported', async () => {
-      sendAndReceiveMsgPackStub.rejects('MessagePack not supported for GetProdInfo!');
-      await api.getProductInfo();
-      expect(getProdLegacy.called).to.equals(true);
-      expect(getProdLegacy.callCount).to.equals(1);
-      expect(api.setProdInfoMsgPackSupport).to.equals(false);
+    it('should fail when msgpack not supported', () => {
+      sendAndReceiveMsgPackStub.rejects(new Error('Cant do that!'));
+      return expect(api.getProductInfo()).to.eventually.be.rejectedWith('Cant do that!');
     });
 
-    it('should fallback to legacy when msgpack result is empty', async () => {
+    it('should fail when msgpack result is empty', () => {
       sendAndReceiveMsgPackStub.resolves(undefined);
-      await api.getProductInfo();
-      expect(getProdLegacy.called).to.equals(true);
-      expect(getProdLegacy.callCount).to.equals(1);
-      expect(api.setProdInfoMsgPackSupport).to.equals(false);
+      return expect(api.getProductInfo()).to.eventually.be.rejectedWith('Product info data retreived is empty or undefined!');
     });
 
     it('should retrieve prodinfo with one messagepack call to target', async () => {
@@ -281,36 +127,27 @@ describe('API', () => {
       sendAndReceiveMsgPackStub.resolves(prodInfoDummy);
       const prodInfoResult = await api.getProductInfo();
       expect(prodInfoDummy).to.deep.equals(prodInfoResult);
-      expect(getProdLegacy.called).equals(false);
       expect(sendAndReceiveMsgPackStub.firstCall.args[0].compare(Buffer.from(''))).to.equals(0);
       expect(sendAndReceiveMsgPackStub.firstCall.args[1]).to.deep.equals({
         send: 'prodinfo/get_msgpack', receive: 'prodinfo/get_msgpack_reply'
       });
       expect(sendAndReceiveMsgPackStub.firstCall.args[2]).to.equals(1000);
-      expect(api.setProdInfoMsgPackSupport).to.equals(true);
     });
   });
 
   describe('#setProductInfo', () => {
-    let setProdLegacy;
     let sendAndReceiveStub;
     beforeEach(() => {
-      setProdLegacy = sinon.stub(api, 'setProductInfoLegacy');
       sendAndReceiveStub = sinon.stub(api, 'sendAndReceive');
     });
     afterEach(() => {
-      setProdLegacy.restore();
       sendAndReceiveStub.restore();
     });
 
-    it('should fallback to legacy when msgpack not supported', async () => {
-      sendAndReceiveStub.rejects('MessagePack not supported for setProdInfo!');
+    it('should fail when msgpack not supported', async () => {
+      sendAndReceiveStub.rejects(new Error('Cant do that!'));
       const prodinfoSet = { newValue: 'Hello' };
-      await api.setProductInfo(prodinfoSet);
-      expect(setProdLegacy.called).to.equals(true);
-      expect(setProdLegacy.callCount).to.equals(1);
-      expect(setProdLegacy.firstCall.args[0]).to.deep.equals(prodinfoSet);
-      expect(api.setProdInfoMsgPackSupport).to.equals(false);
+      return expect(api.setProductInfo(prodinfoSet)).to.eventually.be.rejectedWith('Cant do that!');
     });
 
     it('should set prodinfo using messagepack command', async () => {
@@ -424,7 +261,7 @@ describe('API', () => {
       sendAndReceiveMsgPackStub.restore();
     });
     describe('#getErrorLog', () => {
-      it('should call #fileTransfer with error log commands and decode the result to ascii string', async () => {
+      it('should call corresponding message bus command for fetching log and decode the result to ascii string', async () => {
         const logStr = 'Camera Log 12333123';
         const errorLogDummy = {
           error: 0,
@@ -440,35 +277,11 @@ describe('API', () => {
       });
     });
     describe('#eraseErrorLog', () => {
-      it('should call #fileTransfer with commands to erase error log', async () => {
+      it('should call corresponding message bus command for erasing log', async () => {
         transport.receiveMessage.resolves();
         await api.eraseErrorLog(100);
         expect(transport.receiveMessage.lastCall.args[0]).to.equals('error_logger/erase_done');
         expect(transport.write.lastCall.args[0]).to.equals('error_logger/erase');
-      });
-    });
-  });
-
-  describe('#errorLogLegacy', () => {
-    let fileTransferStub;
-    let sendAndReceiveMsgPackStub;
-    beforeEach(() => {
-      fileTransferStub = sinon.stub(api, 'fileTransfer');
-      sendAndReceiveMsgPackStub = sinon.stub(api, 'sendAndReceiveMessagePack');
-    });
-    afterEach(() => {
-      fileTransferStub.restore();
-      sendAndReceiveMsgPackStub.restore();
-    });
-    describe('#getErrorLog', () => {
-      it('should call #fileTransfer with error log commands and decode the result to ascii string', async () => {
-        const logStr = 'Camera Log 12333123';
-        sendAndReceiveMsgPackStub.rejects('Timed out');
-        fileTransferStub.returns(Promise.resolve(Buffer.from(logStr)));
-        const log = await api.getErrorLog(100);
-        expect(fileTransferStub.callCount).to.equals(1);
-        expect(transport.write.firstCall.args[0]).to.equals('error_logger/read');
-        expect(log).to.equals(logStr);
       });
     });
   });
