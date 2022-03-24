@@ -1,15 +1,15 @@
 import { EventEmitter } from 'events';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
-import Ace from './ace';
+import IpBaseDevice from './ipbase';
 
 /**
  * Controller class for Huddly S1 camera.
  *
  * @export
  * @class See
- * @extends {Ace}
+ * @extends {IpBaseDevice}
  */
-export default class See extends Ace {
+export default class See extends IpBaseDevice {
   /**
    * Comercial product name for this controller class.
    *

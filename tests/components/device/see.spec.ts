@@ -1,6 +1,6 @@
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import Ace from './../../../src/components/device/ace';
+import See from './../../../src/components/device/see';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import { EventEmitter } from 'stream';
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
@@ -15,17 +15,17 @@ class DummyTransport extends EventEmitter implements IGrpcTransport {
   overrideGrpcClient(client: HuddlyServiceClient): void {
     // Ignore call
   }
-  init(): Promise<void> {
+  init(): Promise < void> {
     throw new Error('Method not implemented.');
   }
-  close(): Promise<void> {
+  close(): Promise < void> {
     return Promise.resolve();
   }
 }
 
-describe('ACE', () => {
+describe('See', () => {
   it('should have correct product name', () => {
-    const see = new Ace({}, new DummyTransport(), new EventEmitter());
-    expect(see.productName).to.equal('Huddly L1');
+    const see = new See({}, new DummyTransport(), new EventEmitter());
+    expect(see.productName).to.equal('Huddly S1');
   });
 });
