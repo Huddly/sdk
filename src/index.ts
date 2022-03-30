@@ -202,30 +202,31 @@ class HuddlySdk extends EventEmitter {
    * @memberof HuddlySdk
    */
   setupDeviceDiscoveryListeners(): void {
-    this.deviceDiscovery.on(CameraEvents.ATTACH, async (d) => {
-      if (d && (!this.targetSerial || this.targetSerial === d.serialNumber)) {
+    this.deviceDiscovery.on(CameraEvents.ATTACH, async (device) => {
+      if (device && (!this.targetSerial || this.targetSerial === device.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
           () =>
             new Promise<void>(async (resolve) => {
               try {
                 const cameraManager: IDeviceManager = await this._deviceFactory.getDevice(
-                  d.productId,
+                  device.productId,
                   this.mainDeviceApi,
                   this.deviceApis,
-                  d,
+                  device,
                   this.emitter
                 );
                 await cameraManager.initialize(this.devMode);
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
-              } catch (e) {
+              } catch (error) {
                 const errorMsg: string = `No transport implementation supported for ${JSON.stringify(
-                  d
+                  device
                 )}`;
                 Logger.warn(errorMsg, HuddlySdk.name);
                 const eventPayload = {
-                  device: d,
+                  device,
                   error: new AttachError(errorMsg, ErrorCodes.NO_TRANSPORT),
+                  stack_trace: error,
                 };
                 this.emitter.emit(CameraEvents.ERROR, eventPayload);
                 resolve();
