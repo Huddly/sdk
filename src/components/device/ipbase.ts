@@ -59,7 +59,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Communication with camera takes place here. Transport instance is there
    * for api conformance reasons.
    * @type {IGrpcTransport}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   transport: IGrpcTransport;
   /** @ignore */
@@ -76,7 +76,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Event emitter instance emitting attach and detach events for Huddly Cameras.
    *
    * @type {EventEmitter}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   discoveryEmitter: EventEmitter;
   /**
@@ -84,7 +84,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * class on device-api-ip module.
    *
    * @type {*}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   wsdDevice: any;
 
@@ -93,7 +93,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @private
    * @type {number}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   private readonly GPRC_CONNECT_TIMEOUT: number = 1; // seconds
   /**
@@ -101,7 +101,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @private
    * @type {number}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   private readonly GRPC_PORT: number = 50051;
   /**
@@ -109,7 +109,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @private
    * @type {HuddlyServiceClient}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   private huddlyGrpcClient: HuddlyServiceClient;
 
@@ -119,7 +119,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @readonly
    * @type {Api}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   get api(): Api {
     throw new Error('Not Supported.');
@@ -130,7 +130,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Not applicable
    *
    * @readonly
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   get uvcControlInterface() {
     throw new Error('Not Supported');
@@ -149,7 +149,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @param {*} wsdDevice The wsdd device instance retrieved during discovery.
    * @param {IGrpcTransport} transport Grpc transport instance.
    * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach & detach events for Huddly IP cameras.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
     this.wsdDevice = wsdDevice;
@@ -165,7 +165,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Initializes the controller class. Must be called before any other commands.
    *
    * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   async initialize(): Promise<void> {
     const deadline = new Date();
@@ -195,7 +195,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Teardown function for cleaning up the state.
    *
    * @return {*}  {Promise<any>} Promise that carries out the teardown step.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   async closeConnection(): Promise<any> {
     this.grpcClient.close();
@@ -208,7 +208,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @param {string} msg Error message
    * @param {ErrorInterface} error The error object
    * @param {*} reject Reject function.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   handleError(msg: string, error: ErrorInterface, reject: any): void {
     if (!error) {
@@ -225,7 +225,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get device software and hardware information.
    *
    * @return {*}  {Promise<any>} Object representing software & hardware info of the camera. Function must be awaited.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getInfo(): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -266,7 +266,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {number} [timeout] Maximum allowed time (in milliseconds) for fetching the log.
    * @return {*}  {Promise<any>} A promise which when completed contains the camera application log.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getErrorLog(timeout?: number): Promise<any> {
     return new Promise(async (resolve, reject) => {
@@ -287,7 +287,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {huddly.LogFile} logFile The type of the log to read
    * @return {*}  {Promise<any>} The log data
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getLogFiles(logFile: huddly.LogFile): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -309,7 +309,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {number} [timeout] Maximum allowed time (in milliseconds) for erasing the log.
    * @return {*}  {Promise<void>} Resolves when the erase is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   eraseErrorLog(timeout?: number): Promise<void> {
     return new Promise(async (resolve, reject) => {
@@ -330,7 +330,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {huddly.LogFile} logFile The log type to be erased
    * @return {*}  {Promise<void>} Resolves when the erase is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   eraseLogFile(logFile: huddly.LogFile): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -350,7 +350,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {string} [mode] Tell the camera which mode to boot to.
    * @return {*}  {Promise<void>} Resolves when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   reboot(mode?: string): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -369,7 +369,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @ignore
    *
    * @return {*}  {Object}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   _getDefaultParams(): Object {
     return {
@@ -393,7 +393,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {IUpgradeOpts} opts Upgrade options for performing the upgrade
    * @return {*}  {Promise<any>} Resolves when the upgrade is completed. Rejects if something goes wrong.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   upgrade(opts: IUpgradeOpts): Promise<any> {
     return new Promise((resolve, reject) => {
@@ -414,7 +414,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {IAutozoomControlOpts} opts Autozoom control options.
    * @return {*}  {ICnnControl} The instance of the autozoom control class.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getAutozoomControl(opts: IAutozoomControlOpts): ICnnControl {
     return new IpAutozoomControl(this, opts);
@@ -424,7 +424,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get face based exposure control class instance.
    *
    * @return {*}  {ICnnControl} The instance of the face-based exposure control class.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getFaceBasedExposureControl(): ICnnControl {
     return new IpFaceBasedExposureControl(this);
@@ -435,7 +435,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {IDetectorOpts} opts Detector control options.
    * @return {*}  {IDetector} The instance of the detector control class.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getDetector(opts: IDetectorOpts): IDetector {
     return new IpDetector(this, opts);
@@ -445,7 +445,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @ignore
    *
    * @return {*}  {Promise<DiagnosticsMessage[]>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
     throw new Error('Method not implemented.');
@@ -455,7 +455,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get Autozoom/GF state on target
    *
    * @return {*}  {Promise<any>} Resolves with information about the GF state when action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getState(): Promise<any> {
     return new Promise(async (resolve, reject) => {
@@ -480,7 +480,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {huddly.CnnFeature} cnnFeature The cnn feature type
    * @return {*}  {Promise<huddly.CNNStatus>} Resolves with the status of the cnn feature
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getCnnFeatureStatus(cnnFeature: huddly.CnnFeature): Promise<huddly.CNNStatus> {
     return new Promise(async (resolve, reject) => {
@@ -498,7 +498,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @ignore
    *
    * @return {*}  {Promise<any>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getPowerUsage(): Promise<any> {
     throw new Error('Method not implemented.');
@@ -509,7 +509,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {string} [key] The temperature key (internal, external etc.)
    * @return {*}  {Promise<any>} Resolves with temperature information when action completes.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getTemperature(key?: string): Promise<any> {
     return new Promise(async (resolve, reject) => {
@@ -537,7 +537,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Internal grpc request function.
    *
    * @return {*}  {Promise<huddly.Temperatures>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   _getTemperatures(): Promise<huddly.Temperatures> {
     return new Promise((resolve, reject) => {
@@ -555,7 +555,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get temperature information on camera.
    *
    * @return {*}  {Promise<any>} Resolves with temperature data when action completes.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getTemperatures(): Promise<any> {
     return new Promise(async (resolve, reject) => {
@@ -574,7 +574,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Not applicable
    *
    * @param {ReleaseChannel} releaseChannel
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
     throw new Error('Method not implemented.');
@@ -584,7 +584,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get current camera slot.
    *
    * @return {*}  {Promise<string>} Resolves with slot information when action completes.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getSlot(): Promise<string> {
     return new Promise((resolve, reject) => {
@@ -605,7 +605,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get camera uptime
    *
    * @return {*}  {Promise<number>} Resolves with uptime information when the action completes.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   uptime(): Promise<number> {
     return new Promise((resolve, reject) => {
@@ -627,7 +627,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {number} controlNumber
    * @return {*}  {Promise<Buffer>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getXUControl(controlNumber: number): Promise<Buffer> {
     throw new Error('Method not implemented.');
@@ -640,7 +640,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @param {number} controlNumber
    * @param {*} value
    * @return {*}  {Promise<any>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   setXUControl(controlNumber: number, value: any): Promise<any> {
     throw new Error('Method not implemented.');
@@ -650,7 +650,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get supported settings on camera.
    *
    * @return {*}  {Promise<Object>} Resolves with supported settings data when action completes.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getSupportedSettings(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
@@ -665,7 +665,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @param {string} key The setting key to be fetched.
    * @param {Boolean} [forceRefresh] Whether the camera should use the cached settings or not.
    * @return {*}  {Promise<Object>} The setting value for the requested setting key.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getSetting(key: string, forceRefresh?: Boolean): Promise<Object> {
     return new Promise(async (resolve, reject) => {
@@ -705,7 +705,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @param {string} key The setting key to be updated.
    * @param {*} value The new value to be applied.
    * @return {*}  {Promise<void>} Resolves when action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   setSettingValue(key: string, value: any): Promise<void> {
     return new Promise(async (resolve, reject) => {
@@ -749,7 +749,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {Boolean} [forceRefresh] Whether the camera should use the cached settings or not.
    * @return {*}  {Promise<Object>} Resolves with camera settings when action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getSettings(forceRefresh?: Boolean): Promise<Object> {
     return new Promise(async (resolve, reject) => {
@@ -774,7 +774,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Internal grpc request function.
    *
    * @return {*}  {Promise<huddly.Saturation>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   _getSaturation(): Promise<huddly.Saturation> {
     return new Promise((resolve, reject) => {
@@ -795,7 +795,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get camera saturation setting.
    *
    * @return {*}  {Promise<Object>} Resolves with camera saturation settings when action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getSaturation(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
@@ -820,7 +820,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {number} value The new saturation value.
    * @return {*}  {Promise<void>} Resolves when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   setSaturation(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -846,7 +846,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Internal grpc request function.
    *
    * @return {*}  {Promise<huddly.Brightness>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   _getBrightness(): Promise<huddly.Brightness> {
     return new Promise((resolve, reject) => {
@@ -864,7 +864,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get camera brightness setting.
    *
    * @return {*}  {Promise<Object>} Resolves with brightness information when action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getBrightness(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
@@ -889,7 +889,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {number} value The new brightness value
    * @return {*}  {Promise<void>} Resolves when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   setBrightness(value: number): Promise<void> {
     return new Promise((resolve, reject) => {
@@ -911,7 +911,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {String[]} [excludeList=[]] Potential exclusion list
    * @return {*}  {Promise<any>} Resolves when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   resetSettings(excludeList: String[] = []): Promise<any> {
     // Reset brightness
@@ -989,7 +989,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Internal grpc request function.
    *
    * @return {*}  {Promise<huddly.PTZ>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   _getPanTiltZoom(): Promise<huddly.PTZ> {
     return new Promise((resolve, reject) => {
@@ -1007,7 +1007,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get pan, tilt and zoom settings from the camera.
    *
    * @return {*}  {Promise<Object>} Resolves wth ptz information when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getPanTiltZoom(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
@@ -1048,7 +1048,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Get pan and tilt settings from the camera.
    *
    * @return {*}  {Promise<Object>} Resolves with pan and tilt data when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getPanTilt(): Promise<Object> {
     return new Promise(async (resolve, reject) => {
@@ -1070,7 +1070,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {Object} panTilt The new pan and tilt value to be updated.
    * @return {*}  {Promise<void>} Resolves when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   setPanTilt(panTilt: Object): Promise<void> {
     return new Promise(async (resolve, reject) => {
@@ -1089,7 +1089,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {Object} panTiltZoom The new ptz value to be updated.
    * @return {*}  {Promise<void>} Resolves when the action is completed.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   setPanTiltZoom(panTiltZoom: Object): Promise<void> {
     const newPtz = new huddly.PTZ();
@@ -1138,7 +1138,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Not applicable.
    *
    * @return {*}  {Promise<void>}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   usbReEnumerate(): Promise<void> {
     throw new Error('Method not implemented.');
@@ -1149,7 +1149,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Not applicable
    *
    * @return {*}  {Boolean}
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   isAlive(): Boolean {
     throw new Error('Method not implemented.');
@@ -1160,7 +1160,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * @param {IDeviceManager} manager The other ace instance
    * @return {*} A boolean representing whether the instance are equal or not.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   equals(manager: IDeviceManager): Boolean {
     if (manager instanceof IpBaseDevice) {
