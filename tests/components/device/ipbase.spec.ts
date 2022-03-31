@@ -817,9 +817,9 @@ describe('IpBaseDevice', () => {
   });
 
   describe('#getUpgrader', () => {
-    it('should return an instance of the AceUpgrader', async () => {
-      const upgrader = await device.getUpgrader();
-      expect(upgrader).to.be.instanceOf(AceUpgrader);
+    it('should fail as this method must be called on the individual ip managers instead', async () => {
+      const getUpgraderPromise = device.getUpgrader();
+      return expect(getUpgraderPromise).to.eventually.be.rejectedWith(Error, 'Please call this method from Ace or See controller instead!');
     });
   });
 

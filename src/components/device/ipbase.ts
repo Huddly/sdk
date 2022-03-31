@@ -379,13 +379,15 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
   }
 
   /**
-   * Helper function for getting the respective upgrader controller class for upgrading Huddly Ip camera
+   * @ignore
+   *
+   * Should be called from Ace or See class instance.
    *
    * @return {*}  {Promise<IDeviceUpgrader>} The upgrader controll instance.
-   * @memberof IpBaseDevices
+   * @memberof IpBaseDevice
    */
   getUpgrader(): Promise<IDeviceUpgrader> {
-    return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter));
+    return Promise.reject(new Error('Please call this method from Ace or See controller instead!'));
   }
 
   /**
