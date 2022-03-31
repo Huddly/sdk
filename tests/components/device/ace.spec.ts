@@ -1,9 +1,11 @@
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
-import Ace from './../../../src/components/device/ace';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import { EventEmitter } from 'stream';
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
+
+import Ace from './../../../src/components/device/ace';
+import AceUpgrader from './../../../src/components/upgrader/aceUpgrader';
 
 chai.should();
 chai.use(sinonChai);
@@ -25,7 +27,15 @@ class DummyTransport extends EventEmitter implements IGrpcTransport {
 
 describe('ACE', () => {
   it('should have correct product name', () => {
-    const see = new Ace({}, new DummyTransport(), new EventEmitter());
-    expect(see.productName).to.equal('Huddly L1');
+    const ace = new Ace({}, new DummyTransport(), new EventEmitter());
+    expect(ace.productName).to.equal('Huddly L1');
+  });
+
+  describe('#getUpgrader', () => {
+    it('should return an instance of the AceUpgrader', async () => {
+      const ace = new Ace({}, new DummyTransport(), new EventEmitter());
+      const upgrader = await ace.getUpgrader();
+      expect(upgrader).to.be.instanceOf(AceUpgrader);
+    });
   });
 });

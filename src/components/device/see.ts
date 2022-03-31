@@ -1,6 +1,8 @@
 import { EventEmitter } from 'events';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import IpBaseDevice from './ipbase';
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
+import SeeUpgrader from '../upgrader/seeUpgrader';
 
 /**
  * Controller class for Huddly S1 camera.
@@ -27,5 +29,15 @@ export default class See extends IpBaseDevice {
    */
   constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
     super(wsdDevice, transport, cameraDiscoveryEmitter);
+  }
+
+  /**
+   * Helper function for getting the respective upgrader controller class for upgrading Huddly Ip camera
+   *
+   * @return {*} {Promise<IDeviceUpgrader>} The upgrader controll instance (SeeUpgrader).
+   * @memberof See
+   */
+  getUpgrader(): Promise<IDeviceUpgrader> {
+    return Promise.resolve(new SeeUpgrader(this, this.discoveryEmitter));
   }
 }

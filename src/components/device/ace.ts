@@ -1,5 +1,7 @@
+import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import { EventEmitter } from 'stream';
+import AceUpgrader from '../upgrader/aceUpgrader';
 import IpBaseDevice from './ipbase';
 
 /**
@@ -27,5 +29,15 @@ export default class Ace extends IpBaseDevice {
    */
   constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
     super(wsdDevice, transport, cameraDiscoveryEmitter);
+  }
+
+  /**
+   * Helper function for getting the respective upgrader controller class for upgrading Huddly Ip camera
+   *
+   * @return {*}  {Promise<IDeviceUpgrader>} The upgrader controll instance (AceUpgrader).
+   * @memberof Ace
+   */
+  getUpgrader(): Promise<IDeviceUpgrader> {
+    return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter));
   }
 }
