@@ -373,7 +373,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    */
   _getDefaultParams(): Object {
     return {
-      suported: true,
+      supported: true,
       resolution: 1,
     };
   }
