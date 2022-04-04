@@ -1,3 +1,45 @@
+### 0.7.0 (2022-04-04)
+
+##### Build System / Dependencies
+
+*  bump cpio-stream ([9baa6d0e](https://github.com/Huddly/sdk/commit/9baa6d0e09b347f82a4cc5dd1ac27656943264fe))
+
+##### Chores
+
+*  Update @huddly/camera-proto to v1.0.14 ([a5908171](https://github.com/Huddly/sdk/commit/a5908171cd53f4d1f26472e61d8054d78bc694dd))
+*  fix audit issues with minimist ([21dba5d0](https://github.com/Huddly/sdk/commit/21dba5d0b92a3bde1da9e788089aa4b9282afb02))
+
+##### Documentation Changes
+
+*  Document breaking changes with v0.7.0 ([dd172150](https://github.com/Huddly/sdk/commit/dd172150b395524c70c8cf7ec58975b4d9598dad))
+*  Fix up wrong memberOf value for IpBaseDevice methods ([da55869e](https://github.com/Huddly/sdk/commit/da55869e4b198c7e3f60ade918cfd03a96fa3413))
+* **Readme.md:**  Document automatic updates of sdk ([3a8617a1](https://github.com/Huddly/sdk/commit/3a8617a137e87644aeb357fec9c4f3743faaf06d))
+
+##### New Features
+
+*  implement #getUpgrader directly on Ace and See controllers ([94a292bb](https://github.com/Huddly/sdk/commit/94a292bb38352b32f0dc264bdcb758821e7389b2))
+*  Get upgrader should be called from See or Ace controller ([114f5095](https://github.com/Huddly/sdk/commit/114f509554aadf6bac6a2b3a594b4cd5d5cdc886))
+*  Create SeeUpgrader class that extends IpCameraUpgrader ([ff7e6646](https://github.com/Huddly/sdk/commit/ff7e6646c802269b82c015bd80ff1d5b3c7255ed))
+*  AceUpgrader now extends IpCameraUpgrader base class ([a4f86672](https://github.com/Huddly/sdk/commit/a4f8667252ec6ca7f34b735aa215d5b8b65612e5))
+*  Create a base ip camera upgrader class ([d4612fe4](https://github.com/Huddly/sdk/commit/d4612fe48d62cc07b346d0affaddc32f13fc9212))
+*  on getDevice error, emit stacktrace ([25e1611d](https://github.com/Huddly/sdk/commit/25e1611d33e3c32a9bc660ade0e7310ac510a4cd))
+*  SDK support for S1 Huddly devices ([01b65f0d](https://github.com/Huddly/sdk/commit/01b65f0d857255b8d687e74bdaa66ac16bbd6e0c))
+*  sdk-interfaces v0.2.0 ([bab56ce6](https://github.com/Huddly/sdk/commit/bab56ce6642c0808c4399c8301a445714823eb77))
+*  remove all the fileTransfer legacy functions ([86a03bf0](https://github.com/Huddly/sdk/commit/86a03bf0100b236485530662826c843897509724))
+
+##### Bug Fixes
+
+* **ace:**  add return after reject where missing ([9dd78608](https://github.com/Huddly/sdk/commit/9dd78608eca99f2c267078dbf5ddb6c93f8ad0b7))
+
+##### Refactors
+
+*  create IpBaseDevice, Ace & See extend it ([2fb875f0](https://github.com/Huddly/sdk/commit/2fb875f069afc3515aae0ed5d58b2e001b597ad4))
+
+##### Tests
+
+*  fix factory ACE failing test ([6fd66152](https://github.com/Huddly/sdk/commit/6fd66152350d70fad60fe779635aa7bd5a50fdae))
+*  update unit tests after removing legacy code ([6b793014](https://github.com/Huddly/sdk/commit/6b793014a7efed935652f406032601325add1918))
+
 #### 0.6.6 (2022-02-17)
 
 ##### Chores
