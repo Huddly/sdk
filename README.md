@@ -129,6 +129,22 @@ All code samples and usage demos can be found on the official [Huddly SDK sample
 Check out the sdk code on github (https://github.com/Huddly/sdk)
 
 ## FAQ
+
+### Breaking changes on v0.7.0
+Version 0.7.0 of the SDK comes with some breaking changes for the Huddly IP/Network cameras. The breaking change lies on the product id (PID) used to identify the L1 cameras. Before version 0.7.0, all L1 cameras reported the following pid `0x3E9` (`1001` in decimal), whereas with version 0.7.0 the new reported pid is `0x4d3f64b` (`81000011` in decimal). This was a necessary change to comply with the actual product ID values that the cameras report when broadcasting their presence on the network. For those of you who are dependent on product ids for filtering/identifying the different Huddly cameras, you can import the following enum class which contains the PID hex values for all the Huddly cameras:
+
+```javascript
+const HuddlyHex = require('@huddly/sdk-interfaces/lib/enums/HuddlyHex').default;
+
+// To import L1 product id, use the following enum value
+const l1Pid = HuddlyHex.L1_PID;
+
+// To import IQ product id, use the following enum value:
+const iqPid = HuddlyHex.BOXFISH_PID;
+
+// And so on... Open "HuddlyHex" enum implementation to see the rest of the available PIDs
+```
+
 #### **My detections are not matching what I see in the stream!**
   Internally the camera always sees full field of view, the coordinates are relative to full field of view by default. If you want the coordinates to be be absolute to the current framing, you can specify this when you get the detector.
   ```
