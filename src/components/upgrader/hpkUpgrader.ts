@@ -4,6 +4,7 @@ import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrad
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 import CameraEvents from './../../utilitis/events';
 import Api from '../api';
@@ -443,6 +444,12 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
    * @memberof HPKUpgrader
    */
   async upgradeIsValid(): Promise<boolean> {
+    // Quick fix for not calling getState on dartfish, which throws an error.
+    // This needs to be properly fixed in the future.
+    if ((this._cameraManager as any).productId === HuddlyHEX.DARTFISH_PID) {
+      return true;
+    }
+
     try {
       const response = await this._cameraManager.getState();
 

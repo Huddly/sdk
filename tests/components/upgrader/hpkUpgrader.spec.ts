@@ -5,6 +5,7 @@ import chaiAsPromised from 'chai-as-promised';
 import { EventEmitter } from 'events';
 import fs from 'fs';
 import path from 'path';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 import HPKUpgrader from './../../../src/components/upgrader/hpkUpgrader';
 import Boxfish from './../../../src/components/device/boxfish';
@@ -38,7 +39,7 @@ describe('HPKUpgrader', () => {
   describe('#init', () => {
     it('should emit UPGRADE_REBOOT_COMPLETE on ATTACH', () => {
       hpkUpgrader.init({});
-      const upgradeCompletePromise = new Promise(resolve => {
+      const upgradeCompletePromise = new Promise((resolve) => {
         hpkUpgrader.once('UPGRADE_REBOOT_COMPLETE', resolve);
       });
       dummyEmitter.emit(CameraEvents.ATTACH, dummyCameraManager);
@@ -62,7 +63,7 @@ describe('HPKUpgrader', () => {
 
       it('should have production flag be true when passing in production_upgrade UpgradeOpts ', () => {
         hpkUpgrader.init({
-          production_upgrade: true
+          production_upgrade: true,
         });
 
         expect(hpkUpgrader._production_upgrade).to.equal(true);
@@ -90,7 +91,7 @@ describe('HPKUpgrader', () => {
 
       it('should emit UPGRADE_REBOOT on DETACH', () => {
         hpkUpgrader.init({});
-        const upgradeRebootPromise = new Promise(resolve => {
+        const upgradeRebootPromise = new Promise((resolve) => {
           hpkUpgrader.once('UPGRADE_REBOOT', resolve);
         });
         dummyEmitter.emit(CameraEvents.DETACH);
@@ -102,22 +103,22 @@ describe('HPKUpgrader', () => {
   describe('#start', () => {
     function mockSucessMessages(donePayload = {}) {
       dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
-        status: 0
+        status: 0,
       });
       dummyCameraManager.api.sendAndReceiveMessagePack.onCall(1).resolves({
-        string: 'Success'
+        string: 'Success',
       });
       dummyCameraManager.api.sendAndReceiveMessagePack.onCall(2).resolves({
-        status: 0
+        status: 0,
       });
       dummyCameraManager.api.sendAndReceiveMessagePack.onCall(3).resolves({
-        string: 'Success'
+        string: 'Success',
       });
       dummyCameraManager.api.withSubscribe.callsFake((topic, cb) => {
         return cb();
       });
       dummyCameraManager.transport.on.withArgs('upgrader/status').callsArgWith(1, {
-        payload: Api.encode({ operation: 'done', ...donePayload })
+        payload: Api.encode({ operation: 'done', ...donePayload }),
       });
     }
     beforeEach(() => {
@@ -141,7 +142,7 @@ describe('HPKUpgrader', () => {
 
       it('should throw if status is not zero', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
-          status: 1
+          status: 1,
         });
         try {
           await hpkUpgrader.start();
@@ -152,11 +153,11 @@ describe('HPKUpgrader', () => {
       });
 
       it('should emit UPGRADE_FAILED if status is not zero', () => {
-        const upgradeFailedPromise = new Promise(resolve => {
+        const upgradeFailedPromise = new Promise((resolve) => {
           hpkUpgrader.once('UPGRADE_FAILED', resolve);
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
-          status: 1
+          status: 1,
         });
         hpkUpgrader.start();
         return upgradeFailedPromise;
@@ -177,16 +178,16 @@ describe('HPKUpgrader', () => {
 
       it('should throw if run fails', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
-          status: 0
+          status: 0,
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(1).resolves({
-          string: 'Error'
+          string: 'Error',
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(2).resolves({
-          status: 0
+          status: 0,
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(3).resolves({
-          string: 'Success'
+          string: 'Success',
         });
 
         try {
@@ -221,20 +222,20 @@ describe('HPKUpgrader', () => {
 
       it('should throw if run fails', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
-          status: 0
+          status: 0,
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(1).resolves({
-          string: 'Error'
+          string: 'Error',
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(2).resolves({
-          status: 0
+          status: 0,
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(3).resolves({
-          string: 'Success'
+          string: 'Success',
         });
         dummyCameraManager.api.withSubscribe.callsArg(1);
         dummyCameraManager.transport.on.withArgs('upgrader/status').callsArgWith(1, {
-          payload: Api.encode({ operation: 'done' })
+          payload: Api.encode({ operation: 'done' }),
         });
 
         try {
@@ -247,16 +248,16 @@ describe('HPKUpgrader', () => {
 
       it('should emit UPGRADE_PROGRESS with upgrade status as it progress', async () => {
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(0).resolves({
-          status: 0
+          status: 0,
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(1).resolves({
-          string: 'Success'
+          string: 'Success',
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(2).resolves({
-          status: 0
+          status: 0,
         });
         dummyCameraManager.api.sendAndReceiveMessagePack.onCall(3).resolves({
-          string: 'Success'
+          string: 'Success',
         });
         dummyCameraManager.api.withSubscribe.callsArg(1);
         dummyCameraManager.transport.on.callsFake((msg, fn) => {
@@ -265,19 +266,19 @@ describe('HPKUpgrader', () => {
               payload: Api.encode({
                 operation: 'starting upgrade',
                 total_points: 71739737.49,
-              })
+              }),
             });
             fn({
-              payload: Api.encode({ operation: 'read_flash', elapsed_points: 65852139.84000063 })
+              payload: Api.encode({ operation: 'read_flash', elapsed_points: 65852139.84000063 }),
             });
             fn({
-              payload: Api.encode({  operation: 'done' })
+              payload: Api.encode({ operation: 'done' }),
             });
           }
         });
 
-        const upgradeProgressPromise = new Promise(resolve => {
-          hpkUpgrader.on('UPGRADE_PROGRESS', message => {
+        const upgradeProgressPromise = new Promise((resolve) => {
+          hpkUpgrader.on('UPGRADE_PROGRESS', (message) => {
             if (message.progress > 82) {
               resolve(message);
             }
@@ -294,14 +295,13 @@ describe('HPKUpgrader', () => {
         expect(upgradeStatus.progress).to.be.above(0);
       });
 
-
       describe('watchdog', () => {
         it('should timeout if there no status message within specified timeout', async () => {
           dummyCameraManager.api.withSubscribe.callsFake((topics, cb) => cb());
           dummyCameraManager.transport.on.withArgs('upgrader/status').callsFake(() => {});
           dummyCameraManager.api.sendAndReceiveMessagePack.resolves({
             status: 0,
-            string: 'Success'
+            string: 'Success',
           });
 
           hpkUpgrader.init({
@@ -310,7 +310,7 @@ describe('HPKUpgrader', () => {
           });
 
           const startPromise = hpkUpgrader.start();
-          await new Promise(resolve => setImmediate(resolve));
+          await new Promise((resolve) => setImmediate(resolve));
 
           try {
             await startPromise;
@@ -323,12 +323,12 @@ describe('HPKUpgrader', () => {
       });
 
       it('should not throw an error if transport close fails', () => {
-        mockSucessMessages({reboot: false});
+        mockSucessMessages({ reboot: false });
         dummyCameraManager.transport.close.throws(new Error('transport close failed'));
         hpkUpgrader.init({
           file: validHpkBuffer,
         });
-        const completedPromise = new Promise(resolve => {
+        const completedPromise = new Promise((resolve) => {
           hpkUpgrader.on('UPGRADE_COMPLETE', resolve);
         });
         hpkUpgrader.start();
@@ -336,11 +336,11 @@ describe('HPKUpgrader', () => {
       });
 
       it('should complete if it gets done without reboot initally', () => {
-        mockSucessMessages({reboot: false});
+        mockSucessMessages({ reboot: false });
         hpkUpgrader.init({
           file: validHpkBuffer,
         });
-        const completedPromise = new Promise(resolve => {
+        const completedPromise = new Promise((resolve) => {
           hpkUpgrader.on('UPGRADE_COMPLETE', resolve);
         });
         hpkUpgrader.start();
@@ -358,7 +358,7 @@ describe('HPKUpgrader', () => {
         });
 
         it('should timeout if camera does not come back', async () => {
-          mockSucessMessages({reboot: true});
+          mockSucessMessages({ reboot: true });
           hpkUpgrader.init({
             file: validHpkBuffer,
           });
@@ -386,7 +386,7 @@ describe('HPKUpgrader', () => {
 
     it('should be be true upgrade_status if status is 0', async () => {
       dummyCameraManager.getState.resolves({
-        status: 0
+        status: 0,
       });
 
       const isValid = await hpkUpgrader.upgradeIsValid();
@@ -395,11 +395,11 @@ describe('HPKUpgrader', () => {
 
     it('should try again if emmc is not ready (status 10)', async () => {
       dummyCameraManager.getState.onCall(0).resolves({
-        status: 10
+        status: 10,
       });
 
       dummyCameraManager.getState.onCall(1).resolves({
-        status: 0
+        status: 0,
       });
 
       const isValid = await hpkUpgrader.upgradeIsValid();
@@ -408,7 +408,7 @@ describe('HPKUpgrader', () => {
 
     it('should be false upgrade_status if status is not 0', async () => {
       dummyCameraManager.getState.resolves({
-        status: 12
+        status: 12,
       });
 
       const isValid = await hpkUpgrader.upgradeIsValid();
@@ -417,11 +417,11 @@ describe('HPKUpgrader', () => {
 
     it('should be true with response status 3 when _production_upgrade is true', async () => {
       dummyCameraManager.getState.resolves({
-        status: 3
+        status: 3,
       });
 
       hpkUpgrader.init({
-        production_upgrade: true
+        production_upgrade: true,
       });
 
       const isValid = await hpkUpgrader.upgradeIsValid();
@@ -430,7 +430,7 @@ describe('HPKUpgrader', () => {
 
     it('should be false with response status 3 when _production_upgrade is not set', async () => {
       dummyCameraManager.getState.resolves({
-        status: 3
+        status: 3,
       });
 
       const isValid = await hpkUpgrader.upgradeIsValid();
@@ -442,6 +442,13 @@ describe('HPKUpgrader', () => {
 
       const isValid = await hpkUpgrader.upgradeIsValid();
       expect(isValid).to.equal(false);
+    });
+
+    it('should return true and not call getState if device is dartfish', async () => {
+      dummyCameraManager.productId = HuddlyHEX.DARTFISH_PID;
+      const isValid = await hpkUpgrader.upgradeIsValid();
+      expect(isValid).to.equal(true);
+      expect(dummyCameraManager.getState.called).to.equal(false);
     });
   });
 });
