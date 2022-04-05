@@ -9,6 +9,7 @@ import IBoxfishUpgraderFile, {
 import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 import Locksmith from './../locksmith';
 import Api from '../api';
@@ -498,6 +499,12 @@ export default class BoxfishUpgrader extends EventEmitter implements IDeviceUpgr
     const prodInfo = await this._cameraManager.api.getProductInfo();
     const currentSwVersion = this.extractSofwareVersionFromProdInfo(prodInfo);
     if (semver.lt(currentSwVersion, HPK_SUPPORT_VERSION)) {
+      return true;
+    }
+
+    // Quick fix for not calling getState on dartfish, which throws an error.
+    // This needs to be properly fixed in the future.
+    if ((this._cameraManager as any).productId === HuddlyHEX.DARTFISH_PID) {
       return true;
     }
 
