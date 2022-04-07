@@ -59,7 +59,7 @@ export default class Api implements IDeviceCommonApi {
     throw new Error(`Upgrade failed. Cmd: ${cmd}, Error: ${resp.error}, Msg: ${resp.string}`);
   }
 
-  async sendAndReceive(payload: Buffer, commands: any, timeout: number = 500): Promise<any> {
+  async sendAndReceive(payload: Buffer, commands: any, timeout: number = 10000): Promise<any> {
     await this.transport.clear();
     const result = await this.withSubscribe(
       [commands.receive],
