@@ -131,7 +131,7 @@ describe('API', () => {
       expect(sendAndReceiveMsgPackStub.firstCall.args[1]).to.deep.equals({
         send: 'prodinfo/get_msgpack', receive: 'prodinfo/get_msgpack_reply'
       });
-      expect(sendAndReceiveMsgPackStub.firstCall.args[2]).to.equals(1000);
+      expect(sendAndReceiveMsgPackStub.firstCall.args[2]).to.equals(30000);
     });
   });
 
@@ -159,7 +159,7 @@ describe('API', () => {
         send: 'prodinfo/set_msgpack',
         receive: 'prodinfo/set_msgpack_reply'
       });
-      expect(sendAndReceiveStub.firstCall.args[2]).to.equals(10000);
+      expect(sendAndReceiveStub.firstCall.args[2]).to.equals(30000);
     });
   });
 

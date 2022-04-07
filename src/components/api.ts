@@ -119,7 +119,7 @@ export default class Api implements IDeviceCommonApi {
         send: 'prodinfo/get_msgpack',
         receive: 'prodinfo/get_msgpack_reply',
       },
-      1000
+      30000
     );
     if (!prodInfo) {
       return Promise.reject('Product info data retreived is empty or undefined!');
@@ -135,7 +135,7 @@ export default class Api implements IDeviceCommonApi {
         send: 'prodinfo/set_msgpack',
         receive: 'prodinfo/set_msgpack_reply',
       },
-      10000
+      30000
     );
   }
 
