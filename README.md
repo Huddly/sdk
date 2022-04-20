@@ -118,6 +118,8 @@ will use releases from `0.6.5` to `<1.0.0`. Major updates will have to be update
 ## Issues
 If you have a question or found a bug please [open an issue](https://github.com/Huddly/sdk/issues). Thank you
 
+## Known Issues
+[npm install fails on M1 mac because of missing GRPC dependency](https://github.com/Huddly/sdk/issues/540).
 
 ## Documentation
 For more details on the rest of the functionality to the sdk check out [developer.huddly.com](http://developer.huddly.com) for the different classes, interfaces, enums and more which some of them having example code as well.
