@@ -440,7 +440,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @memberof IpBaseDevice
    */
   getDetector(opts: IDetectorOpts): IDetector {
-    return new IpDetector(this, opts);
+    throw new Error('Please call this method from Ace or See controller instead!');
   }
 
   /**

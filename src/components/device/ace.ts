@@ -1,6 +1,9 @@
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import IDetectorOpts from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import { EventEmitter } from 'stream';
+import IpDetector from '../ipDetector';
 import AceUpgrader from '../upgrader/aceUpgrader';
 import IpBaseDevice from './ipbase';
 
@@ -39,5 +42,16 @@ export default class Ace extends IpBaseDevice {
    */
   getUpgrader(): Promise<IDeviceUpgrader> {
     return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter));
+  }
+
+  /**
+   * Get detector control class instance.
+   *
+   * @param {IDetectorOpts} opts Detector control options.
+   * @return {*}  {IDetector} The instance of the detector control class.
+   * @memberof IpBaseDevice
+   */
+  getDetector(opts: IDetectorOpts): IDetector {
+    return new IpDetector(this, { width: 832, height: 480 }, opts);
   }
 }

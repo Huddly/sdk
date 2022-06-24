@@ -2,7 +2,9 @@ import sinon from 'sinon';
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 
-import DetectorOpts, { DetectionConvertion } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import DetectorOpts, {
+  DetectionConvertion,
+} from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 import IIPDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
@@ -10,9 +12,12 @@ import IpDetector from '../../src/components/ipDetector';
 import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
 import CameraEvents from '../../src/utilitis/events';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
+import { ImageSize } from '../../src/utilitis/detectionsConverter';
 
 chai.should();
 chai.use(sinonChai);
+
+const imageSize: ImageSize = { width: 832, height: 480 };
 
 describe('IpDetector', () => {
   let ipDetector: IpDetector;
@@ -47,7 +52,7 @@ describe('IpDetector', () => {
           getDetectionsStub.restore();
         });
         it('should not emit stale detections', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           const cb = sinon.spy();
           ipDetector.on(CameraEvents.DETECTIONS, cb);
           await ipDetector.init();
@@ -76,14 +81,14 @@ describe('IpDetector', () => {
           warnStub.restore();
         });
         it('should log a warning', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           await ipDetector.init();
           clock.tick(ipDetector._UPDATE_INTERVAL);
           await clock.next();
           expect(warnStub).to.have.been.called;
         });
         it('should not emit invalid detections', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           const cb = sinon.spy();
           ipDetector.on(CameraEvents.DETECTIONS, cb);
           await ipDetector.init();
@@ -112,7 +117,7 @@ describe('IpDetector', () => {
           getDetectionsStub.restore();
         });
         it('should emit all distinct detections', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           const cb = sinon.spy();
           ipDetector.on(CameraEvents.DETECTIONS, cb);
           await ipDetector.init();
@@ -135,7 +140,7 @@ describe('IpDetector', () => {
           getDetectionsStub.restore();
         });
         it('should emit all DETECTIONS it receives', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           const cb = sinon.spy();
           ipDetector.on(CameraEvents.DETECTIONS, cb);
           await ipDetector.init();
@@ -148,7 +153,7 @@ describe('IpDetector', () => {
 
       describe('on includeRawDetections is true', () => {
         it('should emit both DETECTIONS and RAWDETECTIONS at initialization', async () => {
-          ipDetector = new IpDetector(deviceManager, { includeRawDetections: true });
+          ipDetector = new IpDetector(deviceManager, imageSize, { includeRawDetections: true });
           const cb = sinon.spy();
           ipDetector.on(CameraEvents.DETECTIONS, cb);
           const rawCb = sinon.spy();
@@ -162,7 +167,7 @@ describe('IpDetector', () => {
       });
       describe('on includeRawDetections is false', () => {
         it('should only emit DETECTIONS', async () => {
-          ipDetector = new IpDetector(deviceManager, { includeRawDetections: false });
+          ipDetector = new IpDetector(deviceManager, imageSize, { includeRawDetections: false });
           const cb = sinon.spy();
           ipDetector.on(CameraEvents.DETECTIONS, cb);
           const rawCb = sinon.spy();
@@ -177,7 +182,7 @@ describe('IpDetector', () => {
 
       describe('on DOWS not set', () => {
         it('should call setCnnFeature with correct arg', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           await ipDetector.init();
           const arg = setCnnFeatureSpy.firstCall.args[0];
           expect(arg.getFeature()).to.equal(huddly.Feature.DETECTOR);
@@ -185,7 +190,7 @@ describe('IpDetector', () => {
         });
         describe('On DOWS set', () => {
           it('should not call setCnnFeature', async () => {
-            ipDetector = new IpDetector(deviceManager, { DOWS: true });
+            ipDetector = new IpDetector(deviceManager, imageSize, { DOWS: true });
             await ipDetector.init();
             expect(setCnnFeatureSpy.called).to.equal(false);
           });
@@ -201,7 +206,7 @@ describe('IpDetector', () => {
         setIntervalSpy.restore();
       });
       it('should not do anything', async () => {
-        ipDetector = new IpDetector(deviceManager, {});
+        ipDetector = new IpDetector(deviceManager, imageSize, {});
         ipDetector._detectorInitialized = true;
         await ipDetector.init();
         expect(setIntervalSpy.called).to.be.false;
@@ -224,13 +229,13 @@ describe('IpDetector', () => {
     describe('on detector initialized', () => {
       describe('on DOWS not set', () => {
         it('should invoke clearInterval', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           await ipDetector.init();
           await ipDetector.destroy();
           expect(clearIntervalSpy).to.have.been.calledOnce;
         });
         it('should call setCnnFeature with correct arg', async () => {
-          ipDetector = new IpDetector(deviceManager, {});
+          ipDetector = new IpDetector(deviceManager, imageSize, {});
           await ipDetector.init();
           await ipDetector.destroy();
           const arg = setCnnFeatureSpy.secondCall.args[0];
@@ -240,13 +245,13 @@ describe('IpDetector', () => {
       });
       describe('on DOWS set', () => {
         it('should invoke clearInterval', async () => {
-          ipDetector = new IpDetector(deviceManager, { DOWS: true });
+          ipDetector = new IpDetector(deviceManager, imageSize, { DOWS: true });
           await ipDetector.init();
           await ipDetector.destroy();
           expect(clearIntervalSpy).to.have.been.calledOnce;
         });
         it('should not call setCnnFeature', async () => {
-          ipDetector = new IpDetector(deviceManager, { DOWS: true });
+          ipDetector = new IpDetector(deviceManager, imageSize, { DOWS: true });
           await ipDetector.init();
           await ipDetector.destroy();
           expect(setCnnFeatureSpy.called).to.equals(false);
@@ -278,7 +283,7 @@ describe('IpDetector', () => {
       ipDetector.destroy();
     });
     it('should reset detector class with new options', async () => {
-      ipDetector = new IpDetector(deviceManager, {});
+      ipDetector = new IpDetector(deviceManager, imageSize, {});
       await ipDetector.updateOpts(newOpts);
       expect(ipDetector._options).to.deep.equals(newOpts);
     });
