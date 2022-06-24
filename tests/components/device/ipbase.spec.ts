@@ -866,9 +866,9 @@ describe('IpBaseDevice', () => {
     });
   });
   describe('#getDetector', () => {
-    it('should return an instance of IpDetector', () => {
-      const detector = device.getDetector({});
-      expect(detector).to.be.instanceOf(IpDetector);
+    it('should throw an error', () => {
+      const badFn = () => device.getDetector({});
+      expect(badFn).to.throw(Error);
     });
   });
   describe('#getDiagnostics', () => {

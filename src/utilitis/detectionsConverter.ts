@@ -10,7 +10,7 @@ const _filterDetections = (objectFilter: Array<String>, detections: Array<any>):
  * @ignore
  * @interface ImageSize
  */
-interface ImageSize {
+export interface ImageSize {
   width: number;
   height: number;
 }

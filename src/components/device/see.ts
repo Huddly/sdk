@@ -3,6 +3,9 @@ import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport
 import IpBaseDevice from './ipbase';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
 import SeeUpgrader from '../upgrader/seeUpgrader';
+import IpDetector from '../ipDetector';
+import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
+import IDetectorOpts from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 
 /**
  * Controller class for Huddly S1 camera.
@@ -39,5 +42,16 @@ export default class See extends IpBaseDevice {
    */
   getUpgrader(): Promise<IDeviceUpgrader> {
     return Promise.resolve(new SeeUpgrader(this, this.discoveryEmitter));
+  }
+
+  /**
+   * Get detector control class instance.
+   *
+   * @param {IDetectorOpts} opts Detector control options.
+   * @return {*}  {IDetector} The instance of the detector control class.
+   * @memberof IpBaseDevice
+   */
+  getDetector(opts: IDetectorOpts): IDetector {
+    return new IpDetector(this, { width: 832, height: 624 }, opts);
   }
 }

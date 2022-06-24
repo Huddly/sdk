@@ -7,12 +7,10 @@ import DetectorOpts, {
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import CameraEvents from './../utilitis/events';
-import DetectionsConverter from './../utilitis/detectionsConverter';
+import DetectionsConverter, { ImageSize } from './../utilitis/detectionsConverter';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import throttle from './../utilitis/throttle';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
-
-const PREVIEW_IMAGE_SIZE = { width: 832, height: 480 };
 
 /**
  * Control class for configuring detector and subscribing to detection information.
@@ -25,6 +23,8 @@ const PREVIEW_IMAGE_SIZE = { width: 832, height: 480 };
 export default class IpDetector extends EventEmitter implements IDetector {
   /** @ignore */
   _deviceManager: IIpDeviceManager;
+  /** @ignore */
+  _imageSize: ImageSize;
   /** @ignore */
   _detectionHandler: any;
   /** @ignore */
@@ -52,9 +52,10 @@ export default class IpDetector extends EventEmitter implements IDetector {
   /** @ignore */
   _lastTimestamp: number = undefined;
 
-  constructor(manager: IIpDeviceManager, options?: DetectorOpts) {
+  constructor(manager: IIpDeviceManager, imageSize: ImageSize, options?: DetectorOpts) {
     super();
     this._deviceManager = manager;
+    this._imageSize = imageSize;
     this._options = options || {};
     this._validateOptions(this._options);
   }
@@ -286,7 +287,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
   convertDetections(detections: Array<any>, opts?: DetectorOpts): Array<any> {
     const converterOpts = {
       frame: { ...this._frame },
-      preview_image_size: { ...PREVIEW_IMAGE_SIZE },
+      preview_image_size: { ...this._imageSize },
       ...opts,
     };
     return new DetectionsConverter(detections, converterOpts).convert();
