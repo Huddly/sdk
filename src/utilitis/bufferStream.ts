@@ -49,8 +49,10 @@ export default class BufferStream extends Readable {
   /**
    * Clean up variable references once the stream has been ended.
    */
-  destroy(): void {
+  destroy(): this {
     this.source = this.offset = this.length = undefined;
+    this.destroyed = true;
+    return this;
   }
 
   /**
