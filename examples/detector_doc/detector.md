@@ -12,14 +12,14 @@
 
 ## Limitations
 The detector is optimized to the cameras primary use case, and is therefore trained specifically towards small to medium sized conference rooms.
-This means that it is particulary good a detections up to approximately 5 meters, but less reliable outside of this range. 
+This means that it is particulary good a detections up to approximately 5 meters, but less reliable outside of this range.
 
 ## Output
 
 #### Labels
 Current labels the detector will output data for.
 
-* **Person** 
+* **Person**
 * **Head**
 * **Chair**
 
@@ -40,7 +40,7 @@ Current labels the detector will output data for.
         },
         {
             "id": 1,
-            "label": "chari",
+            "label": "chair",
             "confidence": 0.3582177758216858,
             "bbox": {
                 "x": 94,
