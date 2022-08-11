@@ -8,8 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	   <link rel="stylesheet" href="../styles/style.css">
-        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+	      <link rel="stylesheet" href="../styles/style.css">
     </head>
     <body>
 
@@ -43,7 +42,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >IpAutozoomControl</li>
+  <li>IpAutozoomControl</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -64,7 +63,6 @@
             <code>src/components/ipAutozoomControl.ts</code>
         </p>
 
-
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -81,6 +79,11 @@
                         <code>ICnnControl</code>
             </p>
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -97,19 +100,19 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#disable" >disable</a>
+                                <a href="#disable">disable</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#enable" >enable</a>
+                                <a href="#enable">enable</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#init" >init</a>
+                                <a href="#init">init</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#isEnabled" >isEnabled</a>
+                                <a href="#isEnabled">isEnabled</a>
                             </li>
                         </ul>
                     </td>
@@ -129,7 +132,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IIpDeviceManager, options?: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
+<code>constructor(manager: IIpDeviceManager, options?: <a href="../classes/AutozoomControl.html">AutozoomControlOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -196,8 +199,10 @@
                 <td class="col-md-4">
                     <a name="disable"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>disable</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            disable
+                        </b>
                         <a href="#disable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -225,7 +230,6 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -275,8 +279,10 @@
                 <td class="col-md-4">
                     <a name="enable"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>enable</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            enable
+                        </b>
                         <a href="#enable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -304,7 +310,6 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -354,8 +359,10 @@
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>init</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            init
+                        </b>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -402,8 +409,10 @@ Should be called before any other methods.</p>
                 <td class="col-md-4">
                     <a name="isEnabled"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>isEnabled</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            isEnabled
+                        </b>
                         <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -622,14 +631,14 @@ export default class IpAutozoomControl implements ICnnControl {
 
 
 
-
+                   
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -649,9 +658,9 @@ export default class IpAutozoomControl implements ICnnControl {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
        <script src="../js/menu-wc.js" defer></script>
-       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

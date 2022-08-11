@@ -8,8 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	   <link rel="stylesheet" href="../styles/style.css">
-        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+	      <link rel="stylesheet" href="../styles/style.css">
     </head>
     <body>
 
@@ -43,7 +42,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >IpDetector</li>
+  <li>IpDetector</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -67,7 +66,6 @@
             <code>src/components/ipDetector.ts</code>
         </p>
 
-
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -90,6 +88,11 @@
                             <code><a href="../classes/Detector.html" target="_self" >IDetector</a></code>
             </p>
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -105,25 +108,25 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#_getDetections" >_getDetections</a>
+                                <a href="#_getDetections">_getDetections</a>
                             </li>
                             <li>
-                                <a href="#_startDetections" >_startDetections</a>
+                                <a href="#_startDetections">_startDetections</a>
                             </li>
                             <li>
-                                <a href="#_stopDetections" >_stopDetections</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#destroy" >destroy</a>
+                                <a href="#_stopDetections">_stopDetections</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#init" >init</a>
+                                <a href="#destroy">destroy</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#updateOpts" >updateOpts</a>
+                                <a href="#init">init</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateOpts">updateOpts</a>
                             </li>
                         </ul>
                     </td>
@@ -143,7 +146,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IIpDeviceManager, options?: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
+<code>constructor(manager: IIpDeviceManager, imageSize: ImageSize, options?: <a href="../classes/Detector.html">DetectorOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -170,6 +173,18 @@
                                                   
                                                         <td>
                                                                     <code>IIpDeviceManager</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                </tr>
+                                                <tr>
+                                                        <td>imageSize</td>
+                                                  
+                                                        <td>
+                                                                    <code>ImageSize</code>
                                                         </td>
                                                   
                                                     <td>
@@ -210,7 +225,9 @@
                 <td class="col-md-4">
                     <a name="_getDetections"></a>
                     <span class="name">
-                        <span ><b>_getDetections</b></span>
+                        <b>
+                            _getDetections
+                        </b>
                         <a href="#_getDetections"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -224,8 +241,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="160"
-                            class="link-to-prism">src/components/ipDetector.ts:160</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="161"
+                            class="link-to-prism">src/components/ipDetector.ts:161</a></div>
                 </td>
             </tr>
 
@@ -233,7 +250,6 @@
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Fetches detection information from camera.</p>
-<p>The object type is described in the IP camera proto file.</p>
 </div>
 
                     <div>
@@ -257,7 +273,9 @@ The object type is described in the IP camera proto file.</p>
                 <td class="col-md-4">
                     <a name="_startDetections"></a>
                     <span class="name">
-                        <span ><b>_startDetections</b></span>
+                        <b>
+                            _startDetections
+                        </b>
                         <a href="#_startDetections"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -271,8 +289,8 @@ The object type is described in the IP camera proto file.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="182"
-                            class="link-to-prism">src/components/ipDetector.ts:182</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="183"
+                            class="link-to-prism">src/components/ipDetector.ts:183</a></div>
                 </td>
             </tr>
 
@@ -302,7 +320,9 @@ The object type is described in the IP camera proto file.</p>
                 <td class="col-md-4">
                     <a name="_stopDetections"></a>
                     <span class="name">
-                        <span ><b>_stopDetections</b></span>
+                        <b>
+                            _stopDetections
+                        </b>
                         <a href="#_stopDetections"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -316,8 +336,8 @@ The object type is described in the IP camera proto file.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="213"
-                            class="link-to-prism">src/components/ipDetector.ts:213</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="214"
+                            class="link-to-prism">src/components/ipDetector.ts:214</a></div>
                 </td>
             </tr>
 
@@ -347,8 +367,10 @@ The object type is described in the IP camera proto file.</p>
                 <td class="col-md-4">
                     <a name="destroy"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>destroy</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            destroy
+                        </b>
                         <a href="#destroy"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -363,8 +385,8 @@ The object type is described in the IP camera proto file.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="261"
-                            class="link-to-prism">src/components/ipDetector.ts:261</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="262"
+                            class="link-to-prism">src/components/ipDetector.ts:262</a></div>
                 </td>
             </tr>
 
@@ -394,8 +416,10 @@ The object type is described in the IP camera proto file.</p>
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>init</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            init
+                        </b>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -410,8 +434,8 @@ The object type is described in the IP camera proto file.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="68"
-                            class="link-to-prism">src/components/ipDetector.ts:68</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="69"
+                            class="link-to-prism">src/components/ipDetector.ts:69</a></div>
                 </td>
             </tr>
 
@@ -441,8 +465,10 @@ The object type is described in the IP camera proto file.</p>
                 <td class="col-md-4">
                     <a name="updateOpts"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>updateOpts</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateOpts
+                        </b>
                         <a href="#updateOpts"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -450,15 +476,15 @@ The object type is described in the IP camera proto file.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateOpts(options: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
+                    <code>updateOpts(options: <a href="../classes/Detector.html">DetectorOpts</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="246"
-                            class="link-to-prism">src/components/ipDetector.ts:246</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="247"
+                            class="link-to-prism">src/components/ipDetector.ts:247</a></div>
                 </td>
             </tr>
 
@@ -471,7 +497,6 @@ instantiating the Detector class.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -623,12 +648,10 @@ import DetectorOpts, {
 import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
 
 import CameraEvents from &#x27;./../utilitis/events&#x27;;
-import DetectionsConverter from &#x27;./../utilitis/detectionsConverter&#x27;;
+import DetectionsConverter, { ImageSize } from &#x27;./../utilitis/detectionsConverter&#x27;;
 import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
 import throttle from &#x27;./../utilitis/throttle&#x27;;
 import { Empty } from &#x27;google-protobuf/google/protobuf/empty_pb&#x27;;
-
-const PREVIEW_IMAGE_SIZE &#x3D; { width: 832, height: 480 };
 
 /**
  * Control class for configuring detector and subscribing to detection information.
@@ -641,6 +664,8 @@ const PREVIEW_IMAGE_SIZE &#x3D; { width: 832, height: 480 };
 export default class IpDetector extends EventEmitter implements IDetector {
   /** @ignore */
   _deviceManager: IIpDeviceManager;
+  /** @ignore */
+  _imageSize: ImageSize;
   /** @ignore */
   _detectionHandler: any;
   /** @ignore */
@@ -668,9 +693,10 @@ export default class IpDetector extends EventEmitter implements IDetector {
   /** @ignore */
   _lastTimestamp: number &#x3D; undefined;
 
-  constructor(manager: IIpDeviceManager, options?: DetectorOpts) {
+  constructor(manager: IIpDeviceManager, imageSize: ImageSize, options?: DetectorOpts) {
     super();
     this._deviceManager &#x3D; manager;
+    this._imageSize &#x3D; imageSize;
     this._options &#x3D; options || {};
     this._validateOptions(this._options);
   }
@@ -902,7 +928,7 @@ export default class IpDetector extends EventEmitter implements IDetector {
   convertDetections(detections: Array&lt;any&gt;, opts?: DetectorOpts): Array&lt;any&gt; {
     const converterOpts &#x3D; {
       frame: { ...this._frame },
-      preview_image_size: { ...PREVIEW_IMAGE_SIZE },
+      preview_image_size: { ...this._imageSize },
       ...opts,
     };
     return new DetectionsConverter(detections, converterOpts).convert();
@@ -914,14 +940,14 @@ export default class IpDetector extends EventEmitter implements IDetector {
 
 
 
-
+                   
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -941,9 +967,9 @@ export default class IpDetector extends EventEmitter implements IDetector {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
        <script src="../js/menu-wc.js" defer></script>
-       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

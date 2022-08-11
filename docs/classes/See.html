@@ -42,7 +42,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>Ace</li>
+  <li>See</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -60,14 +60,14 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/components/device/ace.ts</code>
+            <code>src/components/device/see.ts</code>
         </p>
 
             <p class="comment">
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Controller class for Huddly L1 camera.</p>
+                <p>Controller class for Huddly S1 camera.</p>
 
             </p>
 
@@ -256,13 +256,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/ace.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/see.ts:24</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Creates an instance of ACE/L1.</p>
+                            <div class="io-description"><p>Creates an instance of SEE/S1.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -320,7 +320,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Emitter instance sending attach &amp; detach events for Huddly L1 cameras.</p>
+                                                                <code><p>Emitter instance sending attach &amp; detach events for Huddly SEE cameras.</p>
 </code>
                                                         </td>
                                                 </tr>
@@ -358,12 +358,12 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;Huddly L1&#x27;</code>
+                            <i>Default value : </i><code>&#x27;Huddly S1&#x27;</code>
                         </td>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/ace.ts:24</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/see.ts:24</a></div>
                             </td>
                         </tr>
 
@@ -667,7 +667,7 @@ class on device-api-ip module.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="54"
-                            class="link-to-prism">src/components/device/ace.ts:54</a></div>
+                            class="link-to-prism">src/components/device/see.ts:54</a></div>
                 </td>
             </tr>
 
@@ -745,7 +745,7 @@ class on device-api-ip module.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/components/device/ace.ts:43</a></div>
+                            class="link-to-prism">src/components/device/see.ts:43</a></div>
                 </td>
             </tr>
 
@@ -762,7 +762,7 @@ class on device-api-ip module.</p>
 
                     </div>
                     <div class="io-description">
-                        <p>{Promise<IDeviceUpgrader>} The upgrader controll instance (AceUpgrader).</p>
+                        <p>{Promise<IDeviceUpgrader>} The upgrader controll instance (SeeUpgrader).</p>
 
                     </div>
                 </td>
@@ -2936,37 +2936,37 @@ class on device-api-ip module.</p>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
-import IDetectorOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts&#x27;;
-import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
 import IGrpcTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport&#x27;;
-import { EventEmitter } from &#x27;stream&#x27;;
-import IpDetector from &#x27;../ipDetector&#x27;;
-import AceUpgrader from &#x27;../upgrader/aceUpgrader&#x27;;
 import IpBaseDevice from &#x27;./ipbase&#x27;;
+import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
+import SeeUpgrader from &#x27;../upgrader/seeUpgrader&#x27;;
+import IpDetector from &#x27;../ipDetector&#x27;;
+import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
+import IDetectorOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts&#x27;;
 
 /**
- * Controller class for Huddly L1 camera.
+ * Controller class for Huddly S1 camera.
  *
  * @export
- * @class Ace
+ * @class See
  * @extends {IpBaseDevice}
  */
-export default class Ace extends IpBaseDevice {
+export default class See extends IpBaseDevice {
   /**
    * Comercial product name for this controller class.
    *
    * @type {string}
-   * @memberof Ace
+   * @memberof See
    */
-  productName: string &#x3D; &#x27;Huddly L1&#x27;;
+  productName: string &#x3D; &#x27;Huddly S1&#x27;;
 
   /**
-   * Creates an instance of ACE/L1.
+   * Creates an instance of SEE/S1.
    * @param {*} wsdDevice The wsdd device instance retrieved during discovery.
    * @param {IGrpcTransport} transport Grpc transport instance.
-   * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach &amp; detach events for Huddly L1 cameras.
-   * @memberof Ace
+   * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach &amp; detach events for Huddly SEE cameras.
+   * @memberof See
    */
   constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
     super(wsdDevice, transport, cameraDiscoveryEmitter);
@@ -2975,11 +2975,11 @@ export default class Ace extends IpBaseDevice {
   /**
    * Helper function for getting the respective upgrader controller class for upgrading Huddly Ip camera
    *
-   * @return {*}  {Promise&lt;IDeviceUpgrader&gt;} The upgrader controll instance (AceUpgrader).
-   * @memberof Ace
+   * @return {*} {Promise&lt;IDeviceUpgrader&gt;} The upgrader controll instance (SeeUpgrader).
+   * @memberof See
    */
   getUpgrader(): Promise&lt;IDeviceUpgrader&gt; {
-    return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter));
+    return Promise.resolve(new SeeUpgrader(this, this.discoveryEmitter));
   }
 
   /**
@@ -2990,7 +2990,7 @@ export default class Ace extends IpBaseDevice {
    * @memberof IpBaseDevice
    */
   getDetector(opts: IDetectorOpts): IDetector {
-    return new IpDetector(this, { width: 832, height: 480 }, opts);
+    return new IpDetector(this, { width: 832, height: 624 }, opts);
   }
 }
 </code></pre>
@@ -3021,7 +3021,7 @@ export default class Ace extends IpBaseDevice {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'Ace.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'See.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

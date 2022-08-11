@@ -42,15 +42,12 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>AceUpgrader</li>
+  <li>IpCameraUpgrader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
-        </li>
-        <li >
-            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
         </li>
         <li >
             <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
@@ -63,14 +60,14 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/components/upgrader/aceUpgrader.ts</code>
+            <code>src/components/upgrader/ipUpgrader.ts</code>
         </p>
 
             <p class="comment">
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Controller class for instrumenting the upgrade process on Huddly L1 camera.</p>
+                <p>Controller class for instrumenting the upgrade process on Huddly IP cameras.</p>
 
             </p>
 
@@ -78,9 +75,15 @@
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                        <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
+                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
             </p>
 
+            <p class="comment">
+                <h3>Implements</h3>
+            </p>
+            <p class="comment">
+                        <code>IDeviceUpgrader</code>
+            </p>
 
             <p class="comment">
                 <h3>Example</h3>
@@ -100,9 +103,6 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
-                            <li>
-                                <a href="#className">className</a>
-                            </li>
                             <li>
                                 <a href="#bootTimeout">bootTimeout</a>
                             </li>
@@ -154,6 +154,20 @@
 
 
 
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#ipBaseManager">ipBaseManager</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
         </tbody>
     </table>
 </section>
@@ -169,13 +183,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="99" class="link-to-prism">src/components/upgrader/ipUpgrader.ts:99</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Creates a new instance of AceUpgrader.</p>
+                            <div class="io-description"><p>Creates a new instance of IpCameraUpgrader.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -201,7 +215,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>An instance of IDeviceManager setup for an ACE/L1 device.</p>
+                                                                <code><p>An instance of IDeviceManager setup for an IpBaseDevice.</p>
 </code>
                                                         </td>
                                                 </tr>
@@ -217,7 +231,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Event emitter object that emits ATTACH &amp; DETACH events for ACE/L1 devices on the network</p>
+                                                                <code><p>Event emitter object that emits ATTACH &amp; DETACH events for IP devices on the network</p>
 </code>
                                                         </td>
                                                 </tr>
@@ -235,38 +249,6 @@
         <h3 id="inputs">
             Properties
         </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="className"></a>
-                        <span class="name">
-                            <b>
-                            className</b>
-                            <a href="#className"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;AceUpgrader&#x27;</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:13</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
@@ -290,16 +272,9 @@
                             <i>Default value : </i><code>30 * 1000</code>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:75</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/components/upgrader/ipUpgrader.ts:75</a></div>
                             </td>
                         </tr>
 
@@ -336,16 +311,9 @@ booting after firmware upgrade.</p>
                             <i>Default value : </i><code>&#x27;IpCameraUpgrader&#x27;</code>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:41</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="41" class="link-to-prism">src/components/upgrader/ipUpgrader.ts:41</a></div>
                             </td>
                         </tr>
 
@@ -370,16 +338,9 @@ booting after firmware upgrade.</p>
 
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:66</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="66" class="link-to-prism">src/components/upgrader/ipUpgrader.ts:66</a></div>
                             </td>
                         </tr>
 
@@ -421,14 +382,8 @@ booting after firmware upgrade.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:567</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="567"
+                            class="link-to-prism">src/components/upgrader/ipUpgrader.ts:567</a></div>
                 </td>
             </tr>
 
@@ -474,14 +429,8 @@ booting after firmware upgrade.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:404</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="404"
+                            class="link-to-prism">src/components/upgrader/ipUpgrader.ts:404</a></div>
                 </td>
             </tr>
 
@@ -527,14 +476,8 @@ booting after firmware upgrade.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:379</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="379"
+                            class="link-to-prism">src/components/upgrader/ipUpgrader.ts:379</a></div>
                 </td>
             </tr>
 
@@ -580,14 +523,8 @@ booting after firmware upgrade.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:119</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">src/components/upgrader/ipUpgrader.ts:119</a></div>
                 </td>
             </tr>
 
@@ -663,14 +600,8 @@ booting after firmware upgrade.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:432</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="432"
+                            class="link-to-prism">src/components/upgrader/ipUpgrader.ts:432</a></div>
                 </td>
             </tr>
 
@@ -764,14 +695,8 @@ reading the cpio file and sending the data over to the camera using grpc streams
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:136</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="136"
+                            class="link-to-prism">src/components/upgrader/ipUpgrader.ts:136</a></div>
                 </td>
             </tr>
 
@@ -815,14 +740,8 @@ booted camera comes up so that the upgrade process can continue to completion.</
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:173</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="173"
+                            class="link-to-prism">src/components/upgrader/ipUpgrader.ts:173</a></div>
                 </td>
             </tr>
 
@@ -852,120 +771,622 @@ booted camera comes up so that the upgrade process can continue to completion.</
 
 
 
+            <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="ipBaseManager"></a>
+                        <span class="name"><b>ipBaseManager</b><a href="#ipBaseManager"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>ipBaseManager()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="92" class="link-to-prism">src/components/upgrader/ipUpgrader.ts:92</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-description"><p>Helper getter that typecasts the _cameraManager member into a IPBaseDevice type</p>
+</div>
+
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+
+            </tbody>
+        </table>
+</section>
     </div>
 
-    <div class="tab-pane fade " id="c-readme">
-        <p><h2 id="upgrader-usage">Upgrader Usage</h2>
-<p>In order to perform a software upgarde on the camera, this interface should be used. Please note that there is a convenience function in the <code>IDeviceManager</code> for performing the upgrade, but if you want to implement your own handler then this documentation needs to be reviewed.</p>
-<p>Each upgrader class (BoxfishUpgrader, HuddlyGoUpgrader, AceUpgrader) requires some options that should be provided when initializing it:</p>
-<div><pre class="line-numbers"><code class="language-javascript">const upgrader = cameraManager.getUpgrader();
-const upgradeOptions = {
-  file: fs.readSync(&#39;/path/to/firmware/image&#39;),
-  bootTimeout: 60 // Default is 60 seconds
-  verboseStatusLog: true // Default is true
-}; // See the `IUpgraderOpts` for explanation of each option
-
-// Initialize upgrader
-upgrader.init(upgraderOptions);</code></pre></div><p>After you have initialized the upgrader, then you can proceed with starting the upgrade process.</p>
-<div><pre class="line-numbers"><code class="language-javascript">// Start the upgrade process
-upgrader.start();</code></pre></div><p>During the upgrade process, the upgrader class will emit the following events:</p>
-<table class="table table-bordered compodoc-table">
-<thead>
-<tr>
-<th>Event</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>UPGRADE_START</code></td>
-<td align="left">Fired when upgrade is initiated.</td>
-</tr>
-<tr>
-<td><code>UPGRADE_COMPLETE</code></td>
-<td align="left">Fired when upgrade is completed successfully.</td>
-</tr>
-<tr>
-<td><code>UPGRADE_FAILED</code></td>
-<td align="left">Fired when something fails during upgrade. The handler contains the error trace of the upgrade failure.</td>
-</tr>
-<tr>
-<td><code>TIMEOUT</code></td>
-<td align="left">Fired when the camera does not come back up after reboot (reboot is necessary to complete the upgrade sequence.</td>
-</tr>
-<tr>
-<td><code>UPGRADE_PROGRESS</code></td>
-<td align="left">Fired when constantly during the upgrade process providing with information on how far the upgrade process is from completion.</td>
-</tr>
-</tbody>
-</table>
-<p>The events above can be used as shown below:</p>
-<div><pre class="line-numbers"><code class="language-javascript">
-const onUpgradeStartHandler = () =&gt; {
-  // Do something.... Inform your system that upgrade has started
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeFailedHandler = (e) =&gt; {
-  // Upgrade has failed. Print error log to debug the reason
-  console.error(e);
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeCompleteHandler = () =&gt; {
-  // Hurrayyy! Sucessfully upgraded your Huddly camera
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeTimeoutHandler = () =&gt; {
-  // Ups! Looks like the camera did not come back up after rebooting during upgrade.
-  // This also means that the new software that was loaded into the camera will be discarded.
-  // Try to initiate upgrade again.
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeProgressHandler = (progress) =&gt; {
-  // The progress object contains the following information:
-  /*
-   * status: A string representation of how far the upgrade progress has come (ex. Uploading firmware on the device)
-   * progress: A numerical value representing the percentage of upgrade completion (ex 30)
-   */
-  console.log(`Upgrade Progress: ${progress.progress} %`)
-}
-
-upgrader.once(&#39;UPGRADE_START&#39;, onUpgradeStartHandler);
-upgrader.once(&#39;UPGRADE_FAILED&#39;, onUpgradeFailedHandler);
-upgrader.once(&#39;UPGRADE_COMPLETE&#39;, onUpgradeCompleteHandler);
-upgrader.once(&#39;TIMEOUT&#39;, onUpgradeTimeoutHandler);
-upgrader.on(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-
-// Finally start the upgrade after having setup all the listeners
-upgrader.start();</code></pre></div></p>
-    </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
-import { EventEmitter } from &#x27;stream&#x27;;
-import IpCameraUpgrader from &#x27;./ipUpgrader&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
+import cpio from &#x27;cpio-stream&#x27;;
+
+import IUpgradeOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts&#x27;;
+import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
+import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+
+import UpgradeStatus, { UpgradeStatusStep } from &#x27;./upgradeStatus&#x27;;
+import AceUpgraderError from &#x27;./../../error/AceUpgraderError&#x27;;
+import CameraEvents from &#x27;./../../utilitis/events&#x27;;
+import * as grpc from &#x27;@grpc/grpc-js&#x27;;
+import ErrorCodes from &#x27;./../../../src/error/errorCodes&#x27;;
+import BufferStream from &#x27;./../../utilitis/bufferStream&#x27;;
+
+import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
+import { Empty } from &#x27;google-protobuf/google/protobuf/empty_pb&#x27;;
+import IpBaseDevice from &#x27;../device/ipbase&#x27;;
 
 /**
- * Controller class for instrumenting the upgrade process on Huddly L1 camera.
+ * Enum describing the different upgrade steps for L1.
  *
  * @export
- * @class AceUpgrader
- * @extends {IpCameraUpgrader}
+ * @enum {number}
  */
-export default class AceUpgrader extends IpCameraUpgrader {
-  className: string &#x3D; &#x27;AceUpgrader&#x27;;
+export enum UpgradeSteps {
+  FLASH &#x3D; 0,
+  REBOOT &#x3D; 1,
+  COMMIT &#x3D; 2,
+}
+
+/**
+ * Controller class for instrumenting the upgrade process on Huddly IP cameras.
+ *
+ * @export
+ * @class IpCameraUpgrader
+ * @extends {EventEmitter}
+ * @implements {IDeviceUpgrader}
+ */
+export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpgrader {
+  className: string &#x3D; &#x27;IpCameraUpgrader&#x27;;
+  /**
+   * @ignore
+   * Camera manager instance for Ace
+   *
+   * @type {IDeviceManager}
+   * @memberof IpCameraUpgrader
+   */
+  _cameraManager: IDeviceManager;
 
   /**
-   * Creates a new instance of AceUpgrader.
-   * @param {IDeviceManager} manager An instance of IDeviceManager setup for an ACE/L1 device.
-   * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH &amp; DETACH events for ACE/L1 devices on the network
-   * @memberof AceUpgrader
+   * @ignore
+   * Event emitter object that emits ATTACH &amp; DETACH events for Ace devices on the network
+   *
+   * @type {EventEmitter}
+   * @memberof IpCameraUpgrader
+   */
+  _sdkDeviceDiscoveryEmitter: EventEmitter;
+
+  /**
+   * The upgrader options necessary to perform the firmware upgrade
+   *
+   * @type {IUpgradeOpts}
+   * @memberof IpCameraUpgrader
+   */
+  options: IUpgradeOpts;
+
+  /**
+   * Defines the maximum amount of time (in seconds) that the camera is allowed to use for
+   * booting after firmware upgrade.
+   *
+   * @type {IUpgradeOpts}
+   * @memberof IpCameraUpgrader
+   */
+  bootTimeout: number &#x3D; 30 * 1000; // 30 seconds
+
+  /**
+   * @ignore
+   * Upgrade status object used to emit upgrade progress throughout the whole upgrade process.
+   *
+   * @type {UpgradeStatus}
+   * @memberof IpCameraUpgrader
+   */
+  _upgradeStatus: UpgradeStatus;
+
+  /**
+   * Helper getter that typecasts the _cameraManager member into a IPBaseDevice type
+   *
+   * @type {IpBaseDevice}
+   * @memberof IpCameraUpgrader
+   */
+  get ipBaseManager(): IpBaseDevice {
+    if (this._cameraManager instanceof IpBaseDevice) {
+      return &lt;IpBaseDevice&gt;this._cameraManager;
+    }
+    throw new Error(
+      &#x60;IP camera upgrader initialized with wrong camera manager! Manager is not instance of IpBaseDevice but &#x3D;&gt; ${this._cameraManager.constructor.name}&#x60;
+    );
+  }
+
+  /**
+   * Creates a new instance of IpCameraUpgrader.
+   * @param {IDeviceManager} manager An instance of IDeviceManager setup for an IpBaseDevice.
+   * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH &amp; DETACH events for IP devices on the network
+   * @memberof IpCameraUpgrader
    */
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
-    super(manager, sdkDeviceDiscoveryEmitter);
+    super();
+    this._cameraManager &#x3D; manager;
+    this._sdkDeviceDiscoveryEmitter &#x3D; sdkDeviceDiscoveryEmitter;
+  }
+
+  /**
+   * Method for initializing the upgrade and setting up the proper callbacks and event listeners.
+   *
+   * @param {IUpgradeOpts} opts Options required to carry out and facilitate the upgrade process
+   * @memberof IpCameraUpgrader
+   */
+  init(opts: IUpgradeOpts): void {
+    this.options &#x3D; opts;
+
+    if (opts.bootTimeout) {
+      this.bootTimeout &#x3D; opts.bootTimeout * 1000;
+    }
+
+    this.registerHotPlugEvents();
+  }
+
+  /**
+   * Sets up event listeners for ATTACH &amp; DETACH for when the device under upgrade
+   * is rebooted as part of the process itself. This method helps indetify when the
+   * booted camera comes up so that the upgrade process can continue to completion.
+   *
+   * @memberof IpCameraUpgrader
+   */
+  registerHotPlugEvents(): void {
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.ATTACH, async (devManager) &#x3D;&gt; {
+      if (devManager &amp;&amp; devManager instanceof IpBaseDevice) {
+        const ipDeviceMng: IpBaseDevice &#x3D; &lt;IpBaseDevice&gt;devManager;
+        if (ipDeviceMng.equals(this._cameraManager)) {
+          this._cameraManager &#x3D; devManager;
+          this.emit(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;);
+        }
+      }
+    });
+
+    this._sdkDeviceDiscoveryEmitter.on(CameraEvents.DETACH, async (d) &#x3D;&gt; {
+      if (d &amp;&amp; this.ipBaseManager.wsdDevice.serialNumber &#x3D;&#x3D;&#x3D; d.serialNumber) {
+        this.ipBaseManager.closeConnection();
+        this.emit(&#x27;UPGRADE_REBOOT&#x27;);
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Helper function for emitting upgrade progress events
+   *
+   * @param {string} [statusString] A message accompanying the progress event
+   * @memberof IpCameraUpgrader
+   */
+  emitProgressStatus(statusString?: string) {
+    if (statusString) this._upgradeStatus.statusString &#x3D; statusString;
+    this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
+  }
+
+  /**
+   * Perform the complete upgrade process synchronously
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof IpCameraUpgrader
+   */
+  async start(): Promise&lt;void&gt; {
+    const firstUploadStatusStep &#x3D; new UpgradeStatusStep(&#x27;Executing software upgrade&#x27;, 30);
+    const rebootStep &#x3D; new UpgradeStatusStep(&#x27;Rebooting camera&#x27;, 60);
+    const verificationStep &#x3D; new UpgradeStatusStep(&#x27;Verifying new software&#x27;, 10);
+
+    this._upgradeStatus &#x3D; new UpgradeStatus([firstUploadStatusStep, rebootStep, verificationStep]);
+
+    try {
+      // Check that camera is running in Normal/Verified state
+      await this.verifyVersionState(huddly.VersionState.VERIFIED);
+
+      Logger.debug(&#x27;Starting Upgrade&#x27;, this.className);
+      this.emitProgressStatus(&#x27;Starting upgrade&#x27;);
+      this.emit(CameraEvents.UPGRADE_START);
+
+      firstUploadStatusStep.progress &#x3D; 50;
+      this.emitProgressStatus();
+      Logger.debug(&#x27;Flashing firmware ...&#x27;, this.className);
+      await this.flash();
+      firstUploadStatusStep.progress &#x3D; 100;
+      Logger.debug(&#x27;Flash completed!&#x27;, this.className);
+
+      rebootStep.progress &#x3D; 1;
+      this.emitProgressStatus(&#x27;Rebooting camera&#x27;);
+      await this.reboot();
+
+      // Start interval for emitting upgrade progress events while camera is booting up
+      const rebootUpgradeProgress &#x3D; setInterval(() &#x3D;&gt; {
+        if (rebootStep.progress &gt;&#x3D; 95) {
+          // Last 5% will be completed upon camera coming up after reboot
+          clearInterval(rebootUpgradeProgress);
+          return;
+        }
+        rebootStep.progress +&#x3D; 5;
+        this.emitProgressStatus();
+      }, 1000);
+
+      // Timeout if the camera does not come back up after bootTimeout seconds have passed!
+      const bootTimeout &#x3D; setTimeout(() &#x3D;&gt; {
+        clearTimeout(bootTimeout);
+        clearInterval(rebootUpgradeProgress);
+        this.emit(CameraEvents.TIMEOUT, &#x27;Camera did not come back up after upgrade!&#x27;);
+      }, this.bootTimeout);
+
+      this.once(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;, async () &#x3D;&gt; {
+        Logger.debug(&#x27;Camera successfully booted after upgrade&#x27;, this.className);
+        clearInterval(rebootUpgradeProgress);
+        try {
+          rebootStep.progress &#x3D; 100;
+          this.emitProgressStatus();
+
+          // Check that camera comes up in Unverified state
+          await this.verifyVersionState(huddly.VersionState.UNVERIFIED);
+
+          // Check that the camera comes up with expected version
+          await this.verifyVersion();
+
+          verificationStep.progress &#x3D; 50;
+          Logger.debug(&#x27;Verifying new software&#x27;, this.className);
+          this.emitProgressStatus(&#x27;Verifying new software&#x27;);
+          await this.commit();
+
+          // Check that camera comes up in Committed state
+          await this.verifyVersionState(huddly.VersionState.VERIFIED);
+          verificationStep.progress &#x3D; 100;
+
+          Logger.debug(&#x27;Upgrade Completed&#x27;, this.className);
+          this.emitProgressStatus(&#x27;Upgrade complete&#x27;);
+          clearTimeout(bootTimeout);
+          this.emit(CameraEvents.UPGRADE_COMPLETE, this._cameraManager);
+        } catch (e) {
+          clearTimeout(bootTimeout);
+          // Upgrade fail event is already emitted
+        }
+      });
+    } catch {
+      // Exeption handling and error event emitting is done on the individual steps within the try block
+      // Ignore errors here
+    }
+  }
+
+  /**
+   * @ignore
+   *
+   * Does a verification of the current version state of the camera. It does a version state fetch
+   * and matches that with the one given as parameter.
+   *
+   * @param {number} expectedState The expected state that the camera should be in.
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof IpCameraUpgrader
+   * @throws {AceUpgraderError} Device not running in expected state.
+   */
+  async verifyVersionState(expectedState: number): Promise&lt;void&gt; {
+    const currentState: number &#x3D; await this.getVersionState();
+    if (currentState !&#x3D;&#x3D; expectedState) {
+      const currentStateStr: string &#x3D; Object.keys(huddly.VersionState).find(
+        (key) &#x3D;&gt; huddly.VersionState[key] &#x3D;&#x3D;&#x3D; currentState
+      );
+      const expectedStateStr: string &#x3D; Object.keys(huddly.VersionState).find(
+        (key) &#x3D;&gt; huddly.VersionState[key] &#x3D;&#x3D;&#x3D; expectedState
+      );
+      const errMsg &#x3D; &#x60;Device not running in expected state. Expected ${expectedStateStr} | Got ${currentStateStr}&#x60;;
+      Logger.error(errMsg, undefined, this.className);
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_FAILED);
+    }
+  }
+
+  /**
+   * @ignore
+   * Helper function for reading the version string from the provided CPIO file
+   * and matching that with whatever version the camera is currently running.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof IpCameraUpgrader
+   */
+  async verifyVersion(): Promise&lt;void&gt; {
+    const extract &#x3D; cpio.extract();
+    const currentVersion: string &#x3D; await this.getVersion();
+    const expcetedVersion: string &#x3D; await new Promise((resolve) &#x3D;&gt; {
+      let expcetedVersion: string &#x3D; &#x27;N/A&#x27;;
+      const readTimeout: NodeJS.Timeout &#x3D; global.setTimeout(() &#x3D;&gt; {
+        Logger.warn(
+          &#x27;Unable to read version string from cpio file within 1s time frame&#x27;,
+          this.className
+        );
+        resolve(&#x27;N/A&#x27;);
+      }, 1000);
+      extract.on(&#x27;entry&#x27;, (header: any, stream: any, cb: any) &#x3D;&gt; {
+        stream.on(&#x27;end&#x27;, () &#x3D;&gt; {
+          cb();
+          if (header.name &#x3D;&#x3D;&#x3D; &#x27;version&#x27;) {
+            extract.emit(&#x27;finish&#x27;);
+          }
+        });
+        if (header.name &#x3D;&#x3D; &#x27;version&#x27;) {
+          stream.on(&#x27;data&#x27;, (verionStr: any) &#x3D;&gt; {
+            expcetedVersion &#x3D; verionStr;
+          });
+        }
+        stream.resume();
+      });
+      extract.on(&#x27;finish&#x27;, () &#x3D;&gt; {
+        extract.destroy();
+        clearTimeout(readTimeout);
+        resolve(expcetedVersion);
+      });
+
+      new BufferStream(this.options.file).pipe(extract);
+    });
+
+    if (currentVersion.toString() !&#x3D; expcetedVersion.toString()) {
+      const errMsg: string &#x3D; &#x60;Camera running wrong version! Expected ${expcetedVersion} but got ${currentVersion}&#x60;;
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      Logger.error(errMsg, undefined, this.className);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_VERSION_MISMATCH);
+    }
+  }
+
+  /**
+   * @ignore
+   * Calculate expected slot based on current slot.
+   *
+   * @param {string} curretSlot Current slot that the camera has booted from.
+   * @return {*}  {string} The next slot the camera will boot after upgrade.
+   * @memberof IpCameraUpgrader
+   */
+  calculateExpectedSlot(curretSlot: string): string {
+    if (![&#x27;A&#x27;, &#x27;B&#x27;, &#x27;C&#x27;].includes(curretSlot)) {
+      throw new AceUpgraderError(&#x60;Unexpected slot: ${curretSlot}&#x60;, 1);
+    }
+
+    if ([&#x27;B&#x27;, &#x27;C&#x27;].includes(curretSlot)) {
+      return &#x27;A&#x27;;
+    }
+
+    if (curretSlot &#x3D;&#x3D;&#x3D; &#x27;A&#x27;) {
+      return &#x27;B&#x27;;
+    }
+  }
+
+  /**
+   * @ignore
+   * Verify that the camera has booted from the expected slot after upgrade.
+   *
+   * @param {string} slotBeforeUpgrade The old slot that the camera started the upgrade from.
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof IpCameraUpgrader
+   */
+  async verifySlot(slotBeforeUpgrade: string): Promise&lt;void&gt; {
+    const expectedSlot: string &#x3D; this.calculateExpectedSlot(slotBeforeUpgrade);
+    const currentSlot: string &#x3D; await this.ipBaseManager.getSlot();
+    if (expectedSlot !&#x3D;&#x3D; currentSlot) {
+      const errMsg: string &#x3D; &#x60;Camera booted from wrong slot! Expected ${expectedSlot} but got ${currentSlot}&#x60;;
+      this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+      Logger.error(errMsg, undefined, this.className);
+      throw new AceUpgraderError(errMsg, ErrorCodes.UPGRADE_WRONG_BOOT_SLOT);
+    }
+  }
+
+  /**
+   * Helper function that fetches the version state from the device.
+   *
+   * @return {*}  {Promise&lt;number&gt;} Resolves with the version state when the action is completed.
+   * @memberof IpCameraUpgrader
+   */
+  getVersionState(): Promise&lt;number&gt; {
+    return new Promise((resolve) &#x3D;&gt; {
+      this.ipBaseManager.grpcClient.getDeviceVersion(
+        new Empty(),
+        (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) &#x3D;&gt; {
+          if (err) {
+            Logger.error(
+              &#x60;Unable to get device version state! Error msg: ${err.message}&#x60;,
+              err.stack,
+              this.className
+            );
+            resolve(undefined);
+          }
+          resolve(deviceVersion.getVersionState());
+        }
+      );
+    });
+  }
+
+  /**
+   * Helper function that fetches the firmware version string from the device.
+   *
+   * @return {*}  {Promise&lt;string&gt;} Resolves with the version straing when the action is completed.
+   * @memberof IpCameraUpgrader
+   */
+  getVersion(): Promise&lt;string&gt; {
+    return new Promise((resolve) &#x3D;&gt; {
+      this.ipBaseManager.grpcClient.getDeviceVersion(
+        new Empty(),
+        (err: grpc.ServiceError, deviceVersion: huddly.DeviceVersion) &#x3D;&gt; {
+          if (err) {
+            Logger.error(
+              &#x60;Unable to get device version! Error msg: ${err.message}&#x60;,
+              err.stack,
+              this.className
+            );
+            resolve(undefined);
+          }
+          resolve(deviceVersion.getVersion());
+        }
+      );
+    });
+  }
+
+  /**
+   * A helper function that makes it possible to peform the upgrade substeps such as FLASH and COMMITT by
+   * reading the cpio file and sending the data over to the camera using grpc streams.
+   *
+   * @param {UpgradeSteps} step Represents the upgrade substep to be run on the device.
+   * @param {string} stepName A string represnetation of the upgrade substep for debugging purposes.
+   * @return {*}  {Promise&lt;string&gt;} Resolve with upgrade status message when the action is completed.
+   * @memberof IpCameraUpgrader
+   */
+  performUpgradeStep(step: UpgradeSteps, stepName: string): Promise&lt;string&gt; {
+    const extract &#x3D; cpio.extract();
+
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const readTimeout: NodeJS.Timeout &#x3D; global.setTimeout(() &#x3D;&gt; {
+        const errMsg &#x3D; &#x60;Unable to perform upgrade step ${step} within given time of 10 seconds&#x60;;
+        Logger.warn(errMsg, this.className);
+        this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
+        reject(errMsg);
+      }, 10000);
+
+      const upgradeStepCompleteCb &#x3D; (err: grpc.ServiceError, deviceStatus: huddly.DeviceStatus) &#x3D;&gt; {
+        clearTimeout(readTimeout);
+        if (err !&#x3D; undefined) {
+          this.emit(CameraEvents.UPGRADE_FAILED, err);
+          Logger.error(
+            &#x60;Unable to perform ${stepName} step on device!&#x60;,
+            err.message,
+            this.className
+          );
+          reject(err.details);
+          return;
+        }
+        resolve(
+          &#x60;${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}&#x60;
+        );
+      };
+
+      let stream: grpc.ClientWritableStream&lt;huddly.Chunk&gt;;
+      switch (step) {
+        case UpgradeSteps.FLASH:
+          stream &#x3D; this.ipBaseManager.grpcClient.upgradeDevice(upgradeStepCompleteCb);
+          break;
+        case UpgradeSteps.COMMIT:
+          stream &#x3D; this.ipBaseManager.grpcClient.upgradeVerify(upgradeStepCompleteCb);
+          break;
+        default:
+          const upgradeStepStr: string &#x3D; Object.keys(UpgradeSteps).find(
+            (key) &#x3D;&gt; UpgradeSteps[key] &#x3D;&#x3D;&#x3D; step
+          );
+          clearTimeout(readTimeout);
+          throw new AceUpgraderError(
+            &#x60;Unknown upgrade step ${upgradeStepStr}&#x60;,
+            ErrorCodes.UPGRADE_FAILED
+          );
+      }
+
+      extract.on(&#x27;entry&#x27;, (header: any, cpioStream: any, cb: any) &#x3D;&gt; {
+        if (header.name !&#x3D;&#x3D; &#x27;image.itb&#x27;) {
+          return;
+        }
+        cpioStream.on(&#x27;end&#x27;, () &#x3D;&gt; {
+          cb();
+          extract.destroy();
+          stream.end();
+        });
+        cpioStream.on(&#x27;data&#x27;, (chunk: Buffer) &#x3D;&gt; {
+          const huddlyChunk &#x3D; new huddly.Chunk();
+          huddlyChunk.setContent(chunk);
+          stream.write(huddlyChunk);
+        });
+        cpioStream.resume(); // auto drain
+      });
+
+      new BufferStream(this.options.file).pipe(extract);
+    });
+  }
+
+  /**
+   * @ignore
+   * Performs a firmware write/flash step using the provided cpio image
+   *
+   * @return {*}  {Promise&lt;string&gt;} Resolves with flash status message when the action is completed.
+   * @memberof IpCameraUpgrader
+   */
+  async flash(): Promise&lt;string&gt; {
+    return this.performUpgradeStep(UpgradeSteps.FLASH, &#x27;FLASH&#x27;);
+  }
+
+  /**
+   * @ignore
+   * Performs a software reboot on the device.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof IpCameraUpgrader
+   */
+  reboot(): Promise&lt;void&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      Logger.debug(&#x27;Rebooting camera....&#x27;, this.className);
+      this.ipBaseManager.grpcClient.reset(
+        new Empty(),
+        (err: grpc.ServiceError, status: huddly.DeviceStatus) &#x3D;&gt; {
+          if (err || status.getCode() !&#x3D;&#x3D; huddly.StatusCode.OK) {
+            this.emit(CameraEvents.UPGRADE_FAILED, err);
+            Logger.error(&#x60;Reboot failed!&#x60;, err, this.className);
+            if (status &#x3D;&#x3D; undefined) {
+              reject(&#x60;Reboot failed! Error: code [${err.code}] Details [${err.details}]&#x60;);
+            } else {
+              reject(
+                &#x60;Reboot failed! DeviceStatus: code [${status.getCode()}] Msg [${status.getMessage()}]&#x60;
+              );
+            }
+            return;
+          }
+          this.ipBaseManager.closeConnection();
+          resolve();
+        }
+      );
+    });
+  }
+
+  /**
+   * @ignore
+   * Performs a firmware verification step using the provided cpio image.
+   *
+   * @return {*}  {Promise&lt;string&gt;} Resolves with commit status message when the action is completed.
+   * @memberof IpCameraUpgrader
+   */
+  async commit(): Promise&lt;string&gt; {
+    return this.performUpgradeStep(UpgradeSteps.COMMIT, &#x27;COMMIT&#x27;);
+  }
+
+  /**
+   * @ignore
+   */
+  upgradeIsValid(): Promise&lt;boolean&gt; {
+    throw new Error(&#x27;Method not supported!&#x27;);
+  }
+
+  /**
+   * Perform the complete upgrade process asynchronously
+   *
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the upgrade process is completed. Rejects if upgrade failes.
+   * @memberof IpCameraUpgrader
+   */
+  doUpgrade(): Promise&lt;void&gt; {
+    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+      this.once(CameraEvents.UPGRADE_COMPLETE, () &#x3D;&gt; resolve());
+      this.once(CameraEvents.UPGRADE_FAILED, (e) &#x3D;&gt; reject(e));
+      this.start();
+    });
   }
 }
 </code></pre>
@@ -996,7 +1417,7 @@ export default class AceUpgrader extends IpCameraUpgrader {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'AceUpgrader.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IpCameraUpgrader.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
