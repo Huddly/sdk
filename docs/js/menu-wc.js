@@ -1,5 +1,6 @@
 'use strict';
 
+
 customElements.define('compodoc-menu', class extends HTMLElement {
     constructor() {
         super();
@@ -83,82 +84,94 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? 'id="classes-links"' : 'id="xs-classes-links"' }>
                             <li class="link">
-                                <a href="classes/Ace.html" data-type="entity-link" >Ace</a>
+                                <a href="classes/Ace.html" data-type="entity-link">Ace</a>
                             </li>
                             <li class="link">
-                                <a href="classes/AceUpgradeError.html" data-type="entity-link" >AceUpgradeError</a>
+                                <a href="classes/AceUpgradeError.html" data-type="entity-link">AceUpgradeError</a>
                             </li>
                             <li class="link">
-                                <a href="classes/AceUpgrader.html" data-type="entity-link" >AceUpgrader</a>
+                                <a href="classes/AceUpgrader.html" data-type="entity-link">AceUpgrader</a>
                             </li>
                             <li class="link">
-                                <a href="classes/AttachError.html" data-type="entity-link" >AttachError</a>
+                                <a href="classes/AttachError.html" data-type="entity-link">AttachError</a>
                             </li>
                             <li class="link">
-                                <a href="classes/AutozoomControl.html" data-type="entity-link" >AutozoomControl</a>
+                                <a href="classes/AutozoomControl.html" data-type="entity-link">AutozoomControl</a>
                             </li>
                             <li class="link">
-                                <a href="classes/Boxfish.html" data-type="entity-link" >Boxfish</a>
+                                <a href="classes/Boxfish.html" data-type="entity-link">Boxfish</a>
                             </li>
                             <li class="link">
-                                <a href="classes/BoxfishHpk.html" data-type="entity-link" >BoxfishHpk</a>
+                                <a href="classes/BoxfishHpk.html" data-type="entity-link">BoxfishHpk</a>
                             </li>
                             <li class="link">
-                                <a href="classes/CameraSwitchService.html" data-type="entity-link" >CameraSwitchService</a>
+                                <a href="classes/CameraSwitchService.html" data-type="entity-link">CameraSwitchService</a>
                             </li>
                             <li class="link">
-                                <a href="classes/ClownFish.html" data-type="entity-link" >ClownFish</a>
+                                <a href="classes/ClownFish.html" data-type="entity-link">ClownFish</a>
                             </li>
                             <li class="link">
-                                <a href="classes/DartFish.html" data-type="entity-link" >DartFish</a>
+                                <a href="classes/DartFish.html" data-type="entity-link">DartFish</a>
                             </li>
                             <li class="link">
-                                <a href="classes/DetectionsConverter.html" data-type="entity-link" >DetectionsConverter</a>
+                                <a href="classes/DetectionsConverter.html" data-type="entity-link">DetectionsConverter</a>
                             </li>
                             <li class="link">
-                                <a href="classes/Detector.html" data-type="entity-link" >Detector</a>
+                                <a href="classes/Detector.html" data-type="entity-link">Detector</a>
                             </li>
                             <li class="link">
-                                <a href="classes/DeviceFactory.html" data-type="entity-link" >DeviceFactory</a>
+                                <a href="classes/DeviceFactory.html" data-type="entity-link">DeviceFactory</a>
                             </li>
                             <li class="link">
-                                <a href="classes/Dwarffish.html" data-type="entity-link" >Dwarffish</a>
+                                <a href="classes/Dwarffish.html" data-type="entity-link">Dwarffish</a>
                             </li>
                             <li class="link">
-                                <a href="classes/FaseBasedExposureControl.html" data-type="entity-link" >FaseBasedExposureControl</a>
+                                <a href="classes/FaseBasedExposureControl.html" data-type="entity-link">FaseBasedExposureControl</a>
                             </li>
                             <li class="link">
-                                <a href="classes/HPKUpgradeError.html" data-type="entity-link" >HPKUpgradeError</a>
+                                <a href="classes/HPKUpgradeError.html" data-type="entity-link">HPKUpgradeError</a>
                             </li>
                             <li class="link">
-                                <a href="classes/HPKUpgrader.html" data-type="entity-link" >HPKUpgrader</a>
+                                <a href="classes/HPKUpgrader.html" data-type="entity-link">HPKUpgrader</a>
                             </li>
                             <li class="link">
-                                <a href="classes/HuddlyGo.html" data-type="entity-link" >HuddlyGo</a>
+                                <a href="classes/HuddlyGo.html" data-type="entity-link">HuddlyGo</a>
                             </li>
                             <li class="link">
-                                <a href="classes/HuddlyGoUpgrader.html" data-type="entity-link" >HuddlyGoUpgrader</a>
+                                <a href="classes/HuddlyGoUpgrader.html" data-type="entity-link">HuddlyGoUpgrader</a>
                             </li>
                             <li class="link">
-                                <a href="classes/HuddlySdk.html" data-type="entity-link" >HuddlySdk</a>
+                                <a href="classes/HuddlySdk.html" data-type="entity-link">HuddlySdk</a>
                             </li>
                             <li class="link">
-                                <a href="classes/IpAutozoomControl.html" data-type="entity-link" >IpAutozoomControl</a>
+                                <a href="classes/IpAutozoomControl.html" data-type="entity-link">IpAutozoomControl</a>
                             </li>
                             <li class="link">
-                                <a href="classes/IpDetector.html" data-type="entity-link" >IpDetector</a>
+                                <a href="classes/IpBaseDevice.html" data-type="entity-link">IpBaseDevice</a>
                             </li>
                             <li class="link">
-                                <a href="classes/IpFaceBasedExposureControl.html" data-type="entity-link" >IpFaceBasedExposureControl</a>
+                                <a href="classes/IpCameraUpgrader.html" data-type="entity-link">IpCameraUpgrader</a>
                             </li>
                             <li class="link">
-                                <a href="classes/UpgradeStatus.html" data-type="entity-link" >UpgradeStatus</a>
+                                <a href="classes/IpDetector.html" data-type="entity-link">IpDetector</a>
                             </li>
                             <li class="link">
-                                <a href="classes/UpgradeStatusStep.html" data-type="entity-link" >UpgradeStatusStep</a>
+                                <a href="classes/IpFaceBasedExposureControl.html" data-type="entity-link">IpFaceBasedExposureControl</a>
                             </li>
                             <li class="link">
-                                <a href="classes/UvcBaseDevice.html" data-type="entity-link" >UvcBaseDevice</a>
+                                <a href="classes/See.html" data-type="entity-link">See</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/SeeUpgrader.html" data-type="entity-link">SeeUpgrader</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/UpgradeStatus.html" data-type="entity-link">UpgradeStatus</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/UpgradeStatusStep.html" data-type="entity-link">UpgradeStatusStep</a>
+                            </li>
+                            <li class="link">
+                                <a href="classes/UvcBaseDevice.html" data-type="entity-link">UvcBaseDevice</a>
                             </li>
                         </ul>
                     </li>
@@ -171,10 +184,10 @@ customElements.define('compodoc-menu', class extends HTMLElement {
                         </div>
                         <ul class="links collapse " ${ isNormalMode ? ' id="interfaces-links"' : 'id="xs-interfaces-links"' }>
                             <li class="link">
-                                <a href="interfaces/ConverterOpts.html" data-type="entity-link" >ConverterOpts</a>
+                                <a href="interfaces/ConverterOpts.html" data-type="entity-link">ConverterOpts</a>
                             </li>
                             <li class="link">
-                                <a href="interfaces/SDKOpts.html" data-type="entity-link" >SDKOpts</a>
+                                <a href="interfaces/SDKOpts.html" data-type="entity-link">SDKOpts</a>
                             </li>
                         </ul>
                     </li>

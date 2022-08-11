@@ -42,7 +42,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>Ace</li>
+  <li>IpBaseDevice</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -60,24 +60,25 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/components/device/ace.ts</code>
+            <code>src/components/device/ipbase.ts</code>
         </p>
 
             <p class="comment">
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Controller class for Huddly L1 camera.</p>
+                <p>Controller class for Huddly IP/Network cameras.</p>
 
             </p>
+
 
             <p class="comment">
-                <h3>Extends</h3>
+                <h3>Implements</h3>
             </p>
             <p class="comment">
-                        <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+                        <code>IIpDeviceManager</code>
+                        <code>IUVCControls</code>
             </p>
-
 
             <p class="comment">
                 <h3>Example</h3>
@@ -97,9 +98,6 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
-                            <li>
-                                <a href="#productName">productName</a>
-                            </li>
                             <li>
                                 <a href="#discoveryEmitter">discoveryEmitter</a>
                             </li>
@@ -135,12 +133,6 @@
                 <tr>
                     <td class="col-md-4">
                         <ul class="index-list">
-                            <li>
-                                <a href="#getDetector">getDetector</a>
-                            </li>
-                            <li>
-                                <a href="#getUpgrader">getUpgrader</a>
-                            </li>
                             <li>
                                     <span class="modifier">Async</span>
                                 <a href="#closeConnection">closeConnection</a>
@@ -241,6 +233,20 @@
 
 
 
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#grpcClient">grpcClient</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
         </tbody>
     </table>
 </section>
@@ -256,13 +262,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/ace.ts:24</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="145" class="link-to-prism">src/components/device/ipbase.ts:145</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Creates an instance of ACE/L1.</p>
+                            <div class="io-description"><p>Creates an instance of IpBaseDevice.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -320,7 +326,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Emitter instance sending attach &amp; detach events for Huddly L1 cameras.</p>
+                                                                <code><p>Emitter instance sending attach &amp; detach events for Huddly IP cameras.</p>
 </code>
                                                         </td>
                                                 </tr>
@@ -342,44 +348,6 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="productName"></a>
-                        <span class="name">
-                            <b>
-                            productName</b>
-                            <a href="#productName"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;Huddly L1&#x27;</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/ace.ts:24</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Comercial product name for this controller class.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
                         <a name="discoveryEmitter"></a>
                         <span class="name">
                             <b>
@@ -394,16 +362,9 @@
 
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:81</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="81" class="link-to-prism">src/components/device/ipbase.ts:81</a></div>
                             </td>
                         </tr>
 
@@ -441,16 +402,9 @@
                             <i>Default value : </i><code>1</code>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:98</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="98" class="link-to-prism">src/components/device/ipbase.ts:98</a></div>
                             </td>
                         </tr>
 
@@ -488,16 +442,9 @@
                             <i>Default value : </i><code>50051</code>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:106</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="106" class="link-to-prism">src/components/device/ipbase.ts:106</a></div>
                             </td>
                         </tr>
 
@@ -529,16 +476,9 @@
 
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:114</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="114" class="link-to-prism">src/components/device/ipbase.ts:114</a></div>
                             </td>
                         </tr>
 
@@ -574,16 +514,9 @@
                             <i>Default value : </i><code>&#x27;Huddly L1&#x27;</code>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:73</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="73" class="link-to-prism">src/components/device/ipbase.ts:73</a></div>
                             </td>
                         </tr>
 
@@ -614,16 +547,9 @@
 
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:89</a></code>
-</div>
+                                    <div class="io-line">Defined in <a href="" data-line="89" class="link-to-prism">src/components/device/ipbase.ts:89</a></div>
                             </td>
                         </tr>
 
@@ -648,131 +574,6 @@ class on device-api-ip module.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDetector"></a>
-                    <span class="name">
-                        <b>
-                            getDetector
-                        </b>
-                        <a href="#getDetector"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getDetector(opts: <a href="../classes/Detector.html">IDetectorOpts</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="54"
-                            class="link-to-prism">src/components/device/ace.ts:54</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Get detector control class instance.</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>opts</td>
-                                    <td>
-                                                <code><a href="../classes/Detector.html" target="_self" >IDetectorOpts</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>Detector control options.</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Detector.html" target="_self" >IDetector</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>{IDetector} The instance of the detector control class.</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="getUpgrader"></a>
-                    <span class="name">
-                        <b>
-                            getUpgrader
-                        </b>
-                        <a href="#getUpgrader"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getUpgrader()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="43"
-                            class="link-to-prism">src/components/device/ace.ts:43</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Helper function for getting the respective upgrader controller class for upgrading Huddly Ip camera</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;IDeviceUpgrader&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>{Promise<IDeviceUpgrader>} The upgrader controll instance (AceUpgrader).</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="closeConnection"></a>
                     <span class="name">
                         <b>
@@ -793,14 +594,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:200</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="200"
+                            class="link-to-prism">src/components/device/ipbase.ts:200</a></div>
                 </td>
             </tr>
 
@@ -846,14 +641,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1167</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="1167"
+                            class="link-to-prism">src/components/device/ipbase.ts:1167</a></div>
                 </td>
             </tr>
 
@@ -930,14 +719,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:314</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="314"
+                            class="link-to-prism">src/components/device/ipbase.ts:314</a></div>
                 </td>
             </tr>
 
@@ -1014,14 +797,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:421</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="421"
+                            class="link-to-prism">src/components/device/ipbase.ts:421</a></div>
                 </td>
             </tr>
 
@@ -1098,14 +875,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:871</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="871"
+                            class="link-to-prism">src/components/device/ipbase.ts:871</a></div>
                 </td>
             </tr>
 
@@ -1151,14 +922,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:487</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="487"
+                            class="link-to-prism">src/components/device/ipbase.ts:487</a></div>
                 </td>
             </tr>
 
@@ -1235,14 +1000,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:442</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="442"
+                            class="link-to-prism">src/components/device/ipbase.ts:442</a></div>
                 </td>
             </tr>
 
@@ -1319,14 +1078,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:271</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="271"
+                            class="link-to-prism">src/components/device/ipbase.ts:271</a></div>
                 </td>
             </tr>
 
@@ -1403,14 +1156,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:431</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="431"
+                            class="link-to-prism">src/components/device/ipbase.ts:431</a></div>
                 </td>
             </tr>
 
@@ -1456,14 +1203,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:230</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="230"
+                            class="link-to-prism">src/components/device/ipbase.ts:230</a></div>
                 </td>
             </tr>
 
@@ -1509,14 +1250,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1055</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="1055"
+                            class="link-to-prism">src/components/device/ipbase.ts:1055</a></div>
                 </td>
             </tr>
 
@@ -1562,14 +1297,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1014</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="1014"
+                            class="link-to-prism">src/components/device/ipbase.ts:1014</a></div>
                 </td>
             </tr>
 
@@ -1615,14 +1344,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:802</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="802"
+                            class="link-to-prism">src/components/device/ipbase.ts:802</a></div>
                 </td>
             </tr>
 
@@ -1668,14 +1391,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:672</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="672"
+                            class="link-to-prism">src/components/device/ipbase.ts:672</a></div>
                 </td>
             </tr>
 
@@ -1768,14 +1485,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:756</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="756"
+                            class="link-to-prism">src/components/device/ipbase.ts:756</a></div>
                 </td>
             </tr>
 
@@ -1852,14 +1563,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:591</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="591"
+                            class="link-to-prism">src/components/device/ipbase.ts:591</a></div>
                 </td>
             </tr>
 
@@ -1905,14 +1610,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:462</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="462"
+                            class="link-to-prism">src/components/device/ipbase.ts:462</a></div>
                 </td>
             </tr>
 
@@ -1958,14 +1657,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:657</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="657"
+                            class="link-to-prism">src/components/device/ipbase.ts:657</a></div>
                 </td>
             </tr>
 
@@ -2011,14 +1704,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:516</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="516"
+                            class="link-to-prism">src/components/device/ipbase.ts:516</a></div>
                 </td>
             </tr>
 
@@ -2095,14 +1782,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:562</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="562"
+                            class="link-to-prism">src/components/device/ipbase.ts:562</a></div>
                 </td>
             </tr>
 
@@ -2150,14 +1831,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:170</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="170"
+                            class="link-to-prism">src/components/device/ipbase.ts:170</a></div>
                 </td>
             </tr>
 
@@ -2203,14 +1878,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:355</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="355"
+                            class="link-to-prism">src/components/device/ipbase.ts:355</a></div>
                 </td>
             </tr>
 
@@ -2287,14 +1956,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:918</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="918"
+                            class="link-to-prism">src/components/device/ipbase.ts:918</a></div>
                 </td>
             </tr>
 
@@ -2375,14 +2038,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:896</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="896"
+                            class="link-to-prism">src/components/device/ipbase.ts:896</a></div>
                 </td>
             </tr>
 
@@ -2459,14 +2116,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1077</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="1077"
+                            class="link-to-prism">src/components/device/ipbase.ts:1077</a></div>
                 </td>
             </tr>
 
@@ -2543,14 +2194,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1096</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="1096"
+                            class="link-to-prism">src/components/device/ipbase.ts:1096</a></div>
                 </td>
             </tr>
 
@@ -2627,14 +2272,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:827</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="827"
+                            class="link-to-prism">src/components/device/ipbase.ts:827</a></div>
                 </td>
             </tr>
 
@@ -2711,14 +2350,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:712</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="712"
+                            class="link-to-prism">src/components/device/ipbase.ts:712</a></div>
                 </td>
             </tr>
 
@@ -2811,14 +2444,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:400</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="400"
+                            class="link-to-prism">src/components/device/ipbase.ts:400</a></div>
                 </td>
             </tr>
 
@@ -2895,14 +2522,8 @@ class on device-api-ip module.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:612</a></code>
-</div>
+                    <div class="io-line">Defined in <a href="" data-line="612"
+                            class="link-to-prism">src/components/device/ipbase.ts:612</a></div>
                 </td>
             </tr>
 
@@ -2932,27 +2553,146 @@ class on device-api-ip module.</p>
 
 
 
+            <section>
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="grpcClient"></a>
+                        <span class="name"><b>grpcClient</b><a href="#grpcClient"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>grpcClient()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="139" class="link-to-prism">src/components/device/ipbase.ts:139</a></div>
+                                </td>
+                            </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>set</b><code>grpcClient(client)</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="143" class="link-to-prism">src/components/device/ipbase.ts:143</a></div>
+                                </td>
+                            </tr>
+                    <tr>
+                        <td class="col-md-4">
+
+                                <div class="io-description">
+                                        <b>Parameters :</b>
+                                        <table class="params">
+                                            <thead>
+                                                <tr>
+                                                    <td>Name</td>
+                                                    <td>Optional</td>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                    <tr>
+                                                            <td>client</td>
+                                                    
+                                                    
+                                                        <td>
+                                                                No
+                                                        </td>
+                                                        
+                                                    </tr>
+                                            </tbody>
+                                        </table>
+                                </div>
+                                <div>
+                                </div>
+                                <div class="io-description">
+                                    <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                                </div>
+                        </td>
+                    </tr>
+            </tbody>
+        </table>
+</section>
     </div>
 
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
+import { TextDecoder } from &#x27;util&#x27;;
+
+import IAutozoomControlOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts&#x27;;
+import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
 import IDetectorOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts&#x27;;
 import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
 import IGrpcTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport&#x27;;
-import { EventEmitter } from &#x27;stream&#x27;;
+import IUpgradeOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts&#x27;;
+import ReleaseChannel from &#x27;@huddly/sdk-interfaces/lib/enums/ReleaseChannel&#x27;;
+import IUVCControls from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUVCControlApi&#x27;;
+import IIpDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager&#x27;;
+import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import ICnnControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/ICnnControl&#x27;;
+import HuddlyHEX from &#x27;@huddly/sdk-interfaces/lib/enums/HuddlyHex&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+
+import Api from &#x27;../api&#x27;;
+import DiagnosticsMessage from &#x27;@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage&#x27;;
+import Locksmith from &#x27;./../locksmith&#x27;;
+import AceUpgrader from &#x27;./../upgrader/aceUpgrader&#x27;;
+import IpAutozoomControl from &#x27;../ipAutozoomControl&#x27;;
+import IpFaceBasedExposureControl from &#x27;../ipFaceBasedExposureControl&#x27;;
 import IpDetector from &#x27;../ipDetector&#x27;;
-import AceUpgrader from &#x27;../upgrader/aceUpgrader&#x27;;
-import IpBaseDevice from &#x27;./ipbase&#x27;;
+
+import { HuddlyServiceClient } from &#x27;@huddly/camera-proto/lib/api/huddly_grpc_pb&#x27;;
+import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
+import { Empty } from &#x27;google-protobuf/google/protobuf/empty_pb&#x27;;
+import * as grpc from &#x27;@grpc/grpc-js&#x27;;
 
 /**
- * Controller class for Huddly L1 camera.
+ * @ignore
+ * @interface ErrorInterface
+ */
+interface ErrorInterface {
+  message: String;
+  stack?: String;
+}
+
+/**
+ * Controller class for Huddly IP/Network cameras.
  *
  * @export
- * @class Ace
- * @extends {IpBaseDevice}
+ * @class IpBaseDevice
+ * @implements {IIpDeviceManager}
+ * @implements {IUVCControls}
  */
-export default class Ace extends IpBaseDevice {
+export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
+  /**
+   * @ignore
+   *
+   * @private
+   * @type {string}
+   * @memberof IpBaseDevice
+   */
+  private className: string &#x3D; &#x27;IpBaseDevice&#x27;;
+  /**
+   * @ignore
+   * Communication with camera takes place here. Transport instance is there
+   * for api conformance reasons.
+   * @type {IGrpcTransport}
+   * @memberof IpBaseDevice
+   */
+  transport: IGrpcTransport;
+  /** @ignore */
+  locksmith: Locksmith;
   /**
    * Comercial product name for this controller class.
    *
@@ -2962,24 +2702,363 @@ export default class Ace extends IpBaseDevice {
   productName: string &#x3D; &#x27;Huddly L1&#x27;;
 
   /**
-   * Creates an instance of ACE/L1.
-   * @param {*} wsdDevice The wsdd device instance retrieved during discovery.
-   * @param {IGrpcTransport} transport Grpc transport instance.
-   * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach &amp; detach events for Huddly L1 cameras.
-   * @memberof Ace
+   * Event emitter instance emitting attach and detach events for Huddly Cameras.
+   *
+   * @type {EventEmitter}
+   * @memberof IpBaseDevice
    */
-  constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
-    super(wsdDevice, transport, cameraDiscoveryEmitter);
+  discoveryEmitter: EventEmitter;
+  /**
+   * Device instance retrieved from doing WSDD probing. Take a look at the NetworkDevice
+   * class on device-api-ip module.
+   *
+   * @type {*}
+   * @memberof IpBaseDevice
+   */
+  wsdDevice: any;
+
+  /**
+   * Number representing the connection timeout when connecting to grpc server on the network device
+   *
+   * @private
+   * @type {number}
+   * @memberof IpBaseDevice
+   */
+  private readonly GPRC_CONNECT_TIMEOUT: number &#x3D; 1; // seconds
+  /**
+   * Port number for connecting to grpc server on the network device
+   *
+   * @private
+   * @type {number}
+   * @memberof IpBaseDevice
+   */
+  private readonly GRPC_PORT: number &#x3D; 50051;
+  /**
+   * Grpc client instance for communicating with the grpc server running on the network device
+   *
+   * @private
+   * @type {HuddlyServiceClient}
+   * @memberof IpBaseDevice
+   */
+  private huddlyGrpcClient: HuddlyServiceClient;
+
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @readonly
+   * @type {Api}
+   * @memberof IpBaseDevice
+   */
+  get api(): Api {
+    throw new Error(&#x27;Not Supported.&#x27;);
   }
 
   /**
-   * Helper function for getting the respective upgrader controller class for upgrading Huddly Ip camera
+   * @ignore
+   * Not applicable
    *
-   * @return {*}  {Promise&lt;IDeviceUpgrader&gt;} The upgrader controll instance (AceUpgrader).
-   * @memberof Ace
+   * @readonly
+   * @memberof IpBaseDevice
+   */
+  get uvcControlInterface() {
+    throw new Error(&#x27;Not Supported&#x27;);
+  }
+
+  get grpcClient(): HuddlyServiceClient {
+    return this.huddlyGrpcClient;
+  }
+
+  set grpcClient(client: HuddlyServiceClient) {
+    this.huddlyGrpcClient &#x3D; client;
+  }
+
+  /**
+   * Creates an instance of IpBaseDevice.
+   * @param {*} wsdDevice The wsdd device instance retrieved during discovery.
+   * @param {IGrpcTransport} transport Grpc transport instance.
+   * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach &amp; detach events for Huddly IP cameras.
+   * @memberof IpBaseDevice
+   */
+  constructor(wsdDevice: any, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter) {
+    this.wsdDevice &#x3D; wsdDevice;
+    this.transport &#x3D; transport;
+    this.locksmith &#x3D; new Locksmith();
+    this.discoveryEmitter &#x3D; cameraDiscoveryEmitter;
+
+    const { equals, ...wsdDeviceProps } &#x3D; wsdDevice; // Copy all wsdDevice props except &quot;equals&quot;
+    Object.assign(this, wsdDeviceProps);
+  }
+
+  /**
+   * Initializes the controller class. Must be called before any other commands.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof IpBaseDevice
+   */
+  async initialize(): Promise&lt;void&gt; {
+    const deadline &#x3D; new Date();
+    deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
+    this.huddlyGrpcClient &#x3D; new HuddlyServiceClient(
+      &#x60;${this.wsdDevice.ip}:${this.GRPC_PORT}&#x60;,
+      grpc.ChannelCredentials.createInsecure()
+    );
+
+    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt;
+      this.huddlyGrpcClient.waitForReady(deadline, (error) &#x3D;&gt; {
+        if (error) {
+          Logger.error(
+            &#x60;Connection failed with GPRC server on device. Reason: ${error}&#x60;,
+            this.className
+          );
+          reject(error);
+        } else {
+          Logger.debug(&#x60;Connection established&#x60;, this.className);
+          resolve();
+        }
+      })
+    );
+  }
+
+  /**
+   * Teardown function for cleaning up the state.
+   *
+   * @return {*}  {Promise&lt;any&gt;} Promise that carries out the teardown step.
+   * @memberof IpBaseDevice
+   */
+  async closeConnection(): Promise&lt;any&gt; {
+    this.grpcClient.close();
+    return this.transport.close();
+  }
+
+  /**
+   * @ignore
+   *
+   * @param {string} msg Error message
+   * @param {ErrorInterface} error The error object
+   * @param {*} reject Reject function.
+   * @memberof IpBaseDevice
+   */
+  handleError(msg: string, error: ErrorInterface, reject: any): void {
+    if (!error) {
+      Logger.error(msg, &#x27;&#x27;, this.className);
+      reject(msg);
+      return;
+    }
+
+    Logger.error(msg, error.stack, this.className);
+    reject(error.message ? error.message : &#x27;Unknown error&#x27;);
+  }
+
+  /**
+   * Get device software and hardware information.
+   *
+   * @return {*}  {Promise&lt;any&gt;} Object representing software &amp; hardware info of the camera. Function must be awaited.
+   * @memberof IpBaseDevice
+   */
+  getInfo(): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const infoData &#x3D; {
+        ...this.wsdDevice.infoObject(),
+        name: this.productName,
+        vendorId: HuddlyHEX.VID,
+      };
+      // Get devive version
+      this.grpcClient.getDeviceVersion(new Empty(), (err, deviceVersion: huddly.DeviceVersion) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          Logger.error(&#x27;Unable to get device version!&#x27;, err.message, this.className);
+          Logger.warn(err.stack, this.className);
+          reject(err.message);
+          return;
+        }
+        infoData.version &#x3D; deviceVersion.toObject().version;
+        this.uptime()
+          .then((uptime) &#x3D;&gt; {
+            infoData.uptime &#x3D; Number(uptime.toFixed(2));
+          })
+          .then(() &#x3D;&gt; this.getSlot())
+          .then((bootSlot) &#x3D;&gt; {
+            infoData.slot &#x3D; bootSlot;
+            resolve(infoData);
+          })
+          .catch((uptimeErr) &#x3D;&gt; {
+            Logger.error(&#x27;Unable to get device uptime!&#x27;, uptimeErr.message, this.className);
+            Logger.warn(uptimeErr.stack, this.className);
+            reject(uptimeErr.message);
+          });
+      });
+    });
+  }
+
+  /**
+   * Get application log.
+   *
+   * @param {number} [timeout] Maximum allowed time (in milliseconds) for fetching the log.
+   * @return {*}  {Promise&lt;any&gt;} A promise which when completed contains the camera application log.
+   * @memberof IpBaseDevice
+   */
+  getErrorLog(timeout?: number): Promise&lt;any&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      const logFile &#x3D; new huddly.LogFile();
+      logFile.setFile(huddly.LogFiles.APP);
+      try {
+        resolve(await this.getLogFiles(logFile));
+      } catch (err) {
+        this.handleError(&#x27;Unable to get error log&#x27;, err, reject);
+        return;
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Function that reads the logfile stream from camera through grpc.
+   *
+   * @param {huddly.LogFile} logFile The type of the log to read
+   * @return {*}  {Promise&lt;any&gt;} The log data
+   * @memberof IpBaseDevice
+   */
+  getLogFiles(logFile: huddly.LogFile): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      logFile.setKeepLog(true);
+      let data &#x3D; &#x27;&#x27;;
+
+      const stream &#x3D; this.grpcClient.getLogFiles(logFile);
+      stream.on(&#x27;data&#x27;, (comment: huddly.Chunk) &#x3D;&gt; {
+        const string &#x3D; new TextDecoder().decode(comment.getContent_asU8());
+        data +&#x3D; string;
+      });
+      stream.on(&#x27;end&#x27;, () &#x3D;&gt; resolve(data));
+      stream.on(&#x27;error&#x27;, reject);
+    });
+  }
+
+  /**
+   * Erases the application log.
+   *
+   * @param {number} [timeout] Maximum allowed time (in milliseconds) for erasing the log.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the erase is completed.
+   * @memberof IpBaseDevice
+   */
+  eraseErrorLog(timeout?: number): Promise&lt;void&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const logFile &#x3D; new huddly.LogFile();
+        logFile.setFile(huddly.LogFiles.APP);
+        resolve(await this.eraseLogFile(logFile));
+      } catch (err) {
+        this.handleError(&#x60;Unable to erase log file&#x60;, err, reject);
+        return;
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Internal function for performing the error log erase through grpc on target.
+   *
+   * @param {huddly.LogFile} logFile The log type to be erased
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the erase is completed.
+   * @memberof IpBaseDevice
+   */
+  eraseLogFile(logFile: huddly.LogFile): Promise&lt;void&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.eraseLogFile(logFile, (err, status: huddly.DeviceStatus) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          reject(err);
+          return;
+        }
+        Logger.info(status.toString());
+        resolve();
+      });
+    });
+  }
+
+  /**
+   * Soft boot camera.
+   *
+   * @param {string} [mode] Tell the camera which mode to boot to.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  reboot(mode?: string): Promise&lt;void&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.reset(new Empty(), (err, status: huddly.DeviceStatus) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          this.handleError(&#x27;Unable to reset camera&#x27;, err, reject);
+          return;
+        }
+        Logger.info(status.toString());
+        resolve();
+      });
+    });
+  }
+
+  /**
+   * @ignore
+   *
+   * @return {*}  {Object}
+   * @memberof IpBaseDevice
+   */
+  _getDefaultParams(): Object {
+    return {
+      supported: true,
+      resolution: 1,
+    };
+  }
+
+  /**
+   * @ignore
+   *
+   * Should be called from Ace or See class instance.
+   *
+   * @return {*}  {Promise&lt;IDeviceUpgrader&gt;} The upgrader controll instance.
+   * @memberof IpBaseDevice
    */
   getUpgrader(): Promise&lt;IDeviceUpgrader&gt; {
-    return Promise.resolve(new AceUpgrader(this, this.discoveryEmitter));
+    return Promise.reject(new Error(&#x27;Please call this method from Ace or See controller instead!&#x27;));
+  }
+
+  /**
+   * Performs software upgrade (async) on Huddly Ip camera
+   *
+   * @param {IUpgradeOpts} opts Upgrade options for performing the upgrade
+   * @return {*}  {Promise&lt;any&gt;} Resolves when the upgrade is completed. Rejects if something goes wrong.
+   * @memberof IpBaseDevice
+   */
+  upgrade(opts: IUpgradeOpts): Promise&lt;any&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.getUpgrader()
+        .then((upgrader: AceUpgrader) &#x3D;&gt; {
+          upgrader.init(opts);
+          upgrader
+            .doUpgrade()
+            .then(() &#x3D;&gt; resolve(undefined))
+            .catch((e) &#x3D;&gt; reject(e));
+        })
+        .catch((e) &#x3D;&gt; reject(e));
+    });
+  }
+
+  /**
+   * Get autozoom control class instance.
+   *
+   * @param {IAutozoomControlOpts} opts Autozoom control options.
+   * @return {*}  {ICnnControl} The instance of the autozoom control class.
+   * @memberof IpBaseDevice
+   */
+  getAutozoomControl(opts: IAutozoomControlOpts): ICnnControl {
+    return new IpAutozoomControl(this, opts);
+  }
+
+  /**
+   * Get face based exposure control class instance.
+   *
+   * @return {*}  {ICnnControl} The instance of the face-based exposure control class.
+   * @memberof IpBaseDevice
+   */
+  getFaceBasedExposureControl(): ICnnControl {
+    return new IpFaceBasedExposureControl(this);
   }
 
   /**
@@ -2990,7 +3069,736 @@ export default class Ace extends IpBaseDevice {
    * @memberof IpBaseDevice
    */
   getDetector(opts: IDetectorOpts): IDetector {
-    return new IpDetector(this, { width: 832, height: 480 }, opts);
+    throw new Error(&#x27;Please call this method from Ace or See controller instead!&#x27;);
+  }
+
+  /**
+   * @ignore
+   *
+   * @return {*}  {Promise&lt;DiagnosticsMessage[]&gt;}
+   * @memberof IpBaseDevice
+   */
+  getDiagnostics(): Promise&lt;DiagnosticsMessage[]&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+
+  /**
+   * Get Autozoom/GF state on target
+   *
+   * @return {*}  {Promise&lt;any&gt;} Resolves with information about the GF state when action is completed.
+   * @memberof IpBaseDevice
+   */
+  getState(): Promise&lt;any&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const cnnFeature &#x3D; new huddly.CnnFeature();
+        cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
+        const azStatus &#x3D; await this.getCnnFeatureStatus(cnnFeature);
+
+        if (azStatus.hasAzStatus()) {
+          resolve({
+            autozoom_enabled: azStatus.getAzStatus().getAzEnabled(),
+          });
+        }
+      } catch (err) {
+        reject(err);
+      }
+    });
+  }
+
+  /**
+   * Generic function for getting status for a specific CnnFeature
+   *
+   * @param {huddly.CnnFeature} cnnFeature The cnn feature type
+   * @return {*}  {Promise&lt;huddly.CNNStatus&gt;} Resolves with the status of the cnn feature
+   * @memberof IpBaseDevice
+   */
+  getCnnFeatureStatus(cnnFeature: huddly.CnnFeature): Promise&lt;huddly.CNNStatus&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      this.grpcClient.getCnnFeatureStatus(cnnFeature, (err, cnnStatus: huddly.CNNStatus) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          this.handleError(&#x27;Unable to get cnn feature status&#x27;, err, reject);
+          return;
+        }
+        resolve(cnnStatus);
+      });
+    });
+  }
+
+  /**
+   * @ignore
+   *
+   * @return {*}  {Promise&lt;any&gt;}
+   * @memberof IpBaseDevice
+   */
+  getPowerUsage(): Promise&lt;any&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+
+  /**
+   * Get specfic temperature type on camera.
+   *
+   * @param {string} [key] The temperature key (internal, external etc.)
+   * @return {*}  {Promise&lt;any&gt;} Resolves with temperature information when action completes.
+   * @memberof IpBaseDevice
+   */
+  getTemperature(key?: string): Promise&lt;any&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const _temperatures &#x3D; await this._getTemperatures();
+        const tempList &#x3D; _temperatures.getTemperaturesList();
+        if (key !&#x3D; undefined) {
+          tempList.forEach((temp) &#x3D;&gt; {
+            if (temp.getName() &#x3D;&#x3D;&#x3D; key) {
+              resolve(temp.toObject());
+            }
+          });
+        }
+        const tempListSorted &#x3D; tempList.sort((a, b) &#x3D;&gt; a.getValue() - b.getValue());
+        resolve(tempListSorted.pop().toObject());
+      } catch (err) {
+        this.handleError(&#x27;Unable to get temperature!&#x27;, err, reject);
+        return;
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise&lt;huddly.Temperatures&gt;}
+   * @memberof IpBaseDevice
+   */
+  _getTemperatures(): Promise&lt;huddly.Temperatures&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.getTemperatures(new Empty(), (err, temperatures: huddly.Temperatures) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          reject(err);
+          return;
+        }
+        resolve(temperatures);
+      });
+    });
+  }
+
+  /**
+   * Get temperature information on camera.
+   *
+   * @return {*}  {Promise&lt;any&gt;} Resolves with temperature data when action completes.
+   * @memberof IpBaseDevice
+   */
+  getTemperatures(): Promise&lt;any&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const temperatures &#x3D; await this._getTemperatures();
+        resolve(temperatures.toObject()[&#x27;temperaturesList&#x27;]);
+      } catch (e) {
+        this.handleError(&#x27;Unable to get temperatures!&#x27;, e, reject);
+        return;
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @param {ReleaseChannel} releaseChannel
+   * @memberof IpBaseDevice
+   */
+  getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+
+  /**
+   * Get current camera slot.
+   *
+   * @return {*}  {Promise&lt;string&gt;} Resolves with slot information when action completes.
+   * @memberof IpBaseDevice
+   */
+  getSlot(): Promise&lt;string&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.getBootSlot(new Empty(), (err, slot: huddly.BootSlot) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          this.handleError(&#x27;Unable to get device boot slot&#x27;, err, reject);
+          return;
+        }
+        const SlotStr: string &#x3D; Object.keys(huddly.Slot).find(
+          (key) &#x3D;&gt; huddly.Slot[key] &#x3D;&#x3D;&#x3D; slot.getSlot()
+        );
+        resolve(SlotStr);
+      });
+    });
+  }
+
+  /**
+   * Get camera uptime
+   *
+   * @return {*}  {Promise&lt;number&gt;} Resolves with uptime information when the action completes.
+   * @memberof IpBaseDevice
+   */
+  uptime(): Promise&lt;number&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.getUptime(new Empty(), (err, uptime: huddly.Uptime) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          this.handleError(&#x27;Unable to get device uptime!&#x27;, err, reject);
+          return;
+        }
+        resolve(uptime.getUptime());
+      });
+    });
+  }
+
+  /** UVC Controls to be supported */
+
+  /**
+   * @ignore
+   * Not applicable!
+   *
+   * @param {number} controlNumber
+   * @return {*}  {Promise&lt;Buffer&gt;}
+   * @memberof IpBaseDevice
+   */
+  getXUControl(controlNumber: number): Promise&lt;Buffer&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @param {number} controlNumber
+   * @param {*} value
+   * @return {*}  {Promise&lt;any&gt;}
+   * @memberof IpBaseDevice
+   */
+  setXUControl(controlNumber: number, value: any): Promise&lt;any&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+
+  /**
+   * Get supported settings on camera.
+   *
+   * @return {*}  {Promise&lt;Object&gt;} Resolves with supported settings data when action completes.
+   * @memberof IpBaseDevice
+   */
+  getSupportedSettings(): Promise&lt;Object&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      // TODO: Get camera to report this
+      resolve([&#x27;pan&#x27;, &#x27;tilt&#x27;, &#x27;zoom&#x27;, &#x27;brightness&#x27;, &#x27;saturation&#x27;]);
+    });
+  }
+
+  /**
+   * Get specific setting information from camera.
+   *
+   * @param {string} key The setting key to be fetched.
+   * @param {Boolean} [forceRefresh] Whether the camera should use the cached settings or not.
+   * @return {*}  {Promise&lt;Object&gt;} The setting value for the requested setting key.
+   * @memberof IpBaseDevice
+   */
+  getSetting(key: string, forceRefresh?: Boolean): Promise&lt;Object&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        switch (key.toLowerCase()) {
+          case &#x27;pan&#x27;:
+            resolve({ ...(await this.getPanTiltZoom())[&#x27;pan&#x27;] });
+            break;
+          case &#x27;tilt&#x27;:
+            resolve({ ...(await this.getPanTiltZoom())[&#x27;tilt&#x27;] });
+            break;
+          case &#x27;zoom&#x27;:
+            resolve({ ...(await this.getPanTiltZoom())[&#x27;zoom&#x27;] });
+            break;
+          case &#x27;brightness&#x27;:
+            resolve(await this.getBrightness());
+            break;
+          case &#x27;saturation&#x27;:
+            resolve(await this.getSaturation());
+            break;
+          default:
+            const noSupportMsg &#x3D; &#x60;Value of type ${key} is not supported.&#x60;;
+            Logger.warn(noSupportMsg);
+            reject(noSupportMsg);
+            break;
+        }
+      } catch (e) {
+        reject(e);
+        return;
+      }
+    });
+  }
+
+  /**
+   * Sets specific setting value on camera.
+   *
+   * @param {string} key The setting key to be updated.
+   * @param {*} value The new value to be applied.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when action is completed.
+   * @memberof IpBaseDevice
+   */
+  setSettingValue(key: string, value: any): Promise&lt;void&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        switch (key.toLowerCase()) {
+          case &#x27;pan&#x27;:
+            await this.setPanTiltZoom({ pan: value });
+            resolve();
+            break;
+          case &#x27;tilt&#x27;:
+            await this.setPanTiltZoom({ tilt: value });
+            resolve();
+            break;
+          case &#x27;zoom&#x27;:
+            await this.setPanTiltZoom({ zoom: value });
+            resolve();
+            break;
+          case &#x27;brightness&#x27;:
+            await this.setBrightness(value);
+            resolve();
+            break;
+          case &#x27;saturation&#x27;:
+            await this.setSaturation(value);
+            resolve();
+            break;
+          default:
+            const noSupportMsg &#x3D; &#x60;Value of type ${key} is not supported.&#x60;;
+            Logger.warn(noSupportMsg, this.className);
+            reject(noSupportMsg);
+            break;
+        }
+      } catch (e) {
+        reject(e);
+        return;
+      }
+    });
+  }
+
+  /**
+   * Get all camera settings.
+   *
+   * @param {Boolean} [forceRefresh] Whether the camera should use the cached settings or not.
+   * @return {*}  {Promise&lt;Object&gt;} Resolves with camera settings when action is completed.
+   * @memberof IpBaseDevice
+   */
+  getSettings(forceRefresh?: Boolean): Promise&lt;Object&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const brightness &#x3D; await this.getBrightness();
+        const saturation &#x3D; await this.getSaturation();
+        const ptz &#x3D; await this.getPanTiltZoom();
+        resolve({
+          brightness,
+          saturation,
+          ...ptz,
+        });
+      } catch (err) {
+        reject(err);
+        return;
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise&lt;huddly.Saturation&gt;}
+   * @memberof IpBaseDevice
+   */
+  _getSaturation(): Promise&lt;huddly.Saturation&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.getSaturation(
+        new Empty(),
+        (err: ErrorInterface, saturation: huddly.Saturation) &#x3D;&gt; {
+          if (err !&#x3D; undefined) {
+            reject(err);
+            return;
+          }
+          resolve(saturation);
+        }
+      );
+    });
+  }
+
+  /**
+   * Get camera saturation setting.
+   *
+   * @return {*}  {Promise&lt;Object&gt;} Resolves with camera saturation settings when action is completed.
+   * @memberof IpBaseDevice
+   */
+  getSaturation(): Promise&lt;Object&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const saturation &#x3D; await this._getSaturation();
+        resolve({
+          ...this._getDefaultParams(),
+          default: saturation.getDefaultSaturation(),
+          value: saturation.getSaturation(),
+          min: saturation.getRange().getMin(),
+          max: saturation.getRange().getMax(),
+        });
+      } catch (e) {
+        this.handleError(&#x27;Unable to get saturation value&#x27;, e, reject);
+        return;
+      }
+    });
+  }
+
+  /**
+   * Update camera saturation setting.
+   *
+   * @param {number} value The new saturation value.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  setSaturation(value: number): Promise&lt;void&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const saturation &#x3D; new huddly.Saturation();
+      saturation.setSaturation(value);
+
+      this.grpcClient.setSaturation(
+        saturation,
+        (err: ErrorInterface, deviceStatus: huddly.DeviceStatus) &#x3D;&gt; {
+          if (err !&#x3D; undefined) {
+            this.handleError(&#x27;Unable to set saturation&#x27;, err, reject);
+            return;
+          }
+          Logger.info(deviceStatus.toString());
+          resolve();
+        }
+      );
+    });
+  }
+
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise&lt;huddly.Brightness&gt;}
+   * @memberof IpBaseDevice
+   */
+  _getBrightness(): Promise&lt;huddly.Brightness&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.getBrightness(new Empty(), (err, brightness: huddly.Brightness) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          reject(err);
+          return;
+        }
+        resolve(brightness);
+      });
+    });
+  }
+
+  /**
+   * Get camera brightness setting.
+   *
+   * @return {*}  {Promise&lt;Object&gt;} Resolves with brightness information when action is completed.
+   * @memberof IpBaseDevice
+   */
+  getBrightness(): Promise&lt;Object&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const brightness &#x3D; await this._getBrightness();
+        resolve({
+          ...this._getDefaultParams(),
+          default: brightness.getDefaultBrightness(),
+          value: brightness.getBrightness(),
+          min: brightness.getRange().getMin(),
+          max: brightness.getRange().getMax(),
+        });
+      } catch (e) {
+        this.handleError(&#x27;Unable to get brightness value&#x27;, e, reject);
+        return;
+      }
+    });
+  }
+
+  /**
+   * Set brightness setting on the camera.
+   *
+   * @param {number} value The new brightness value
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  setBrightness(value: number): Promise&lt;void&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const brightness &#x3D; new huddly.Brightness();
+      brightness.setBrightness(value);
+      this.grpcClient.setBrightness(brightness, (err, deviceStatus: huddly.DeviceStatus) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          this.handleError(&#x27;Unable to set brightness&#x27;, err, reject);
+          return;
+        }
+        Logger.info(deviceStatus.toString());
+        resolve();
+      });
+    });
+  }
+
+  /**
+   * Reset settings on the camera.
+   *
+   * @param {String[]} [excludeList&#x3D;[]] Potential exclusion list
+   * @return {*}  {Promise&lt;any&gt;} Resolves when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  resetSettings(excludeList: String[] &#x3D; []): Promise&lt;any&gt; {
+    // Reset brightness
+    return new Promise&lt;void&gt;(async (res, rej) &#x3D;&gt; {
+      try {
+        if (excludeList.indexOf(&#x27;brightness&#x27;) &#x3D;&#x3D;&#x3D; -1) {
+          await new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+            this._getBrightness()
+              .then((brightness: huddly.Brightness) &#x3D;&gt; {
+                this.setBrightness(brightness.getDefaultBrightness())
+                  .then(() &#x3D;&gt; resolve())
+                  .catch((e) &#x3D;&gt; reject(e));
+              })
+              .catch((e) &#x3D;&gt; reject(e));
+          });
+        }
+
+        if (excludeList.indexOf(&#x27;saturation&#x27;) &#x3D;&#x3D;&#x3D; -1) {
+          await new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+            this._getSaturation()
+              .then((saturation: huddly.Saturation) &#x3D;&gt; {
+                this.setSaturation(saturation.getDefaultSaturation())
+                  .then(() &#x3D;&gt; resolve())
+                  .catch((e) &#x3D;&gt; reject(e));
+              })
+              .catch((e) &#x3D;&gt; reject(e));
+          });
+        }
+        if (excludeList.indexOf(&#x27;pan&#x27;) &#x3D;&#x3D;&#x3D; -1) {
+          await new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+            this.getSetting(&#x27;pan&#x27;)
+              .then((pan: Object) &#x3D;&gt; {
+                this.setPanTiltZoom({ pan: pan[&#x27;default&#x27;] })
+                  .then(() &#x3D;&gt; resolve())
+                  .catch((e) &#x3D;&gt; reject(e));
+              })
+              .catch((e) &#x3D;&gt; reject(e));
+          });
+        }
+
+        if (excludeList.indexOf(&#x27;tilt&#x27;) &#x3D;&#x3D;&#x3D; -1) {
+          await new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+            this.getSetting(&#x27;tilt&#x27;)
+              .then((tilt: Object) &#x3D;&gt; {
+                this.setPanTiltZoom({ tilt: tilt[&#x27;default&#x27;] })
+                  .then(() &#x3D;&gt; resolve())
+                  .catch((e) &#x3D;&gt; reject(e));
+              })
+              .catch((e) &#x3D;&gt; reject(e));
+          });
+        }
+
+        if (excludeList.indexOf(&#x27;zoom&#x27;) &#x3D;&#x3D;&#x3D; -1) {
+          await new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+            this.getSetting(&#x27;zoom&#x27;)
+              .then((zoom: Object) &#x3D;&gt; {
+                this.setPanTiltZoom({ zoom: zoom[&#x27;default&#x27;] })
+                  .then(() &#x3D;&gt; resolve())
+                  .catch((e) &#x3D;&gt; reject(e));
+              })
+              .catch((e) &#x3D;&gt; reject(e));
+          });
+        }
+
+        res();
+      } catch (e) {
+        Logger.error(&#x27;Unable to reset settings&#x27;, e, this.className);
+        rej(e);
+      }
+    });
+  }
+
+  /**
+   * @ignore
+   * Internal grpc request function.
+   *
+   * @return {*}  {Promise&lt;huddly.PTZ&gt;}
+   * @memberof IpBaseDevice
+   */
+  _getPanTiltZoom(): Promise&lt;huddly.PTZ&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this.grpcClient.getPTZ(new Empty(), (err, ptz: huddly.PTZ) &#x3D;&gt; {
+        if (err !&#x3D; undefined) {
+          reject(err);
+          return;
+        }
+        resolve(ptz);
+      });
+    });
+  }
+
+  /**
+   * Get pan, tilt and zoom settings from the camera.
+   *
+   * @return {*}  {Promise&lt;Object&gt;} Resolves wth ptz information when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  getPanTiltZoom(): Promise&lt;Object&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const ptz &#x3D; await this._getPanTiltZoom();
+        const ptzObj &#x3D; {
+          pan: {
+            ...this._getDefaultParams(),
+            default: ptz.getDefaultpan(),
+            value: ptz.getPan(),
+            min: ptz.getRangepan().getMin(),
+            max: ptz.getRangepan().getMax(),
+          },
+          tilt: {
+            ...this._getDefaultParams(),
+            default: ptz.getDefaulttilt(),
+            value: ptz.getTilt(),
+            min: ptz.getRangetilt().getMin(),
+            max: ptz.getRangetilt().getMax(),
+          },
+          zoom: {
+            ...this._getDefaultParams(),
+            default: ptz.getDefaultzoom(),
+            value: ptz.getZoom(),
+            min: ptz.getRangedzoom().getMin(),
+            max: ptz.getRangedzoom().getMax(),
+          },
+        };
+        resolve(ptzObj);
+      } catch (e) {
+        this.handleError(&#x27;Unable to get ptz values&#x27;, e, reject);
+        return;
+      }
+    });
+  }
+
+  /**
+   * Get pan and tilt settings from the camera.
+   *
+   * @return {*}  {Promise&lt;Object&gt;} Resolves with pan and tilt data when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  getPanTilt(): Promise&lt;Object&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        const ptz &#x3D; await this.getPanTiltZoom();
+        resolve({
+          pan: ptz[&#x27;pan&#x27;],
+          tilt: ptz[&#x27;tilt&#x27;],
+        });
+      } catch (err) {
+        reject(err);
+        return;
+      }
+    });
+  }
+
+  /**
+   * Update pan and tilt settings on camera.
+   *
+   * @param {Object} panTilt The new pan and tilt value to be updated.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  setPanTilt(panTilt: Object): Promise&lt;void&gt; {
+    return new Promise(async (resolve, reject) &#x3D;&gt; {
+      try {
+        await this.setPanTiltZoom(panTilt);
+      } catch (err) {
+        reject(err);
+        return;
+      }
+      resolve();
+    });
+  }
+
+  /**
+   * Update pan, tilt and zoom settings on the camera.
+   *
+   * @param {Object} panTiltZoom The new ptz value to be updated.
+   * @return {*}  {Promise&lt;void&gt;} Resolves when the action is completed.
+   * @memberof IpBaseDevice
+   */
+  setPanTiltZoom(panTiltZoom: Object): Promise&lt;void&gt; {
+    const newPtz &#x3D; new huddly.PTZ();
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      this._getPanTiltZoom()
+        .then((currentPtz: huddly.PTZ) &#x3D;&gt; {
+          newPtz.setPan(currentPtz.getPan());
+          newPtz.setZoom(currentPtz.getZoom());
+          newPtz.setTilt(currentPtz.getTilt());
+          newPtz.setTrans(currentPtz.getTrans());
+        })
+        .catch((e) &#x3D;&gt; {
+          const defaultPan &#x3D; newPtz.getDefaultpan();
+          const defaultTilt &#x3D; newPtz.getDefaulttilt();
+          const defaultZoom &#x3D; newPtz.getDefaultzoom();
+          newPtz.setPan(defaultPan);
+          newPtz.setTilt(defaultTilt);
+          newPtz.setZoom(defaultZoom);
+          newPtz.setTrans(0);
+        })
+        .finally(() &#x3D;&gt; {
+          const paramKeys &#x3D; Object.keys(panTiltZoom);
+          if (paramKeys.includes(&#x27;pan&#x27;)) {
+            newPtz.setPan(panTiltZoom[&#x27;pan&#x27;]);
+          }
+          if (paramKeys.includes(&#x27;tilt&#x27;)) {
+            newPtz.setTilt(panTiltZoom[&#x27;tilt&#x27;]);
+          }
+          if (paramKeys.includes(&#x27;zoom&#x27;)) {
+            newPtz.setZoom(panTiltZoom[&#x27;zoom&#x27;]);
+          }
+          this.grpcClient.setPTZ(newPtz, (err, status: huddly.DeviceStatus) &#x3D;&gt; {
+            if (err !&#x3D; undefined) {
+              this.handleError(&#x27;Unable to set PTZ values!&#x27;, err, reject);
+              return;
+            }
+            Logger.info(status.toString());
+            resolve();
+          });
+        });
+    });
+  }
+
+  /**
+   * @ignore
+   * Not applicable.
+   *
+   * @return {*}  {Promise&lt;void&gt;}
+   * @memberof IpBaseDevice
+   */
+  usbReEnumerate(): Promise&lt;void&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+
+  /**
+   * @ignore
+   * Not applicable
+   *
+   * @return {*}  {Boolean}
+   * @memberof IpBaseDevice
+   */
+  isAlive(): Boolean {
+    throw new Error(&#x27;Method not implemented.&#x27;);
+  }
+
+  /**
+   * Helper function for checking if two ACE instances are equal or not
+   *
+   * @param {IDeviceManager} manager The other ace instance
+   * @return {*} A boolean representing whether the instance are equal or not.
+   * @memberof IpBaseDevice
+   */
+  equals(manager: IDeviceManager): Boolean {
+    if (manager instanceof IpBaseDevice) {
+      const otherIpDevice &#x3D; &lt;IpBaseDevice&gt;manager;
+      return otherIpDevice.wsdDevice.equals(this.wsdDevice);
+    }
+    return false;
   }
 }
 </code></pre>
@@ -3021,7 +3829,7 @@ export default class Ace extends IpBaseDevice {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'Ace.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'IpBaseDevice.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

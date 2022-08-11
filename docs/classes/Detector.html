@@ -8,8 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	   <link rel="stylesheet" href="../styles/style.css">
-        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+	      <link rel="stylesheet" href="../styles/style.css">
     </head>
     <body>
 
@@ -43,7 +42,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >Detector</li>
+  <li>Detector</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -67,7 +66,6 @@
             <code>src/components/detector.ts</code>
         </p>
 
-
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -90,6 +88,11 @@
                             <code><a href="../classes/Detector.html" target="_self" >IDetector</a></code>
             </p>
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -106,15 +109,15 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#destroy" >destroy</a>
+                                <a href="#destroy">destroy</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#init" >init</a>
+                                <a href="#init">init</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#updateOpts" >updateOpts</a>
+                                <a href="#updateOpts">updateOpts</a>
                             </li>
                         </ul>
                     </td>
@@ -134,7 +137,7 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IDeviceManager, options?: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
+<code>constructor(manager: IDeviceManager, options?: <a href="../classes/Detector.html">DetectorOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -201,8 +204,10 @@
                 <td class="col-md-4">
                     <a name="destroy"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>destroy</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            destroy
+                        </b>
                         <a href="#destroy"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -248,8 +253,10 @@
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>init</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            init
+                        </b>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -295,8 +302,10 @@
                 <td class="col-md-4">
                     <a name="updateOpts"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>updateOpts</b></span>
+                        <b>
+                            <span class="modifier">Async</span>
+                            updateOpts
+                        </b>
                         <a href="#updateOpts"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -304,7 +313,7 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateOpts(options: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
+                    <code>updateOpts(options: <a href="../classes/Detector.html">DetectorOpts</a>)</code>
                 </td>
             </tr>
 
@@ -325,7 +334,6 @@ instantiating the Detector class.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -787,14 +795,14 @@ export default class Detector extends EventEmitter implements IDetector {
 
 
 
-
+                   
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -814,9 +822,9 @@ export default class Detector extends EventEmitter implements IDetector {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
        <script src="../js/menu-wc.js" defer></script>
-       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

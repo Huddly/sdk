@@ -8,8 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	   <link rel="stylesheet" href="../styles/style.css">
-        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+	      <link rel="stylesheet" href="../styles/style.css">
     </head>
     <body>
 
@@ -43,7 +42,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >UpgradeStatus</li>
+  <li>UpgradeStatus</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -64,7 +63,6 @@
             <code>src/components/upgrader/upgradeStatus.ts</code>
         </p>
 
-
             <p class="comment">
                 <h3>Description</h3>
             </p>
@@ -76,6 +74,11 @@ consisted of steps and total upgrade weight.</p>
 
 
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -91,15 +94,15 @@ consisted of steps and total upgrade weight.</p>
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#_statusString" >_statusString</a>
+                                <a href="#_statusString">_statusString</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#_steps" >_steps</a>
+                                <a href="#_steps">_steps</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#_weights" >_weights</a>
+                                <a href="#_weights">_weights</a>
                             </li>
                         </ul>
                     </td>
@@ -114,7 +117,7 @@ consisted of steps and total upgrade weight.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#getStatus" >getStatus</a>
+                                <a href="#getStatus">getStatus</a>
                             </li>
                         </ul>
                     </td>
@@ -133,7 +136,7 @@ consisted of steps and total upgrade weight.</p>
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#statusString" >statusString</a>
+                                    <a href="#statusString">statusString</a>
                                 </li>
                             </ul>
                         </td>
@@ -193,123 +196,126 @@ consisted of steps and total upgrade weight.</p>
 
             <section>
     
-    <h3 id="inputs">
-        Properties
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="_statusString"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>_statusString</b></span>
-                        <a href="#_statusString"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                    </td>
-                </tr>
-                <tr>
-                    <td class="col-md-4">
-                        <i>Default value : </i><code>&#x27;Not Started&#x27;</code>
+                        <a name="_statusString"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            _statusString</b>
+                            <a href="#_statusString"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:87</a></div>
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                         </td>
                     </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>&#x27;Not Started&#x27;</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:87</a></div>
+                            </td>
+                        </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>A string describing the upgrade status state.</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="_steps"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>_steps</b></span>
-                        <a href="#_steps"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>Array&lt;UpgradeStatusStep&gt;</code>
-
+                        <div class="io-description"><p>A string describing the upgrade status state.</p>
+</div>
                     </td>
                 </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>[]</code>
+                        <a name="_steps"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            _steps</b>
+                            <a href="#_steps"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:95</a></div>
+                            <i>Type : </i>    <code>Array&lt;UpgradeStatusStep&gt;</code>
+
                         </td>
                     </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>[]</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:95</a></div>
+                            </td>
+                        </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>A list of upgrade steps that will be carried out during the upgrade process.</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="_weights"></a>
-                    <span class="name">
-                            <span class="modifier">Private</span>
-                        <span ><b>_weights</b></span>
-                        <a href="#_weights"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
+                        <div class="io-description"><p>A list of upgrade steps that will be carried out during the upgrade process.</p>
+</div>
                     </td>
                 </tr>
+
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <i>Default value : </i><code>0</code>
+                        <a name="_weights"></a>
+                        <span class="name">
+                            <b>
+                                <span class="modifier">Private</span>
+                            _weights</b>
+                            <a href="#_weights"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:103</a></div>
+                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
                         </td>
                     </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <i>Default value : </i><code>0</code>
+                        </td>
+                    </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:103</a></div>
+                            </td>
+                        </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>A number representing the total weight of the upgrade process.</p>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>A number representing the total weight of the upgrade process.</p>
 </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 </section>
 
             <section>
@@ -323,7 +329,9 @@ consisted of steps and total upgrade weight.</p>
                 <td class="col-md-4">
                     <a name="getStatus"></a>
                     <span class="name">
-                        <span ><b>getStatus</b></span>
+                        <b>
+                            getStatus
+                        </b>
                         <a href="#getStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -346,7 +354,6 @@ consisted of steps and total upgrade weight.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Calculates the status so far during the upgrade process.</p>
-<p>steps involved in the upgrade process.</p>
 </div>
 
                     <div>
@@ -579,14 +586,14 @@ export default class UpgradeStatus {
 
 
 
-
+                   
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -606,9 +613,9 @@ export default class UpgradeStatus {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
        <script src="../js/menu-wc.js" defer></script>
-       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

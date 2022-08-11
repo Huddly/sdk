@@ -42,15 +42,12 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li>AceUpgrader</li>
+  <li>SeeUpgrader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
         <li class="active">
             <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
-        </li>
-        <li >
-            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
         </li>
         <li >
             <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
@@ -63,14 +60,14 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/components/upgrader/aceUpgrader.ts</code>
+            <code>src/components/upgrader/seeUpgrader.ts</code>
         </p>
 
             <p class="comment">
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Controller class for instrumenting the upgrade process on Huddly L1 camera.</p>
+                <p>Controller class for instrumenting the upgrade process on Huddly S1 camera.</p>
 
             </p>
 
@@ -169,13 +166,13 @@
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:13</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/components/upgrader/seeUpgrader.ts:13</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Creates a new instance of AceUpgrader.</p>
+                            <div class="io-description"><p>Creates a new instance of SeeUpgrader.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -201,7 +198,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>An instance of IDeviceManager setup for an ACE/L1 device.</p>
+                                                                <code><p>An instance of IDeviceManager setup for an See/S1 device.</p>
 </code>
                                                         </td>
                                                 </tr>
@@ -217,7 +214,7 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Event emitter object that emits ATTACH &amp; DETACH events for ACE/L1 devices on the network</p>
+                                                                <code><p>Event emitter object that emits ATTACH &amp; DETACH events for See/S1 devices on the network</p>
 </code>
                                                         </td>
                                                 </tr>
@@ -255,12 +252,12 @@
                     </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;AceUpgrader&#x27;</code>
+                            <i>Default value : </i><code>&#x27;SeeUpgrader&#x27;</code>
                         </td>
                     </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/components/upgrader/aceUpgrader.ts:13</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/components/upgrader/seeUpgrader.ts:13</a></div>
                             </td>
                         </tr>
 
@@ -854,94 +851,6 @@ booted camera comes up so that the upgrade process can continue to completion.</
 
     </div>
 
-    <div class="tab-pane fade " id="c-readme">
-        <p><h2 id="upgrader-usage">Upgrader Usage</h2>
-<p>In order to perform a software upgarde on the camera, this interface should be used. Please note that there is a convenience function in the <code>IDeviceManager</code> for performing the upgrade, but if you want to implement your own handler then this documentation needs to be reviewed.</p>
-<p>Each upgrader class (BoxfishUpgrader, HuddlyGoUpgrader, AceUpgrader) requires some options that should be provided when initializing it:</p>
-<div><pre class="line-numbers"><code class="language-javascript">const upgrader = cameraManager.getUpgrader();
-const upgradeOptions = {
-  file: fs.readSync(&#39;/path/to/firmware/image&#39;),
-  bootTimeout: 60 // Default is 60 seconds
-  verboseStatusLog: true // Default is true
-}; // See the `IUpgraderOpts` for explanation of each option
-
-// Initialize upgrader
-upgrader.init(upgraderOptions);</code></pre></div><p>After you have initialized the upgrader, then you can proceed with starting the upgrade process.</p>
-<div><pre class="line-numbers"><code class="language-javascript">// Start the upgrade process
-upgrader.start();</code></pre></div><p>During the upgrade process, the upgrader class will emit the following events:</p>
-<table class="table table-bordered compodoc-table">
-<thead>
-<tr>
-<th>Event</th>
-<th align="left">Description</th>
-</tr>
-</thead>
-<tbody>
-<tr>
-<td><code>UPGRADE_START</code></td>
-<td align="left">Fired when upgrade is initiated.</td>
-</tr>
-<tr>
-<td><code>UPGRADE_COMPLETE</code></td>
-<td align="left">Fired when upgrade is completed successfully.</td>
-</tr>
-<tr>
-<td><code>UPGRADE_FAILED</code></td>
-<td align="left">Fired when something fails during upgrade. The handler contains the error trace of the upgrade failure.</td>
-</tr>
-<tr>
-<td><code>TIMEOUT</code></td>
-<td align="left">Fired when the camera does not come back up after reboot (reboot is necessary to complete the upgrade sequence.</td>
-</tr>
-<tr>
-<td><code>UPGRADE_PROGRESS</code></td>
-<td align="left">Fired when constantly during the upgrade process providing with information on how far the upgrade process is from completion.</td>
-</tr>
-</tbody>
-</table>
-<p>The events above can be used as shown below:</p>
-<div><pre class="line-numbers"><code class="language-javascript">
-const onUpgradeStartHandler = () =&gt; {
-  // Do something.... Inform your system that upgrade has started
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeFailedHandler = (e) =&gt; {
-  // Upgrade has failed. Print error log to debug the reason
-  console.error(e);
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeCompleteHandler = () =&gt; {
-  // Hurrayyy! Sucessfully upgraded your Huddly camera
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeTimeoutHandler = () =&gt; {
-  // Ups! Looks like the camera did not come back up after rebooting during upgrade.
-  // This also means that the new software that was loaded into the camera will be discarded.
-  // Try to initiate upgrade again.
-  upgrader.removeListener(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-}
-
-const onUpgradeProgressHandler = (progress) =&gt; {
-  // The progress object contains the following information:
-  /*
-   * status: A string representation of how far the upgrade progress has come (ex. Uploading firmware on the device)
-   * progress: A numerical value representing the percentage of upgrade completion (ex 30)
-   */
-  console.log(`Upgrade Progress: ${progress.progress} %`)
-}
-
-upgrader.once(&#39;UPGRADE_START&#39;, onUpgradeStartHandler);
-upgrader.once(&#39;UPGRADE_FAILED&#39;, onUpgradeFailedHandler);
-upgrader.once(&#39;UPGRADE_COMPLETE&#39;, onUpgradeCompleteHandler);
-upgrader.once(&#39;TIMEOUT&#39;, onUpgradeTimeoutHandler);
-upgrader.on(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
-
-// Finally start the upgrade after having setup all the listeners
-upgrader.start();</code></pre></div></p>
-    </div>
 
     <div class="tab-pane fade  tab-source-code" id="c-source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
@@ -949,20 +858,20 @@ import { EventEmitter } from &#x27;stream&#x27;;
 import IpCameraUpgrader from &#x27;./ipUpgrader&#x27;;
 
 /**
- * Controller class for instrumenting the upgrade process on Huddly L1 camera.
+ * Controller class for instrumenting the upgrade process on Huddly S1 camera.
  *
  * @export
- * @class AceUpgrader
+ * @class SeeUpgrader
  * @extends {IpCameraUpgrader}
  */
-export default class AceUpgrader extends IpCameraUpgrader {
-  className: string &#x3D; &#x27;AceUpgrader&#x27;;
+export default class SeeUpgrader extends IpCameraUpgrader {
+  className: string &#x3D; &#x27;SeeUpgrader&#x27;;
 
   /**
-   * Creates a new instance of AceUpgrader.
-   * @param {IDeviceManager} manager An instance of IDeviceManager setup for an ACE/L1 device.
-   * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH &amp; DETACH events for ACE/L1 devices on the network
-   * @memberof AceUpgrader
+   * Creates a new instance of SeeUpgrader.
+   * @param {IDeviceManager} manager An instance of IDeviceManager setup for an See/S1 device.
+   * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH &amp; DETACH events for See/S1 devices on the network
+   * @memberof SeeUpgrader
    */
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
     super(manager, sdkDeviceDiscoveryEmitter);
@@ -996,7 +905,7 @@ export default class AceUpgrader extends IpCameraUpgrader {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'AceUpgrader.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'SeeUpgrader.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

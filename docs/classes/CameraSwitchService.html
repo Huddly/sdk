@@ -8,8 +8,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	   <link rel="stylesheet" href="../styles/style.css">
-        <link rel="stylesheet" href="../styles/dark.css" media="(prefers-color-scheme: dark)">
+	      <link rel="stylesheet" href="../styles/style.css">
     </head>
     <body>
 
@@ -43,7 +42,7 @@
 
 <ol class="breadcrumb">
   <li>Classes</li>
-  <li >CameraSwitchService</li>
+  <li>CameraSwitchService</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -68,16 +67,6 @@
         </p>
 
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>IHuddlyService class implementation for sdk consumers running on a Windows host machine. The service can be used
-to switch which huddly network camera is used to stream on the host machine. All the functionality of this
-service is described in the proto file from @huddly/camera-switch npm package with the name service.proto</p>
-
-            </p>
-
 
             <p class="comment">
                 <h3>Implements</h3>
@@ -86,6 +75,11 @@ service is described in the proto file from @huddly/camera-switch npm package wi
                         <code>IHuddlyService</code>
             </p>
 
+            <p class="comment">
+                <h3>Example</h3>
+            </p>
+            <div class="io-description">
+            </div>
 
             <section>
     <h3 id="index">Index</h3>
@@ -100,10 +94,10 @@ service is described in the proto file from @huddly/camera-switch npm package wi
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#grpcClient" >grpcClient</a>
+                                <a href="#grpcClient">grpcClient</a>
                             </li>
                             <li>
-                                <a href="#options" >options</a>
+                                <a href="#options">options</a>
                             </li>
                         </ul>
                     </td>
@@ -118,55 +112,55 @@ service is described in the proto file from @huddly/camera-switch npm package wi
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#allowUserPtz" >allowUserPtz</a>
+                                <a href="#allowUserPtz">allowUserPtz</a>
                             </li>
                             <li>
-                                <a href="#blokUserPtz" >blokUserPtz</a>
+                                <a href="#blokUserPtz">blokUserPtz</a>
                             </li>
                             <li>
-                                <a href="#close" >close</a>
+                                <a href="#close">close</a>
                             </li>
                             <li>
-                                <a href="#getActiveCamera" >getActiveCamera</a>
+                                <a href="#getActiveCamera">getActiveCamera</a>
                             </li>
                             <li>
-                                <a href="#getAvailableCameras" >getAvailableCameras</a>
+                                <a href="#getAvailableCameras">getAvailableCameras</a>
                             </li>
                             <li>
-                                <a href="#getDefaultCamera" >getDefaultCamera</a>
+                                <a href="#getDefaultCamera">getDefaultCamera</a>
                             </li>
                             <li>
-                                <a href="#getFwUpdateSchedule" >getFwUpdateSchedule</a>
+                                <a href="#getFwUpdateSchedule">getFwUpdateSchedule</a>
                             </li>
                             <li>
-                                <a href="#init" >init</a>
+                                <a href="#init">init</a>
                             </li>
                             <li>
-                                <a href="#isUserPtzAllowed" >isUserPtzAllowed</a>
+                                <a href="#isUserPtzAllowed">isUserPtzAllowed</a>
                             </li>
                             <li>
-                                <a href="#scheduleFwUpdate" >scheduleFwUpdate</a>
+                                <a href="#scheduleFwUpdate">scheduleFwUpdate</a>
                             </li>
                             <li>
-                                <a href="#scheduleFwUpdateAll" >scheduleFwUpdateAll</a>
+                                <a href="#scheduleFwUpdateAll">scheduleFwUpdateAll</a>
                             </li>
                             <li>
-                                <a href="#serviceCameraGetter" >serviceCameraGetter</a>
+                                <a href="#serviceCameraGetter">serviceCameraGetter</a>
                             </li>
                             <li>
-                                <a href="#serviceCameraSetter" >serviceCameraSetter</a>
+                                <a href="#serviceCameraSetter">serviceCameraSetter</a>
                             </li>
                             <li>
-                                <a href="#setActiveCamera" >setActiveCamera</a>
+                                <a href="#setActiveCamera">setActiveCamera</a>
                             </li>
                             <li>
-                                <a href="#setDefaultCamera" >setDefaultCamera</a>
+                                <a href="#setDefaultCamera">setDefaultCamera</a>
                             </li>
                             <li>
-                                <a href="#setFwUpdateSchedule" >setFwUpdateSchedule</a>
+                                <a href="#setFwUpdateSchedule">setFwUpdateSchedule</a>
                             </li>
                             <li>
-                                <a href="#setUserPtz" >setUserPtz</a>
+                                <a href="#setUserPtz">setUserPtz</a>
                             </li>
                         </ul>
                     </td>
@@ -223,8 +217,8 @@ service is described in the proto file from @huddly/camera-switch npm package wi
                                                     </td>
                                                     
                                                         <td>
-                                                                <p>? Service options for initializing and setting up the service communication</p>
-
+                                                                <code><p>? Service options for initializing and setting up the service communication</p>
+</code>
                                                         </td>
                                                 </tr>
                                         </tbody>
@@ -238,73 +232,75 @@ service is described in the proto file from @huddly/camera-switch npm package wi
 
             <section>
     
-    <h3 id="inputs">
-        Properties
-    </h3>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="grpcClient"></a>
-                    <span class="name">
-                        <span ><b>grpcClient</b></span>
-                        <a href="#grpcClient"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
+        <h3 id="inputs">
+            Properties
+        </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>HuddlyCameraServiceClient</code>
-
+                        <a name="grpcClient"></a>
+                        <span class="name">
+                            <b>
+                            grpcClient</b>
+                            <a href="#grpcClient"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/components/service/cameraSwitchService.ts:49</a></div>
+                            <i>Type : </i>    <code>HuddlyCameraServiceClient</code>
+
                         </td>
                     </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="49" class="link-to-prism">src/components/service/cameraSwitchService.ts:49</a></div>
+                            </td>
+                        </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Service client derived from the proto file</p>
-</div>
-                </td>
-            </tr>
-
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="options"></a>
-                    <span class="name">
-                        <span ><b>options</b></span>
-                        <a href="#options"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>IServiceOpts</code>
+                        <div class="io-description"><p>Service client derived from the proto file</p>
+</div>
+                    </td>
+                </tr>
 
+            </tbody>
+        </table>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="options"></a>
+                        <span class="name">
+                            <b>
+                            options</b>
+                            <a href="#options"><span class="icon ion-ios-link"></span></a>
+                        </span>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/components/service/cameraSwitchService.ts:43</a></div>
+                            <i>Type : </i>    <code>IServiceOpts</code>
+
                         </td>
                     </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="43" class="link-to-prism">src/components/service/cameraSwitchService.ts:43</a></div>
+                            </td>
+                        </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Service options for initializing and seting up the service communication</p>
+                <tr>
+                    <td class="col-md-4">
+                        <div class="io-description"><p>Service options for initializing and seting up the service communication</p>
 </div>
-                </td>
-            </tr>
+                    </td>
+                </tr>
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
 </section>
 
             <section>
@@ -318,7 +314,9 @@ service is described in the proto file from @huddly/camera-switch npm package wi
                 <td class="col-md-4">
                     <a name="allowUserPtz"></a>
                     <span class="name">
-                        <span ><b>allowUserPtz</b></span>
+                        <b>
+                            allowUserPtz
+                        </b>
                         <a href="#allowUserPtz"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -363,7 +361,9 @@ service is described in the proto file from @huddly/camera-switch npm package wi
                 <td class="col-md-4">
                     <a name="blokUserPtz"></a>
                     <span class="name">
-                        <span ><b>blokUserPtz</b></span>
+                        <b>
+                            blokUserPtz
+                        </b>
                         <a href="#blokUserPtz"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -408,7 +408,9 @@ service is described in the proto file from @huddly/camera-switch npm package wi
                 <td class="col-md-4">
                     <a name="close"></a>
                     <span class="name">
-                        <span ><b>close</b></span>
+                        <b>
+                            close
+                        </b>
                         <a href="#close"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -430,8 +432,7 @@ service is described in the proto file from @huddly/camera-switch npm package wi
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Close grpc connection with the service gprc server.
-otherwise.</p>
+                    <div class="io-description"><p>Close grpc connection with the service gprc server.</p>
 </div>
 
                     <div>
@@ -455,7 +456,9 @@ otherwise.</p>
                 <td class="col-md-4">
                     <a name="getActiveCamera"></a>
                     <span class="name">
-                        <span ><b>getActiveCamera</b></span>
+                        <b>
+                            getActiveCamera
+                        </b>
                         <a href="#getActiveCamera"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -477,8 +480,7 @@ otherwise.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Get active camera from the huddly camera service.
-about the current active camera on the huddly camera service.</p>
+                    <div class="io-description"><p>Get active camera from the huddly camera service.</p>
 </div>
 
                     <div>
@@ -502,7 +504,9 @@ about the current active camera on the huddly camera service.</p>
                 <td class="col-md-4">
                     <a name="getAvailableCameras"></a>
                     <span class="name">
-                        <span ><b>getAvailableCameras</b></span>
+                        <b>
+                            getAvailableCameras
+                        </b>
                         <a href="#getAvailableCameras"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -547,7 +551,9 @@ about the current active camera on the huddly camera service.</p>
                 <td class="col-md-4">
                     <a name="getDefaultCamera"></a>
                     <span class="name">
-                        <span ><b>getDefaultCamera</b></span>
+                        <b>
+                            getDefaultCamera
+                        </b>
                         <a href="#getDefaultCamera"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -569,8 +575,7 @@ about the current active camera on the huddly camera service.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Get default camera from the huddly camera service.
-about the current default camera on the huddly camera service.</p>
+                    <div class="io-description"><p>Get default camera from the huddly camera service.</p>
 </div>
 
                     <div>
@@ -594,7 +599,9 @@ about the current default camera on the huddly camera service.</p>
                 <td class="col-md-4">
                     <a name="getFwUpdateSchedule"></a>
                     <span class="name">
-                        <span ><b>getFwUpdateSchedule</b></span>
+                        <b>
+                            getFwUpdateSchedule
+                        </b>
                         <a href="#getFwUpdateSchedule"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -639,7 +646,9 @@ about the current default camera on the huddly camera service.</p>
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <span ><b>init</b></span>
+                        <b>
+                            init
+                        </b>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -661,8 +670,7 @@ about the current default camera on the huddly camera service.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Connect to the service gprc server
-or rejects if not.</p>
+                    <div class="io-description"><p>Connect to the service gprc server</p>
 </div>
 
                     <div>
@@ -686,7 +694,9 @@ or rejects if not.</p>
                 <td class="col-md-4">
                     <a name="isUserPtzAllowed"></a>
                     <span class="name">
-                        <span ><b>isUserPtzAllowed</b></span>
+                        <b>
+                            isUserPtzAllowed
+                        </b>
                         <a href="#isUserPtzAllowed"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -708,8 +718,7 @@ or rejects if not.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Check if the user ptz is allowed on the huddly camera service.
-user ptz is allowed or not. Rejects if retreiving the setting fails.</p>
+                    <div class="io-description"><p>Check if the user ptz is allowed on the huddly camera service.</p>
 </div>
 
                     <div>
@@ -733,7 +742,9 @@ user ptz is allowed or not. Rejects if retreiving the setting fails.</p>
                 <td class="col-md-4">
                     <a name="scheduleFwUpdate"></a>
                     <span class="name">
-                        <span ><b>scheduleFwUpdate</b></span>
+                        <b>
+                            scheduleFwUpdate
+                        </b>
                         <a href="#scheduleFwUpdate"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -761,7 +772,6 @@ on the service.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -811,7 +821,9 @@ on the service.</p>
                 <td class="col-md-4">
                     <a name="scheduleFwUpdateAll"></a>
                     <span class="name">
-                        <span ><b>scheduleFwUpdateAll</b></span>
+                        <b>
+                            scheduleFwUpdateAll
+                        </b>
                         <a href="#scheduleFwUpdateAll"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -856,14 +868,16 @@ on the service.</p>
                 <td class="col-md-4">
                     <a name="serviceCameraGetter"></a>
                     <span class="name">
-                        <span ><b>serviceCameraGetter</b></span>
+                        <b>
+                            serviceCameraGetter
+                        </b>
                         <a href="#serviceCameraGetter"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>serviceCameraGetter(action: <a href="../undefineds/ServiceCameraActions.html" target="_self">ServiceCameraActions</a>)</code>
+<code>serviceCameraGetter(action: <a href="../undefineds/ServiceCameraActions.html">ServiceCameraActions</a>)</code>
                 </td>
             </tr>
 
@@ -879,14 +893,11 @@ on the service.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Helper function for calling a getter command on the service grpc server. Using the
-parameter &quot;action&quot; to determine which specific getter to invoke.
-the service grpc seerver
-otherwise.</p>
+parameter &quot;action&quot; to determine which specific getter to invoke.</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -938,14 +949,16 @@ otherwise.</p>
                 <td class="col-md-4">
                     <a name="serviceCameraSetter"></a>
                     <span class="name">
-                        <span ><b>serviceCameraSetter</b></span>
+                        <b>
+                            serviceCameraSetter
+                        </b>
                         <a href="#serviceCameraSetter"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>serviceCameraSetter(action: <a href="../undefineds/ServiceCameraActions.html" target="_self">ServiceCameraActions</a>, camInfo: CameraInfo)</code>
+<code>serviceCameraSetter(action: <a href="../undefineds/ServiceCameraActions.html">ServiceCameraActions</a>, camInfo: CameraInfo)</code>
                 </td>
             </tr>
 
@@ -961,15 +974,11 @@ otherwise.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Helper function for calling a setter command on the service grpc server. Using the
-parameter &quot;action&quot; to determine which specific setter to invoke.
-the service gprc server
-when calling the service gprc setter command
-otherwise.</p>
+parameter &quot;action&quot; to determine which specific setter to invoke.</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1038,7 +1047,9 @@ otherwise.</p>
                 <td class="col-md-4">
                     <a name="setActiveCamera"></a>
                     <span class="name">
-                        <span ><b>setActiveCamera</b></span>
+                        <b>
+                            setActiveCamera
+                        </b>
                         <a href="#setActiveCamera"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1060,14 +1071,11 @@ otherwise.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Set active camear on the huddly camera service. Note: this action is not boot persistent.
-when setting the activve camera on the service
-otherwise.</p>
+                    <div class="io-description"><p>Set active camear on the huddly camera service. Note: this action is not boot persistent.</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1119,7 +1127,9 @@ otherwise.</p>
                 <td class="col-md-4">
                     <a name="setDefaultCamera"></a>
                     <span class="name">
-                        <span ><b>setDefaultCamera</b></span>
+                        <b>
+                            setDefaultCamera
+                        </b>
                         <a href="#setDefaultCamera"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1141,14 +1151,11 @@ otherwise.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Set default camera on the huddly camera service. Note: this action is boot persistent.
-when setting the default camera on the service
-otherwise.</p>
+                    <div class="io-description"><p>Set default camera on the huddly camera service. Note: this action is boot persistent.</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1200,7 +1207,9 @@ otherwise.</p>
                 <td class="col-md-4">
                     <a name="setFwUpdateSchedule"></a>
                     <span class="name">
-                        <span ><b>setFwUpdateSchedule</b></span>
+                        <b>
+                            setFwUpdateSchedule
+                        </b>
                         <a href="#setFwUpdateSchedule"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1227,7 +1236,6 @@ otherwise.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1277,7 +1285,9 @@ otherwise.</p>
                 <td class="col-md-4">
                     <a name="setUserPtz"></a>
                     <span class="name">
-                        <span ><b>setUserPtz</b></span>
+                        <b>
+                            setUserPtz
+                        </b>
                         <a href="#setUserPtz"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1301,14 +1311,11 @@ otherwise.</p>
                 <td class="col-md-4">
                     <div class="io-description"><p>Set user pan tilt zoom control setting on the huddly camera service. This feature
 makes sure you allow or block custom user ptz to the camera comming from third party
-applications such as Windows Camera App, Zoom, Meet etc.
-allow or block incoming user ptz actions from third part apps.
-otherwise.</p>
+applications such as Windows Camera App, Zoom, Meet etc.</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
-                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2095,14 +2102,14 @@ export default class CameraSwitchService implements IHuddlyService {
 
 
 
-
+                   
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -2122,9 +2129,9 @@ export default class CameraSwitchService implements IHuddlyService {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-
+       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
+       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
        <script src="../js/menu-wc.js" defer></script>
-       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 
