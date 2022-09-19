@@ -4,6 +4,8 @@ import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceMan
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
+import IAutozoomControl from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControl';
+import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
 
 /**
  * Control class for configuring the Genius Framing feature of the camera.
@@ -12,11 +14,13 @@ import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
  * @class IpAutozoomControl
  * @implements {ICnnControl}
  */
-export default class IpAutozoomControl implements ICnnControl {
+export default class IpAutozoomControl implements IAutozoomControl {
   /** @ignore */
   _deviceManager: IIpDeviceManager;
   /** @ignore */
   _options: AutozoomControlOpts;
+  /** @ignore */
+  _supportedModes: Array<FramingModes> = [FramingModes.NORMAL, FramingModes.SPEAKER_FRAMING];
 
   constructor(manager: IIpDeviceManager, options?: AutozoomControlOpts) {
     this._deviceManager = manager;
@@ -56,30 +60,10 @@ export default class IpAutozoomControl implements ICnnControl {
    * @memberof IpAutozoomControl
    */
   async enable(idleTimeMs?: number): Promise<void> {
+    // Only start if az is running
     if (!(await this.isEnabled())) {
-      // Only stop if az is running
-      return new Promise((resolve, reject) => {
-        Logger.debug('Enabling Autozoom', 'Autozoom Control');
-        const cnnFeature = new huddly.CnnFeature();
-        cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
-        cnnFeature.setMode(0);
-        this._deviceManager.grpcClient.setCnnFeature(
-          cnnFeature,
-          (err, status: huddly.DeviceStatus) => {
-            if (err != undefined) {
-              Logger.error(
-                'Unable to enable autozoom',
-                err.stack ? err.stack : '',
-                IpAutozoomControl.name
-              );
-              reject(err.message);
-              return;
-            }
-            Logger.info(status.toString());
-            resolve();
-          }
-        );
-      });
+      Logger.debug('Starting Autozoom', IpAutozoomControl.name);
+      return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.START);
     }
   }
 
@@ -91,30 +75,10 @@ export default class IpAutozoomControl implements ICnnControl {
    * @memberof IpAutozoomControl
    */
   async disable(idleTimeMs?: number): Promise<void> {
+    // Only stop if az is running
     if (await this.isEnabled()) {
-      // Only stop if az is running
-      return new Promise((resolve, reject) => {
-        Logger.debug('Stopping Autozoom', 'Autozoom Control');
-        const cnnFeature = new huddly.CnnFeature();
-        cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
-        cnnFeature.setMode(1);
-        this._deviceManager.grpcClient.setCnnFeature(
-          cnnFeature,
-          (err, status: huddly.DeviceStatus) => {
-            if (err != undefined) {
-              Logger.error(
-                'Unable to disable autozoom',
-                err.stack ? err.stack : console.trace(),
-                IpAutozoomControl.name
-              );
-              reject(err.message);
-              return;
-            }
-            Logger.info(status.toString());
-            resolve();
-          }
-        );
-      });
+      Logger.debug('Stopping Autozoom', IpAutozoomControl.name);
+      return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.STOP);
     }
   }
 
@@ -124,11 +88,84 @@ export default class IpAutozoomControl implements ICnnControl {
    * @return {*}  {Promise<Boolean>} Resolves to true if cnn features is enabled
    * @memberof IpAutozoomControl
    */
-  async isEnabled(): Promise<Boolean> {
+  async isEnabled(feature: huddly.Feature = huddly.Feature.AUTOZOOM): Promise<Boolean> {
     const cnnFeature = new huddly.CnnFeature();
-    cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
+    cnnFeature.setFeature(feature);
     const azStatus = await this._deviceManager.getCnnFeatureStatus(cnnFeature);
-    return azStatus.getAzStatus().getAzEnabled();
+    return azStatus.getEnabled();
+  }
+
+  /**
+   * Sets autozoom feature on the camera.
+   *
+   * @param {FramingModes} [framingMode] Autozoom mode to set on camera
+   * @return {Promise<void | Error>}
+   * @memberof IpAutozoomControl
+   */
+  async setFraming(framingMode: FramingModes): Promise<any> {
+    const featureMapping = {
+      [FramingModes.NORMAL]: huddly.Feature.AUTOZOOM,
+      [FramingModes.SPEAKER_FRAMING]: huddly.Feature.SPEAKERFRAMING,
+    };
+
+    if (framingMode === FramingModes.OFF) {
+      this._supportedModes.forEach((feat) => {
+        this._setCnnFeature(featureMapping[feat], huddly.Mode.STOP);
+      });
+      return;
+    }
+
+    if (!this._supportedModes.includes(framingMode)) {
+      throw new Error(
+        `Provided mode ${framingMode} is not supported. Supported modes: ${this._supportedModes.toString()}`
+      );
+    }
+
+    // The following section is a bit confusing due to different naming conventions
+    // for the different camera types.
+
+    // Feature is the gRPC type for framing type and is to IP cameras what mode is to USB cameras
+    const feature = featureMapping[framingMode];
+
+    // The camera should handle turning other framing features off
+    await this._setCnnFeature(feature, huddly.Mode.START);
+  }
+
+  /**
+   * Sets a cnn feature to given mode
+   *
+   * @param {huddly.Feature} [feature] Feature to set
+   * @param {huddly.Mode} [mode] Set mode START/STOP
+   * @return {*} {Promise<void>}
+   * @memberof IpAutozoomControl
+   */
+  private async _setCnnFeature(feature: huddly.Feature, mode: huddly.Mode): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const cnnFeature = new huddly.CnnFeature();
+      cnnFeature.setFeature(feature);
+      cnnFeature.setMode(mode);
+
+      const featureString = Object.keys(huddly.Feature)[feature];
+      const modeString = Object.keys(huddly.Mode)[mode];
+
+      Logger.debug(`Setting cnn feature: ${modeString} ${featureString}`, IpAutozoomControl.name);
+      this._deviceManager.grpcClient.setCnnFeature(
+        cnnFeature,
+        (err, status: huddly.DeviceStatus) => {
+          if (err != undefined) {
+            Logger.error(
+              `Unable to ${modeString} ${featureString}`,
+              err.stack ? err.stack : '',
+              IpAutozoomControl.name
+            );
+            reject(err.message);
+            return;
+          }
+          Logger.info(status.toString());
+          resolve();
+        }
+      );
+    });
   }
 
   /**

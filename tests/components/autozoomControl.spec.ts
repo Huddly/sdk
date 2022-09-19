@@ -7,25 +7,33 @@ chai.use(chaiAsPromised);
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
 import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import AutozoomControl from '../../src/components/autozoomControl';
 import Api from '../../src/components/api';
 import DeviceManagerMock from '../mocks/devicemanager.mock';
+import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
 
 describe('AutozoomControl', () => {
   let autozoomControl: AutozoomControl;
   let deviceManager: IDeviceManager;
+  let infoStub;
 
   beforeEach(() => {
     deviceManager = new DeviceManagerMock();
     autozoomControl = new AutozoomControl(deviceManager);
+    infoStub = sinon.stub(Logger, 'info');
+  });
+
+  afterEach(() => {
+    infoStub.restore();
   });
 
   describe('Constructor', () => {
     it('should set options', () => {
       const opts: AutozoomControlOpts = {
         mode: AutozoomModes.NORMAL,
-        shouldAutoFrame: false
+        shouldAutoFrame: false,
       };
       autozoomControl = new AutozoomControl(deviceManager, opts);
       expect(autozoomControl._options).to.deep.equal(opts);
@@ -35,24 +43,28 @@ describe('AutozoomControl', () => {
       const opts: AutozoomControlOpts = {
         // @ts-ignore
         mode: 'test12343',
-        shouldAutoFrame: false
+        shouldAutoFrame: false,
       };
       const badFn = () => new AutozoomControl(deviceManager, opts);
-      expect(badFn).to.throw('The following mode is not supported on autozoom controller: test12343');
+      expect(badFn).to.throw(
+        'The following mode is not supported on autozoom controller: test12343'
+      );
     });
     it('should throw expection when passing undefined mode', () => {
       const opts: AutozoomControlOpts = {
         mode: undefined,
-        shouldAutoFrame: false
+        shouldAutoFrame: false,
       };
       const badFn = () => new AutozoomControl(deviceManager, opts);
-      expect(badFn).to.throw('The following mode is not supported on autozoom controller: undefined');
+      expect(badFn).to.throw(
+        'The following mode is not supported on autozoom controller: undefined'
+      );
     });
     it('should throw expection when passing null mode', () => {
       const opts: AutozoomControlOpts = {
         // tslint:disable-next-line
         mode: null,
-        shouldAutoFrame: false
+        shouldAutoFrame: false,
       };
       const badFn = () => new AutozoomControl(deviceManager, opts);
       expect(badFn).to.throw('The following mode is not supported on autozoom controller: null');
@@ -61,10 +73,12 @@ describe('AutozoomControl', () => {
     it('should throw exception for bad combination of opts', () => {
       const opts: AutozoomControlOpts = {
         mode: AutozoomModes.PLAZA,
-        shouldAutoFrame: false
+        shouldAutoFrame: false,
       };
       const badFn = () => new AutozoomControl(deviceManager, opts);
-      expect(badFn).to.throw('AutozoomMode \'plaza\' does not support option \'shouldAutoFrame\' set to false!');
+      expect(badFn).to.throw(
+        "AutozoomMode 'plaza' does not support option 'shouldAutoFrame' set to false!"
+      );
     });
   });
 
@@ -202,37 +216,52 @@ describe('AutozoomControl', () => {
         const opts: AutozoomControlOpts = {
           // @ts-ignore
           mode: 'test12343',
-          shouldAutoFrame: false
+          shouldAutoFrame: false,
         };
-        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(Error, 'The following mode is not supported on autozoom controller: test12343');
+        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(
+          Error,
+          'The following mode is not supported on autozoom controller: test12343'
+        );
       });
       it('should throw expection when passing undefined mode', () => {
         const opts: AutozoomControlOpts = {
           mode: undefined,
-          shouldAutoFrame: false
+          shouldAutoFrame: false,
         };
-        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(Error, 'The following mode is not supported on autozoom controller: undefined');
+        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(
+          Error,
+          'The following mode is not supported on autozoom controller: undefined'
+        );
       });
       it('should throw expection when passing null mode', () => {
         const opts: AutozoomControlOpts = {
           // tslint:disable-next-line
           mode: null,
-          shouldAutoFrame: false
+          shouldAutoFrame: false,
         };
-        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(Error, 'The following mode is not supported on autozoom controller: null');
+        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(
+          Error,
+          'The following mode is not supported on autozoom controller: null'
+        );
       });
       it('should throw exception for bad combination of opts', () => {
         const opts: AutozoomControlOpts = {
           mode: AutozoomModes.PLAZA,
-          shouldAutoFrame: false
+          shouldAutoFrame: false,
         };
-        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(Error, 'AutozoomMode \'plaza\' does not support option \'shouldAutoFrame\' set to false!');
+        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(
+          Error,
+          "AutozoomMode 'plaza' does not support option 'shouldAutoFrame' set to false!"
+        );
       });
       it('should throw exception for undefined|null shouldAutoFrame option', () => {
         const opts: AutozoomControlOpts = {
-          shouldAutoFrame: undefined
+          shouldAutoFrame: undefined,
         };
-        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(Error, '\'shouldAutoFrame\' cannot not be set to undefined');
+        return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(
+          Error,
+          "'shouldAutoFrame' cannot not be set to undefined"
+        );
       });
     });
   });
@@ -522,6 +551,90 @@ describe('AutozoomControl', () => {
         });
         expect(sendReceiveStub.getCall(0).args[2]).to.equals(60000);
       });
+    });
+  });
+  describe('#_setMode', () => {
+    let autoozoomStatusStub, sendReceiveStub;
+    beforeEach(() => {
+      autoozoomStatusStub = sinon
+        .stub(autozoomControl._deviceManager.api, 'getAutozoomStatus')
+        .resolves({ 'autozoom-mode': AutozoomModes.NORMAL });
+      sendReceiveStub = sinon.stub(deviceManager.api, 'sendAndReceiveMessagePack');
+    });
+    afterEach(() => {
+      autoozoomStatusStub.restore();
+      sendReceiveStub.restore();
+    });
+    describe('attempting to set already running mode', () => {
+      it('should log info and return without changing mode', async () => {
+        // @ts-ignore
+        const returnMode = await autozoomControl._setMode(AutozoomModes.NORMAL);
+        expect(infoStub).to.have.been.calledOnce;
+        expect(returnMode).to.equal(AutozoomModes.NORMAL);
+        expect(sendReceiveStub).to.have.callCount(0);
+      });
+    });
+    describe('setting new mode on camera', () => {
+      let enableStub;
+      beforeEach(() => {
+        enableStub = sinon.stub(autozoomControl, 'enable');
+      });
+      afterEach(() => {
+        enableStub.restore();
+      });
+      it('should throw error if response from camera is not the new mode', async () => {
+        const newMode = AutozoomModes.PLAZA;
+        sendReceiveStub.resolves({ 'autozoom-mode': AutozoomModes.NORMAL });
+        let error;
+        try {
+          // @ts-ignore
+          await autozoomControl._setMode(newMode);
+        } catch (err) {
+          error = err;
+        }
+        expect(error).instanceof(Error);
+      });
+      it('should set and return new mode if successful', async () => {
+        const newMode = AutozoomModes.PLAZA;
+        sendReceiveStub.resolves({ 'autozoom-mode': AutozoomModes.PLAZA });
+        // @ts-ignore
+        const response = await autozoomControl._setMode(newMode);
+        expect(response).to.equal(newMode);
+      });
+      it('should by default not enable autozoom even if it is not active', async () => {
+        const newMode = AutozoomModes.PLAZA;
+        sendReceiveStub.resolves({ 'autozoom-mode': AutozoomModes.PLAZA, 'autozoom-active': false });
+        // @ts-ignore
+        await autozoomControl._setMode(newMode);
+        expect(enableStub).to.have.callCount(0);
+      });
+      it('should enable autozoom if enable is true and az is not active', async () => {
+        const newMode = AutozoomModes.PLAZA;
+        sendReceiveStub.resolves({ 'autozoom-mode': AutozoomModes.PLAZA, 'autozoom-active': false });
+        // @ts-ignore
+        await autozoomControl._setMode(newMode, true);
+        expect(enableStub).to.have.callCount(1);
+      });
+    });
+  });
+  describe('#setFraming', () => {
+    let _setModeStub, disableStub;
+
+    beforeEach(() => {
+      _setModeStub = sinon.stub(autozoomControl, '_setMode');
+      disableStub = sinon.stub(autozoomControl, 'disable');
+    });
+    afterEach(() => {
+      _setModeStub.restore();
+      disableStub.restore();
+    });
+    it('should disable autozoom if autozoomMode is OFF', () => {
+      autozoomControl.setFraming(FramingModes.OFF);
+      expect(disableStub).to.have.callCount(1);
+    });
+    it('should _setMode with appropriate autozoomMode', () => {
+      autozoomControl.setFraming(FramingModes.GALLERY_VIEW);
+      expect(_setModeStub).to.have.been.calledWith(AutozoomModes.PLAZA);
     });
   });
 });
