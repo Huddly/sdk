@@ -465,7 +465,6 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
         const cnnFeature = new huddly.CnnFeature();
         cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
         const azStatus = await this.getCnnFeatureStatus(cnnFeature);
-
         if (azStatus.hasAzStatus()) {
           resolve({
             autozoom_enabled: azStatus.getAzStatus().getAzEnabled(),
@@ -1170,5 +1169,32 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
       return otherIpDevice.wsdDevice.equals(this.wsdDevice);
     }
     return false;
+  }
+
+  /**
+   *
+   * Gets option certificates from camera
+   *
+   * @return {Promise<any>} Option certificates on camera
+   * @memberof IpBaseDevice
+   */
+  async getOptionCertificates(): Promise<any> {
+    const optsCerts = await this._getOptionCertificates();
+    return optsCerts.getCertificatesList().map((optsCert) => optsCert.toObject());
+  }
+
+  private _getOptionCertificates(): Promise<huddly.OptionCertificates> {
+    return new Promise((resolve, reject) => {
+      this.grpcClient.getOptionCertificates(
+        new Empty(),
+        (err, optsCerts: huddly.OptionCertificates) => {
+          if (err != undefined) {
+            reject(err);
+            return;
+          }
+          resolve(optsCerts);
+        }
+      );
+    });
   }
 }

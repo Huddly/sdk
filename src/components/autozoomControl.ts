@@ -1,8 +1,9 @@
 import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
-import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
+import IAutozoomControl from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControl';
+import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
 
 import Api from './api';
 
@@ -13,11 +14,13 @@ import Api from './api';
  * @class AutozoomControl
  * @implements {ICnnControl}
  */
-export default class AutozoomControl implements ICnnControl {
+export default class AutozoomControl implements IAutozoomControl {
   /** @ignore */
   _deviceManager: IDeviceManager;
   /** @ignore */
   _options: AutozoomControlOpts;
+  /** @ignore */
+  _supportedModes: Array<FramingModes> = [FramingModes.NORMAL, FramingModes.GALLERY_VIEW];
 
   private readonly _defaultOpts: AutozoomControlOpts = {
     shouldAutoFrame: true,
@@ -299,7 +302,7 @@ export default class AutozoomControl implements ICnnControl {
     }
   }
 
-  private async _setMode(mode: AutozoomModes) {
+  private async _setMode(mode: AutozoomModes, enable: boolean = false) {
     const azStatus = await this._deviceManager.api.getAutozoomStatus();
     // Default to NORMAL for cameras without autozoom-mode support.
     const currentMode = azStatus['autozoom-mode'] || AutozoomModes.NORMAL;
@@ -330,6 +333,11 @@ export default class AutozoomControl implements ICnnControl {
         `Could not set autozoomMode '${mode}': Target replied with mode '${response['autozoom-mode']}'`
       );
     }
+
+    if (!response['autozoom-active'] && enable) {
+      this.enable();
+    }
+
     return response['autozoom-mode'];
   }
 
@@ -374,5 +382,31 @@ export default class AutozoomControl implements ICnnControl {
       60000
     );
     Logger.debug('New framing config uploaded on the camera.', 'Autozoom Control');
+  }
+
+  /**
+   * Sets autozoom framing mode on the camera
+   *
+   * @param {FramingModes} framingMode Autozoom mode to set
+   * @returns {Promise<any>} Resolves when successful otherwise rejects
+   * @memberof AutozoomControl
+   */
+  async setFraming(framingMode: FramingModes): Promise<any> {
+    if (framingMode === FramingModes.OFF) {
+      return await this.disable();
+    }
+
+    const featureMapping = {
+      [FramingModes.NORMAL]: 'normal',
+      [FramingModes.GALLERY_VIEW]: 'plaza',
+    };
+
+    if (!this._supportedModes.includes(framingMode)) {
+      throw new Error(
+        `Provided mode ${framingMode} is not supported. Supported modes: ${this._supportedModes.toString()}`
+      );
+    }
+
+    return await this._setMode(featureMapping[framingMode], true);
   }
 }

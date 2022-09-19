@@ -7,11 +7,13 @@ import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 import IpAutozoomControl from '../../src/components/ipAutozoomControl';
 import DeviceManagerMock from '../mocks/ipdevicemanager.mock';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
+import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
+import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
 
 describe('IpAutozoomControl', () => {
   let autozoomControl: IpAutozoomControl;
   let deviceManager: IIPDeviceManager;
-  let errorStub, infoStub, isEnabledStub;
+  let errorStub, warnStub, infoStub, isEnabledStub;
   const dummyError = {
     message: 'Error',
   };
@@ -21,11 +23,13 @@ describe('IpAutozoomControl', () => {
     autozoomControl = new IpAutozoomControl(deviceManager);
     errorStub = sinon.stub(Logger, 'error');
     infoStub = sinon.stub(Logger, 'info');
+    warnStub = sinon.stub(Logger, 'warn');
   });
 
   afterEach(() => {
     errorStub.restore();
     infoStub.restore();
+    warnStub.restore();
   });
 
   describe('#init', () => {
@@ -39,7 +43,33 @@ describe('IpAutozoomControl', () => {
       expect(errorStub).to.have.been.calledOnce;
     });
   });
+  describe('#setCnnFeature', () => {
+    it('should set cnn feature with given params and log status', async () => {
+      const spy = sinon.spy(deviceManager.grpcClient, 'setCnnFeature');
+      // @ts-ignore
+      await autozoomControl._setCnnFeature(huddly.Feature.FACEBASEDEXPOSURE, huddly.Mode.STOP);
+      const arg = spy.firstCall.args[0];
+      console.log(arg);
+      expect(arg.getFeature()).to.equal(huddly.Feature.FACEBASEDEXPOSURE);
+      expect(arg.getMode()).to.equal(huddly.Mode.STOP);
+      expect(infoStub).to.have.been.calledOnce;
+    });
+    it('should log error and reject with error message if something happens', async () => {
+      sinon.stub(deviceManager.grpcClient, 'setCnnFeature').rejects(dummyError);
+      autozoomControl.enable().catch((err) => {
+        expect(errorStub).to.have.been.calledOnce;
+        expect(err).to.equal(dummyError.message);
+      });
+    });
+  });
   describe('#enable', () => {
+    let setCnnFeatureStub;
+    beforeEach(() => {
+      setCnnFeatureStub = sinon.stub(autozoomControl, '_setCnnFeature');
+    });
+    afterEach(() => {
+      setCnnFeatureStub.restore();
+    });
     describe('autozoom is disabled', () => {
       beforeEach(() => {
         isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(false);
@@ -47,20 +77,12 @@ describe('IpAutozoomControl', () => {
       afterEach(() => {
         isEnabledStub.restore();
       });
-      it('should enable without issues and log status', async () => {
-        const spy = sinon.spy(deviceManager.grpcClient, 'setCnnFeature');
+      it('should setCnnFeature with appropriate cnn feature', async () => {
         await autozoomControl.enable();
-        const arg = spy.firstCall.args[0];
-        expect(arg.getFeature()).to.equal(huddly.Feature.AUTOZOOM);
-        expect(arg.getMode()).to.equal(huddly.Mode.START);
-        expect(infoStub).to.have.been.calledOnce;
-      });
-      it('should log error and reject with error message if something happens', async () => {
-        sinon.stub(deviceManager.grpcClient, 'setCnnFeature').rejects(dummyError);
-        autozoomControl.enable().catch(err => {
-          expect(errorStub).to.have.been.calledOnce;
-          expect(err).to.equal(dummyError.message);
-        });
+        expect(setCnnFeatureStub).to.have.been.calledWith(
+          huddly.Feature.AUTOZOOM,
+          huddly.Mode.START
+        );
       });
     });
     describe('autozoom is enabled', () => {
@@ -71,34 +93,32 @@ describe('IpAutozoomControl', () => {
         isEnabledStub.restore();
       });
       it('should not do anything', async () => {
-        // Having neither Logger.error or Logger.info called
-        expect(infoStub).to.have.callCount(0);
-        expect(errorStub).to.have.callCount(0);
+        await autozoomControl.enable();
+        expect(setCnnFeatureStub).to.have.callCount(0);
       });
     });
   });
   describe('#disable', () => {
-    describe('autozoom is enabled', () => {
+    let setCnnFeatureStub;
+    beforeEach(() => {
+      setCnnFeatureStub = sinon.stub(autozoomControl, '_setCnnFeature');
+    });
+    afterEach(() => {
+      setCnnFeatureStub.restore();
+    });
+    describe('autozoom is disabled', () => {
       beforeEach(() => {
         isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(true);
       });
       afterEach(() => {
         isEnabledStub.restore();
       });
-      it('should enable without issues and log status', async () => {
-        const spy = sinon.spy(deviceManager.grpcClient, 'setCnnFeature');
+      it('should setCnnFeature with appropriate cnn feature', async () => {
         await autozoomControl.disable();
-        const arg = spy.firstCall.args[0];
-        expect(arg.getFeature()).to.equal(huddly.Feature.AUTOZOOM);
-        expect(arg.getMode()).to.equal(huddly.Mode.STOP);
-        expect(infoStub).to.have.been.calledOnce;
-      });
-      it('should log error and reject with error message if something happens', async () => {
-        sinon.stub(deviceManager.grpcClient, 'setCnnFeature').rejects(dummyError);
-        autozoomControl.disable().catch(err => {
-          expect(errorStub).to.have.been.calledOnce;
-          expect(err).to.equal(dummyError.message);
-        });
+        expect(setCnnFeatureStub).to.have.been.calledWith(
+          huddly.Feature.AUTOZOOM,
+          huddly.Mode.STOP
+        );
       });
     });
     describe('autozoom is disabled', () => {
@@ -109,23 +129,66 @@ describe('IpAutozoomControl', () => {
         isEnabledStub.restore();
       });
       it('should not do anything', async () => {
-        // Having neither Logger.error or Logger.info called
-        expect(infoStub).to.have.callCount(0);
-        expect(errorStub).to.have.callCount(0);
+        await autozoomControl.disable();
+        expect(setCnnFeatureStub).to.have.callCount(0);
       });
     });
   });
 
   describe('#start', () => {
     it('should not throw error', () => {
-      const startFunc = () => { autozoomControl.start(); };
+      const startFunc = () => {
+        autozoomControl.start();
+      };
       expect(startFunc).to.not.throw();
     });
   });
   describe('#stop', () => {
     it('should not throw error', () => {
-      const stopFunc = () => { autozoomControl.stop(); };
+      const stopFunc = () => {
+        autozoomControl.stop();
+      };
       expect(stopFunc).to.not.throw();
+    });
+  });
+
+  describe('#setFraming', () => {
+    let setCnnFeatureStub;
+    beforeEach(() => {
+      setCnnFeatureStub = sinon.stub(autozoomControl, '_setCnnFeature');
+    });
+    afterEach(() => {
+      setCnnFeatureStub.restore();
+    });
+    it('should reject with an error if not using supported mode', async () => {
+      let error;
+      try {
+        // @ts-ignore
+        await autozoomControl.setFraming(FramingModes.GALLERY_VIEW);
+      } catch (err) {
+        error = err;
+      }
+      expect(error).to.be.instanceof(Error);
+    });
+
+    it('should set appropriate cnn feature for autozoom', async () => {
+      await autozoomControl.setFraming(FramingModes.NORMAL);
+      expect(setCnnFeatureStub).to.be.calledWith(huddly.Feature.AUTOZOOM, huddly.Mode.START);
+    });
+    it('should set appropriate cnn feature for speaker framing', async () => {
+      await autozoomControl.setFraming(FramingModes.SPEAKER_FRAMING);
+      expect(setCnnFeatureStub).to.be.calledWith(huddly.Feature.SPEAKERFRAMING, huddly.Mode.START);
+    });
+    it('should set cnn feature mode STOP for all supported features if given the OFF param', async () => {
+      await autozoomControl.setFraming(FramingModes.OFF);
+      expect(setCnnFeatureStub.getCall(0)).to.be.calledWith(
+        huddly.Feature.AUTOZOOM,
+        huddly.Mode.STOP
+      );
+      expect(setCnnFeatureStub.getCall(1)).to.be.calledWith(
+        huddly.Feature.SPEAKERFRAMING,
+        huddly.Mode.STOP
+      );
     });
   });
 });
