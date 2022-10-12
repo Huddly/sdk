@@ -312,6 +312,8 @@ export default class AutozoomControl implements ICnnControl {
       normal: 0,
       plaza: 1,
       plaza_duplicate: 2,
+      focus: 3,
+
     };
     Logger.debug(
       `Sending autozoom/set-mode request with param '{ mode: ${modeKeys[mode]} }'`,
