@@ -1,3 +1,37 @@
+### 0.8.0 (2022-10-20)
+
+##### Build System / Dependencies
+
+*  update @huddly/camera-proto to v1.2.0 ([b9ba1bf3](https://github.com/Huddly/sdk/commit/b9ba1bf3c237005e4b0dad0e62b7713e9bff1b1a))
+*  update @huddly/camera-proto to v1.1.5 ([84f05e1c](https://github.com/Huddly/sdk/commit/84f05e1c5ba310e43bace44948b1dbf8c522ed11))
+*  add eslint-plugin-react-hooks to package-lock ([4df9b5f6](https://github.com/Huddly/sdk/commit/4df9b5f60371e91773ab153c2274c34d662c7167))
+
+##### Chores
+
+* **deps:**  bump protobufjs from 6.11.2 to 6.11.3 ([e900d42c](https://github.com/Huddly/sdk/commit/e900d42ce96c3636b6bb6cefac6bbd40b4185bbb))
+
+##### Documentation Changes
+
+*  updated html files ([53beb474](https://github.com/Huddly/sdk/commit/53beb4742bbfc14e47fd47c71912580f962e6d79))
+*  Add known issues section to readme ([2b280fac](https://github.com/Huddly/sdk/commit/2b280fac64289a57967111255f51f8690c4b2817))
+
+##### New Features
+
+*  autozoom modes ([51d48413](https://github.com/Huddly/sdk/commit/51d484130c3e4e9a8b7a411745bbf6dd8bc0b937))
+
+##### Bug Fixes
+
+*  S1 detections now has correct height coordinates ([eb6544a9](https://github.com/Huddly/sdk/commit/eb6544a9564f7901cf4c4ce2f8c4d181d8c8766e))
+*  bufferStream now correctly implements destroy method ([926b052c](https://github.com/Huddly/sdk/commit/926b052cd063c2eac5594dfe13ce09ff4a748484))
+*  Remove protobuf related dependencies ([5fc4a2aa](https://github.com/Huddly/sdk/commit/5fc4a2aa4580fc2fca15077186f91dd7f608dc85))
+*  hotfix for dartfish upgrader crashing when verifying upgrade ([306590cd](https://github.com/Huddly/sdk/commit/306590cd3dc4cd4e90b3ae226ba35aa4c332de36))
+
+##### Tests
+
+* **ipbase:**
+  *  added tests for getOptionCertificates ([0343e5dc](https://github.com/Huddly/sdk/commit/0343e5dc1698ff6e2f5516e65174e68914106b5a))
+  *  added tests for getOptionCertificates ([8abe2eba](https://github.com/Huddly/sdk/commit/8abe2eba648cba43cd0c8afb1d561de7b83ed8a3))
+
 ### 0.7.0 (2022-04-04)
 
 ##### Build System / Dependencies
