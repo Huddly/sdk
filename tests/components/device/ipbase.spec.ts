@@ -70,6 +70,12 @@ cnnStatusDummy.setAzStatus(autozoomStatus);
 const deviceVersion = new huddly.DeviceVersion();
 deviceVersion.setVersion('1.2.3');
 
+const optionCerts = new huddly.OptionCertificates();
+const optionCert = new huddly.OptionCertificates.OptionCertificate();
+optionCert.setName('test_cert');
+optionCert.setCertificate('bytes');
+optionCerts.addCertificates(optionCert);
+
 const mockedStream = new PassThrough();
 class DummyTransport extends EventEmitter implements IGrpcTransport {
   device: any;
@@ -118,7 +124,10 @@ const grpcClient: any = {
   getDeviceVersion: (empty: Empty, cb: any) => {
     cb(undefined, deviceVersion);
   },
-  close: () => {}
+  getOptionCertificates: (empty: Empty, cb: any) => {
+    cb(undefined, optionCerts);
+  },
+  close: () => {},
 };
 
 describe('IpBaseDevice', () => {
@@ -1169,6 +1178,38 @@ describe('IpBaseDevice', () => {
       device = new IpBaseDevice(wsddDeviceObj, dummyTransport, new EventEmitter());
       const boxfishStub = sinon.createStubInstance(Boxfish);
       expect(device.equals(boxfishStub)).to.equal(false);
+    });
+  });
+  describe('#_getOptionCertificates', () => {
+    it('should return option certificates', async () => {
+      const certs = await device._getOptionCertificates();
+      expect(certs.getCertificatesList()[0].getName()).to.equal(optionCert.getName());
+      expect(certs.getCertificatesList()[0].getCertificate()).to.equal(optionCert.getCertificate());
+    });
+    it('should reject if there is an issue', async () => {
+      grpcClient.getOptionCertificates = (empty: Empty, cb: any) => {
+        cb('error', undefined);
+      };
+      device._getOptionCertificates().catch((err) => expect(err).to.equal('error'));
+    });
+  });
+  describe('#getOptionCertificates', () => {
+    it('should return a list with certificates objects', async () => {
+      const stub = sinon.stub(device, '_getOptionCertificates').resolves(optionCerts);
+      const certs = await device.getOptionCertificates();
+      expect(certs[0]).to.deep.equal({
+        name: optionCert.getName(),
+        certificate: optionCert.getCertificate(),
+      });
+      stub.restore();
+    });
+    it('should handle errors', async () => {
+      const stub = sinon.stub(device, '_getOptionCertificates').rejects(dummyError);
+      await device.getOptionCertificates().catch((err) => {
+        expect(err).to.equal(dummyError.message);
+        expect(device.handleError).to.have.been.calledOnce;
+      });
+      stub.restore();
     });
   });
 });

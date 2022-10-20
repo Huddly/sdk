@@ -1179,11 +1179,17 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @memberof IpBaseDevice
    */
   async getOptionCertificates(): Promise<any> {
-    const optsCerts = await this._getOptionCertificates();
-    return optsCerts.getCertificatesList().map((optsCert) => optsCert.toObject());
+    return new Promise(async (resolve, reject) => {
+      try {
+        const optsCerts = await this._getOptionCertificates();
+        resolve(optsCerts.getCertificatesList().map((optsCert) => optsCert.toObject()));
+      } catch (err) {
+        this.handleError('Unable to get option certificates', err, reject);
+      }
+    });
   }
 
-  private _getOptionCertificates(): Promise<huddly.OptionCertificates> {
+  _getOptionCertificates(): Promise<huddly.OptionCertificates> {
     return new Promise((resolve, reject) => {
       this.grpcClient.getOptionCertificates(
         new Empty(),
