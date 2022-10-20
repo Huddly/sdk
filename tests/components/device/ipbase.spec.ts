@@ -53,7 +53,6 @@ ptzDummy.setDefaultzoom(0);
 ptzDummy.setRangezoom(customRange);
 ptzDummy.setRangedzoom(customRange);
 
-
 const tempDummy1 = new huddly.Temperature();
 tempDummy1.setName('temp1');
 tempDummy1.setValue(888);
@@ -156,13 +155,17 @@ describe('IpBaseDevice', () => {
   describe('getters', () => {
     describe('api', () => {
       it('IpBaseDevice manager should not support legacy API object', () => {
-        const badFn = () => { device.api; };
+        const badFn = () => {
+          device.api;
+        };
         expect(badFn).to.throw(Error, 'Not Supported');
       });
     });
     describe('uvcControlInterface', () => {
       it('IpBaseDevice manager should not support uvcControlInterface getter', () => {
-        const badFn = () => { device.uvcControlInterface; };
+        const badFn = () => {
+          device.uvcControlInterface;
+        };
         expect(badFn).to.throw(Error, 'Not Supported');
       });
     });
@@ -255,9 +258,9 @@ describe('IpBaseDevice', () => {
             return {
               name: 'Huddly L1',
               serial: '1234HA',
-              mac: 'AA:BB:CC:DD:EE'
+              mac: 'AA:BB:CC:DD:EE',
             };
-          }
+          },
         };
         device = new IpBaseDevice(wsddDeviceObj, dummyTransport, new EventEmitter());
         device.grpcClient = grpcClient;
@@ -274,14 +277,14 @@ describe('IpBaseDevice', () => {
           slot: 'C',
           uptime: 123,
           version: '1.2.3-abc',
-          vendorId: HuddlyHEX.VID
+          vendorId: HuddlyHEX.VID,
         });
       });
     });
     describe('on Error', () => {
       it('should reject when device version cant be fetched', () => {
         const wsddDeviceObj = {
-          infoObject: () => {}
+          infoObject: () => {},
         };
         device = new IpBaseDevice(wsddDeviceObj, dummyTransport, new EventEmitter());
         device.grpcClient = grpcClient;
@@ -293,7 +296,7 @@ describe('IpBaseDevice', () => {
       });
       it('should reject when device uptime cant be fetched', () => {
         const wsddDeviceObj = {
-          infoObject: () => {}
+          infoObject: () => {},
         };
         device = new IpBaseDevice(wsddDeviceObj, dummyTransport, new EventEmitter());
         device.grpcClient = grpcClient;
@@ -324,7 +327,7 @@ describe('IpBaseDevice', () => {
       grpcClient.getTemperatures = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      device._getTemperatures().catch(err => expect(err).to.equal('error'));
+      device._getTemperatures().catch((err) => expect(err).to.equal('error'));
     });
   });
   describe('#getTemperatures', () => {
@@ -340,7 +343,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error if there is an issue', async () => {
       sinon.stub(device, '_getTemperatures').rejects(dummyError);
-      device.getTemperatures().catch(err => {
+      device.getTemperatures().catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -359,7 +362,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error if there is an issue', async () => {
       sinon.stub(device, '_getTemperatures').rejects(dummyError);
-      device.getTemperature().catch(err => {
+      device.getTemperature().catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -380,7 +383,7 @@ describe('IpBaseDevice', () => {
     });
     it('should reject error if there is an issue', async () => {
       sinon.stub(device, 'getPanTiltZoom').rejects(dummyError);
-      device.getSettings().catch(err => expect(err.message).to.equal(dummyError.message));
+      device.getSettings().catch((err) => expect(err.message).to.equal(dummyError.message));
     });
   });
   describe('#setSaturation', () => {
@@ -395,7 +398,7 @@ describe('IpBaseDevice', () => {
       grpcClient.setSaturation = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      device.setSaturation(10).catch(err => expect(err).to.equal(dummyError.message));
+      device.setSaturation(10).catch((err) => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#_getSaturation', () => {
@@ -408,7 +411,7 @@ describe('IpBaseDevice', () => {
       grpcClient.getSaturation = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      device._getSaturation().catch(err => expect(err).to.equal('error'));
+      device._getSaturation().catch((err) => expect(err).to.equal('error'));
     });
   });
   describe('#getSaturation', () => {
@@ -419,7 +422,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error if something happens', async () => {
       sinon.stub(device, '_getSaturation').rejects(dummyError);
-      device.getSaturation().catch(err => expect(err).to.equal(dummyError.message));
+      device.getSaturation().catch((err) => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#setBrightness', () => {
@@ -434,7 +437,7 @@ describe('IpBaseDevice', () => {
       grpcClient.setBrightness = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      device.setBrightness(10).catch(err => expect(err).to.equal(dummyError.message));
+      device.setBrightness(10).catch((err) => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#_getBrightness', () => {
@@ -447,7 +450,7 @@ describe('IpBaseDevice', () => {
       grpcClient.getBrightness = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      device._getBrightness().catch(err => expect(err).to.equal('error'));
+      device._getBrightness().catch((err) => expect(err).to.equal('error'));
     });
   });
   describe('#getBrightness', () => {
@@ -458,7 +461,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error if something happens', async () => {
       sinon.stub(device, '_getBrightness').rejects(dummyError);
-      device.getBrightness().catch(err => {
+      device.getBrightness().catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -567,7 +570,7 @@ describe('IpBaseDevice', () => {
         grpcClient.setPTZ = (ptz: huddly.PTZ, cb: any) => {
           cb(dummyError, undefined);
         };
-        const badPromise = device.setPanTiltZoom({ pan: 1});
+        const badPromise = device.setPanTiltZoom({ pan: 1 });
         return expect(badPromise).to.eventually.be.rejectedWith(dummyError.message);
       });
     });
@@ -584,7 +587,7 @@ describe('IpBaseDevice', () => {
       grpcClient.getPTZ = (empty: Empty, cb: any) => {
         cb('error', undefined);
       };
-      device._getPanTiltZoom().catch(err => expect(err).to.equal('error'));
+      device._getPanTiltZoom().catch((err) => expect(err).to.equal('error'));
     });
   });
   describe('#getPanTiltZoom', () => {
@@ -608,7 +611,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, '_getPanTiltZoom').rejects(dummyError);
-      device.getPanTiltZoom().catch(err => {
+      device.getPanTiltZoom().catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -624,7 +627,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, '_getPanTiltZoom').rejects(dummyError);
-      device.getPanTilt().catch(err => {
+      device.getPanTilt().catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -655,11 +658,11 @@ describe('IpBaseDevice', () => {
       expect(saturation['value']).to.equal(saturationDummy.getSaturation());
     });
     it("should log a warning if value key isn't supported", async () => {
-      device.getSetting('dummy').catch(err => expect(Logger.warn).to.have.been.calledOnce);
+      device.getSetting('dummy').catch((err) => expect(Logger.warn).to.have.been.calledOnce);
     });
     it('should throw a rejection if something happens', async () => {
       sinon.stub(device, '_getBrightness').rejects(dummyError);
-      device.getSetting('brightness').catch(err => expect(err).to.equal(dummyError.message));
+      device.getSetting('brightness').catch((err) => expect(err).to.equal(dummyError.message));
     });
   });
   describe('#setSetting', () => {
@@ -680,11 +683,13 @@ describe('IpBaseDevice', () => {
       expect(device.setSaturation).to.have.been.calledWith(1);
     });
     it("should log a warning if value key isn't supported", async () => {
-      device.setSettingValue('dummy', 1).catch(err => expect(Logger.warn).to.have.been.calledOnce);
+      device
+        .setSettingValue('dummy', 1)
+        .catch((err) => expect(Logger.warn).to.have.been.calledOnce);
     });
     it('should throw a rejection if something happens', async () => {
       sinon.stub(device, 'setBrightness').rejects('error');
-      device.setSettingValue('brightness', 2).catch(err => expect(err.name).to.equal('error'));
+      device.setSettingValue('brightness', 2).catch((err) => expect(err.name).to.equal('error'));
     });
   });
   describe('#getLogFiles', () => {
@@ -694,7 +699,7 @@ describe('IpBaseDevice', () => {
 
     it('should attempt to retrieve the log of the given type', async () => {
       sinon.spy(grpcClient, 'getLogFiles');
-      device.getLogFiles(appLog).then(log => {
+      device.getLogFiles(appLog).then((log) => {
         expect(device.grpcClient.getLogFiles).to.have.been.calledWith(appLog);
         expect(log).to.equal('test');
         resolver();
@@ -709,7 +714,7 @@ describe('IpBaseDevice', () => {
       await new Promise((res, rej) => (resolver = res));
     });
     it('should reject with error message if error occurs', async () => {
-      device.getLogFiles(appLog).catch(error => {
+      device.getLogFiles(appLog).catch((error) => {
         expect(error).to.equal('error');
         resolver();
       });
@@ -727,7 +732,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, 'getLogFiles').rejects(dummyError);
-      device.getErrorLog().catch(err => {
+      device.getErrorLog().catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -751,7 +756,7 @@ describe('IpBaseDevice', () => {
       grpcClient.getCnnFeatureStatus = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      device.getCnnFeatureStatus(cnnFeature).catch(err => {
+      device.getCnnFeatureStatus(cnnFeature).catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -765,7 +770,7 @@ describe('IpBaseDevice', () => {
     });
     it('should reject error if there is an issue', async () => {
       sinon.stub(device, 'getCnnFeatureStatus').rejects('error');
-      device.getState().catch(err => expect(err.name).to.equal('error'));
+      device.getState().catch((err) => expect(err.name).to.equal('error'));
     });
   });
   describe('#eraseLogFile', () => {
@@ -782,7 +787,9 @@ describe('IpBaseDevice', () => {
       grpcClient.eraseLogFile = (empty: Empty, cb: any) => {
         cb(dummyError, undefined);
       };
-      device.eraseLogFile(logFile).catch(err => expect(err.meessage).to.equal(dummyError.message));
+      device
+        .eraseLogFile(logFile)
+        .catch((err) => expect(err.meessage).to.equal(dummyError.message));
     });
   });
   describe('#eraseErrorLog', () => {
@@ -794,7 +801,7 @@ describe('IpBaseDevice', () => {
     });
     it('should handle error and reject with error message if something happens', async () => {
       sinon.stub(device, 'eraseLogFile').rejects(dummyError);
-      device.eraseErrorLog().catch(err => {
+      device.eraseErrorLog().catch((err) => {
         expect(err).to.equal(dummyError.message);
         expect(device.handleError).to.have.been.calledOnce;
       });
@@ -828,7 +835,10 @@ describe('IpBaseDevice', () => {
   describe('#getUpgrader', () => {
     it('should fail as this method must be called on the individual ip managers instead', async () => {
       const getUpgraderPromise = device.getUpgrader();
-      return expect(getUpgraderPromise).to.eventually.be.rejectedWith(Error, 'Please call this method from Ace or See controller instead!');
+      return expect(getUpgraderPromise).to.eventually.be.rejectedWith(
+        Error,
+        'Please call this method from Ace or See controller instead!'
+      );
     });
   });
 
@@ -845,19 +855,19 @@ describe('IpBaseDevice', () => {
       upgraderStub.init.resolves();
       upgraderStub.doUpgrade.resolves();
       getUpgradeStub = sinon.stub(device, 'getUpgrader').resolves(upgraderStub);
-      const upgradePromise = device.upgrade({file: Buffer.alloc(0)});
+      const upgradePromise = device.upgrade({ file: Buffer.alloc(0) });
       return expect(upgradePromise).to.be.fulfilled;
     });
     it('should reject when upgrade fails', () => {
       upgraderStub.init.resolves();
       getUpgradeStub = sinon.stub(device, 'getUpgrader').resolves(upgraderStub);
       upgraderStub.doUpgrade.rejects(dummyError);
-      const upgradePromise = device.upgrade({file: Buffer.alloc(0)});
+      const upgradePromise = device.upgrade({ file: Buffer.alloc(0) });
       return expect(upgradePromise).to.eventually.be.rejectedWith(dummyError.message);
     });
     it('should reject when we cant get upgrader instance', () => {
       getUpgradeStub = sinon.stub(device, 'getUpgrader').rejects(dummyError);
-      const upgradePromise = device.upgrade({file: Buffer.alloc(0)});
+      const upgradePromise = device.upgrade({ file: Buffer.alloc(0) });
       return expect(upgradePromise).to.eventually.be.rejectedWith(dummyError.message);
     });
   });
@@ -882,19 +892,25 @@ describe('IpBaseDevice', () => {
   });
   describe('#getDiagnostics', () => {
     it('should not be implemented', () => {
-      const badFn = () => { device.getDiagnostics(); };
+      const badFn = () => {
+        device.getDiagnostics();
+      };
       return expect(badFn).to.throw(Error, 'Method not implemented.');
     });
   });
   describe('#getPowerUsage', () => {
     it('should not be implemented', () => {
-      const badFn = () => { device.getPowerUsage(); };
+      const badFn = () => {
+        device.getPowerUsage();
+      };
       return expect(badFn).to.throw(Error, 'Method not implemented.');
     });
   });
   describe('#getLatestFirmwareUrl', () => {
     it('should not be implemented', () => {
-      const badFn = () => { device.getLatestFirmwareUrl(ReleaseChannel.STABLE); };
+      const badFn = () => {
+        device.getLatestFirmwareUrl(ReleaseChannel.STABLE);
+      };
       return expect(badFn).to.throw(Error, 'Method not implemented.');
     });
   });
@@ -944,13 +960,17 @@ describe('IpBaseDevice', () => {
   });
   describe('#getXUControl', () => {
     it('should not be implemented', () => {
-      const badFn = () => { device.getXUControl(0); };
+      const badFn = () => {
+        device.getXUControl(0);
+      };
       return expect(badFn).to.throw(Error, 'Method not implemented.');
     });
   });
   describe('#setXUControl', () => {
     it('should not be implemented', () => {
-      const badFn = () => { device.setXUControl(0, 0); };
+      const badFn = () => {
+        device.setXUControl(0, 0);
+      };
       return expect(badFn).to.throw(Error, 'Method not implemented.');
     });
   });
@@ -977,7 +997,6 @@ describe('IpBaseDevice', () => {
       setBrightnessStub?.restore();
       setSaturationStub?.restore();
       setSettingStub?.restore();
-
     });
     describe('on succeess', () => {
       it('should reset brightness, saturation and ptz', async () => {
@@ -987,9 +1006,9 @@ describe('IpBaseDevice', () => {
         saturation.setDefaultSaturation(200);
         getBrightnessStub.resolves(brightness);
         getSaturationStub.resolves(saturation);
-        getSettingStub.withArgs('pan').resolves({'default': 150});
-        getSettingStub.withArgs('tilt').resolves({'default': -150});
-        getSettingStub.withArgs('zoom').resolves({'default': 250});
+        getSettingStub.withArgs('pan').resolves({ default: 150 });
+        getSettingStub.withArgs('tilt').resolves({ default: -150 });
+        getSettingStub.withArgs('zoom').resolves({ default: 250 });
         setBrightnessStub.resolves();
         setSaturationStub.resolves();
         setSettingStub.resolves();
@@ -1029,9 +1048,9 @@ describe('IpBaseDevice', () => {
         expect(setSettingStub.called).to.equal(false);
       });
       it('should reset only ptz', async () => {
-        getSettingStub.withArgs('pan').resolves({'default': 150});
-        getSettingStub.withArgs('tilt').resolves({'default': -150});
-        getSettingStub.withArgs('zoom').resolves({'default': 250});
+        getSettingStub.withArgs('pan').resolves({ default: 150 });
+        getSettingStub.withArgs('tilt').resolves({ default: -150 });
+        getSettingStub.withArgs('zoom').resolves({ default: 250 });
         setBrightnessStub.resolves();
         setSaturationStub.resolves();
         setSettingStub.resolves();
@@ -1083,7 +1102,7 @@ describe('IpBaseDevice', () => {
           return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
         });
         it('should reject when set pan setting fails', () => {
-          getSettingStub.withArgs('pan').resolves({'default': 150});
+          getSettingStub.withArgs('pan').resolves({ default: 150 });
           setSettingStub.rejects(dummyError);
           const resetPromise = device.resetSettings(['brightness', 'saturation', 'tilt', 'zoom']);
           return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
@@ -1096,7 +1115,7 @@ describe('IpBaseDevice', () => {
           return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
         });
         it('should reject when set tilt setting fails', () => {
-          getSettingStub.withArgs('tilt').resolves({'default': 150});
+          getSettingStub.withArgs('tilt').resolves({ default: 150 });
           setSettingStub.rejects(dummyError);
           const resetPromise = device.resetSettings(['brightness', 'saturation', 'pan', 'zoom']);
           return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
@@ -1109,7 +1128,7 @@ describe('IpBaseDevice', () => {
           return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
         });
         it('should reject when set zoom setting fails', () => {
-          getSettingStub.withArgs('zoom').resolves({'default': 150});
+          getSettingStub.withArgs('zoom').resolves({ default: 150 });
           setSettingStub.rejects(dummyError);
           const resetPromise = device.resetSettings(['brightness', 'saturation', 'pan', 'tilt']);
           return expect(resetPromise).to.eventually.be.rejectedWith(dummyError.message);
@@ -1140,13 +1159,17 @@ describe('IpBaseDevice', () => {
 
   describe('#usbReEnumerate', () => {
     it('should not be implemented', () => {
-      const badFn = () => { device.usbReEnumerate(); };
+      const badFn = () => {
+        device.usbReEnumerate();
+      };
       return expect(badFn).to.throw(Error, 'Method not implemented.');
     });
   });
   describe('#isAlive', () => {
     it('should not be implemented', () => {
-      const badFn = () => { device.isAlive(); };
+      const badFn = () => {
+        device.isAlive();
+      };
       return expect(badFn).to.throw(Error, 'Method not implemented.');
     });
   });
@@ -1156,10 +1179,12 @@ describe('IpBaseDevice', () => {
         return {
           name: 'L1',
           serial: '1234HA',
-          mac: 'AA:BB:CC:DD:EE'
+          mac: 'AA:BB:CC:DD:EE',
         };
       },
-      equals: () => { return true; }
+      equals: () => {
+        return true;
+      },
     };
 
     it('should be equals when testing same device instance', () => {
@@ -1170,7 +1195,9 @@ describe('IpBaseDevice', () => {
       device = new IpBaseDevice(wsddDeviceObj, dummyTransport, new EventEmitter());
       const newDeviceStub = sinon.createStubInstance(IpBaseDevice);
       newDeviceStub.wsdDevice = {
-        equals: () => { return false; }
+        equals: () => {
+          return false;
+        },
       };
       expect(device.equals(newDeviceStub)).to.equal(false);
     });
