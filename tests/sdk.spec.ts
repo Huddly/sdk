@@ -13,6 +13,8 @@ import Boxfish from '../src/components/device/boxfish';
 import HuddlyGo from '../src/components/device/huddlygo';
 import DeviceFactory from '../src/components/device/factory';
 import ServiceFactory from '../src/components/service/factory';
+import DiscoveryApiMock from './mocks/discoveryApi.mock';
+import HuddlyHex from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 
 chai.should();
@@ -275,6 +277,51 @@ describe('HuddlySDK', () => {
       const myService = await HuddlySdk.getService();
       expect(myService).to.deep.equal(serviceStub);
       expect(serviceStub.init.called).to.equal(true);
+    });
+  });
+
+  describe('#getConnectedCameras', () => {
+    let clock, mockDiscoveryApi: DiscoveryApiMock;
+    const defaultTimeout = 2000;
+    beforeEach(() => {
+      clock = sinon.useFakeTimers();
+      mockDiscoveryApi = new DiscoveryApiMock();
+    });
+    afterEach(() => {
+      clock.restore();
+    });
+    it('should return a list of devices that are attached', async () => {
+      HuddlySdk.getConnectedCameras([mockDiscoveryApi]).then((cameras) => {
+        expect(cameras[0]).to.deep.equal(mockDiscoveryApi.boxfishCamera);
+      });
+      mockDiscoveryApi.emitBoxfishCamera();
+      clock.tick(defaultTimeout);
+    });
+    it('should return an empty list if no devices are attached', async () => {
+      HuddlySdk.getConnectedCameras([mockDiscoveryApi]).then((cameras) => {
+        expect(cameras.length).to.equal(0);
+      });
+      clock.tick(defaultTimeout);
+    });
+    it('should by default exclude base devices', async () => {
+      HuddlySdk.getConnectedCameras([mockDiscoveryApi]).then((cameras) => {
+        expect(cameras.length).to.equal(1);
+        expect(cameras[0]).to.deep.equal(mockDiscoveryApi.boxfishCamera);
+      });
+      mockDiscoveryApi.emitBase();
+      mockDiscoveryApi.emitBoxfishCamera();
+      clock.tick(defaultTimeout);
+    });
+    it('should exclude based on passed in exclusion argument', async () => {
+      HuddlySdk.getConnectedCameras([mockDiscoveryApi], defaultTimeout, [
+        HuddlyHex.BOXFISH_PID,
+      ]).then((cameras) => {
+        expect(cameras.length).to.equal(1);
+        expect(cameras[0]).to.deep.equal(mockDiscoveryApi.base);
+      });
+      mockDiscoveryApi.emitBase();
+      mockDiscoveryApi.emitBoxfishCamera();
+      clock.tick(defaultTimeout);
     });
   });
 });

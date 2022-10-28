@@ -18,6 +18,7 @@ import ErrorCodes from './error/errorCodes';
 import AllDeviceDiscovery from './components/allDeviceDiscovery';
 import ServiceFactory from './components/service/factory';
 import AttachError from './error/AttachError';
+import HuddlyHex from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 sourceMapSupport.install();
 
@@ -337,6 +338,44 @@ class HuddlySdk extends EventEmitter {
     const service: IHuddlyService = ServiceFactory.getService(serviceOpts);
     await service.init();
     return service;
+  }
+
+  /**
+   * Get connected cameras. It is recommended to not lower the timeout any significant amout as it can take a few seconds
+   * for the cameras to get discovered depending on discovery api used.
+   *
+   * Note that device apis might cache and control against already emitted cameras,
+   * so if you're using one that already has emitted a connected camera it might not get emitted again.
+   * @param discoveryApi Camera apis to use for discovery
+   * @param timeout Timeout in ms before returning list of devices. Defaul is 1000
+   * @param excludeDevices Device exclusion list. Default is the Huddly poe-to-usb device
+   * @returns A list of devices
+   */
+  static async getConnectedCameras(
+    discoveryApi: IHuddlyDeviceDiscoveryAPI[],
+    timeout: number = 2000,
+    excludeDevices: HuddlyHex[] = [HuddlyHex.BASE_PID]
+  ): Promise<any[]> {
+    return new Promise((resolve) => {
+      const devices = [];
+      const discoveryEmitter = new EventEmitter();
+      discoveryEmitter.on(
+        CameraEvents.ATTACH,
+        (device: { serialNumber: string; productId: number }) => {
+          if (excludeDevices.includes(device.productId)) return;
+          devices.push(device);
+        }
+      );
+
+      setTimeout(() => {
+        resolve(devices);
+      }, timeout);
+
+      discoveryApi.forEach((api) => {
+        api.registerForHotplugEvents(discoveryEmitter);
+        api.initialize();
+      });
+    });
   }
 }
 
