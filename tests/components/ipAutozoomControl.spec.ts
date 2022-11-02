@@ -152,7 +152,7 @@ describe('IpAutozoomControl', () => {
     });
   });
 
-  describe('#setFraming', () => {
+  describe('#setFramingMode', () => {
     let setCnnFeatureStub;
     beforeEach(() => {
       setCnnFeatureStub = sinon.stub(autozoomControl, '_setCnnFeature');
@@ -164,7 +164,7 @@ describe('IpAutozoomControl', () => {
       let error;
       try {
         // @ts-ignore
-        await autozoomControl.setFraming(FramingModes.GALLERY_VIEW);
+        await autozoomControl.setFramingMode(FramingModes.GALLERY_VIEW);
       } catch (err) {
         error = err;
       }
@@ -172,15 +172,15 @@ describe('IpAutozoomControl', () => {
     });
 
     it('should set appropriate cnn feature for autozoom', async () => {
-      await autozoomControl.setFraming(FramingModes.NORMAL);
+      await autozoomControl.setFramingMode(FramingModes.NORMAL);
       expect(setCnnFeatureStub).to.be.calledWith(huddly.Feature.AUTOZOOM, huddly.Mode.START);
     });
     it('should set appropriate cnn feature for speaker framing', async () => {
-      await autozoomControl.setFraming(FramingModes.SPEAKER_FRAMING);
+      await autozoomControl.setFramingMode(FramingModes.SPEAKER_FRAMING);
       expect(setCnnFeatureStub).to.be.calledWith(huddly.Feature.SPEAKERFRAMING, huddly.Mode.START);
     });
     it('should set cnn feature mode STOP for all supported features if given the OFF param', async () => {
-      await autozoomControl.setFraming(FramingModes.OFF);
+      await autozoomControl.setFramingMode(FramingModes.OFF);
       expect(setCnnFeatureStub.getCall(0)).to.be.calledWith(
         huddly.Feature.AUTOZOOM,
         huddly.Mode.STOP
