@@ -34,6 +34,10 @@ export default class AutozoomControl implements IAutozoomControl {
     this._validateOptions(this._options);
   }
 
+  getSupportedFramingModes(): Promise<FramingModes[]> {
+    throw new Error('Method not implemented.');
+  }
+
   /**
    * Convenience function for setting up the camera for starting/stopping cnn feature.
    * Should be called before any other methods.
@@ -391,7 +395,7 @@ export default class AutozoomControl implements IAutozoomControl {
    * @returns {Promise<any>} Resolves when successful otherwise rejects
    * @memberof AutozoomControl
    */
-  async setFraming(framingMode: FramingModes): Promise<any> {
+  async setFramingMode(framingMode: FramingModes): Promise<any> {
     if (framingMode === FramingModes.OFF) {
       return await this.disable();
     }

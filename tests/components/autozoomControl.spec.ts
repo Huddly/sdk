@@ -617,7 +617,7 @@ describe('AutozoomControl', () => {
       });
     });
   });
-  describe('#setFraming', () => {
+  describe('#setFramingMode', () => {
     let _setModeStub, disableStub;
 
     beforeEach(() => {
@@ -629,11 +629,11 @@ describe('AutozoomControl', () => {
       disableStub.restore();
     });
     it('should disable autozoom if autozoomMode is OFF', () => {
-      autozoomControl.setFraming(FramingModes.OFF);
+      autozoomControl.setFramingMode(FramingModes.OFF);
       expect(disableStub).to.have.callCount(1);
     });
     it('should _setMode with appropriate autozoomMode', () => {
-      autozoomControl.setFraming(FramingModes.GALLERY_VIEW);
+      autozoomControl.setFramingMode(FramingModes.GALLERY_VIEW);
       expect(_setModeStub).to.have.been.calledWith(AutozoomModes.PLAZA);
     });
   });

@@ -28,6 +28,9 @@ export default class IpAutozoomControl implements IAutozoomControl {
       shouldAutoFrame: true,
     };
   }
+  getSupportedFramingModes(): Promise<FramingModes[]> {
+    throw new Error('Method not implemented.');
+  }
 
   /**
    * Convenience function for setting up the camera for starting/stopping cnn feature.
@@ -102,7 +105,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
    * @return {Promise<void | Error>}
    * @memberof IpAutozoomControl
    */
-  async setFraming(framingMode: FramingModes): Promise<any> {
+  async setFramingMode(framingMode: FramingModes): Promise<any> {
     const featureMapping = {
       [FramingModes.NORMAL]: huddly.Feature.AUTOZOOM,
       [FramingModes.SPEAKER_FRAMING]: huddly.Feature.SPEAKERFRAMING,
