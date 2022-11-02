@@ -1,3 +1,13 @@
+### 0.9.0 (2022-11-02)
+
+##### Build System / Dependencies
+
+* **deps:**  bump sdk-interfaces from 0.2.1 to 0.2.2 ([ac5c80d0](https://github.com/Huddly/sdk/commit/ac5c80d07cfe6b070bc7ff867b144e7fa44de67d))
+
+##### New Features
+
+*  added static function getConnectedCameras ([3e66435a](https://github.com/Huddly/sdk/commit/3e66435a2eb45450ee67e3cf326a4a5378d6cb5b))
+
 ### 0.8.0 (2022-10-20)
 
 ##### Build System / Dependencies
