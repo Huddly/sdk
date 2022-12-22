@@ -17,6 +17,8 @@ import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import IpBaseDevice from '../device/ipbase';
 
+const UPGRADE_STEP_TIMEOUT = 20;
+
 /**
  * Enum describing the different upgrade steps for L1.
  *
@@ -434,11 +436,11 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
 
     return new Promise((resolve, reject) => {
       const readTimeout: NodeJS.Timeout = global.setTimeout(() => {
-        const errMsg = `Unable to perform upgrade step ${step} within given time of 10 seconds`;
+        const errMsg = `Unable to perform upgrade step ${step} within given time of ${UPGRADE_STEP_TIMEOUT} seconds`;
         Logger.warn(errMsg, this.className);
         this.emit(CameraEvents.UPGRADE_FAILED, errMsg);
         reject(errMsg);
-      }, 10000);
+      }, UPGRADE_STEP_TIMEOUT * 1000);
 
       const upgradeStepCompleteCb = (err: grpc.ServiceError, deviceStatus: huddly.DeviceStatus) => {
         clearTimeout(readTimeout);
@@ -477,18 +479,19 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
       }
 
       extract.on('entry', (header: any, cpioStream: any, cb: any) => {
-        if (header.name !== 'image.itb') {
-          return;
-        }
         cpioStream.on('end', () => {
           cb();
-          extract.destroy();
-          stream.end();
+          if (header.name === 'image.itb') {
+            extract.destroy();
+            stream.end();
+          }
         });
         cpioStream.on('data', (chunk: Buffer) => {
-          const huddlyChunk = new huddly.Chunk();
-          huddlyChunk.setContent(chunk);
-          stream.write(huddlyChunk);
+          if (header.name === 'image.itb') {
+            const huddlyChunk = new huddly.Chunk();
+            huddlyChunk.setContent(chunk);
+            stream.write(huddlyChunk);
+          }
         });
         cpioStream.resume(); // auto drain
       });
