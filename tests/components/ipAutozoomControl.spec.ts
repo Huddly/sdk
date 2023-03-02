@@ -70,32 +70,9 @@ describe('IpAutozoomControl', () => {
     afterEach(() => {
       setCnnFeatureStub.restore();
     });
-    describe('autozoom is disabled', () => {
-      beforeEach(() => {
-        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(false);
-      });
-      afterEach(() => {
-        isEnabledStub.restore();
-      });
-      it('should setCnnFeature with appropriate cnn feature', async () => {
-        await autozoomControl.enable();
-        expect(setCnnFeatureStub).to.have.been.calledWith(
-          huddly.Feature.AUTOZOOM,
-          huddly.Mode.START
-        );
-      });
-    });
-    describe('autozoom is enabled', () => {
-      beforeEach(() => {
-        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(true);
-      });
-      afterEach(() => {
-        isEnabledStub.restore();
-      });
-      it('should not do anything', async () => {
-        await autozoomControl.enable();
-        expect(setCnnFeatureStub).to.have.callCount(0);
-      });
+    it('should setCnnFeature with appropriate cnn feature', async () => {
+      await autozoomControl.enable();
+      expect(setCnnFeatureStub).to.have.been.calledWith(huddly.Feature.AUTOZOOM, huddly.Mode.START);
     });
   });
   describe('#disable', () => {
@@ -106,32 +83,16 @@ describe('IpAutozoomControl', () => {
     afterEach(() => {
       setCnnFeatureStub.restore();
     });
-    describe('autozoom is disabled', () => {
-      beforeEach(() => {
-        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(true);
-      });
-      afterEach(() => {
-        isEnabledStub.restore();
-      });
-      it('should setCnnFeature with appropriate cnn feature', async () => {
-        await autozoomControl.disable();
-        expect(setCnnFeatureStub).to.have.been.calledWith(
-          huddly.Feature.AUTOZOOM,
-          huddly.Mode.STOP
-        );
-      });
+
+    beforeEach(() => {
+      isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(true);
     });
-    describe('autozoom is disabled', () => {
-      beforeEach(() => {
-        isEnabledStub = sinon.stub(autozoomControl, 'isEnabled').resolves(false);
-      });
-      afterEach(() => {
-        isEnabledStub.restore();
-      });
-      it('should not do anything', async () => {
-        await autozoomControl.disable();
-        expect(setCnnFeatureStub).to.have.callCount(0);
-      });
+    afterEach(() => {
+      isEnabledStub.restore();
+    });
+    it('should setCnnFeature with appropriate cnn feature', async () => {
+      await autozoomControl.disable();
+      expect(setCnnFeatureStub).to.have.been.calledWith(huddly.Feature.AUTOZOOM, huddly.Mode.STOP);
     });
   });
 
