@@ -20,8 +20,8 @@ class CaClient implements ICaClient {
    * @returns {Promise<OptionCertificate[]>} A list of option certificates for the given camera
    */
   async getOptionCertificates(serialNumber: string): Promise<OptionCertificatesResult> {
-    let errors: string[] = [];
-    for (let hostUrl of [PRIMARY_CA_HOST_URL, SECONDARY_CA_HOST_URL]) {
+    const errors: string[] = [];
+    for (const hostUrl of [PRIMARY_CA_HOST_URL, SECONDARY_CA_HOST_URL]) {
       const requestUrl = this._createCaClientRequestUrl(hostUrl, serialNumber);
       Logger.info(`Requesting option certificates with ${requestUrl}`, CaClient.name);
       try {

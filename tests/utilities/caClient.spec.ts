@@ -6,7 +6,7 @@ import CaClient from './../../src/utilitis/caClient';
 chai.should();
 chai.use(sinonChai);
 
-describe.only('CaClient', () => {
+describe('CaClient', () => {
   const optionCert = { format: 'PEM', option: 'speakerframing', data: 'data' };
   const optionCerts = [optionCert, optionCert];
   const testError = new Error('There was an issue');
