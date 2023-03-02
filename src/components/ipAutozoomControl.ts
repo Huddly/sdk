@@ -63,11 +63,8 @@ export default class IpAutozoomControl implements IAutozoomControl {
    * @memberof IpAutozoomControl
    */
   async enable(idleTimeMs?: number): Promise<void> {
-    // Only start if az is running
-    if (!(await this.isEnabled())) {
-      Logger.debug('Starting Autozoom', IpAutozoomControl.name);
-      return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.START);
-    }
+    Logger.debug('Starting Autozoom', IpAutozoomControl.name);
+    return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.START);
   }
 
   /**
@@ -78,11 +75,8 @@ export default class IpAutozoomControl implements IAutozoomControl {
    * @memberof IpAutozoomControl
    */
   async disable(idleTimeMs?: number): Promise<void> {
-    // Only stop if az is running
-    if (await this.isEnabled()) {
-      Logger.debug('Stopping Autozoom', IpAutozoomControl.name);
-      return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.STOP);
-    }
+    Logger.debug('Stopping Autozoom', IpAutozoomControl.name);
+    return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.STOP);
   }
 
   /**
@@ -95,7 +89,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
     const cnnFeature = new huddly.CnnFeature();
     cnnFeature.setFeature(feature);
     const azStatus = await this._deviceManager.getCnnFeatureStatus(cnnFeature);
-    return azStatus.getEnabled();
+    return azStatus.getAzStatus().getAzEnabled();
   }
 
   /**
