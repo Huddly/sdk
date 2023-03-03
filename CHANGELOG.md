@@ -1,3 +1,16 @@
+#### 0.9.1 (2023-03-03)
+
+##### Chores
+
+* **deps:**
+  *  bump json5 from 1.0.1 to 1.0.2 ([1c487d06](https://github.com/Huddly/sdk/commit/1c487d06f125affe0827dfced348334687795118))
+  *  bump loader-utils from 1.4.0 to 1.4.2 ([eff582e8](https://github.com/Huddly/sdk/commit/eff582e841859233c37dc492268ae27ee5052fc7))
+
+##### Bug Fixes
+
+* **ipAutozoomControl:**  should not need to check az status when using enable/disable ([c427fefd](https://github.com/Huddly/sdk/commit/c427fefd9ba52b737dae897a65a732169ec52c0d))
+* **ipUpgrader:**  fix bug where upgrader is unable to use new cpio files ([a3cdb88c](https://github.com/Huddly/sdk/commit/a3cdb88cdc022d76546444586cedc487dd345ca2))
+
 ### 0.9.0 (2022-11-02)
 
 ##### Build System / Dependencies
