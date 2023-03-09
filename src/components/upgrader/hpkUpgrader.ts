@@ -13,9 +13,10 @@ import BoxfishHpk from './boxfishhpk';
 import UpgradeStatus, { UpgradeStatusStep } from './upgradeStatus';
 import ErrorCodes from './../../error/errorCodes';
 import HPKUpgradeError from './../../error/hpkUpgradeError';
+import Smartbase from '../device/smartbase';
 
 const MAX_UPLOAD_ATTEMPTS = 5;
-const REBOOT_TIMEOUT = 20000;
+const REBOOT_TIMEOUT = 60000;
 
 /**
  * Controller class for instrumenting the upgrade process on Huddly IQ camera.
@@ -39,7 +40,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   /** @ignore */
   _production_upgrade: boolean;
   /** @ignore */
-  private _statusMessageTimeout: number = 10000;
+  private _statusMessageTimeout: number = 60000;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
     super();
@@ -79,7 +80,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   onAttach = (devManager: IDeviceManager) => {
     if (
       devManager &&
-      devManager instanceof Boxfish &&
+      (devManager instanceof Boxfish || devManager instanceof Smartbase) &&
       this._cameraManager['serialNumber'] === devManager['serialNumber']
     ) {
       this._cameraManager = devManager;
@@ -149,7 +150,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
             send: 'hcp/write',
             receive: 'hcp/write_reply',
           },
-          10000
+          60000
         );
         const { status } = m;
         if (status !== 0) {
@@ -446,7 +447,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   async upgradeIsValid(): Promise<boolean> {
     // Quick fix for not calling getState on dartfish, which throws an error.
     // This needs to be properly fixed in the future.
-    if ((this._cameraManager as any).productId === HuddlyHEX.DARTFISH_PID) {
+    const prodId = this._cameraManager['productId'];
+    if ([HuddlyHEX.DARTFISH_PID, 0xba01].includes(prodId)) {
       return true;
     }
 
