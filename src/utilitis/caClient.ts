@@ -1,7 +1,6 @@
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 import ICaClient, {
   OptionCertificate,
-  OptionCertificatesResult,
   isOptionCertificate,
 } from '@huddly/sdk-interfaces/lib/interfaces/ICaClient';
 import https from 'https';
@@ -19,14 +18,14 @@ class CaClient implements ICaClient {
    * @param serialNumber serial number of the camera to request option certificates for
    * @returns {Promise<OptionCertificate[]>} A list of option certificates for the given camera
    */
-  async getOptionCertificates(serialNumber: string): Promise<OptionCertificatesResult> {
+  async getOptionCertificates(serialNumber: string): Promise<OptionCertificate[]> {
     const errors: string[] = [];
     for (const hostUrl of [PRIMARY_CA_HOST_URL, SECONDARY_CA_HOST_URL]) {
       const requestUrl = this._createCaClientRequestUrl(hostUrl, serialNumber);
       Logger.info(`Requesting option certificates with ${requestUrl}`, CaClient.name);
       try {
         const serverReponse = await this._requestOptionCertificatesFromService(requestUrl);
-        const optionCertificatesResult = this._constructValidOptionCertificateResult(serverReponse);
+        const optionCertificatesResult = this._constructValidOptionCertificate(serverReponse);
         return optionCertificatesResult;
       } catch (error) {
         Logger.warn(
@@ -35,44 +34,38 @@ class CaClient implements ICaClient {
           }`,
           CaClient.name
         );
-
-        // We want to store all errors from the different attempts of trying to aquire the option certificates
-        errors.push(error.message || error);
       }
     }
     Logger.warn(errors.toString());
-    const optionCertificateResult: OptionCertificatesResult = {
-      error: errors.toString(),
-    };
-    return optionCertificateResult;
+    throw new Error('There was an issue communicating with the CA Servers.');
   }
 
-  _constructValidOptionCertificateResult(serverReponse: any): OptionCertificatesResult {
+  _constructValidOptionCertificate(serverReponse: any): OptionCertificate[] {
     if (!Array.isArray(serverReponse)) {
       const errorText = `Expected to get a list from option certificate server. Got: ${serverReponse.toString()}`;
       Logger.warn(errorText, CaClient.name);
       throw Error(errorText);
     }
 
-    const optionCertificates = serverReponse.map((serverOptionCert): OptionCertificate => {
-      if (!isOptionCertificate(serverOptionCert)) {
-        const errorText = `Expected option certificate from server to contain attributes 'format', 'option' and 'data', but got ${Object.keys(
-          serverOptionCert
-        ).toString()}`;
-        Logger.warn(errorText, CaClient.name);
-        throw Error(errorText);
+    const optionCertificates: OptionCertificate[] = serverReponse.map(
+      (serverOptionCert): OptionCertificate => {
+        if (!isOptionCertificate(serverOptionCert)) {
+          const errorText = `Expected option certificate from server to contain attributes 'format', 'option' and 'data', but got ${Object.keys(
+            serverOptionCert
+          ).toString()}`;
+          Logger.warn(errorText, CaClient.name);
+          throw Error(errorText);
+        }
+
+        return {
+          format: serverOptionCert.format,
+          data: serverOptionCert.data,
+          option: serverOptionCert.option,
+        };
       }
+    );
 
-      return {
-        format: serverOptionCert.format,
-        data: serverOptionCert.data,
-        option: serverOptionCert.option,
-      };
-    });
-
-    return {
-      optionCertificates,
-    };
+    return optionCertificates;
   }
 
   _createCaClientRequestUrl(hostUrl: string, serialNumber: string): string {

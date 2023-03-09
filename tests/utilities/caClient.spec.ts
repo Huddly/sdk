@@ -25,7 +25,7 @@ describe('CaClient', () => {
   });
   describe('getOptionCertificates', () => {
     let _requestOptionCertificatesFromServiceStub;
-    let _constructValidOptionCertificateResult;
+    let _constructValidOptionCertificate;
     beforeEach(() => {
       _requestOptionCertificatesFromServiceStub = sinon.stub(
         caClient,
@@ -35,30 +35,28 @@ describe('CaClient', () => {
     afterEach(() => {
       _requestOptionCertificatesFromServiceStub.restore();
     });
-    it('should return a list of on or more valid option certificates', async () => {
+    it('should return a list of one or more valid option certificates', async () => {
       _requestOptionCertificatesFromServiceStub.resolves(optionCerts);
-      expect((await caClient.getOptionCertificates('test')).optionCertificates).to.deep.equal(
-        optionCerts
-      );
+      expect(await caClient.getOptionCertificates('test')).to.deep.equal(optionCerts);
     });
 
     describe('if both hosts has an error', () => {
       beforeEach(() => {
-        _constructValidOptionCertificateResult = sinon.stub(
+        _constructValidOptionCertificate = sinon.stub(
           caClient,
-          '_constructValidOptionCertificateResult'
+          '_constructValidOptionCertificate'
         );
       });
       afterEach(() => {
-        _constructValidOptionCertificateResult.restore();
+        _constructValidOptionCertificate.restore();
       });
-      it('should return a result with an error when getting the options certificate fails', async () => {
+      it('should throw an error when getting the options certificate fails', async () => {
         _requestOptionCertificatesFromServiceStub.rejects(testError);
-        expect((await caClient.getOptionCertificates('test')).error).to.not.equal(undefined);
+        expect(await caClient.getOptionCertificates.bind(caClient, optionCert)).to.throw();
       });
       it('should return a result with an error when validation fails', async () => {
-        _constructValidOptionCertificateResult.throws(testError);
-        expect((await caClient.getOptionCertificates('test')).error).to.not.equal(undefined);
+        _constructValidOptionCertificate.throws(testError);
+        expect(await caClient.getOptionCertificates.bind(caClient, optionCert)).to.throw();
       });
     });
     describe('if there is an issue with only one host', () => {
@@ -67,36 +65,35 @@ describe('CaClient', () => {
         _requestOptionCertificatesFromServiceStub.onCall(1).resolves(optionCerts);
 
         const result = await caClient.getOptionCertificates('test');
-        expect(result.error).to.equal(undefined);
-        expect(result.optionCertificates).to.deep.equal(optionCerts);
+        expect(result).to.deep.equal(optionCerts);
       });
     });
   });
-  describe('_constructValidOptionCertificateResult', () => {
+  describe('_constructValidOptionCertificate', () => {
     describe('top level response is not a list', () => {
       it('should throw an error', () => {
         expect(
-          caClient._constructValidOptionCertificateResult.bind(caClient, optionCert)
+          caClient._constructValidOptionCertificate.bind(caClient, optionCert)
         ).to.throw();
       });
     });
     describe('one or more option certificate is not formatted correctly', () => {
       it('lacks a format attribute', () => {
         const cert = { formats: 'PEM', option: 'speakerframing', data: 'data' };
-        expect(caClient._constructValidOptionCertificateResult.bind(caClient, [cert])).to.throw();
+        expect(caClient._constructValidOptionCertificate.bind(caClient, [cert])).to.throw();
       });
       it('lacks a option attribute', () => {
         const cert = { formats: 'PEM', options: 'speakerframing', data: 'data' };
-        expect(caClient._constructValidOptionCertificateResult.bind(caClient, [cert])).to.throw();
+        expect(caClient._constructValidOptionCertificate.bind(caClient, [cert])).to.throw();
       });
       it('lacks a data attribute', () => {
         const cert = { formats: 'PEM', option: 'speakerframing', datas: 'data' };
-        expect(caClient._constructValidOptionCertificateResult.bind(caClient, [cert])).to.throw();
+        expect(caClient._constructValidOptionCertificate.bind(caClient, [cert])).to.throw();
       });
     });
     describe('correctly formatted response from the server', () => {
       it('should return a list with correctly formatted option certificates result', () => {
-        expect(caClient._constructValidOptionCertificateResult(optionCerts)).to.deep.equal({
+        expect(caClient._constructValidOptionCertificate(optionCerts)).to.deep.equal({
           optionCertificates: optionCerts,
         });
       });
