@@ -15,8 +15,12 @@ import Clownfish from './clownfish';
 import DartFish from './dartfish';
 import Ace from './ace';
 import See from './see';
+import Smartbase from './smartbase';
 
 import { EventEmitter } from 'events';
+import SmartbaseAce from './smartbaseAce';
+import SmartbaseSee from './smartbaseSee';
+import SmartbaseCamera from './smartbaseCamera';
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
@@ -229,6 +233,15 @@ export default class DeviceFactory {
         break;
       case HuddlyHEX.S1_PID:
         device = new See(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);
+        break;
+      case HuddlyHEX.SMARTBASE_PID:
+        device = new Smartbase(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        break;
+      case 0xa031:
+        device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        break;
+      case 0xa032:
+        device = new SmartbaseSee(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
         break;
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${productId}`);
