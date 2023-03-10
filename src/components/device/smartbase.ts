@@ -92,7 +92,6 @@ export default class Smartbase implements IDeviceManager {
       name: this.productName,
       ...info,
     };
-    console.log(status);
     if (this['pathName'] !== undefined) {
       status.pathName = this['pathName'];
     }
