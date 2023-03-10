@@ -4,10 +4,8 @@ import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoom
 import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
 import DetectorOpts from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
-import IDeviceCommonApi from '@huddly/sdk-interfaces/lib/interfaces/IDeviceCommonApi';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
-import ITransport from '@huddly/sdk-interfaces/lib/interfaces/ITransport';
 import UpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import { createBoxfishUpgrader } from '../upgrader/boxfishUpgraderFactory';
 import CameraEvents from '../../utilitis/events';
@@ -16,14 +14,19 @@ import EventEmitter from 'events';
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import Api from '../api';
 import Locksmith from '../locksmith';
+import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import AutozoomControl from '../autozoomControl';
+import Detector from '../detector';
 
-const MAX_UPGRADE_ATTEMPT = 2;
+const MAX_UPGRADE_ATTEMPT = 3;
 
-class Smartbase implements IDeviceManager {
+export default class Smartbase implements IDeviceManager {
   transport: IUsbTransport;
   locksmith: Locksmith;
-  _api: Api;
+  deviceInstance: any;
   uvcControlInterface: any;
+  productName: string = 'Huddly Smartbase';
+  _api: Api;
   /**
    * Event emitter instance emitting attach and detach events for Huddly Cameras.
    *
@@ -35,19 +38,22 @@ class Smartbase implements IDeviceManager {
   /**
    * Creates an instance of Smartbase.
    * @param {IUsbTransport} transport The transport instance for communicating with the camera.
-   * @param {*} uvcControlInterface Uvc control interface for performing standard uvc control commands.
    * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach & detach events for Huddly cameras.
    * @memberof Smartbase
    */
-  constructor(
-    transport: IUsbTransport,
-    uvcControlInterface: any,
-    cameraDiscoveryEmitter: EventEmitter
-  ) {
+  constructor(deviceInstance: any, transport: IUsbTransport, cameraDiscoveryEmitter: EventEmitter) {
     this.transport = transport;
-    this.uvcControlInterface = uvcControlInterface;
     this.locksmith = new Locksmith();
     this.discoveryEmitter = cameraDiscoveryEmitter;
+    this.deviceInstance = deviceInstance;
+    this.uvcControlInterface = {};
+    this.assignProductInfo();
+  }
+
+  assignProductInfo() {
+    this['id'] = this.deviceInstance['id'];
+    this['serialNumber'] = this.deviceInstance['serialNumber'];
+    this['productId'] = this.deviceInstance['productId'];
   }
 
   get api(): Api {
@@ -66,28 +72,72 @@ class Smartbase implements IDeviceManager {
     try {
       this.transport.initEventLoop();
     } catch (e) {
-      Logger.error('Failed to init event loop when transport reset', e, 'Boxfish API');
+      Logger.error('Failed to init event loop when transport reset', e, 'Smartbase API');
     }
   }
 
-  closeConnection(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+  async closeConnection(): Promise<any> {
+    return this.transport.close();
   }
-  getInfo(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+
+  async getInfo(): Promise<any> {
+    const info = await this.api.getCameraInfo();
+    const status = {
+      id: this['id'],
+      serialNumber: this['serialNumber'],
+      vendorId: this['vendorId'] || HuddlyHEX.VID,
+      productId: this['productId'],
+      version: this.extractSemanticSoftwareVersion(info.softwareVersion),
+      location: this['location'],
+      name: this.productName,
+      ...info,
+    };
+    console.log(status);
+    if (this['pathName'] !== undefined) {
+      status.pathName = this['pathName'];
+    }
+    return status;
   }
-  getErrorLog(timeout: number): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+  /** @ignore */
+  extractSemanticSoftwareVersion(appVer: string) {
+    return appVer.replace(/\D+-/, '');
   }
-  eraseErrorLog(timeout: number): Promise<void> {
-    throw new Error('Not supported for Smartbase.');
+
+  /**
+   * Get application log.
+   *
+   * @param {number} [timeout=60000] Maximum allowed time (in milliseconds) for fetching the log.
+   * @param {number} [retry=1] Number of retries to perform in case something goes wrong.
+   * @return {*}  {Promise<any>} A promise which when completed contains the camera application log.
+   * @memberof Smartbase
+   */
+  async getErrorLog(timeout: number = 60000, retry: number = 1): Promise<any> {
+    return this.api.getErrorLog(timeout, retry);
   }
-  reboot(mode?: string): Promise<void> {
-    throw new Error('Not supported for Smartbase.');
+
+  async eraseErrorLog(timeout: number = 60000): Promise<void> {
+    await this.api.eraseErrorLog(timeout);
   }
+
+  async reboot(mode: string = 'app'): Promise<void> {
+    await this.locksmith.executeAsyncFunction(async () => {
+      await this.transport.clear();
+      if (mode === 'mvusb') {
+        this.transport.write('upgrader/mv_usb', Api.encode({}));
+      } else {
+        await this.transport.write('camctrl/reboot');
+      }
+    });
+  }
+
   getUpgrader(): Promise<IDeviceUpgrader> {
     throw new Error('Not supported for Smartbase.');
   }
+
+  async uptime() {
+    return this.api.getUptime();
+  }
+
   upgrade(opts: UpgradeOpts): Promise<any> {
     let upgradeAttempts = 0;
     return new Promise<void>((resolve, reject) => {
@@ -100,11 +150,11 @@ class Smartbase implements IDeviceManager {
             upgradeAttempts += 1;
             Logger.warn(
               `Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`,
-              'Boxfish API'
+              'Smartbase API'
             );
             tryRunAgainOnFailure(e.deviceManager);
           } else {
-            Logger.error('Failed performing a camera upgrade', e, 'Boxfish API');
+            Logger.error('Failed performing a camera upgrade', e, 'Smartbase API');
             reject(e);
           }
         }
@@ -149,14 +199,17 @@ class Smartbase implements IDeviceManager {
   }
 
   getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
-    throw new Error('Not supported for Smartbase.');
+    return new AutozoomControl(this, opts);
   }
+
   getFaceBasedExposureControl(): ICnnControl {
     throw new Error('Not supported for Smartbase.');
   }
-  getDetector(opts: DetectorOpts): IDetector {
-    throw new Error('Not supported for Smartbase.');
+
+  getDetector(opts?: DetectorOpts): IDetector {
+    return new Detector(this, opts);
   }
+
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
     throw new Error('Not supported for Smartbase.');
   }
