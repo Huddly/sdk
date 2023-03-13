@@ -1,7 +1,7 @@
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 import ICaClient, {
   OptionCertificate,
-  isOptionCertificate,
+  isValidOptionCertificate,
 } from '@huddly/sdk-interfaces/lib/interfaces/ICaClient';
 import https from 'https';
 
@@ -19,7 +19,6 @@ class CaClient implements ICaClient {
    * @returns {Promise<OptionCertificate[]>} A list of option certificates for the given camera
    */
   async getOptionCertificates(serialNumber: string): Promise<OptionCertificate[]> {
-    const errors: string[] = [];
     for (const hostUrl of [PRIMARY_CA_HOST_URL, SECONDARY_CA_HOST_URL]) {
       const requestUrl = this._createCaClientRequestUrl(hostUrl, serialNumber);
       Logger.info(`Requesting option certificates with ${requestUrl}`, CaClient.name);
@@ -36,8 +35,7 @@ class CaClient implements ICaClient {
         );
       }
     }
-    Logger.warn(errors.toString());
-    throw new Error('There was an issue communicating with the CA Servers.');
+    return [];
   }
 
   _constructValidOptionCertificate(serverReponse: any): OptionCertificate[] {
@@ -49,7 +47,7 @@ class CaClient implements ICaClient {
 
     const optionCertificates: OptionCertificate[] = serverReponse.map(
       (serverOptionCert): OptionCertificate => {
-        if (!isOptionCertificate(serverOptionCert)) {
+        if (!isValidOptionCertificate(serverOptionCert)) {
           const errorText = `Expected option certificate from server to contain attributes 'format', 'option' and 'data', but got ${Object.keys(
             serverOptionCert
           ).toString()}`;

@@ -42,25 +42,22 @@ describe('CaClient', () => {
 
     describe('if both hosts has an error', () => {
       beforeEach(() => {
-        _constructValidOptionCertificate = sinon.stub(
-          caClient,
-          '_constructValidOptionCertificate'
-        );
+        _constructValidOptionCertificate = sinon.stub(caClient, '_constructValidOptionCertificate');
       });
       afterEach(() => {
         _constructValidOptionCertificate.restore();
       });
-      it('should throw an error when getting the options certificate fails', async () => {
+      it('should return an empty list when getting the options certificate fails', async () => {
         _requestOptionCertificatesFromServiceStub.rejects(testError);
-        expect(await caClient.getOptionCertificates.bind(caClient, optionCert)).to.throw();
+        expect(await caClient.getOptionCertificates('123')).to.deep.equal([]);
       });
-      it('should return a result with an error when validation fails', async () => {
+      it('should return an empty list when validation fails', async () => {
         _constructValidOptionCertificate.throws(testError);
-        expect(await caClient.getOptionCertificates.bind(caClient, optionCert)).to.throw();
+        expect(await caClient.getOptionCertificates('123')).to.deep.equal([]);
       });
     });
     describe('if there is an issue with only one host', () => {
-      it('it should return a result with option certificates and without an error', async () => {
+      it('it should return a result with option certificates', async () => {
         _requestOptionCertificatesFromServiceStub.onCall(0).rejects(testError);
         _requestOptionCertificatesFromServiceStub.onCall(1).resolves(optionCerts);
 
@@ -72,9 +69,7 @@ describe('CaClient', () => {
   describe('_constructValidOptionCertificate', () => {
     describe('top level response is not a list', () => {
       it('should throw an error', () => {
-        expect(
-          caClient._constructValidOptionCertificate.bind(caClient, optionCert)
-        ).to.throw();
+        expect(caClient._constructValidOptionCertificate.bind(caClient, optionCert)).to.throw();
       });
     });
     describe('one or more option certificate is not formatted correctly', () => {
@@ -93,9 +88,7 @@ describe('CaClient', () => {
     });
     describe('correctly formatted response from the server', () => {
       it('should return a list with correctly formatted option certificates result', () => {
-        expect(caClient._constructValidOptionCertificate(optionCerts)).to.deep.equal({
-          optionCertificates: optionCerts,
-        });
+        expect(caClient._constructValidOptionCertificate(optionCerts)).to.deep.equal(optionCerts);
       });
     });
   });
