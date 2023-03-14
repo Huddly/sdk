@@ -23,8 +23,8 @@ class CaClient implements ICaClient {
       const requestUrl = this._createCaClientRequestUrl(hostUrl, serialNumber);
       Logger.info(`Requesting option certificates with ${requestUrl}`, CaClient.name);
       try {
-        const serverReponse = await this._requestOptionCertificatesFromService(requestUrl);
-        const optionCertificatesResult = this._constructValidOptionCertificate(serverReponse);
+        const serverResponse = await this._requestOptionCertificatesFromService(requestUrl);
+        const optionCertificatesResult = this._constructValidOptionCertificate(serverResponse);
         return optionCertificatesResult;
       } catch (error) {
         Logger.warn(
@@ -38,7 +38,7 @@ class CaClient implements ICaClient {
     return [];
   }
 
-  _constructValidOptionCertificate(serverReponse: any): OptionCertificate[] {
+  private _constructValidOptionCertificate(serverReponse: any): OptionCertificate[] {
     if (!Array.isArray(serverReponse)) {
       const errorText = `Expected to get a list from option certificate server. Got: ${serverReponse.toString()}`;
       Logger.warn(errorText, CaClient.name);
@@ -66,13 +66,13 @@ class CaClient implements ICaClient {
     return optionCertificates;
   }
 
-  _createCaClientRequestUrl(hostUrl: string, serialNumber: string): string {
+  private _createCaClientRequestUrl(hostUrl: string, serialNumber: string): string {
     return `${hostUrl}/certificates/options?serialNumber=${serialNumber}`;
   }
 
-  async _requestOptionCertificatesFromService(requestUrl: string): Promise<Array<any>> {
+  private async _requestOptionCertificatesFromService(requestUrl: string): Promise<Array<any>> {
     return new Promise((resolve, reject) => {
-      const responseCallack = (response) => {
+      const responseCallback = (response) => {
         const data: Buffer[] = [];
 
         response.on('data', (chunk: Buffer) => {
@@ -86,7 +86,7 @@ class CaClient implements ICaClient {
 
         response.on('error', reject);
       };
-      const request = https.request(requestUrl, responseCallack);
+      const request = https.request(requestUrl, responseCallback);
       request.on('error', reject);
       request.end();
     });

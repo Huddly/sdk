@@ -14,16 +14,16 @@ describe('CaClient', () => {
   beforeEach(() => {
     caClient = new CaClient();
   });
-  describe('createCaClientRequestUrl', () => {
+  describe('#createCaClientRequestUrl', () => {
     it('should return a valid ca request url', () => {
       const serialNumber = 'serial123';
       const hostUrl = 'host.com';
       const expectedRequestUrl = `${hostUrl}/certificates/options?serialNumber=${serialNumber}`;
-      const requestUrl = caClient._createCaClientRequestUrl(hostUrl, serialNumber);
+      const requestUrl = caClient['_createCaClientRequestUrl'](hostUrl, serialNumber);
       expect(expectedRequestUrl).to.equal(requestUrl);
     });
   });
-  describe('getOptionCertificates', () => {
+  describe('#getOptionCertificates', () => {
     let _requestOptionCertificatesFromServiceStub;
     let _constructValidOptionCertificate;
     beforeEach(() => {
@@ -66,29 +66,31 @@ describe('CaClient', () => {
       });
     });
   });
-  describe('_constructValidOptionCertificate', () => {
+  describe('#_constructValidOptionCertificate', () => {
     describe('top level response is not a list', () => {
       it('should throw an error', () => {
-        expect(caClient._constructValidOptionCertificate.bind(caClient, optionCert)).to.throw();
+        expect(caClient['_constructValidOptionCertificate'].bind(caClient, optionCert)).to.throw();
       });
     });
     describe('one or more option certificate is not formatted correctly', () => {
       it('lacks a format attribute', () => {
         const cert = { formats: 'PEM', option: 'speakerframing', data: 'data' };
-        expect(caClient._constructValidOptionCertificate.bind(caClient, [cert])).to.throw();
+        expect(caClient['_constructValidOptionCertificate'].bind(caClient, [cert])).to.throw();
       });
       it('lacks a option attribute', () => {
         const cert = { formats: 'PEM', options: 'speakerframing', data: 'data' };
-        expect(caClient._constructValidOptionCertificate.bind(caClient, [cert])).to.throw();
+        expect(caClient['_constructValidOptionCertificate'].bind(caClient, [cert])).to.throw();
       });
       it('lacks a data attribute', () => {
         const cert = { formats: 'PEM', option: 'speakerframing', datas: 'data' };
-        expect(caClient._constructValidOptionCertificate.bind(caClient, [cert])).to.throw();
+        expect(caClient['_constructValidOptionCertificate'].bind(caClient, [cert])).to.throw();
       });
     });
     describe('correctly formatted response from the server', () => {
       it('should return a list with correctly formatted option certificates result', () => {
-        expect(caClient._constructValidOptionCertificate(optionCerts)).to.deep.equal(optionCerts);
+        expect(caClient['_constructValidOptionCertificate'](optionCerts)).to.deep.equal(
+          optionCerts
+        );
       });
     });
   });
