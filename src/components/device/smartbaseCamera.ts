@@ -15,29 +15,31 @@ import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import Api from '../api';
 import Locksmith from '../locksmith';
 import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import AutozoomControl from '../autozoomControl';
+import Detector from '../detector';
 
 const MAX_UPGRADE_ATTEMPT = 3;
 
-export default class Smartbase implements IDeviceManager {
+export default class SmartbaseCamera implements IDeviceManager {
   transport: IUsbTransport;
   locksmith: Locksmith;
   deviceInstance: any;
   uvcControlInterface: any;
-  productName: string = 'Huddly Smartbase';
+  productName: string = 'Huddly L1';
   _api: Api;
   /**
    * Event emitter instance emitting attach and detach events for Huddly Cameras.
    *
    * @type {EventEmitter}
-   * @memberof Smartbase
+   * @memberof SmartbaseCamera
    */
   discoveryEmitter: EventEmitter;
 
   /**
-   * Creates an instance of Smartbase.
+   * Creates an instance of an ip camera that is connected through the smartbase.
    * @param {IUsbTransport} transport The transport instance for communicating with the camera.
    * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach & detach events for Huddly cameras.
-   * @memberof Smartbase
+   * @memberof SmartbaseCamera
    */
   constructor(deviceInstance: any, transport: IUsbTransport, cameraDiscoveryEmitter: EventEmitter) {
     this.transport = transport;
@@ -70,7 +72,7 @@ export default class Smartbase implements IDeviceManager {
     try {
       this.transport.initEventLoop();
     } catch (e) {
-      Logger.error('Failed to init event loop when transport reset', e, 'Smartbase API');
+      Logger.error('Failed to init event loop when transport reset', e, 'SmartbaseCamera API');
     }
   }
 
@@ -106,7 +108,7 @@ export default class Smartbase implements IDeviceManager {
    * @param {number} [timeout=60000] Maximum allowed time (in milliseconds) for fetching the log.
    * @param {number} [retry=1] Number of retries to perform in case something goes wrong.
    * @return {*}  {Promise<any>} A promise which when completed contains the camera application log.
-   * @memberof Smartbase
+   * @memberof SmartbaseCamera
    */
   async getErrorLog(timeout: number = 60000, retry: number = 1): Promise<any> {
     return this.api.getErrorLog(timeout, retry);
@@ -128,7 +130,7 @@ export default class Smartbase implements IDeviceManager {
   }
 
   getUpgrader(): Promise<IDeviceUpgrader> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for SmartbaseCamera.');
   }
 
   async uptime() {
@@ -147,11 +149,11 @@ export default class Smartbase implements IDeviceManager {
             upgradeAttempts += 1;
             Logger.warn(
               `Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`,
-              'Smartbase API'
+              'SmartbaseCamera API'
             );
             tryRunAgainOnFailure(e.deviceManager);
           } else {
-            Logger.error('Failed performing a camera upgrade', e, 'Smartbase API');
+            Logger.error('Failed performing a camera upgrade', e, 'SmartbaseCamera API');
             reject(e);
           }
         }
@@ -196,30 +198,30 @@ export default class Smartbase implements IDeviceManager {
   }
 
   getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
-    throw new Error('Not supported for Smartbase.');
+    return new AutozoomControl(this, opts);
   }
 
   getFaceBasedExposureControl(): ICnnControl {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for SmartbaseCamera.');
   }
 
   getDetector(opts?: DetectorOpts): IDetector {
-    throw new Error('Not supported for Smartbase.');
+    return new Detector(this, opts);
   }
 
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for SmartbaseCamera.');
   }
   getState(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for SmartbaseCamera.');
   }
   getPowerUsage(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for SmartbaseCamera.');
   }
   getTemperature(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for SmartbaseCamera.');
   }
   getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for SmartbaseCamera.');
   }
 }
