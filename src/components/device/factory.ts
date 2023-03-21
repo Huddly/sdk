@@ -235,12 +235,13 @@ export default class DeviceFactory {
         break;
       case HuddlyHEX.SMARTBASE_PID:
         device = new Smartbase(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
-      case HuddlyHEX.SMARTBASE_PID:
-        device = new Smartbase(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        break;
       case 0xa031:
         device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        break;
       case 0xa032:
         device = new SmartbaseSee(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        break;
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${productId}`);
     }
