@@ -212,9 +212,21 @@ export default class SmartbaseCamera implements IDeviceManager {
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
     throw new Error('Not supported for SmartbaseCamera.');
   }
-  getState(): Promise<any> {
-    throw new Error('Not supported for SmartbaseCamera.');
+
+  /**
+   * Get Autozoom state on target
+   *
+   * @return {*}  {Promise<any>} Resolves with information about the autozoom state
+   * @memberof Boxfish
+   */
+  async getState(): Promise<any> {
+    const response = await this.api.sendAndReceiveMessagePack('', {
+      send: 'camera/get_state',
+      receive: 'camera/get_state_reply',
+    });
+    return response;
   }
+
   getPowerUsage(): Promise<any> {
     throw new Error('Not supported for SmartbaseCamera.');
   }

@@ -40,7 +40,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   /** @ignore */
   _production_upgrade: boolean;
   /** @ignore */
-  private _statusMessageTimeout: number = 10000;
+  private _statusMessageTimeout: number = 30000;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
     super();
