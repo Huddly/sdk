@@ -20,6 +20,7 @@ import Smartbase from './smartbase';
 import { EventEmitter } from 'events';
 import SmartbaseAce from './smartbaseAce';
 import SmartbaseSee from './smartbaseSee';
+import SmartbaseCamera from './smartbaseCamera';
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
@@ -234,7 +235,7 @@ export default class DeviceFactory {
         device = new See(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);
         break;
       case HuddlyHEX.SMARTBASE_PID:
-        device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        device = new SmartbaseCamera(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
         break;
       case 0xa031:
         device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
