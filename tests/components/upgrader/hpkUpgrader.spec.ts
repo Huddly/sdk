@@ -366,7 +366,7 @@ describe('HPKUpgrader', () => {
             hpkUpgrader.on('UPGRADE_FAILED', reject);
           });
           await hpkUpgrader.start();
-          clock.tick(40000);
+          clock.tick(60000);
           try {
             await failedPromise;
             throw new Error('Should fail');
@@ -374,7 +374,7 @@ describe('HPKUpgrader', () => {
             expect(e.message).to.be.equal('Did not come back after reboot');
             expect(e.code).to.be.equal(10);
           }
-        }).timeout(40000);
+        }).timeout(60000);
       });
     });
   });

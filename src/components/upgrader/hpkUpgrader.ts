@@ -16,7 +16,7 @@ import HPKUpgradeError from './../../error/hpkUpgradeError';
 import Smartbase from '../device/smartbase';
 
 const MAX_UPLOAD_ATTEMPTS = 5;
-const REBOOT_TIMEOUT = 40000;
+const REBOOT_TIMEOUT = 60000;
 
 /**
  * Controller class for instrumenting the upgrade process on Huddly IQ camera.
