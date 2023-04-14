@@ -40,7 +40,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   /** @ignore */
   _production_upgrade: boolean;
   /** @ignore */
-  private _statusMessageTimeout: number = 30000;
+  private _statusMessageTimeout: number = 60000;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
     super();
@@ -150,7 +150,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
             send: 'hcp/write',
             receive: 'hcp/write_reply',
           },
-          30000
+          60000
         );
         const { status } = m;
         if (status !== 0) {
