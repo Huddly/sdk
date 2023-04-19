@@ -235,7 +235,7 @@ export default class DeviceFactory {
         device = new See(devInstance, <IGrpcTransport>transport, cameraDiscoveryEmitter);
         break;
       case HuddlyHEX.SMARTBASE_PID:
-        device = new SmartbaseCamera(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        device = new Smartbase(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
         break;
       case 0xa031:
         device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);

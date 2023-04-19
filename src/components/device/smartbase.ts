@@ -210,8 +210,9 @@ export default class Smartbase implements IDeviceManager {
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
     throw new Error('Not supported for Smartbase.');
   }
-  getState(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+  async getState(): Promise<any> {
+    const { autozoom_enabled } = await this.api.getProductInfo();
+    return { autozoom_enabled };
   }
   getPowerUsage(): Promise<any> {
     throw new Error('Not supported for Smartbase.');
