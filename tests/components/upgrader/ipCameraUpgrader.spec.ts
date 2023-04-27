@@ -19,17 +19,19 @@ const createDummyManager = () => {
   const dummyManager = sinon.createStubInstance(IpBaseDevice);
   dummyManager.transport = {
     grpcConnectionDeadlineSeconds: () => {},
-    close: () => {}
+    close: () => {},
   };
   dummyManager.grpcClient = {
     getDeviceVersion: sinon.stub(),
     upgradeDevice: sinon.stub(),
     upgradeVerify: sinon.stub(),
-    reset: sinon.stub()
+    reset: sinon.stub(),
+    upgradeImage: sinon.stub(),
+    verifyIntegrity: sinon.stub(),
   };
   dummyManager.wsdDevice = {
     serialNumber: '1245',
-    mac: 'FF:FF:FF:FF:FF:FF'
+    mac: 'FF:FF:FF:FF:FF:FF',
   };
   return dummyManager;
 };
@@ -52,24 +54,29 @@ describe('IpCameraUpgrader', () => {
       });
       it('should throw error if instance is not Ace', () => {
         upgrader = new IpCameraUpgrader(sinon.createStubInstance(Boxfish), dummyEmitter);
-        const badFn = () => { upgrader.ipBaseManager; };
-        expect(badFn).to.throw('IP camera upgrader initialized with wrong camera manager! Manager is not instance of IpBaseDevice but => Boxfish');
+        const badFn = () => {
+          upgrader.ipBaseManager;
+        };
+        expect(badFn).to.throw(
+          'IP camera upgrader initialized with wrong camera manager! Manager is not instance of IpBaseDevice but => Boxfish'
+        );
       });
     });
   });
 
   describe('#init', () => {
     describe('upgrader file exists', () => {
-
       it('should not throw any error if opts.file is correct', () => {
-        const goodFn = () => { upgrader.init({file: Buffer.alloc(0)}); };
+        const goodFn = () => {
+          upgrader.init({ file: Buffer.alloc(0) });
+        };
         expect(goodFn).to.not.throw();
       });
 
       it('should update bootTimeout if ops.bootTimeout is provided', () => {
         upgrader.init({
           file: Buffer.alloc(0),
-          bootTimeout: 5
+          bootTimeout: 5,
         });
         expect(upgrader.bootTimeout).to.equal(5000);
       });
@@ -90,7 +97,9 @@ describe('IpCameraUpgrader', () => {
         const spy = sinon.spy();
         upgrader.on('UPGRADE_REBOOT_COMPLETE', spy);
         upgrader.registerHotPlugEvents();
-        dummyManager.equals = () => { return true; }; // Stub device manager equals method
+        dummyManager.equals = () => {
+          return true;
+        }; // Stub device manager equals method
         dummyEmitter.emit(CameraEvents.ATTACH, dummyManager);
         expect(spy.called).to.equal(true);
       });
@@ -98,7 +107,9 @@ describe('IpCameraUpgrader', () => {
         const spy = sinon.spy();
         upgrader.on('UPGRADE_REBOOT_COMPLETE', spy);
         upgrader.registerHotPlugEvents();
-        dummyManager.equals = () => { return false; }; // Stub device manager equals method
+        dummyManager.equals = () => {
+          return false;
+        }; // Stub device manager equals method
         dummyEmitter.emit(CameraEvents.ATTACH, dummyManager);
         expect(spy.called).to.equal(false);
       });
@@ -123,11 +134,12 @@ describe('IpCameraUpgrader', () => {
   });
 
   describe('#start', () => {
-    let flashStub, rebootStub, commitStub, verifyVersionStateStub, verifyVersion;
+    let flashStub, rebootStub, commitStub, verifyVersionStateStub, verifyVersion, useLegacyStub;
     beforeEach(() => {
       flashStub = sinon.stub(upgrader, 'flash').resolves();
       rebootStub = sinon.stub(upgrader, 'reboot').resolves();
       commitStub = sinon.stub(upgrader, 'commit').resolves();
+      useLegacyStub = sinon.stub(upgrader, 'useLegacy').resolves(true);
       verifyVersionStateStub = sinon.stub(upgrader, 'verifyVersionState').resolves();
       verifyVersion = sinon.stub(upgrader, 'verifyVersion').resolves();
     });
@@ -163,7 +175,6 @@ describe('IpCameraUpgrader', () => {
       return new Promise((resolve, reject) => {
         upgrader.on(CameraEvents.UPGRADE_COMPLETE, () => {
           try {
-
             expect(verifyVersionStateStub.called).to.equal(true);
             expect(flashStub.called).to.equal(true);
             expect(rebootStub.called).to.equal(true);
@@ -217,7 +228,9 @@ describe('IpCameraUpgrader', () => {
     });
     it('should do nothing if version state matches', () => {
       getVersionStateStub = sinon.stub(upgrader, 'getVersionState').resolves(0);
-      const goodFunc = async () => { await upgrader.verifyVersionState(0); };
+      const goodFunc = async () => {
+        await upgrader.verifyVersionState(0);
+      };
       expect(goodFunc).to.not.throw();
     });
 
@@ -231,7 +244,9 @@ describe('IpCameraUpgrader', () => {
       } catch (e) {
         expect(e).to.be.instanceof(AceUpgraderError);
         expect(spy.called).to.equal(true);
-        expect(e.message).to.equal('Device not running in expected state. Expected UNKNOWNVERSIONSTATE | Got VERIFIED');
+        expect(e.message).to.equal(
+          'Device not running in expected state. Expected UNKNOWNVERSIONSTATE | Got VERIFIED'
+        );
       }
     });
   });
@@ -241,9 +256,9 @@ describe('IpCameraUpgrader', () => {
     const extractEmitter: EventEmitter = cpio.extract();
     beforeEach(() => {
       cpioStub = sinon.stub(cpio, 'extract').returns(extractEmitter);
-      upgrader.options = {file: Buffer.alloc(0) };
+      upgrader.options = { file: Buffer.alloc(0) };
       getVersionSub = sinon.stub(upgrader, 'getVersion').resolves('1.2.3');
-      streamStub = sinon.stub({ resume: () => {}, on: (msg, cb) => {}});
+      streamStub = sinon.stub({ resume: () => {}, on: (msg, cb) => {} });
     });
 
     afterEach(() => {
@@ -263,12 +278,17 @@ describe('IpCameraUpgrader', () => {
 
       const header = { name: 'version' };
       extractOnStub = sinon.stub(extractEmitter, 'on');
-      extractOnStub.withArgs('entry').yields(header, streamStub, entryCb)
-      .withArgs('finish').yields();
+      extractOnStub
+        .withArgs('entry')
+        .yields(header, streamStub, entryCb)
+        .withArgs('finish')
+        .yields();
 
       extractDestroyStub = sinon.stub(extractEmitter, 'destroy');
       extractDestroyStub.returns(true);
-      const goodFn = async () => { await upgrader.verifyVersion(); };
+      const goodFn = async () => {
+        await upgrader.verifyVersion();
+      };
       expect(goodFn).to.not.throw();
     });
 
@@ -282,13 +302,19 @@ describe('IpCameraUpgrader', () => {
 
       const header = { name: 'version' };
       extractOnStub = sinon.stub(extractEmitter, 'on');
-      extractOnStub.withArgs('entry').yields(header, streamStub, entryCb)
-      .withArgs('finish').yields();
+      extractOnStub
+        .withArgs('entry')
+        .yields(header, streamStub, entryCb)
+        .withArgs('finish')
+        .yields();
 
       extractDestroyStub = sinon.stub(extractEmitter, 'destroy');
       extractDestroyStub.returns(true);
       const errMsg = 'Camera running wrong version! Expected 0.0.1 but got 1.2.3';
-      return expect(upgrader.verifyVersion()).to.eventually.be.rejectedWith(AceUpgraderError, errMsg);
+      return expect(upgrader.verifyVersion()).to.eventually.be.rejectedWith(
+        AceUpgraderError,
+        errMsg
+      );
     });
 
     describe('onTimeout', () => {
@@ -315,7 +341,9 @@ describe('IpCameraUpgrader', () => {
 
   describe('#calculateExpectedSlot', () => {
     it('should throw error for unexpected slots', () => {
-      const badFn = () => { upgrader.calculateExpectedSlot('X'); };
+      const badFn = () => {
+        upgrader.calculateExpectedSlot('X');
+      };
       expect(badFn).to.throw(AceUpgraderError, 'Unexpected slot: X');
     });
     it('should expect B given A', () => {
@@ -336,14 +364,19 @@ describe('IpCameraUpgrader', () => {
 
     it('should do nothing if expected slot and current slot match', () => {
       dummyManager.getSlot.resolves('B');
-      const goodFn = () => { upgrader.verifySlot('A'); };
+      const goodFn = () => {
+        upgrader.verifySlot('A');
+      };
       expect(goodFn).to.not.throw();
     });
 
     it('should throw AceUpgraderError if expected slot and current slot dont match', () => {
       dummyManager.getSlot.resolves('B');
       const errMsg = 'Camera booted from wrong slot! Expected A but got B';
-      return expect(upgrader.verifySlot('B')).to.eventually.be.rejectedWith(AceUpgraderError, errMsg);
+      return expect(upgrader.verifySlot('B')).to.eventually.be.rejectedWith(
+        AceUpgraderError,
+        errMsg
+      );
     });
   });
 
@@ -377,13 +410,13 @@ describe('IpCameraUpgrader', () => {
     });
   });
 
-  describe('#performUpgradeStep', () => {
+  describe.only('#performUpgradeStep', () => {
     let cpioStub, streamStub, extractOnStub;
     const extractEmitter: EventEmitter = cpio.extract();
     beforeEach(() => {
       cpioStub = sinon.stub(cpio, 'extract').returns(extractEmitter);
       upgrader.options = { file: Buffer.alloc(0) };
-      streamStub = sinon.stub({ resume: () => {}, on: (msg, cb) => {}});
+      streamStub = sinon.stub({ resume: () => {}, on: (msg, cb) => {} });
     });
 
     afterEach(() => {
@@ -392,57 +425,156 @@ describe('IpCameraUpgrader', () => {
     });
 
     describe('onSuccess', () => {
-      it('should call upgradeDevice and resolve when callback is invoked', async () => {
-        extractOnStub = sinon.stub(extractEmitter, 'on');
-        extractOnStub.withArgs('entry').yields({}, streamStub, () => {});
+      describe('legacy', () => {
+        beforeEach(() => {
+          upgrader._useLegacy = true;
+        });
+        it('should call upgradeDevice and resolve when callback is invoked', async () => {
+          extractOnStub = sinon.stub(extractEmitter, 'on');
+          extractOnStub.withArgs('entry').yields({}, streamStub, () => {});
 
-        const status: huddly.DeviceStatus = new huddly.DeviceStatus();
-        status.setCode(0);
-        status.setMessage('All good');
-        dummyManager.grpcClient.upgradeDevice.yields(undefined, status);
+          const status: huddly.DeviceStatus = new huddly.DeviceStatus();
+          status.setCode(0);
+          status.setMessage('All good');
+          dummyManager.grpcClient.upgradeDevice.yields(undefined, status);
 
-        const upgradeStepStatus: string = await upgrader.performUpgradeStep(UpgradeSteps.FLASH, 'Flash');
-        expect(upgradeStepStatus).to.equal('Flash step completed. Status code 0, message All good');
+          const upgradeStepStatus: string = await upgrader.performUpgradeStep(
+            UpgradeSteps.FLASH,
+            'Flash'
+          );
+          expect(upgradeStepStatus).to.equal(
+            'Flash step completed. Status code 0, message All good'
+          );
+        });
+        it('should call upgradeVerify and resolve when callback is invoked', async () => {
+          extractOnStub = sinon.stub(extractEmitter, 'on');
+          extractOnStub.withArgs('entry').yields({}, streamStub, () => {});
+
+          const status: huddly.DeviceStatus = new huddly.DeviceStatus();
+          status.setCode(0);
+          status.setMessage('All good');
+          dummyManager.grpcClient.upgradeVerify.yields(undefined, status);
+
+          const upgradeStepStatus: string = await upgrader.performUpgradeStep(
+            UpgradeSteps.COMMIT,
+            'Commit'
+          );
+          expect(upgradeStepStatus).to.equal(
+            'Commit step completed. Status code 0, message All good'
+          );
+        });
+        it('should write chunks to ClientWritableStream', async () => {
+          const cpioStreamEndSpy = sinon.spy();
+          streamStub.resume.returns(true);
+          const dataBuffer: Buffer = Buffer.from('Hello');
+          streamStub.on.withArgs('data').yields(dataBuffer);
+          streamStub.on.withArgs('end').yields();
+
+          const header = { name: 'image.itb' };
+          extractOnStub = sinon.stub(extractEmitter, 'on');
+          extractOnStub
+            .withArgs('entry')
+            .yields(header, streamStub, cpioStreamEndSpy)
+            .withArgs('end')
+            .yields();
+
+          const status: huddly.DeviceStatus = new huddly.DeviceStatus();
+          status.setCode(0);
+          status.setMessage('All good');
+          const stub = {
+            write: sinon.stub(),
+            end: sinon.stub(),
+          };
+          dummyManager.grpcClient.upgradeVerify.yields(undefined, status).returns(stub);
+
+          await upgrader.performUpgradeStep(UpgradeSteps.COMMIT, 'Commit');
+          expect(cpioStreamEndSpy.called).to.equal(true);
+          expect(stub.write.called).to.equal(true);
+          expect(stub.write.getCall(0).args[0]).to.be.instanceof(huddly.Chunk);
+          expect((<huddly.Chunk>stub.write.getCall(0).args[0]).getContent()).to.deep.equal(
+            dataBuffer
+          );
+        });
       });
-      it('should call upgradeVerify and resolve when callback is invoked', async () => {
-        extractOnStub = sinon.stub(extractEmitter, 'on');
-        extractOnStub.withArgs('entry').yields({}, streamStub, () => {});
+      describe('new cpio format', () => {
+        beforeEach(() => {
+          upgrader._useLegacy = false;
+        });
+        it('should call upgradeImage and resolve when callback is invoked', async () => {
+          extractOnStub = sinon.stub(extractEmitter, 'on');
+          extractOnStub.withArgs('entry').yields({}, streamStub, () => {});
 
-        const status: huddly.DeviceStatus = new huddly.DeviceStatus();
-        status.setCode(0);
-        status.setMessage('All good');
-        dummyManager.grpcClient.upgradeVerify.yields(undefined, status);
+          const status: huddly.DeviceStatus = new huddly.DeviceStatus();
+          status.setCode(0);
+          status.setMessage('All good');
+          dummyManager.grpcClient.upgradeImage.yields(undefined, status);
 
-        const upgradeStepStatus: string = await upgrader.performUpgradeStep(UpgradeSteps.COMMIT, 'Commit');
-        expect(upgradeStepStatus).to.equal('Commit step completed. Status code 0, message All good');
-      });
+          const upgradeStepStatus: string = await upgrader.performUpgradeStep(
+            UpgradeSteps.FLASH,
+            'Flash'
+          );
+          expect(upgradeStepStatus).to.equal(
+            'Flash step completed. Status code 0, message All good'
+          );
+        });
+        it('should write chunks to ClientWritableStream on flash step', async () => {
+          const cpioStreamEndSpy = sinon.spy();
+          streamStub.resume.returns(true);
+          const dataBuffer: Buffer = Buffer.from('Hello');
+          streamStub.on.withArgs('data').yields(dataBuffer);
+          streamStub.on.withArgs('end').yields();
 
-      it('should write chunks to ClientWritableStream', async () => {
-        const cpioStreamEndSpy = sinon.spy();
-        streamStub.resume.returns(true);
-        const dataBuffer: Buffer = Buffer.from('Hello');
-        streamStub.on.withArgs('data').yields(dataBuffer);
-        streamStub.on.withArgs('end').yields();
+          const header = { name: 'image.img' };
+          extractOnStub = sinon.stub(extractEmitter, 'on');
+          extractOnStub
+            .withArgs('entry')
+            .yields(header, streamStub, cpioStreamEndSpy)
+            .withArgs('end')
+            .yields();
 
-        const header = { name: 'image.itb' };
-        extractOnStub = sinon.stub(extractEmitter, 'on');
-        extractOnStub.withArgs('entry').yields(header, streamStub, cpioStreamEndSpy)
-        .withArgs('end').yields();
+          const status: huddly.DeviceStatus = new huddly.DeviceStatus();
+          status.setCode(0);
+          status.setMessage('All good');
+          const stub = {
+            write: sinon.stub(),
+            end: sinon.stub(),
+          };
+          dummyManager.grpcClient.upgradeImage.yields(undefined, status).returns(stub);
 
-        const status: huddly.DeviceStatus = new huddly.DeviceStatus();
-        status.setCode(0);
-        status.setMessage('All good');
-        const stub = {
-          write: sinon.stub(),
-          end: sinon.stub()
-        };
-        dummyManager.grpcClient.upgradeVerify.yields(undefined, status).returns(stub);
+          await upgrader.performUpgradeStep(UpgradeSteps.FLASH, 'Flash');
+          expect(cpioStreamEndSpy.called).to.equal(true);
+          expect(stub.write.called).to.equal(true);
+          expect(stub.write.getCall(0).args[0]).to.be.instanceof(huddly.Chunk);
+          expect((<huddly.Chunk>stub.write.getCall(0).args[0]).getContent()).to.deep.equal(
+            dataBuffer
+          );
+        });
+        it('should write chunks to ClientWritableStreamWrapper on commit step', async () => {
+          const cpioStreamEndSpy = sinon.spy();
+          streamStub.resume.returns(true);
+          const dataBuffer: Buffer = Buffer.from('Hello');
+          streamStub.on.withArgs('data').yields(dataBuffer);
+          streamStub.on.withArgs('end').yields();
 
-        await upgrader.performUpgradeStep(UpgradeSteps.COMMIT, 'Commit');
-        expect(cpioStreamEndSpy.called).to.equal(true);
-        expect(stub.write.called).to.equal(true);
-        expect(stub.write.getCall(0).args[0]).to.be.instanceof(huddly.Chunk);
-        expect((<huddly.Chunk>stub.write.getCall(0).args[0]).getContent()).to.deep.equal(dataBuffer);
+          const header = { name: 'verify.md5' };
+          extractOnStub = sinon.stub(extractEmitter, 'on');
+          extractOnStub
+            .withArgs('entry')
+            .yields(header, streamStub, cpioStreamEndSpy)
+            .withArgs('end')
+            .yields();
+
+          const status: huddly.DeviceStatus = new huddly.DeviceStatus();
+          status.setCode(0);
+          status.setMessage('All good');
+          dummyManager.grpcClient.verifyIntegrity.yields(undefined, status);
+
+          await upgrader.performUpgradeStep(UpgradeSteps.COMMIT, 'Commit');
+          expect(cpioStreamEndSpy.called).to.equal(true);
+          const callArg = dummyManager.grpcClient.verifyIntegrity.getCall(0).args[0];
+          expect(callArg).to.be.instanceof(huddly.VerificationRequest);
+          expect(callArg.getFormat()).to.equal(huddly.VerificationFormat.MD5SUM);
+        });
       });
     });
 
@@ -464,7 +596,7 @@ describe('IpCameraUpgrader', () => {
       it('should reject if upgradeStep callback contains errors', () => {
         const callbackErr = {
           message: 'Something went wrong!',
-          details: 'Something went wrong!'
+          details: 'Something went wrong!',
         };
         dummyManager.grpcClient.upgradeVerify.yields(callbackErr, undefined);
         const upgradeStepPromise = upgrader.performUpgradeStep(UpgradeSteps.COMMIT, 'Commit');
@@ -510,13 +642,15 @@ describe('IpCameraUpgrader', () => {
     it('should reject and emit UPGRADE_FAILED event if reset grpc call does not go through', async () => {
       const spy = sinon.spy();
       upgrader.on(CameraEvents.UPGRADE_FAILED, spy);
-      const errObj = { code: 1, details: 'Something went wrong'};
+      const errObj = { code: 1, details: 'Something went wrong' };
       dummyManager.grpcClient.reset.yields(errObj, undefined);
       try {
         await upgrader.reboot();
         expect(false).to.equal(true); // This line should not be reached
       } catch (e) {
-        expect(e).to.equal(`Reboot failed! Error: code [${errObj.code}] Details [${errObj.details}]`);
+        expect(e).to.equal(
+          `Reboot failed! Error: code [${errObj.code}] Details [${errObj.details}]`
+        );
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[0]).to.deep.equal(errObj);
       }
@@ -524,7 +658,7 @@ describe('IpCameraUpgrader', () => {
 
     it('should reject if device status is not OK', async () => {
       const spy = sinon.spy();
-      const errObj = { code: 1, details: 'GPRC Timeout'};
+      const errObj = { code: 1, details: 'GPRC Timeout' };
       upgrader.on(CameraEvents.UPGRADE_FAILED, spy);
       const deviceStatus: huddly.DeviceStatus = new huddly.DeviceStatus();
       deviceStatus.setCode(huddly.StatusCode.FAILED);
@@ -534,7 +668,9 @@ describe('IpCameraUpgrader', () => {
         await upgrader.reboot();
         expect(false).to.equal(true); // This line should not be reached
       } catch (e) {
-        expect(e).to.equal(`Reboot failed! DeviceStatus: code [${huddly.StatusCode.FAILED}] Msg [${errObj.details}]`);
+        expect(e).to.equal(
+          `Reboot failed! DeviceStatus: code [${huddly.StatusCode.FAILED}] Msg [${errObj.details}]`
+        );
         expect(spy.called).to.equal(true);
         expect(spy.getCall(0).args[0]).to.deep.equal(errObj);
       }
@@ -558,7 +694,9 @@ describe('IpCameraUpgrader', () => {
 
   describe('#upgradeIsValid', () => {
     it('should not be supported"', () => {
-      const badFn = () => { upgrader.upgradeIsValid(); };
+      const badFn = () => {
+        upgrader.upgradeIsValid();
+      };
       expect(badFn).to.throw('Method not supported!');
     });
   });

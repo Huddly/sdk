@@ -32,7 +32,7 @@ export enum UpgradeSteps {
   COMMIT = 2,
 }
 
-class ClientWritableStreamWrapper {
+export class ClientWritableStreamWrapper {
   private data: string | Uint8Array;
   private verifyFunction: Function;
 
@@ -513,7 +513,6 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
 
     return new Promise(async (resolve, reject) => {
       const upgradeUtils = this.getUpgradeMethodsAndFileNames();
-
       const readTimeout: NodeJS.Timeout = global.setTimeout(() => {
         const errMsg = `Unable to perform upgrade step ${step} within given time of ${UPGRADE_STEP_TIMEOUT} seconds`;
         Logger.warn(errMsg, this.className);
@@ -555,12 +554,12 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
             (key) => UpgradeSteps[key] === step
           );
           clearTimeout(readTimeout);
+          console.log('Hallooooooooo');
           throw new AceUpgraderError(
             `Unknown upgrade step ${upgradeStepStr}`,
             ErrorCodes.UPGRADE_FAILED
           );
       }
-
       extract.on('entry', (header: any, cpioStream: any, cb: any) => {
         cpioStream.on('end', () => {
           cb();
