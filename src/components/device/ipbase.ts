@@ -21,12 +21,11 @@ import Locksmith from './../locksmith';
 import AceUpgrader from './../upgrader/aceUpgrader';
 import IpAutozoomControl from '../ipAutozoomControl';
 import IpFaceBasedExposureControl from '../ipFaceBasedExposureControl';
-import IpDetector from '../ipDetector';
-
 import { HuddlyServiceClient } from '@huddly/camera-proto/lib/api/huddly_grpc_pb';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as grpc from '@grpc/grpc-js';
+import HuddlyGrpcTunnelClient from './huddlyGrpcTunnelClient';
 
 /**
  * @ignore
@@ -108,10 +107,10 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * Grpc client instance for communicating with the grpc server running on the network device
    *
    * @private
-   * @type {HuddlyServiceClient}
+   * @type {HuddlyServiceClient | HuddlyGrpcTunnelClient}
    * @memberof IpBaseDevice
    */
-  private huddlyGrpcClient: HuddlyServiceClient;
+  private huddlyGrpcClient: HuddlyServiceClient | HuddlyGrpcTunnelClient;
 
   /**
    * @ignore
@@ -136,11 +135,11 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
     throw new Error('Not Supported');
   }
 
-  get grpcClient(): HuddlyServiceClient {
+  get grpcClient(): HuddlyServiceClient | HuddlyGrpcTunnelClient {
     return this.huddlyGrpcClient;
   }
 
-  set grpcClient(client: HuddlyServiceClient) {
+  set grpcClient(client: HuddlyServiceClient | HuddlyGrpcTunnelClient) {
     this.huddlyGrpcClient = client;
   }
 
@@ -210,14 +209,14 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @param {*} reject Reject function.
    * @memberof IpBaseDevice
    */
-  handleError(msg: string, error: ErrorInterface, reject: any): void {
+  handleError(msg: string, error: grpc.ServiceError, reject: any): void {
     if (!error) {
       Logger.error(msg, '', this.className);
       reject(msg);
       return;
     }
-
-    Logger.error(msg, error.stack, this.className);
+    const errorMessage = `${msg} ${error.name}: ${error.message}`;
+    Logger.error(errorMessage, error.stack || '', this.className);
     reject(error.message ? error.message : 'Unknown error');
   }
 
@@ -830,7 +829,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
 
       this.grpcClient.setSaturation(
         saturation,
-        (err: ErrorInterface, deviceStatus: huddly.DeviceStatus) => {
+        (err: grpc.ServiceError, deviceStatus: huddly.DeviceStatus) => {
           if (err != undefined) {
             this.handleError('Unable to set saturation', err, reject);
             return;

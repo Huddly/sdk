@@ -18,9 +18,9 @@ import See from './see';
 import Smartbase from './smartbase';
 
 import { EventEmitter } from 'events';
-import SmartbaseAce from './smartbaseAce';
-import SmartbaseSee from './smartbaseSee';
-import SmartbaseCamera from './smartbaseCamera';
+import SmartbaseAce from './usbAdapterAce';
+import SmartbaseSee from './usbAdapterSee';
+import SmartbaseCamera from './usbAdapterCamera';
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
@@ -238,10 +238,10 @@ export default class DeviceFactory {
         device = new Smartbase(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
         break;
       case 0xa031:
-        device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        device = new SmartbaseSee(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
         break;
       case 0xa032:
-        device = new SmartbaseSee(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
         break;
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${productId}`);

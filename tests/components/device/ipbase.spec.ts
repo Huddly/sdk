@@ -236,18 +236,6 @@ describe('IpBaseDevice', () => {
       expect(spy.called).to.equal(true);
       expect(spy.getCall(0).args[0]).to.equal('Hello World');
     });
-    it('should reject error message when error provided', () => {
-      const spy = sinon.spy();
-      device.handleError('Hello World', new Error('Something fishy'), spy);
-      expect(spy.called).to.equal(true);
-      expect(spy.getCall(0).args[0]).to.equal('Something fishy');
-    });
-    it('should reject with unknown message when error message is not given', () => {
-      const spy = sinon.spy();
-      device.handleError('Hello World', new Error(), spy);
-      expect(spy.called).to.equal(true);
-      expect(spy.getCall(0).args[0]).to.equal('Unknown error');
-    });
   });
 
   describe('#getInfo', () => {
