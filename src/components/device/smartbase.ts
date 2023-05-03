@@ -128,7 +128,7 @@ export default class Smartbase implements IDeviceManager {
   }
 
   getUpgrader(): Promise<IDeviceUpgrader> {
-    throw new Error('Not supported for Smartbase.');
+    return createBoxfishUpgrader(this, this.discoveryEmitter);
   }
 
   async uptime() {
@@ -210,16 +210,19 @@ export default class Smartbase implements IDeviceManager {
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
     throw new Error('Not supported for Smartbase.');
   }
-  async getState(): Promise<any> {
-    const { autozoom_enabled } = await this.api.getProductInfo();
-    return { autozoom_enabled };
+
+  getState(): Promise<any> {
+    throw new Error('Not supported for Smartbase.');
   }
+
   getPowerUsage(): Promise<any> {
     throw new Error('Not supported for Smartbase.');
   }
+
   getTemperature(): Promise<any> {
     throw new Error('Not supported for Smartbase.');
   }
+
   getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
     throw new Error('Not supported for Smartbase.');
   }

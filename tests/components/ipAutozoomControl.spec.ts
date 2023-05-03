@@ -49,7 +49,6 @@ describe('IpAutozoomControl', () => {
       // @ts-ignore
       await autozoomControl._setCnnFeature(huddly.Feature.FACEBASEDEXPOSURE, huddly.Mode.STOP);
       const arg = spy.firstCall.args[0];
-      console.log(arg);
       expect(arg.getFeature()).to.equal(huddly.Feature.FACEBASEDEXPOSURE);
       expect(arg.getMode()).to.equal(huddly.Mode.STOP);
       expect(infoStub).to.have.been.calledOnce;

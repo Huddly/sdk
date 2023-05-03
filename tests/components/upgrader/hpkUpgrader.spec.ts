@@ -11,7 +11,6 @@ import HPKUpgrader from './../../../src/components/upgrader/hpkUpgrader';
 import Boxfish from './../../../src/components/device/boxfish';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
-import { executionAsyncId } from 'async_hooks';
 
 chai.should();
 chai.use(sinonChai);
@@ -38,6 +37,7 @@ describe('HPKUpgrader', () => {
 
   describe('#init', () => {
     it('should emit UPGRADE_REBOOT_COMPLETE on ATTACH', () => {
+      dummyCameraManager.serialNumber = '';
       hpkUpgrader.init({});
       const upgradeCompletePromise = new Promise((resolve) => {
         hpkUpgrader.once('UPGRADE_REBOOT_COMPLETE', resolve);
@@ -71,7 +71,7 @@ describe('HPKUpgrader', () => {
 
       it('should close transport on DETACH ', () => {
         hpkUpgrader.init({});
-        dummyEmitter.emit(CameraEvents.DETACH);
+        dummyEmitter.emit(CameraEvents.DETACH, '');
         expect(dummyCameraManager.transport.close).to.have.been.calledOnce;
       });
 
@@ -366,7 +366,7 @@ describe('HPKUpgrader', () => {
             hpkUpgrader.on('UPGRADE_FAILED', reject);
           });
           await hpkUpgrader.start();
-          clock.tick(60000);
+          clock.tick(80000);
           try {
             await failedPromise;
             throw new Error('Should fail');
@@ -374,7 +374,7 @@ describe('HPKUpgrader', () => {
             expect(e.message).to.be.equal('Did not come back after reboot');
             expect(e.code).to.be.equal(10);
           }
-        }).timeout(60000);
+        }).timeout(80000);
       });
     });
   });
