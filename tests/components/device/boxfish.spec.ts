@@ -12,49 +12,10 @@ import Boxfish from './../../../src/components/device/boxfish';
 import { EventEmitter } from 'events';
 import CameraEvents from './../../../src/utilitis/events';
 import Api from './../../../src/components/api';
+import DummyTransport from '../../../tests/mocks/dummyTransport.mock';
 
 chai.should();
 chai.use(sinonChai);
-
-class DummyTransport extends EventEmitter implements ITransport {
-  device: any;  eventLoopSpeed: number;
-  setEventLoopReadSpeed(timeout?: number): void {
-    throw new Error('Method not implemented.');
-  }
-  init(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  initEventLoop(): void {
-    throw new Error('Method not implemented.');
-  }
-  startListen(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-  receiveMessage(message: string, timeout?: number): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  read(receiveMsg?: string, timeout?: number): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  write(cmd: string, payload?: Buffer): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  subscribe(command: string): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  unsubscribe(command: string): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  clear(): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  close(): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  stopEventLoop(): Promise<void> {
-    throw new Error('Method not implemented.');
-  }
-}
 
 class DummyUpgrader extends EventEmitter implements IDeviceUpgrader {
   init(opts: import('@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts').default): void {
@@ -71,12 +32,7 @@ class DummyUpgrader extends EventEmitter implements IDeviceUpgrader {
 describe('Boxfish', () => {
   let device: Boxfish;
   beforeEach(() => {
-    device = new Boxfish(
-      {},
-      sinon.createStubInstance(DummyTransport),
-      {},
-      new EventEmitter(),
-    );
+    device = new Boxfish({}, sinon.createStubInstance(DummyTransport), {}, new EventEmitter());
   });
 
   describe('#upgrade', () => {
@@ -106,7 +62,7 @@ describe('Boxfish', () => {
           file: validBuffer,
           upgrader,
         });
-      } catch (e)  {
+      } catch (e) {
         // Will eventually fail which is ok
       }
 
@@ -115,7 +71,7 @@ describe('Boxfish', () => {
         deviceManager: device,
       });
 
-      await new Promise(resolve => setTimeout(resolve, 100));
+      await new Promise((resolve) => setTimeout(resolve, 100));
       expect(upgrader.start).to.have.been.calledOnce;
     });
   });
@@ -162,7 +118,9 @@ describe('Boxfish', () => {
       await device.getLatestFirmwareUrl(ReleaseChannel.RELEASE_CANDIDATE);
       expect(getLatestFirmwareUrlStub.called).to.equals(true);
       expect(getLatestFirmwareUrlStub.getCall(0).args[0]).to.equals('iq');
-      expect(getLatestFirmwareUrlStub.getCall(0).args[1]).to.equals(ReleaseChannel.RELEASE_CANDIDATE);
+      expect(getLatestFirmwareUrlStub.getCall(0).args[1]).to.equals(
+        ReleaseChannel.RELEASE_CANDIDATE
+      );
     });
   });
 
@@ -170,25 +128,28 @@ describe('Boxfish', () => {
     it('should give you current diagonstics info', async () => {
       await device.initialize();
       sinon.stub(device.api, 'sendAndReceiveMessagePack').resolves({
-        voltage:
-          { min: 5.136000156402588,
-            curr: 5.136000156402588,
-            max: 5.144000053405762,
-            avg: 5.140143871307373 },
-         current:
-          { min: 0.2849999964237213,
-            curr: 0.28999999165534973,
-            max: 0.3230000138282776,
-            avg: 0.3018396198749542 },
-         power:
-          { min: 1.472000002861023,
-            curr: 1.5139999389648438,
-            max: 1.565999984741211,
-            avg: 1.505385160446167 }
+        voltage: {
+          min: 5.136000156402588,
+          curr: 5.136000156402588,
+          max: 5.144000053405762,
+          avg: 5.140143871307373,
+        },
+        current: {
+          min: 0.2849999964237213,
+          curr: 0.28999999165534973,
+          max: 0.3230000138282776,
+          avg: 0.3018396198749542,
+        },
+        power: {
+          min: 1.472000002861023,
+          curr: 1.5139999389648438,
+          max: 1.565999984741211,
+          avg: 1.505385160446167,
+        },
       });
 
       const diagnostics = await device.getDiagnostics();
-      const currentInfo = diagnostics.find(d => d.type === 'Current');
+      const currentInfo = diagnostics.find((d) => d.type === 'Current');
 
       expect(currentInfo.message).to.be.equal('Current Ok');
     });
@@ -196,25 +157,23 @@ describe('Boxfish', () => {
     it('should give you current is too heigh it should report it', async () => {
       await device.initialize();
       sinon.stub(device.api, 'sendAndReceiveMessagePack').resolves({
-        voltage:
-          { min: 5.136000156402588,
-            curr: 5.136000156402588,
-            max: 5.144000053405762,
-            avg: 5.140143871307373 },
-         current:
-          { min: 0.2849999964237213,
-            curr: 0.99,
-            max: 0.99,
-            avg: 0.3018396198749542 },
-         power:
-          { min: 1.472000002861023,
-            curr: 1.5139999389648438,
-            max: 1.565999984741211,
-            avg: 1.505385160446167 }
+        voltage: {
+          min: 5.136000156402588,
+          curr: 5.136000156402588,
+          max: 5.144000053405762,
+          avg: 5.140143871307373,
+        },
+        current: { min: 0.2849999964237213, curr: 0.99, max: 0.99, avg: 0.3018396198749542 },
+        power: {
+          min: 1.472000002861023,
+          curr: 1.5139999389648438,
+          max: 1.565999984741211,
+          avg: 1.505385160446167,
+        },
       });
 
       const diagnostics = await device.getDiagnostics();
-      const currentInfo = diagnostics.find(d => d.type === 'Current');
+      const currentInfo = diagnostics.find((d) => d.type === 'Current');
 
       expect(currentInfo.message).to.include('Current high');
     });
@@ -222,25 +181,28 @@ describe('Boxfish', () => {
     it('should give you volgate diagonstics info', async () => {
       await device.initialize();
       sinon.stub(device.api, 'sendAndReceiveMessagePack').resolves({
-        voltage:
-          { min: 5.136000156402588,
-            curr: 5.136000156402588,
-            max: 5.144000053405762,
-            avg: 5.140143871307373 },
-         current:
-          { min: 0.2849999964237213,
-            curr: 0.28999999165534973,
-            max: 0.3230000138282776,
-            avg: 0.3018396198749542 },
-         power:
-          { min: 1.472000002861023,
-            curr: 1.5139999389648438,
-            max: 1.565999984741211,
-            avg: 1.505385160446167 }
+        voltage: {
+          min: 5.136000156402588,
+          curr: 5.136000156402588,
+          max: 5.144000053405762,
+          avg: 5.140143871307373,
+        },
+        current: {
+          min: 0.2849999964237213,
+          curr: 0.28999999165534973,
+          max: 0.3230000138282776,
+          avg: 0.3018396198749542,
+        },
+        power: {
+          min: 1.472000002861023,
+          curr: 1.5139999389648438,
+          max: 1.565999984741211,
+          avg: 1.505385160446167,
+        },
       });
 
       const diagnostics = await device.getDiagnostics();
-      const currentInfo = diagnostics.find(d => d.type === 'Voltage');
+      const currentInfo = diagnostics.find((d) => d.type === 'Voltage');
 
       expect(currentInfo.message).to.be.equal('Voltage Ok');
     });
@@ -248,25 +210,23 @@ describe('Boxfish', () => {
     it('should give you voltage is too heigh it should report it', async () => {
       await device.initialize();
       sinon.stub(device.api, 'sendAndReceiveMessagePack').resolves({
-        voltage:
-          { min: 5.136000156402588,
-            curr: 5.136000156402588,
-            max: 6.144000053405762,
-            avg: 5.140143871307373 },
-         current:
-          { min: 0.2849999964237213,
-            curr: 0.99,
-            max: 0.99,
-            avg: 0.3018396198749542 },
-         power:
-          { min: 1.472000002861023,
-            curr: 1.5139999389648438,
-            max: 1.565999984741211,
-            avg: 1.505385160446167 }
+        voltage: {
+          min: 5.136000156402588,
+          curr: 5.136000156402588,
+          max: 6.144000053405762,
+          avg: 5.140143871307373,
+        },
+        current: { min: 0.2849999964237213, curr: 0.99, max: 0.99, avg: 0.3018396198749542 },
+        power: {
+          min: 1.472000002861023,
+          curr: 1.5139999389648438,
+          max: 1.565999984741211,
+          avg: 1.505385160446167,
+        },
       });
 
       const diagnostics = await device.getDiagnostics();
-      const currentInfo = diagnostics.find(d => d.type === 'Voltage');
+      const currentInfo = diagnostics.find((d) => d.type === 'Voltage');
 
       expect(currentInfo.message).to.include('Voltage high');
     });
@@ -274,11 +234,11 @@ describe('Boxfish', () => {
     it('should give the usb mode', async () => {
       await device.initialize();
       sinon.stub(device.api, 'sendAndReceiveMessagePack').resolves({
-        usb: { mode: 'SuperSpeedPlus' }
+        usb: { mode: 'SuperSpeedPlus' },
       });
 
       const diagnostics = await device.getDiagnostics();
-      const currentInfo = diagnostics.find(d => d.type === 'USBMODE');
+      const currentInfo = diagnostics.find((d) => d.type === 'USBMODE');
 
       expect(currentInfo.message).to.include('USB Ok');
       expect(currentInfo.data.mode).to.equal('SuperSpeedPlus');

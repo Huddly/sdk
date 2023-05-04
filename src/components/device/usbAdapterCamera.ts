@@ -16,10 +16,10 @@ import HuddlyGrpcTunnelClient from './huddlyGrpcTunnelClient';
 import IpBaseDevice from './ipbase';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import IpAutozoomControl from '../ipAutozoomControl';
-import IpDetector from '../ipDetector';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
-export default class SmartbaseCamera implements IIpDeviceManager {
-  productName: string = 'Huddly L1';
+export default class UsbAdapterCamera implements IIpDeviceManager {
+  productName: string;
   transport: IUsbTransport;
   api: IDeviceCommonApi;
   grpcClient: any;
@@ -31,13 +31,19 @@ export default class SmartbaseCamera implements IIpDeviceManager {
    * Creates an instance of an ip camera that is connected through the smartbase.
    * @param {IUsbTransport} transport The transport instance for communicating with the camera.
    * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach & detach events for Huddly cameras.
-   * @memberof SmartbaseCamera
+   * @memberof UsbAdapterCamera
    */
-  constructor(deviceInstance: any, transport: IUsbTransport, cameraDiscoveryEmitter: EventEmitter) {
+  constructor(
+    deviceInstance: any,
+    transport: IUsbTransport,
+    cameraDiscoveryEmitter: EventEmitter,
+    productName: string = 'Huddly L1'
+  ) {
     this.transport = transport;
     this.locksmith = new Locksmith();
     this.grpcClient = new HuddlyGrpcTunnelClient(this.transport, this.locksmith);
     this.api = new Api(transport, this.locksmith);
+    this.productName = productName;
     this.ipDevice = new IpBaseDevice(
       {
         infoObject: () => {
@@ -54,25 +60,11 @@ export default class SmartbaseCamera implements IIpDeviceManager {
     Object.assign(this, deviceInstance);
   }
 
-  /**
-   * @ignore
-   * Not applicable
-   *
-   * @readonly
-   * @memberof IpBaseDevice
-   */
-  get uvcControlInterface() {
-    throw new Error('Not Supported');
-  }
-
-  getCnnFeatureStatus(cnnFeature: any): Promise<any> {
+  getCnnFeatureStatus(cnnFeature: huddly.CnnFeature): Promise<any> {
     return this.ipDevice.getCnnFeatureStatus(cnnFeature);
   }
   initialize(developmentMode?: boolean): Promise<void> {
     return;
-  }
-  closeConnection(): Promise<any> {
-    throw new Error('Method not implemented.');
   }
   getInfo(): Promise<any> {
     return this.ipDevice.getInfo();
@@ -80,43 +72,24 @@ export default class SmartbaseCamera implements IIpDeviceManager {
   async getErrorLog(timeout: number): Promise<any> {
     return await this.api.getErrorLog(timeout);
   }
-  async eraseErrorLog(timeout: number): Promise<void> {
+
+  eraseErrorLog(timeout: number): Promise<void> {
     return this.ipDevice.eraseErrorLog();
   }
   reboot(mode?: string): Promise<void> {
     return this.ipDevice.reboot();
   }
-  getUpgrader(): Promise<IDeviceUpgrader> {
-    throw new Error('Method not implemented.');
-  }
-  upgrade(opts: UpgradeOpts): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-  getFaceBasedExposureControl(): ICnnControl {
-    throw new Error('Method not implemented.');
-  }
-  getDiagnostics(): Promise<DiagnosticsMessage[]> {
-    throw new Error('Method not implemented.');
-  }
-  async getState(): Promise<any> {
+
+  getState(): Promise<any> {
     return this.ipDevice.getState();
   }
-  getPowerUsage(): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
+
   getTemperature(): Promise<any> {
     return this.ipDevice.getTemperature();
-  }
-  getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
-    throw new Error('Method not implemented.');
   }
 
   getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
     return new IpAutozoomControl(this, opts);
-  }
-
-  getDetector(opts?: DetectorOpts): IDetector {
-    throw new Error('Please call this method from Ace or See controller instead!');
   }
 
   getSettings() {
@@ -155,14 +128,6 @@ export default class SmartbaseCamera implements IIpDeviceManager {
     return this.ipDevice.uptime();
   }
 
-  getXUControl(controlNumber: number): Promise<Buffer> {
-    throw new Error('Method not implemented.');
-  }
-
-  setXUControl(controlNumber: number, value: any): Promise<any> {
-    throw new Error('Method not implemented.');
-  }
-
   getSupportedSettings() {
     return this.ipDevice.getSupportedSettings();
   }
@@ -175,11 +140,55 @@ export default class SmartbaseCamera implements IIpDeviceManager {
     return this.ipDevice.getOptionCertificates();
   }
 
-  usbReEnumerate(): Promise<void> {
+  get uvcControlInterface() {
+    throw new Error('Not Supported');
+  }
+
+  closeConnection(): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+
+  getPowerUsage(): Promise<any> {
     throw new Error('Method not implemented.');
   }
 
   isAlive(): Boolean {
+    throw new Error('Method not implemented.');
+  }
+
+  usbReEnumerate(): Promise<void> {
+    throw new Error('Method not implemented.');
+  }
+
+  getUpgrader(): Promise<IDeviceUpgrader> {
+    throw new Error('Please call this method from Ace or See controller instead!');
+  }
+
+  upgrade(opts: UpgradeOpts): Promise<any> {
+    throw new Error('Method not implemented.');
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    throw new Error('Method not implemented.');
+  }
+
+  getDiagnostics(): Promise<DiagnosticsMessage[]> {
+    throw new Error('Method not implemented.');
+  }
+
+  getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
+    throw new Error('Method not implemented.');
+  }
+
+  getDetector(opts?: DetectorOpts): IDetector {
+    throw new Error('Please call this method from Ace or See controller instead!');
+  }
+
+  getXUControl(controlNumber: number): Promise<Buffer> {
+    throw new Error('Method not implemented.');
+  }
+
+  setXUControl(controlNumber: number, value: any): Promise<any> {
     throw new Error('Method not implemented.');
   }
 }
