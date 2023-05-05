@@ -5,7 +5,7 @@ import SeeUpgrader from '../upgrader/seeUpgrader';
 import IDetectorOpts from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 import IDetector from '@huddly/sdk-interfaces/lib/interfaces/IDetector';
 import IpDetector from '../ipDetector';
-import UsbAdapterCamera from './usbAdapterCamera';
+import UsbAdapterCamera from './smartbaseCamera';
 
 export default class UsbAdapterSee extends UsbAdapterCamera {
   constructor(deviceInstance: any, transport: IUsbTransport, cameraDiscoveryEmitter: EventEmitter) {

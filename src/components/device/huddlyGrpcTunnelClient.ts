@@ -1,52 +1,11 @@
 import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import * as grpc from '@grpc/grpc-js';
-
-import Api from '../api';
-import Locksmith from '../locksmith';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
-class Decoder {
-  static decode(bytes) {
-    const d = new TextDecoder();
-    return d.decode(bytes);
-  }
-}
-
-class CustomServiceError implements grpc.StatusObject, Error {
-  name: string;
-  message: string;
-  stack?: string;
-  code: grpc.status | number;
-  details: string = '';
-  metadata: grpc.Metadata = new grpc.Metadata();
-
-  constructor(message: string, code: number) {
-    this.name = {
-      1: 'CANCELLED',
-      2: 'UNKNOWN',
-      3: 'INVALID_ARGUMENT',
-      4: 'DEADLINE_EXCEEDED',
-      5: 'NOT_FOUND',
-      6: 'ALREADY_EXISTS',
-      7: 'PERMISSION_DENIED',
-      8: 'RESOURCE_EXHAUSTED',
-      9: 'FAILED_PRECONDITION',
-      10: 'ABORTED',
-      11: 'OUT_OF_RANGE',
-      12: 'UNIMPLEMENTED',
-      13: 'INTERNAL',
-      14: 'UNAVAILABLE',
-      15: 'DATA_LOSS',
-      16: 'UNAUTHENTICATED',
-      100: 'GRPC_STATUS_CALL_FAILED',
-      101: 'GRPC_STATUS_NO_CAMERA',
-    }[code];
-
-    this.code = code;
-    this.message = message;
-  }
-}
+import GrpcTunnelServiceError from '../../error/GrpcTunnelServiceError';
+import Locksmith from '../locksmith';
+import Api from '../api';
 
 type NormalRPCResponse = {
   response: Buffer;
@@ -65,6 +24,11 @@ class HuddlyGrpcTunnelClient {
 
   get empty() {
     return new Empty().toArray();
+  }
+
+  prepareSerializedGRPCRequest(bytes: Uint8Array) {
+    const d = new TextDecoder();
+    return d.decode(bytes);
   }
 
   async normalRPC(
@@ -92,7 +56,18 @@ class HuddlyGrpcTunnelClient {
     if (status_code === 0) {
       return undefined;
     }
-    return new CustomServiceError(status_error_message, status_code);
+    return new GrpcTunnelServiceError(status_error_message, status_code);
+  }
+
+  async runNormalRPCCommand(
+    cmdString: string,
+    request: string,
+    callback: Function,
+    deserializer: Function
+  ) {
+    const reply = await this.normalRPC(cmdString, request);
+    const error = this.getError(reply);
+    callback(error, deserializer(reply.response));
   }
 
   waitForReady() {
@@ -101,10 +76,13 @@ class HuddlyGrpcTunnelClient {
   close() {
     this.usbTransport.close();
   }
-  async getDeviceVersion(request, callback: Function) {
-    const reply = await this.normalRPC('GetDeviceVersion', '');
-    const error = this.getError(reply);
-    callback(error, huddly.DeviceVersion.deserializeBinary(reply.response));
+  getDeviceVersion(request, callback: Function) {
+    this.runNormalRPCCommand(
+      'GetDeviceVersion',
+      '',
+      callback,
+      huddly.DeviceVersion.deserializeBinary
+    );
   }
 
   getLogFiles() {
@@ -114,78 +92,89 @@ class HuddlyGrpcTunnelClient {
     };
   }
 
-  async eraseLogFile(request: huddly.LogFile, callback: Function) {
-    const reply = await this.normalRPC('EraseLogFile', JSON.stringify(request.toObject()));
-    const error = this.getError(reply);
-    callback(error, huddly.DeviceStatus.deserializeBinary(reply.response));
+  eraseLogFile(request: huddly.LogFile, callback: Function) {
+    this.runNormalRPCCommand(
+      'eraseLogFile',
+      this.prepareSerializedGRPCRequest(request.serializeBinary()),
+      callback,
+      huddly.DeviceStatus.deserializeBinary
+    );
   }
 
   reset() {
     throw new Error('Not Supported.');
   }
-  async getCnnFeatureStatus(request: huddly.CnnFeature, callback: Function) {
-    const reply = await this.normalRPC(
+
+  getCnnFeatureStatus(request: huddly.CnnFeature, callback: Function) {
+    this.runNormalRPCCommand(
       'GetCnnFeatureStatus',
-      Decoder.decode(request.serializeBinary())
+      this.prepareSerializedGRPCRequest(request.serializeBinary()),
+      callback,
+      huddly.CNNStatus.deserializeBinary
     );
-    const error = this.getError(reply);
-    callback(error, huddly.CNNStatus.deserializeBinary(reply.response));
   }
 
-  async getTemperatures(request: Empty, callback: Function) {
-    const reply = await this.normalRPC('GetTemperatures', '');
-    const error = this.getError(reply);
-    callback(error, huddly.Temperatures.deserializeBinary(reply.response));
+  getTemperatures(request: Empty, callback: Function) {
+    this.runNormalRPCCommand(
+      'GetTemperatures',
+      '',
+      callback,
+      huddly.Temperatures.deserializeBinary
+    );
   }
-  async getBootSlot(request: Empty, callback: Function) {
-    const reply = await this.normalRPC('GetBootSlot', '');
-    const error = this.getError(reply);
-    callback(error, huddly.BootSlot.deserializeBinary(reply.response));
+  getBootSlot(request: Empty, callback: Function) {
+    this.runNormalRPCCommand('GetBootSlot', '', callback, huddly.BootSlot.deserializeBinary);
   }
-  async getUptime(request: Empty, callback: Function) {
-    const reply = await this.normalRPC('GetUptime', '');
-    const error = this.getError(reply);
-    callback(error, huddly.Uptime.deserializeBinary(reply.response));
-  }
-
-  async getSaturation(request: Empty, callback: Function) {
-    const reply = await this.normalRPC('GetSaturation', '');
-    const error = this.getError(reply);
-    callback(error, huddly.Saturation.deserializeBinary(reply.response));
+  getUptime(request: Empty, callback: Function) {
+    this.runNormalRPCCommand('GetUptime', '', callback, huddly.Uptime.deserializeBinary);
   }
 
-  async setSaturation(request: huddly.Saturation, callback: Function) {
-    const reply = await this.normalRPC('SetSaturation', Decoder.decode(request.serializeBinary()));
-    const error = this.getError(reply);
-    callback(error, huddly.Saturation.deserializeBinary(reply.response));
+  getSaturation(request: Empty, callback: Function) {
+    this.runNormalRPCCommand('GetSaturation', '', callback, huddly.Saturation.deserializeBinary);
   }
 
-  async getBrightness(request: Empty, callback: Function) {
-    const reply = await this.normalRPC('GetBrightness', '');
-    const error = this.getError(reply);
-    callback(error, huddly.Brightness.deserializeBinary(reply.response));
+  setSaturation(request: huddly.Saturation, callback: Function) {
+    this.runNormalRPCCommand(
+      'SetSaturation',
+      this.prepareSerializedGRPCRequest(request.serializeBinary()),
+      callback,
+      huddly.Saturation.deserializeBinary
+    );
+  }
+
+  getBrightness(request: Empty, callback: Function) {
+    this.runNormalRPCCommand('GetBrightness', '', callback, huddly.Brightness.deserializeBinary);
   }
 
   async setBrightness(request: huddly.Brightness, callback: Function) {
-    const reply = await this.normalRPC('SetBrightness', Decoder.decode(request.serializeBinary()));
-    const error = this.getError(reply);
-    callback(error, huddly.Brightness.deserializeBinary(reply.response));
+    this.runNormalRPCCommand(
+      'SetBrightness',
+      this.prepareSerializedGRPCRequest(request.serializeBinary()),
+      callback,
+      huddly.Brightness.deserializeBinary
+    );
   }
 
   async getPTZ(request: Empty, callback: Function) {
-    const reply = await this.normalRPC('GetPTZ', '');
-    const error = this.getError(reply);
-    callback(error, huddly.PTZ.deserializeBinary(reply.response));
+    this.runNormalRPCCommand('GetPTZ', '', callback, huddly.PTZ.deserializeBinary);
   }
+
   async setPTZ(request: huddly.PTZ, callback: Function) {
-    const reply = await this.normalRPC('SetPTZ', Decoder.decode(request.serializeBinary()));
-    const error = this.getError(reply);
-    callback(error, huddly.DeviceStatus.deserializeBinary(reply.response));
+    this.runNormalRPCCommand(
+      'GetPTZ',
+      this.prepareSerializedGRPCRequest(request.serializeBinary()),
+      callback,
+      huddly.DeviceStatus.deserializeBinary
+    );
   }
+
   async getOptionCertificates(request: Empty, callback: Function) {
-    const reply = await this.normalRPC('GetOptionCertificates', '');
-    const error = this.getError(reply);
-    callback(error, huddly.OptionCertificates.deserializeBinary(reply.response));
+    this.runNormalRPCCommand(
+      'GetOptionCertificates',
+      '',
+      callback,
+      huddly.OptionCertificates.deserializeBinary
+    );
   }
 
   upgradeDevice() {

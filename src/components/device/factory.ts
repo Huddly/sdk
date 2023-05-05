@@ -18,9 +18,8 @@ import See from './see';
 import Smartbase from './smartbase';
 
 import { EventEmitter } from 'events';
-import SmartbaseAce from './usbAdapterAce';
-import SmartbaseSee from './usbAdapterSee';
-import SmartbaseCamera from './usbAdapterCamera';
+import SmartbaseAce from './smartbaseAce';
+import SmartbaseSee from './smartbaseSee';
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;

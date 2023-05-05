@@ -1,7 +1,7 @@
 import chai, { expect } from 'chai';
 import sinonChai from 'sinon-chai';
 import sinon from 'sinon';
-import UsbAdapterCamera from '../../../src/components/device/usbAdapterCamera';
+import UsbAdapterCamera from '../../../src/components/device/smartbaseCamera';
 import DummyTransport from '../../../tests/mocks/dummyTransport.mock';
 import EventEmitter from 'events';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
@@ -196,12 +196,6 @@ describe('UsbAdapterCamera', () => {
   describe('getUpgrader', () => {
     it('should thrown an error', () => {
       expect(usbAdapterCamera.getUpgrader).to.throw();
-    });
-  });
-
-  describe('upgrade', () => {
-    it('should thrown an error', () => {
-      expect(usbAdapterCamera.upgrade).to.throw();
     });
   });
 

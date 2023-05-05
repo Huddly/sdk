@@ -17,6 +17,9 @@ import IpBaseDevice from './ipbase';
 import IGrpcTransport from '@huddly/sdk-interfaces/lib/interfaces/IGrpcTransport';
 import IpAutozoomControl from '../ipAutozoomControl';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
+import CameraEvents from '../../utilitis/events';
+import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
+import { createBoxfishUpgrader } from '../upgrader/boxfishUpgraderFactory';
 
 export default class UsbAdapterCamera implements IIpDeviceManager {
   productName: string;
@@ -58,6 +61,67 @@ export default class UsbAdapterCamera implements IIpDeviceManager {
 
     this.ipDevice.grpcClient = new HuddlyGrpcTunnelClient(transport, this.locksmith);
     Object.assign(this, deviceInstance);
+  }
+
+  upgrade(opts: UpgradeOpts): Promise<any> {
+    const MAX_UPGRADE_ATTEMPT = 3;
+    let upgradeAttempts = 0;
+    return new Promise<void>((resolve, reject) => {
+      const tryRunAgainOnFailure = async (deviceManager: IIpDeviceManager) => {
+        try {
+          await this.createAndRunUpgrade(opts, deviceManager, upgradeAttempts > 0);
+          resolve();
+        } catch (e) {
+          if (e.runAgain && upgradeAttempts < MAX_UPGRADE_ATTEMPT) {
+            upgradeAttempts += 1;
+            Logger.warn(
+              `Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`,
+              'Smartbase API'
+            );
+            tryRunAgainOnFailure(e.deviceManager);
+          } else {
+            Logger.error('Failed performing a camera upgrade', e, 'Smartbase API');
+            reject(e);
+          }
+        }
+      };
+      tryRunAgainOnFailure(this);
+    });
+  }
+
+  async createAndRunUpgrade(
+    opts: UpgradeOpts,
+    deviceManager: IIpDeviceManager,
+    createNewUpgrader: boolean
+  ) {
+    let upgrader: IDeviceUpgrader = opts.upgrader;
+    if (!upgrader || createNewUpgrader) {
+      upgrader = await createBoxfishUpgrader(deviceManager, this.cameraDiscoveryEmitter);
+    }
+    upgrader.init(opts);
+    upgrader.start();
+    return new Promise<void>((resolve, reject) => {
+      upgrader.once(CameraEvents.UPGRADE_COMPLETE, async (deviceManager) => {
+        const upgradeIsOk = await upgrader.upgradeIsValid();
+        if (upgradeIsOk) {
+          resolve();
+        } else {
+          reject({
+            message: 'Upgrade status is not ok, run again',
+            runAgain: true,
+            deviceManager,
+          });
+        }
+      });
+      upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) => {
+        Logger.error('Upgrade Failed', reason, 'Boxfish API');
+        reject(reason);
+      });
+      upgrader.once(CameraEvents.TIMEOUT, (reason) => {
+        Logger.error('Upgrader returned a timeout event', reason, 'Boxfish API');
+        reject(reason);
+      });
+    });
   }
 
   getCnnFeatureStatus(cnnFeature: huddly.CnnFeature): Promise<any> {
@@ -162,10 +226,6 @@ export default class UsbAdapterCamera implements IIpDeviceManager {
 
   getUpgrader(): Promise<IDeviceUpgrader> {
     throw new Error('Please call this method from Ace or See controller instead!');
-  }
-
-  upgrade(opts: UpgradeOpts): Promise<any> {
-    throw new Error('Method not implemented.');
   }
 
   getFaceBasedExposureControl(): ICnnControl {
