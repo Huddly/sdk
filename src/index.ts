@@ -355,9 +355,8 @@ class HuddlySdk extends EventEmitter {
   ): Promise<any[]> {
     return Promise.all(
       deviceApis.map(async (api: any) => {
-        await api.deviceDiscoveryManager
-          .deviceList(false, true)
-          .filter((device) => !excludeDevices.includes(device.productId));
+        const cams = await api.deviceDiscoveryManager.deviceList(false, true);
+        return cams.filter((device) => !excludeDevices.includes(device.productId));
       })
     );
   }
