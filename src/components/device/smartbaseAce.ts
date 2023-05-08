@@ -13,16 +13,6 @@ export default class UsbAdapterAce extends UsbAdapterCamera {
   }
 
   /**
-   * Helper function for getting the respective upgrader controller class for upgrading Huddly Ip camera
-   *
-   * @return {*}  {Promise<IDeviceUpgrader>} The upgrader controll instance (AceUpgrader).
-   * @memberof UsbAdapterAce
-   */
-  getUpgrader(): Promise<IDeviceUpgrader> {
-    return Promise.resolve(new AceUpgrader(this, this.cameraDiscoveryEmitter));
-  }
-
-  /**
    * Get detector control class instance.
    *
    * @param {IDetectorOpts} opts Detector control options.

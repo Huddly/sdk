@@ -21,7 +21,7 @@ import CameraEvents from '../../utilitis/events';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 import { createBoxfishUpgrader } from '../upgrader/boxfishUpgraderFactory';
 
-export default class UsbAdapterCamera implements IIpDeviceManager {
+export default class SmartbaseCamera implements IIpDeviceManager {
   productName: string;
   transport: IUsbTransport;
   api: IDeviceCommonApi;
@@ -34,7 +34,7 @@ export default class UsbAdapterCamera implements IIpDeviceManager {
    * Creates an instance of an ip camera that is connected through the smartbase.
    * @param {IUsbTransport} transport The transport instance for communicating with the camera.
    * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach & detach events for Huddly cameras.
-   * @memberof UsbAdapterCamera
+   * @memberof SmartbaseCamera
    */
   constructor(
     deviceInstance: any,
