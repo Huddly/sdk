@@ -13,7 +13,6 @@ import Boxfish from '../src/components/device/boxfish';
 import HuddlyGo from '../src/components/device/huddlygo';
 import DeviceFactory from '../src/components/device/factory';
 import ServiceFactory from '../src/components/service/factory';
-import DiscoveryApiMock from './mocks/discoveryApi.mock';
 import HuddlyHex from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
 
 
@@ -281,47 +280,62 @@ describe('HuddlySDK', () => {
   });
 
   describe('#getConnectedCameras', () => {
-    let clock, mockDiscoveryApi: DiscoveryApiMock;
-    const defaultTimeout = 2000;
+    let mockDiscoveryApi, ipDeviceListMock, usbDeviceListMock;
+    const mockIq = {
+      productName: 'Huddly IQ',
+      productId: HuddlyHex.BOXFISH_PID,
+    };
+    const mockBase = {
+      productName: 'Huddly Base',
+      productId: HuddlyHex.BASE_PID,
+    };
+    const mockAce = {
+      productName: 'Huddly L1',
+      productId: HuddlyHex.L1_PID,
+    };
     beforeEach(() => {
-      clock = sinon.useFakeTimers();
-      mockDiscoveryApi = new DiscoveryApiMock();
+      ipDeviceListMock = sinon.stub();
+      usbDeviceListMock = sinon.stub();
+      mockDiscoveryApi = [
+        {
+          deviceDiscoveryManager: { deviceList: ipDeviceListMock },
+        },
+        {
+          deviceDiscoveryManager: { deviceList: usbDeviceListMock },
+        },
+      ] as unknown as IHuddlyDeviceAPI[];
     });
     afterEach(() => {
-      clock.restore();
+      ipDeviceListMock.reset();
+      usbDeviceListMock.reset();
     });
     it('should return a list of devices that are attached', async () => {
-      HuddlySdk.getConnectedCameras([mockDiscoveryApi]).then((cameras) => {
-        expect(cameras[0]).to.deep.equal(mockDiscoveryApi.boxfishCamera);
+      ipDeviceListMock.resolves(mockAce);
+      usbDeviceListMock.resolves(mockIq);
+      HuddlySdk.getConnectedCameras(mockDiscoveryApi).then((cameras) => {
+        expect(cameras[0]).to.deep.equal(mockAce);
+        expect(cameras[1]).to.deep.equal(mockIq);
       });
-      mockDiscoveryApi.emitBoxfishCamera();
-      clock.tick(defaultTimeout);
     });
     it('should return an empty list if no devices are attached', async () => {
       HuddlySdk.getConnectedCameras([mockDiscoveryApi]).then((cameras) => {
         expect(cameras.length).to.equal(0);
       });
-      clock.tick(defaultTimeout);
     });
     it('should by default exclude base devices', async () => {
+      usbDeviceListMock.resolves(mockIq);
+      usbDeviceListMock.resolves(mockBase);
       HuddlySdk.getConnectedCameras([mockDiscoveryApi]).then((cameras) => {
         expect(cameras.length).to.equal(1);
         expect(cameras[0]).to.deep.equal(mockDiscoveryApi.boxfishCamera);
       });
-      mockDiscoveryApi.emitBase();
-      mockDiscoveryApi.emitBoxfishCamera();
-      clock.tick(defaultTimeout);
     });
     it('should exclude based on passed in exclusion argument', async () => {
-      HuddlySdk.getConnectedCameras([mockDiscoveryApi], defaultTimeout, [
-        HuddlyHex.BOXFISH_PID,
-      ]).then((cameras) => {
+      usbDeviceListMock.resolves(mockIq);
+      HuddlySdk.getConnectedCameras([mockDiscoveryApi], [HuddlyHex.BOXFISH_PID]).then((cameras) => {
         expect(cameras.length).to.equal(1);
         expect(cameras[0]).to.deep.equal(mockDiscoveryApi.base);
       });
-      mockDiscoveryApi.emitBase();
-      mockDiscoveryApi.emitBoxfishCamera();
-      clock.tick(defaultTimeout);
     });
   });
 });
