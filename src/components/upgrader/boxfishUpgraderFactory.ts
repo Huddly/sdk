@@ -30,7 +30,7 @@ export async function createBoxfishUpgrader(
   sdkDeviceDiscoveryEmitter: EventEmitter
 ): Promise<IDeviceUpgrader> {
   const info = await manager.getInfo();
-  if (true) {
+  if (semver.gte(info.version, HPK_SUPPORT_VERSION)) {
     Logger.warn('Initializing HPKUpgrader', 'Boxfish Upgrader Factory');
     return new HPKUpgrader(manager, sdkDeviceDiscoveryEmitter);
   }
