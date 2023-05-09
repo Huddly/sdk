@@ -554,10 +554,11 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
             (key) => UpgradeSteps[key] === step
           );
           clearTimeout(readTimeout);
-          console.log('Hallooooooooo');
-          throw new AceUpgraderError(
-            `Unknown upgrade step ${upgradeStepStr}`,
-            ErrorCodes.UPGRADE_FAILED
+          reject(
+            new AceUpgraderError(
+              `Unknown upgrade step ${upgradeStepStr}`,
+              ErrorCodes.UPGRADE_FAILED
+            )
           );
       }
       extract.on('entry', (header: any, cpioStream: any, cb: any) => {

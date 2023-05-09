@@ -410,7 +410,7 @@ describe('IpCameraUpgrader', () => {
     });
   });
 
-  describe.only('#performUpgradeStep', () => {
+  describe('#performUpgradeStep', () => {
     let cpioStub, streamStub, extractOnStub;
     const extractEmitter: EventEmitter = cpio.extract();
     beforeEach(() => {
@@ -587,7 +587,7 @@ describe('IpCameraUpgrader', () => {
         clock.restore();
       });
 
-      it('should throw AceUpgradeError when upgrade step is unknown', () => {
+      it('should reject with AceUpgradeError when upgrade step is unknown', () => {
         const errMsg = 'Unknown upgrade step REBOOT';
         const upgradeStepPromise = upgrader.performUpgradeStep(UpgradeSteps.REBOOT, 'REBOOT');
         return expect(upgradeStepPromise).to.eventually.be.rejectedWith(AceUpgraderError, errMsg);
@@ -598,6 +598,7 @@ describe('IpCameraUpgrader', () => {
           message: 'Something went wrong!',
           details: 'Something went wrong!',
         };
+        upgrader._useLegacy = true;
         dummyManager.grpcClient.upgradeVerify.yields(callbackErr, undefined);
         const upgradeStepPromise = upgrader.performUpgradeStep(UpgradeSteps.COMMIT, 'Commit');
         return expect(upgradeStepPromise).to.eventually.be.rejectedWith('Something went wrong!');
