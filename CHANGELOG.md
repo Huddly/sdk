@@ -1,3 +1,9 @@
+#### 0.9.2 (2023-05-12)
+
+##### New Features
+
+* **caClient:**  added client that communicates with the certificate authority ([924becce](https://github.com/Huddly/sdk/commit/924becce5fb22c6c9f8ad8cd28545aaebdba7f27))
+
 #### 0.9.1 (2023-03-03)
 
 ##### Chores
