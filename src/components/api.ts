@@ -1,5 +1,6 @@
 import * as msgpack from 'msgpack-lite';
 import http from 'http';
+import { encode } from '@msgpack/msgpack';
 
 import Locksmith from './locksmith';
 
@@ -143,7 +144,7 @@ export default class Api implements IDeviceCommonApi {
     if (payload instanceof Buffer) {
       return payload;
     }
-    return msgpack.encode(payload);
+    return Buffer.from(encode(payload));
   }
 
   static decode(payload: Buffer, type = 'string'): any {
