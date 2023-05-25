@@ -6,6 +6,7 @@ import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import IAutozoomControl from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControl';
 import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
+import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
 
 /**
  * Control class for configuring the Genius Framing feature of the camera.
@@ -90,6 +91,21 @@ export default class IpAutozoomControl implements IAutozoomControl {
     cnnFeature.setFeature(feature);
     const azStatus = await this._deviceManager.getCnnFeatureStatus(cnnFeature);
     return azStatus.getAzStatus().getAzEnabled();
+  }
+
+  async _setMode(autozoomMode: AutozoomModes): Promise<any> {
+    const supportedAutozoomModes = [AutozoomModes.NORMAL, AutozoomModes.SPEAKER_FRAMING];
+    if (!supportedAutozoomModes.includes(autozoomMode)) {
+      throw new Error(
+        `Provided mode ${autozoomMode} is not supported. Supported modes: ${supportedAutozoomModes.toString()}`
+      );
+    }
+    const framingMode = {
+      [AutozoomModes.NORMAL]: FramingModes.NORMAL,
+      [AutozoomModes.SPEAKER_FRAMING]: FramingModes.SPEAKER_FRAMING,
+    }[autozoomMode];
+
+    await this.setFramingMode(framingMode);
   }
 
   /**
