@@ -1,3 +1,19 @@
+### 0.10.0 (2023-06-01)
+
+##### Build System / Dependencies
+
+* **package:**  update sdk-interface dep ([87e01f6a](https://github.com/Huddly/sdk/commit/87e01f6a80aa8aef0ee83820709bf94c98b40a9e))
+
+##### New Features
+
+* **ipAutozoomController:**  _setMode added for legacy support ([16e43476](https://github.com/Huddly/sdk/commit/16e43476934df9f6f4c94c3d90c00c2e515fae1c))
+* **usbAdapterCamera:**  added support l1 and s1 through usb adapter ([1ac09dfd](https://github.com/Huddly/sdk/commit/1ac09dfdae24283d66bb0d36f79b51f1a1e8226c))
+*  added smartbase device ([b05b9773](https://github.com/Huddly/sdk/commit/b05b97731603f341e157e347581ddb81e1d35618))
+
+##### Bug Fixes
+
+* **api.ts:**  using newer msgpack library for handling encoding ([58230059](https://github.com/Huddly/sdk/commit/58230059de6811c74441ed1054c5f49c65f26a7c))
+
 #### 0.9.2 (2023-05-12)
 
 ##### New Features
