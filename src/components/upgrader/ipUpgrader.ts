@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import cpio from 'cpio-stream';
+import { lt } from 'semver';
 
 import IUpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
@@ -19,6 +20,7 @@ import IpBaseDevice from '../device/ipbase';
 
 const UPGRADE_STEP_TIMEOUT = 20;
 const VERIFICATION_FILE = 'verify.md5';
+const NEW_CPIO_FORMAT_SUPPORT = '1.6.0';
 
 /**
  * Enum describing the different upgrade steps for L1.
@@ -136,8 +138,13 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
    * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH & DETACH events for IP devices on the network
    * @memberof IpCameraUpgrader
    */
-  constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
+  constructor(
+    manager: IDeviceManager,
+    sdkDeviceDiscoveryEmitter: EventEmitter,
+    useLegacy?: boolean
+  ) {
     super();
+    this._useLegacy = useLegacy;
     this._cameraManager = manager;
     this._sdkDeviceDiscoveryEmitter = sdkDeviceDiscoveryEmitter;
   }
@@ -224,6 +231,12 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
     };
   }
 
+  async shouldUseLegacy() {
+    return (
+      !(await this.hasVerificationFile()) || lt(await this.getVersion(), NEW_CPIO_FORMAT_SUPPORT)
+    );
+  }
+
   /**
    * Perform the complete upgrade process synchronously
    *
@@ -238,7 +251,9 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
     this._upgradeStatus = new UpgradeStatus([firstUploadStatusStep, rebootStep, verificationStep]);
 
     try {
-      this._useLegacy = await this.useLegacy();
+      if (this._useLegacy === undefined) {
+        this._useLegacy = await this.shouldUseLegacy();
+      }
       // Check that camera is running in Normal/Verified state
       await this.verifyVersionState(huddly.VersionState.VERIFIED);
       Logger.debug('Starting Upgrade', this.className);
@@ -480,7 +495,7 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
     });
   }
 
-  useLegacy(): Promise<boolean> {
+  hasVerificationFile(): Promise<boolean> {
     const extract = cpio.extract();
     return new Promise((resolve) => {
       const timeout = setTimeout(() => resolve(true), 500);

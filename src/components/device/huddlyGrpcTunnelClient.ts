@@ -237,6 +237,16 @@ class HuddlyGrpcTunnelClient {
     throw new Error();
     return {} as grpc.ClientWritableStream<huddly.Chunk>;
   }
+
+  verifyIntegrity() {
+    throw new Error();
+    return {} as grpc.ClientWritableStream<huddly.Chunk>;
+  }
+
+  upgradeImage() {
+    throw new Error();
+    return {} as grpc.ClientWritableStream<huddly.Chunk>;
+  }
 }
 
 export default HuddlyGrpcTunnelClient;

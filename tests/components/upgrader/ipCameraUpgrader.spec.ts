@@ -134,12 +134,12 @@ describe('IpCameraUpgrader', () => {
   });
 
   describe('#start', () => {
-    let flashStub, rebootStub, commitStub, verifyVersionStateStub, verifyVersion, useLegacyStub;
+    let flashStub, rebootStub, commitStub, verifyVersionStateStub, verifyVersion, shouldUseLegacyStub;
     beforeEach(() => {
       flashStub = sinon.stub(upgrader, 'flash').resolves();
       rebootStub = sinon.stub(upgrader, 'reboot').resolves();
       commitStub = sinon.stub(upgrader, 'commit').resolves();
-      useLegacyStub = sinon.stub(upgrader, 'useLegacy').resolves(true);
+      shouldUseLegacyStub = sinon.stub(upgrader, 'shouldUseLegacy').resolves(true);
       verifyVersionStateStub = sinon.stub(upgrader, 'verifyVersionState').resolves();
       verifyVersion = sinon.stub(upgrader, 'verifyVersion').resolves();
     });
@@ -722,6 +722,26 @@ describe('IpCameraUpgrader', () => {
       upgradeOnStub = sinon.stub(upgrader, 'on');
       upgradeOnStub.withArgs(CameraEvents.UPGRADE_FAILED).yields(errMsg);
       return expect(upgrader.doUpgrade()).to.eventually.be.rejectedWith(errMsg);
+    });
+  });
+
+  describe('#shouldUseLegacy', () => {
+    let hasVerificationFileStub;
+    let getVersionStub;
+    beforeEach(() => {
+      hasVerificationFileStub = sinon.stub(upgrader, 'hasVerificationFile').resolves(true);
+      getVersionStub = sinon.stub(upgrader, 'getVersion').resolves('1.6.0');
+    });
+    it('should use legacy if current camera version is less than cut off', async () => {
+      getVersionStub.resolves('1.5.9');
+      expect(await upgrader.shouldUseLegacy()).to.equal(true);
+    });
+    it('should use legacy if there is no verification file', async () => {
+      hasVerificationFileStub.resolves(false);
+      expect(await upgrader.shouldUseLegacy()).to.equal(true);
+    });
+    it('should not use legacy if version is over cut off and there is a verification file', async () => {
+      expect(await upgrader.shouldUseLegacy()).to.equal(false);
     });
   });
 });

@@ -179,7 +179,6 @@ export default class DeviceFactory {
       secondaryDeviceApis
     );
 
-    console.log(devInstance);
     let device: IDeviceManager;
     switch (productId) {
       case HuddlyHEX.GO_PID:
