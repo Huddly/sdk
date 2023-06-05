@@ -1,5 +1,6 @@
 import { EventEmitter } from 'events';
 import cpio from 'cpio-stream';
+import { lt } from 'semver';
 
 import IUpgradeOpts from '@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts';
 import IDeviceUpgrader from '@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader';
@@ -18,6 +19,8 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import IpBaseDevice from '../device/ipbase';
 
 const UPGRADE_STEP_TIMEOUT = 20;
+const VERIFICATION_FILE = 'verify.md5';
+const NEW_CPIO_FORMAT_SUPPORT = '1.6.0';
 
 /**
  * Enum describing the different upgrade steps for L1.
@@ -29,6 +32,26 @@ export enum UpgradeSteps {
   FLASH = 0,
   REBOOT = 1,
   COMMIT = 2,
+}
+
+export class ClientWritableStreamWrapper {
+  private data: string | Uint8Array;
+  private verifyFunction: Function;
+
+  constructor(verifyFunction: Function) {
+    this.verifyFunction = verifyFunction;
+  }
+
+  write(huddlyChunk: huddly.Chunk) {
+    this.data = huddlyChunk.getContent();
+  }
+
+  end() {
+    const verificationRequest = new huddly.VerificationRequest();
+    verificationRequest.setFormat(huddly.VerificationFormat.MD5SUM);
+    verificationRequest.setData(this.data);
+    this.verifyFunction(verificationRequest);
+  }
 }
 
 /**
@@ -86,6 +109,15 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
   _upgradeStatus: UpgradeStatus;
 
   /**
+   * @ignore
+   * Wheter or not to use the legacy cpio format
+   *
+   * @type {boolean}
+   * @memberof IpCameraUpgrader
+   */
+  _useLegacy: boolean;
+
+  /**
    * Helper getter that typecasts the _cameraManager member into a IPBaseDevice type
    *
    * @type {IpBaseDevice}
@@ -106,8 +138,13 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
    * @param {EventEmitter} sdkDeviceDiscoveryEmitter Event emitter object that emits ATTACH & DETACH events for IP devices on the network
    * @memberof IpCameraUpgrader
    */
-  constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
+  constructor(
+    manager: IDeviceManager,
+    sdkDeviceDiscoveryEmitter: EventEmitter,
+    useLegacy?: boolean
+  ) {
     super();
+    this._useLegacy = useLegacy;
     this._cameraManager = manager;
     this._sdkDeviceDiscoveryEmitter = sdkDeviceDiscoveryEmitter;
   }
@@ -166,6 +203,40 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
     this.emit(CameraEvents.UPGRADE_PROGRESS, this._upgradeStatus.getStatus());
   }
 
+  getUpgradeMethodsAndFileNames() {
+    if (this._useLegacy) {
+      return {
+        flash: (upgradeStepCompleteCb) =>
+          this.ipBaseManager.grpcClient.upgradeDevice(upgradeStepCompleteCb),
+        verify: (upgradeStepCompleteCb) =>
+          this.ipBaseManager.grpcClient.upgradeVerify(upgradeStepCompleteCb),
+        imageFileName: 'image.itb',
+      };
+    }
+    return {
+      flash: (upgradeStepCompleteCb) =>
+        this.ipBaseManager.grpcClient.upgradeImage(upgradeStepCompleteCb),
+      verify: (upgradeStepCompleteCb) => {
+        const stream: ClientWritableStreamWrapper = new ClientWritableStreamWrapper(
+          (verificationRequest: huddly.VerificationRequest) =>
+            this.ipBaseManager.grpcClient.verifyIntegrity(
+              verificationRequest,
+              upgradeStepCompleteCb
+            )
+        );
+        return stream;
+      },
+      imageFileName: 'image.img',
+      verificationDataFileName: VERIFICATION_FILE,
+    };
+  }
+
+  async shouldUseLegacy() {
+    return (
+      !(await this.hasVerificationFile()) || lt(await this.getVersion(), NEW_CPIO_FORMAT_SUPPORT)
+    );
+  }
+
   /**
    * Perform the complete upgrade process synchronously
    *
@@ -180,9 +251,11 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
     this._upgradeStatus = new UpgradeStatus([firstUploadStatusStep, rebootStep, verificationStep]);
 
     try {
+      if (this._useLegacy === undefined) {
+        this._useLegacy = await this.shouldUseLegacy();
+      }
       // Check that camera is running in Normal/Verified state
       await this.verifyVersionState(huddly.VersionState.VERIFIED);
-
       Logger.debug('Starting Upgrade', this.className);
       this.emitProgressStatus('Starting upgrade');
       this.emit(CameraEvents.UPGRADE_START);
@@ -422,6 +495,25 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
     });
   }
 
+  hasVerificationFile(): Promise<boolean> {
+    const extract = cpio.extract();
+    return new Promise((resolve) => {
+      const timeout = setTimeout(() => resolve(true), 500);
+      extract.on('entry', (header, stream, callback) => {
+        if (header.name === VERIFICATION_FILE) {
+          extract.emit('finish');
+        }
+        stream.on('end', callback);
+        stream.resume();
+      });
+      extract.on('finish', () => {
+        clearTimeout(timeout);
+        resolve(false);
+      });
+      new BufferStream(this.options.file).pipe(extract);
+    });
+  }
+
   /**
    * A helper function that makes it possible to peform the upgrade substeps such as FLASH and COMMITT by
    * reading the cpio file and sending the data over to the camera using grpc streams.
@@ -434,7 +526,8 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
   performUpgradeStep(step: UpgradeSteps, stepName: string): Promise<string> {
     const extract = cpio.extract();
 
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
+      const upgradeUtils = this.getUpgradeMethodsAndFileNames();
       const readTimeout: NodeJS.Timeout = global.setTimeout(() => {
         const errMsg = `Unable to perform upgrade step ${step} within given time of ${UPGRADE_STEP_TIMEOUT} seconds`;
         Logger.warn(errMsg, this.className);
@@ -458,36 +551,41 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
           `${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}`
         );
       };
-
-      let stream: grpc.ClientWritableStream<huddly.Chunk>;
+      let stream: grpc.ClientWritableStream<huddly.Chunk> | ClientWritableStreamWrapper;
+      let fileToRead: string = upgradeUtils.imageFileName;
       switch (step) {
         case UpgradeSteps.FLASH:
-          stream = this.ipBaseManager.grpcClient.upgradeDevice(upgradeStepCompleteCb);
+          stream = upgradeUtils.flash(upgradeStepCompleteCb);
           break;
         case UpgradeSteps.COMMIT:
-          stream = this.ipBaseManager.grpcClient.upgradeVerify(upgradeStepCompleteCb);
+          stream = upgradeUtils.verify(upgradeStepCompleteCb);
+          if (upgradeUtils.verificationDataFileName) {
+            // New CPIO format uses a md5 file for verifying rather than the whole image file
+            fileToRead = upgradeUtils.verificationDataFileName;
+          }
           break;
         default:
           const upgradeStepStr: string = Object.keys(UpgradeSteps).find(
             (key) => UpgradeSteps[key] === step
           );
           clearTimeout(readTimeout);
-          throw new AceUpgraderError(
-            `Unknown upgrade step ${upgradeStepStr}`,
-            ErrorCodes.UPGRADE_FAILED
+          reject(
+            new AceUpgraderError(
+              `Unknown upgrade step ${upgradeStepStr}`,
+              ErrorCodes.UPGRADE_FAILED
+            )
           );
       }
-
       extract.on('entry', (header: any, cpioStream: any, cb: any) => {
         cpioStream.on('end', () => {
           cb();
-          if (header.name === 'image.itb') {
+          if (fileToRead === header.name) {
             extract.destroy();
             stream.end();
           }
         });
         cpioStream.on('data', (chunk: Buffer) => {
-          if (header.name === 'image.itb') {
+          if (fileToRead === header.name) {
             const huddlyChunk = new huddly.Chunk();
             huddlyChunk.setContent(chunk);
             stream.write(huddlyChunk);
