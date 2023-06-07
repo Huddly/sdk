@@ -1,3 +1,10 @@
+#### 0.10.1 (2023-06-07)
+
+##### New Features
+
+* **crew:**  added crew device ([#568](https://github.com/Huddly/sdk/pull/568)) ([96304276](https://github.com/Huddly/sdk/commit/96304276cb7a0c4d34150e334f2f5163c6b73f5d))
+* **ipUpgrade:**  New cpio file format ([#565](https://github.com/Huddly/sdk/pull/565)) ([2911c3b2](https://github.com/Huddly/sdk/commit/2911c3b2d29a0f8addc31011ce1fca6d62373558))
+
 ### 0.10.0 (2023-06-01)
 
 ##### Build System / Dependencies
