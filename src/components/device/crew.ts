@@ -147,11 +147,11 @@ export default class Crew implements IDeviceManager {
             upgradeAttempts += 1;
             Logger.warn(
               `Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}`,
-              'Smartbase API'
+              'Crew API'
             );
             tryRunAgainOnFailure(e.deviceManager);
           } else {
-            Logger.error('Failed performing a camera upgrade', e, 'Smartbase API');
+            Logger.error('Failed performing a camera upgrade', e, 'Crew API');
             reject(e);
           }
         }
@@ -196,34 +196,34 @@ export default class Crew implements IDeviceManager {
   }
 
   getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 
   getFaceBasedExposureControl(): ICnnControl {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 
   getDetector(opts?: DetectorOpts): IDetector {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 
   getDiagnostics(): Promise<DiagnosticsMessage[]> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 
   getState(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 
   getPowerUsage(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 
   getTemperature(): Promise<any> {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 
   getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
-    throw new Error('Not supported for Smartbase.');
+    throw new Error('Not supported for Crew.');
   }
 }
