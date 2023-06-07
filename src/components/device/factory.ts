@@ -20,6 +20,7 @@ import Smartbase from './smartbase';
 import { EventEmitter } from 'events';
 import SmartbaseAce from './smartbaseAce';
 import SmartbaseSee from './smartbaseSee';
+import Crew from './crew';
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
@@ -241,6 +242,9 @@ export default class DeviceFactory {
         break;
       case HuddlyHEX.SMARTBASE_L1_PID:
         device = new SmartbaseAce(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
+        break;
+      case HuddlyHEX.SMARTBASE_CREW_PID:
+        device = new Crew(devInstance, <IUsbTransport>transport, cameraDiscoveryEmitter);
         break;
       default:
         throw new Error(`Unsupported Device. USB ProductId: ${productId}`);
