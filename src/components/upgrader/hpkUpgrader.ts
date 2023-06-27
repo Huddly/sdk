@@ -17,7 +17,6 @@ import Smartbase from '../device/smartbase';
 import SmartbaseCamera from '../device/smartbaseCamera';
 
 const MAX_UPLOAD_ATTEMPTS = 5;
-const REBOOT_TIMEOUT = 80000;
 
 /**
  * Controller class for instrumenting the upgrade process on Huddly IQ camera.
@@ -40,6 +39,10 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   _upgradeStatus: UpgradeStatus;
   /** @ignore */
   _production_upgrade: boolean;
+  /** @ignore */
+  _bootTimeout: number = 60000;
+  /** @ignore */
+  _bufferWriteTimeout: number = 60000;
   /** @ignore */
   private _statusMessageTimeout: number = 60000;
 
@@ -64,6 +67,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     }
     if (opts.production_upgrade) {
       this._production_upgrade = opts.production_upgrade;
+    }
+
+    if (opts.bootTimeout) {
+      this._bootTimeout = opts.bootTimeout;
+    }
+
+    if (opts.bufferWriteTimeout) {
+      this._bufferWriteTimeout = opts.bufferWriteTimeout;
     }
 
     this._fileBuffer = opts.file;
@@ -153,7 +164,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
             send: 'hcp/write',
             receive: 'hcp/write_reply',
           },
-          60000
+          this._bufferWriteTimeout
         );
         const { status } = m;
         if (status !== 0) {
@@ -248,7 +259,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
             CameraEvents.UPGRADE_FAILED,
             new HPKUpgradeError('Did not come back after reboot', ErrorCodes.UPGRADE_REBOOT_FAILED)
           ),
-        REBOOT_TIMEOUT
+        this._bootTimeout
       );
       if (!rebooted) {
         clearTimeout(upgradeTimoutId);
