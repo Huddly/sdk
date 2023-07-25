@@ -26,6 +26,7 @@ import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as grpc from '@grpc/grpc-js';
 import HuddlyGrpcTunnelClient from './huddlyGrpcTunnelClient';
+import BufferStream from '../../utilitis/bufferStream';
 
 /**
  * @ignore
@@ -1200,6 +1201,62 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
           resolve(optsCerts);
         }
       );
+    });
+  }
+
+  /**
+   *
+   * Adds an option certificate to the camera
+   *
+   * @return {Promise<any>} Device status
+   * @memberof IpBaseDevice
+   */
+  async addOptionCertificate(optionCertificate: string): Promise<any> {
+    return new Promise(async (resolve, reject) => {
+      try {
+        const deviceStatus = await this._addOptionCertificate(optionCertificate);
+        resolve(deviceStatus.getMessage());
+      } catch (err) {
+        this.handleError('Unable to get option certificates', err, reject);
+      }
+    });
+  }
+
+  _addOptionCertificate(optionCertificate: string): Promise<huddly.DeviceStatus> {
+    return new Promise((resolve, reject) => {
+      const stream = this.grpcClient.addOptionCertificate(
+        (err, deviceStatus: huddly.DeviceStatus) => {
+          if (err != undefined) {
+            reject(err);
+            return;
+          }
+          resolve(deviceStatus);
+        }
+      ) as grpc.ClientWritableStream<huddly.Chunk>;
+      this._writeContentToGrpcStream(optionCertificate, stream);
+    });
+  }
+
+  _writeContentToGrpcStream(
+    content: Uint8Array | string,
+    grpcStream: grpc.ClientWritableStream<any>
+  ): Promise<void> {
+    return new Promise((resolve, reject) => {
+      const readStream = new BufferStream(Buffer.from(content));
+
+      readStream.on('data', (chunk) => {
+        const huddlyChunk = new huddly.Chunk().setContent(chunk);
+        grpcStream.write(huddlyChunk);
+      });
+      readStream.on('end', () => {
+        grpcStream.end();
+        resolve();
+      });
+      readStream.on('error', (err) => {
+        reject(err);
+      });
+
+      readStream.resume();
     });
   }
 }

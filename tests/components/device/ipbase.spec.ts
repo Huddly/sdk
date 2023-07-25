@@ -75,6 +75,9 @@ optionCert.setName('test_cert');
 optionCert.setCertificate('bytes');
 optionCerts.addCertificates(optionCert);
 
+const deviceStatusDummy = new huddly.DeviceStatus();
+deviceStatusDummy.setMessage('ok');
+
 const mockedStream = new PassThrough();
 class DummyTransport extends EventEmitter implements IGrpcTransport {
   device: any;
@@ -127,6 +130,9 @@ const grpcClient: any = {
     cb(undefined, optionCerts);
   },
   close: () => {},
+  addOptionCertificate: (cb: any) => {
+    cb(undefined, deviceStatusDummy);
+  },
 };
 
 describe('IpBaseDevice', () => {
@@ -1225,6 +1231,29 @@ describe('IpBaseDevice', () => {
         expect(device.handleError).to.have.been.calledOnce;
       });
       stub.restore();
+    });
+  });
+  describe('#addOptionCertificate', () => {
+    it('should pass the option certificate to the _addOptionCertificate function and return the device status text', async () => {
+      const _addOptionCertificateStub = sinon
+        .stub(device, '_addOptionCertificate')
+        .resolves(new huddly.DeviceStatus().setMessage('test'));
+
+      const status = await device.addOptionCertificate('thisisacert');
+      expect(status).to.equal('test');
+      expect(_addOptionCertificateStub.getCall(0).args[0]).to.equal('thisisacert');
+
+      _addOptionCertificateStub.restore();
+    });
+    it('should handle errors', async () => {
+      const _addOptionCertificateStub = sinon
+        .stub(device, '_addOptionCertificate')
+        .rejects(dummyError);
+      await device.addOptionCertificate('test').catch((err) => {
+        expect(err).to.equal(dummyError.message);
+        expect(device.handleError).to.have.been.calledOnce;
+      });
+      _addOptionCertificateStub.restore();
     });
   });
 });

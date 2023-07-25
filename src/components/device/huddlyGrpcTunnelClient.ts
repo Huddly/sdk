@@ -7,11 +7,34 @@ import GrpcTunnelServiceError from '../../error/GrpcTunnelServiceError';
 import Locksmith from '../locksmith';
 import Api from '../api';
 
+enum GrpcTunnelType {
+  Normal,
+  StreamUnary,
+  UnaryStream,
+}
+
 type NormalRPCResponse = {
   response: Buffer;
   status_code: number;
   status_error_message: string;
 };
+
+export class ClientWritableStreamWrapper {
+  private data: string | Uint8Array;
+  private endFunction: Function;
+
+  constructor(endFunction: Function) {
+    this.endFunction = endFunction;
+  }
+
+  write(huddlyChunk: huddly.Chunk) {
+    this.data = huddlyChunk.getContent();
+  }
+
+  end() {
+    this.endFunction(this.data);
+  }
+}
 
 class HuddlyGrpcTunnelClient {
   usbTransport: IUsbTransport;
@@ -24,6 +47,51 @@ class HuddlyGrpcTunnelClient {
 
   get empty() {
     return new Empty().toArray();
+  }
+
+  getFullGrpcMethod(grpcMethod: string): string {
+    return `/huddly.HuddlyService/${grpcMethod}`;
+  }
+
+  async streamUnary(
+    grpcMethod: string,
+    request: Uint8Array,
+    timeout: number = 30000
+  ): Promise<NormalRPCResponse> {
+    const payload = {
+      rpc_method_name: this.getFullGrpcMethod(grpcMethod),
+      request,
+    };
+    const reply = await this.api.sendAndReceiveMessagePack(
+      payload,
+      {
+        send: 'grpc/stream_unary',
+        receive: 'grpc/stream_unary_reply',
+      },
+      timeout
+    );
+    console.log(reply);
+    return reply;
+  }
+
+  async unaryStream(
+    grpcMethod: string,
+    request: Uint8Array,
+    timeout: number = 30000
+  ): Promise<NormalRPCResponse> {
+    const payload = {
+      rpc_method_name: this.getFullGrpcMethod(grpcMethod),
+      request,
+    };
+    const reply = await this.api.sendAndReceiveMessagePack(
+      payload,
+      {
+        send: 'grpc/unary_stream',
+        receive: 'grpc/unary_stream_reply',
+      },
+      timeout
+    );
+    return reply;
   }
 
   async normalRPC(
@@ -58,9 +126,16 @@ class HuddlyGrpcTunnelClient {
     cmdString: string,
     request: Uint8Array,
     callback: Function,
-    deserializer: Function
+    deserializer: Function,
+    grpcTunnelType: GrpcTunnelType = GrpcTunnelType.Normal
   ) {
-    const reply = await this.normalRPC(cmdString, request);
+    const grpcTunnelFn = {
+      [GrpcTunnelType.Normal]: this.normalRPC.bind(this),
+      [GrpcTunnelType.StreamUnary]: this.streamUnary.bind(this),
+      [GrpcTunnelType.UnaryStream]: this.unaryStream.bind(this),
+    }[grpcTunnelType];
+
+    const reply = await grpcTunnelFn(cmdString, request);
     const error = this.getError(reply);
     callback(error, deserializer(reply.response));
   }
@@ -199,6 +274,19 @@ class HuddlyGrpcTunnelClient {
       callback,
       huddly.OptionCertificates.deserializeBinary
     );
+  }
+
+  addOptionCertificate(callback: Function) {
+    const endFunction = (data) => {
+      this.runNormalRPCCommand(
+        'GetOptionCertificates',
+        data,
+        callback,
+        huddly.DeviceStatus.deserializeBinary,
+        GrpcTunnelType.StreamUnary
+      );
+    };
+    return new ClientWritableStreamWrapper(endFunction);
   }
 
   setCnnFeature(request: Empty, callback: Function) {

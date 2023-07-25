@@ -222,6 +222,10 @@ export default class SmartbaseCamera implements IIpDeviceManager {
     return new IpFaceBasedExposureControl(this);
   }
 
+  addOptionCertificate(optionCertificate: string) {
+    return this.ipDevice.addOptionCertificate(optionCertificate);
+  }
+
   get uvcControlInterface() {
     throw new Error('Not Supported');
   }

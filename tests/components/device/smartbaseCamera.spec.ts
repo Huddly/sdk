@@ -250,4 +250,10 @@ describe('SmartbaseCamera', () => {
       expect(smartbaseCamera.setXUControl).to.throw();
     });
   });
+  
+  describe('addOptionCertificate', () => {
+    it('should call addOptionCertificate on the ipDevice with the cert', () => {
+      runIpDeviceInvocationTest('addOptionCertificate', ['test']);
+    });
+  });
 });
