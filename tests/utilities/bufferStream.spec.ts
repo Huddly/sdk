@@ -59,11 +59,12 @@ describe('BufferStream', () => {
       expect(pushSpy.getCall(1).args[0]).to.deep.equal(Buffer.from('World'));
     });
 
-    it('should push null/undefined at the end of the buffer to signalize the end of the read stream', () => {
+    it('should push null at the end of the buffer to signalize the end of the read stream', () => {
       const sourceBuffer = Buffer.from('Hello');
       const bufferStream = new BufferStream(sourceBuffer);
       bufferStream._read(100);
-      expect(pushSpy.getCall(1).args[0]).to.be.undefined;
+      // tslint:disable-next-line
+      expect(pushSpy.getCall(1).args[0]).to.equal(null);
     });
   });
 });

@@ -66,7 +66,9 @@ export default class BufferStream extends Readable {
     }
 
     if (this.offset >= this.length) {
-      this.push(undefined);
+      // Pushing null to signal end of stream
+      // tslint:disable-next-line
+      this.push(null);
     }
   }
 }
