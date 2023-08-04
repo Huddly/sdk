@@ -6,6 +6,7 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import GrpcTunnelServiceError from '../../error/GrpcTunnelServiceError';
 import Locksmith from '../locksmith';
 import Api from '../api';
+import ClientWritableStreamEmulator from '../../utilitis/clientWritableStreamEmulator';
 
 enum GrpcTunnelType {
   Normal,
@@ -18,23 +19,6 @@ type NormalRPCResponse = {
   status_code: number;
   status_error_message: string;
 };
-
-export class ClientWritableStreamWrapper {
-  private data: string | Uint8Array;
-  private endFunction: Function;
-
-  constructor(endFunction: Function) {
-    this.endFunction = endFunction;
-  }
-
-  write(huddlyChunk: huddly.Chunk) {
-    this.data = huddlyChunk.getContent();
-  }
-
-  end() {
-    this.endFunction(this.data);
-  }
-}
 
 class HuddlyGrpcTunnelClient {
   usbTransport: IUsbTransport;
@@ -70,7 +54,6 @@ class HuddlyGrpcTunnelClient {
       },
       timeout
     );
-    console.log(reply);
     return reply;
   }
 
@@ -286,7 +269,7 @@ class HuddlyGrpcTunnelClient {
         GrpcTunnelType.StreamUnary
       );
     };
-    return new ClientWritableStreamWrapper(endFunction);
+    return new ClientWritableStreamEmulator(endFunction);
   }
 
   setCnnFeature(request: Empty, callback: Function) {
