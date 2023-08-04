@@ -105,7 +105,7 @@ class HuddlyGrpcTunnelClient {
     return new GrpcTunnelServiceError(status_error_message, status_code);
   }
 
-  async runNormalRPCCommand(
+  async runRPCCommand(
     cmdString: string,
     request: Uint8Array,
     callback: Function,
@@ -132,7 +132,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getDeviceVersion(request, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetDeviceVersion',
       request.serializeBinary(),
       callback,
@@ -148,7 +148,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   eraseLogFile(request: huddly.LogFile, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'eraseLogFile',
       request.serializeBinary(),
       callback,
@@ -161,7 +161,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getCnnFeatureStatus(request: huddly.CnnFeature, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetCnnFeatureStatus',
       request.serializeBinary(),
       callback,
@@ -170,7 +170,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getTemperatures(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetTemperatures',
       request.serializeBinary(),
       callback,
@@ -179,7 +179,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getBootSlot(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetBootSlot',
       request.serializeBinary(),
       callback,
@@ -188,7 +188,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getUptime(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetUptime',
       request.serializeBinary(),
       callback,
@@ -197,7 +197,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getSaturation(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetSaturation',
       request.serializeBinary(),
       callback,
@@ -206,7 +206,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   setSaturation(request: huddly.Saturation, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'SetSaturation',
       request.serializeBinary(),
       callback,
@@ -215,7 +215,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getBrightness(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetBrightness',
       request.serializeBinary(),
       callback,
@@ -224,7 +224,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   setBrightness(request: huddly.Brightness, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'SetBrightness',
       request.serializeBinary(),
       callback,
@@ -233,16 +233,11 @@ class HuddlyGrpcTunnelClient {
   }
 
   getPTZ(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
-      'GetPTZ',
-      request.serializeBinary(),
-      callback,
-      huddly.PTZ.deserializeBinary
-    );
+    this.runRPCCommand('GetPTZ', request.serializeBinary(), callback, huddly.PTZ.deserializeBinary);
   }
 
   setPTZ(request: huddly.PTZ, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'SetPTZ',
       request.serializeBinary(),
       callback,
@@ -251,7 +246,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getOptionCertificates(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetOptionCertificates',
       request.serializeBinary(),
       callback,
@@ -261,7 +256,7 @@ class HuddlyGrpcTunnelClient {
 
   addOptionCertificate(callback: Function) {
     const endFunction = (data) => {
-      this.runNormalRPCCommand(
+      this.runRPCCommand(
         'GetOptionCertificates',
         data,
         callback,
@@ -273,7 +268,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   setCnnFeature(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'SetCnnFeature',
       request.serializeBinary(),
       callback,
@@ -282,7 +277,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   getDetections(request: Empty, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'GetDetections',
       request.serializeBinary(),
       callback,
@@ -291,7 +286,7 @@ class HuddlyGrpcTunnelClient {
   }
 
   controlSetting(request: huddly.Setting, callback: Function) {
-    this.runNormalRPCCommand(
+    this.runRPCCommand(
       'ControlSetting',
       request.serializeBinary(),
       callback,

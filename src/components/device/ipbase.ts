@@ -1208,10 +1208,10 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    *
    * Adds an option certificate to the camera
    *
-   * @return {Promise<any>} Device status
+   * @return {Promise<string>} Device status
    * @memberof IpBaseDevice
    */
-  async addOptionCertificate(optionCertificate: string): Promise<any> {
+  async addOptionCertificate(optionCertificate: string): Promise<string> {
     return new Promise(async (resolve, reject) => {
       try {
         const deviceStatus = await this._addOptionCertificate(optionCertificate);
