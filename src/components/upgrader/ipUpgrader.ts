@@ -17,6 +17,7 @@ import BufferStream from './../../utilitis/bufferStream';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import IpBaseDevice from '../device/ipbase';
+import ClientWritableStreamEmulator from '../../utilitis/clientWritableStreamEmulator';
 
 const UPGRADE_STEP_TIMEOUT = 20;
 const VERIFICATION_FILE = 'verify.md5';
@@ -32,26 +33,6 @@ export enum UpgradeSteps {
   FLASH = 0,
   REBOOT = 1,
   COMMIT = 2,
-}
-
-export class ClientWritableStreamWrapper {
-  private data: string | Uint8Array;
-  private verifyFunction: Function;
-
-  constructor(verifyFunction: Function) {
-    this.verifyFunction = verifyFunction;
-  }
-
-  write(huddlyChunk: huddly.Chunk) {
-    this.data = huddlyChunk.getContent();
-  }
-
-  end() {
-    const verificationRequest = new huddly.VerificationRequest();
-    verificationRequest.setFormat(huddly.VerificationFormat.MD5SUM);
-    verificationRequest.setData(this.data);
-    this.verifyFunction(verificationRequest);
-  }
 }
 
 /**
@@ -217,13 +198,13 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
       flash: (upgradeStepCompleteCb) =>
         this.ipBaseManager.grpcClient.upgradeImage(upgradeStepCompleteCb),
       verify: (upgradeStepCompleteCb) => {
-        const stream: ClientWritableStreamWrapper = new ClientWritableStreamWrapper(
-          (verificationRequest: huddly.VerificationRequest) =>
-            this.ipBaseManager.grpcClient.verifyIntegrity(
-              verificationRequest,
-              upgradeStepCompleteCb
-            )
-        );
+        const endFunction = (data: Uint8Array | string) => {
+          const verificationRequest = new huddly.VerificationRequest();
+          verificationRequest.setFormat(huddly.VerificationFormat.MD5SUM);
+          verificationRequest.setData(data);
+          this.ipBaseManager.grpcClient.verifyIntegrity(verificationRequest, upgradeStepCompleteCb);
+        };
+        const stream: ClientWritableStreamEmulator = new ClientWritableStreamEmulator(endFunction);
         return stream;
       },
       imageFileName: 'image.img',
@@ -551,7 +532,7 @@ export default class IpCameraUpgrader extends EventEmitter implements IDeviceUpg
           `${stepName} step completed. Status code ${deviceStatus.getCode()}, message ${deviceStatus.getMessage()}`
         );
       };
-      let stream: grpc.ClientWritableStream<huddly.Chunk> | ClientWritableStreamWrapper;
+      let stream: grpc.ClientWritableStream<huddly.Chunk> | ClientWritableStreamEmulator;
       let fileToRead: string = upgradeUtils.imageFileName;
       switch (step) {
         case UpgradeSteps.FLASH:
