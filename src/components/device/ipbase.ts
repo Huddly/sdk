@@ -95,7 +95,7 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @type {number}
    * @memberof IpBaseDevice
    */
-  private readonly GPRC_CONNECT_TIMEOUT: number = 1; // seconds
+  private readonly GPRC_CONNECT_TIMEOUT: number = 10; // seconds
   /**
    * Port number for connecting to grpc server on the network device
    *
