@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,25 +41,35 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>HuddlySdk</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >HuddlySdk</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        <li class="nav-item">
+            <a href="#readme" 
+                class="nav-link"
+                
+                role="tab" id="readme-tab" data-bs-toggle="tab" data-link="readme">README</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
@@ -67,21 +78,17 @@
         </p>
 
 
+
             <p class="comment">
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                    <code>EventEmitter</code>
             </p>
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -95,18 +102,18 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#devMode">devMode</a>
+                                <a href="#devMode" >devMode</a>
                             </li>
                             <li>
-                                <a href="#emitter">emitter</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                <a href="#locksmith">locksmith</a>
+                                <a href="#emitter" >emitter</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#targetSerial">targetSerial</a>
+                                <a href="#locksmith" >locksmith</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#targetSerial" >targetSerial</a>
                             </li>
                         </ul>
                     </td>
@@ -123,14 +130,19 @@
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getService">getService</a>
+                                <a href="#getConnectedCameras" >getConnectedCameras</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Static</span>
+                                    <span class="modifier">Async</span>
+                                <a href="#getService" >getService</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#init">init</a>
+                                <a href="#init" >init</a>
                             </li>
                             <li>
-                                <a href="#setupDeviceDiscoveryListeners">setupDeviceDiscoveryListeners</a>
+                                <a href="#setupDeviceDiscoveryListeners" >setupDeviceDiscoveryListeners</a>
                             </li>
                         </ul>
                     </td>
@@ -149,13 +161,13 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#mainDeviceApi">mainDeviceApi</a>
+                                    <a href="#mainDeviceApi" >mainDeviceApi</a>
                                 </li>
                                 <li>
-                                    <a href="#deviceApis">deviceApis</a>
+                                    <a href="#deviceApis" >deviceApis</a>
                                 </li>
                                 <li>
-                                    <a href="#deviceDiscoveryApi">deviceDiscoveryApi</a>
+                                    <a href="#deviceDiscoveryApi" >deviceDiscoveryApi</a>
                                 </li>
                             </ul>
                         </td>
@@ -164,24 +176,25 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI | Array<IHuddlyDeviceDiscoveryAPI>, deviceApis?: Array<IHuddlyDeviceAPI>, opts?: <a href="../interfaces/SDKOpts.html">SDKOpts</a>)</code>
+<code>constructor(deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI | Array<IHuddlyDeviceDiscoveryAPI>, deviceApis?: Array<IHuddlyDeviceAPI>, opts?: <a href="../interfaces/SDKOpts.html" target="_self">SDKOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/index.ts:137</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/index.ts:138</a></div>
                             </td>
                         </tr>
 
                 <tr>
                     <td class="col-md-4">
-                            <div class="io-description"><p>Creates an instance of HuddlySdk.</p>
+                            <div class="io-description"><p>Creates an instance of HuddlySdk.
+By default it uses the <code>deviceDiscoveryApi</code> parameter as the device-api used for communication.</p>
 </div>
                             <div>
                                     <b>Parameters :</b>
@@ -207,8 +220,8 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>The Huddly device-api used for discovering the device.</p>
-</code>
+                                                                <p>The Huddly device-api used for discovering the device.</p>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
@@ -223,9 +236,9 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Optional list of device-apis used for communicating with the device.
+                                                                <p>Optional list of device-apis used for communicating with the device.
 By default it uses the <code>deviceDiscoveryApi</code> parameter as the device-api used for communication.</p>
-</code>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
@@ -240,8 +253,8 @@ By default it uses the <code>deviceDiscoveryApi</code> parameter as the device-a
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Options used for initializing the sdk. See <code>SDKOpts</code> interface.</p>
-</code>
+                                                                <p>Options used for initializing the sdk. See <code>SDKOpts</code> interface.</p>
+
                                                         </td>
                                                 </tr>
                                         </tbody>
@@ -253,133 +266,129 @@ By default it uses the <code>deviceDiscoveryApi</code> parameter as the device-a
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-properties">
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="devMode"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>devMode</b></span>
+                        <a href="#devMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="devMode"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                            devMode</b>
-                            <a href="#devMode"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
-
+                                <div class="io-line">Defined in <a href="" data-line="138" class="link-to-prism">src/index.ts:138</a></div>
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/index.ts:137</a></div>
-                            </td>
-                        </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="emitter"></a>
+                    <span class="name">
+                        <span ><b>emitter</b></span>
+                        <a href="#emitter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="emitter"></a>
-                        <span class="name">
-                            <b>
-                            emitter</b>
-                            <a href="#emitter"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>EventEmitter</code>
+
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
-
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/index.ts:95</a></div>
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="94" class="link-to-prism">src/index.ts:94</a></div>
-                            </td>
-                        </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Event Emitter instance used to fire SDK events such as
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Event Emitter instance used to fire SDK events such as
 ATTACH and DETACH camera events. For a full list of events
 please see <code>events</code> class.</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="locksmith"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>locksmith</b></span>
+                        <a href="#locksmith"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="locksmith"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                            locksmith</b>
-                            <a href="#locksmith"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>Locksmith</code>
+
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>    <code>Locksmith</code>
-
+                                <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">src/index.ts:136</a></div>
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="135" class="link-to-prism">src/index.ts:135</a></div>
-                            </td>
-                        </tr>
 
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="targetSerial"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>targetSerial</b></span>
+                        <a href="#targetSerial"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="targetSerial"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                            targetSerial</b>
-                            <a href="#targetSerial"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
+                                <div class="io-line">Defined in <a href="" data-line="137" class="link-to-prism">src/index.ts:137</a></div>
                         </td>
                     </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="136" class="link-to-prism">src/index.ts:136</a></div>
-                            </td>
-                        </tr>
 
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -388,13 +397,113 @@ please see <code>events</code> class.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getConnectedCameras"></a>
+                    <span class="name">
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getConnectedCameras</b></span>
+                        <a href="#getConnectedCameras"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getConnectedCameras(deviceApis: IHuddlyDeviceAPI[], excludeDevices: HuddlyHex[])</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="352"
+                            class="link-to-prism">src/index.ts:352</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get connected cameras using given device apis.</p>
+<p>Note that device apis might cache and control against already emitted cameras,
+so if you&#39;re using one that already has emitted a connected camera it might not get emitted again.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>deviceApis</td>
+                                    <td>
+                                            <code>IHuddlyDeviceAPI[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                    </td>
+
+                                    <td>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>excludeDevices</td>
+                                    <td>
+                                            <code>HuddlyHex[]</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>[HuddlyHex.BASE_PID]</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Device exclusion list. Default is the Huddly poe-to-usb device</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any[]&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>A list of devices</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getService"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Static</span>
-                            <span class="modifier">Async</span>
-                            getService
-                        </b>
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getService</b></span>
                         <a href="#getService"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -409,8 +518,8 @@ please see <code>events</code> class.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="336"
-                            class="link-to-prism">src/index.ts:336</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="337"
+                            class="link-to-prism">src/index.ts:337</a></div>
                 </td>
             </tr>
 
@@ -423,6 +532,7 @@ to start sending and receiving information to/from.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -478,10 +588,8 @@ to start sending and receiving information to/from.</p>
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            init
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -496,8 +604,8 @@ to start sending and receiving information to/from.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="326"
-                            class="link-to-prism">src/index.ts:326</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="327"
+                            class="link-to-prism">src/index.ts:327</a></div>
                 </td>
             </tr>
 
@@ -506,6 +614,7 @@ to start sending and receiving information to/from.</p>
                 <td class="col-md-4">
                     <div class="io-description"><p>Initializes the device discovery api which in turn will fire
 ATTACH events for all cameras attached to the system.</p>
+<p>successful initialization or rejects otherwise.</p>
 </div>
 
                     <div>
@@ -529,9 +638,7 @@ successful initialization or rejects otherwise.</p>
                 <td class="col-md-4">
                     <a name="setupDeviceDiscoveryListeners"></a>
                     <span class="name">
-                        <b>
-                            setupDeviceDiscoveryListeners
-                        </b>
+                        <span ><b>setupDeviceDiscoveryListeners</b></span>
                         <a href="#setupDeviceDiscoveryListeners"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -545,8 +652,8 @@ successful initialization or rejects otherwise.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="204"
-                            class="link-to-prism">src/index.ts:204</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="205"
+                            class="link-to-prism">src/index.ts:205</a></div>
                 </td>
             </tr>
 
@@ -573,7 +680,7 @@ Will emit the device serial number when a DETACH event occurs.</p>
 
 
 
-            <section>
+            <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>
@@ -593,7 +700,7 @@ Will emit the device serial number when a DETACH event occurs.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="269" class="link-to-prism">src/index.ts:269</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="270" class="link-to-prism">src/index.ts:270</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -613,12 +720,12 @@ used for communicating with the camera.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>mainDeviceApi(mainApi)</code></span>
+                        <span class="accessor"><b>set</b><code>mainDeviceApi(mainApi: IHuddlyDeviceAPI)</code></span>
                     </td>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="258" class="link-to-prism">src/index.ts:258</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="259" class="link-to-prism">src/index.ts:259</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -633,6 +740,7 @@ used for communicating with the camera.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -640,6 +748,9 @@ used for communicating with the camera.</p>
                                                     <tr>
                                                             <td>mainApi</td>
                                                     
+                                                            <td>
+                                                                        <code>IHuddlyDeviceAPI</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -675,7 +786,7 @@ used for communicating with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="292" class="link-to-prism">src/index.ts:292</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="293" class="link-to-prism">src/index.ts:293</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -696,12 +807,12 @@ the camera.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>deviceApis(deviceApis)</code></span>
+                        <span class="accessor"><b>set</b><code>deviceApis(deviceApis: Array<IHuddlyDeviceAPI>)</code></span>
                     </td>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="280" class="link-to-prism">src/index.ts:280</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="281" class="link-to-prism">src/index.ts:281</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -717,6 +828,7 @@ communication channels with the camera.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -724,6 +836,9 @@ communication channels with the camera.</p>
                                                     <tr>
                                                             <td>deviceApis</td>
                                                     
+                                                            <td>
+                                                                        <code>Array&lt;IHuddlyDeviceAPI&gt;</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -759,7 +874,7 @@ communication channels with the camera.</p>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="314" class="link-to-prism">src/index.ts:314</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="315" class="link-to-prism">src/index.ts:315</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -779,12 +894,12 @@ instance used for camera discovery.</p>
 
                 <tr>
                     <td class="col-md-4">
-                        <span class="accessor"><b>set</b><code>deviceDiscoveryApi(api)</code></span>
+                        <span class="accessor"><b>set</b><code>deviceDiscoveryApi(api: IHuddlyDeviceDiscoveryAPI)</code></span>
                     </td>
                 </tr>
                             <tr>
                                 <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="302" class="link-to-prism">src/index.ts:302</a></div>
+                                    <div class="io-line">Defined in <a href="" data-line="303" class="link-to-prism">src/index.ts:303</a></div>
                                 </td>
                             </tr>
                     <tr>
@@ -799,6 +914,7 @@ instance used for camera discovery.</p>
                                             <thead>
                                                 <tr>
                                                     <td>Name</td>
+                                                        <td>Type</td>
                                                     <td>Optional</td>
                                                 </tr>
                                             </thead>
@@ -806,6 +922,9 @@ instance used for camera discovery.</p>
                                                     <tr>
                                                             <td>api</td>
                                                     
+                                                            <td>
+                                                                        <code>IHuddlyDeviceDiscoveryAPI</code>
+                                                            </td>
                                                     
                                                         <td>
                                                                 No
@@ -828,10 +947,10 @@ instance used for camera discovery.</p>
 </section>
     </div>
 
-    <div class="tab-pane fade " id="c-readme">
-        <p><h2 id="sdk-usage">SDK Usage</h2>
+    <div class="tab-pane fade " id="readme">
+        <p><h2>SDK Usage</h2>
 <p>Please check the <a href="http://developer.huddly.com/index.html">Getting Started</a> guide to integrate the sdk with your awesome application.</p>
-<h2 id="sdk-events">SDK Events</h2>
+<h2>SDK Events</h2>
 <p>When you create an instance of the SDK, you provide some options on the constructor:</p>
 <div><pre class="line-numbers"><code class="language-javascript">const usbApi = new DeviceApiUSB();
 const opts = {
@@ -895,7 +1014,7 @@ sdk.on(&#39;ERROR&#39;, (sdkError) =&gt; {
 });</code></pre></div></p>
     </div>
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
 
 import IHuddlyDeviceAPI from &#x27;@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceAPI&#x27;;
@@ -916,6 +1035,7 @@ import ErrorCodes from &#x27;./error/errorCodes&#x27;;
 import AllDeviceDiscovery from &#x27;./components/allDeviceDiscovery&#x27;;
 import ServiceFactory from &#x27;./components/service/factory&#x27;;
 import AttachError from &#x27;./error/AttachError&#x27;;
+import HuddlyHex from &#x27;@huddly/sdk-interfaces/lib/enums/HuddlyHex&#x27;;
 
 sourceMapSupport.install();
 
@@ -1236,6 +1356,27 @@ class HuddlySdk extends EventEmitter {
     await service.init();
     return service;
   }
+
+  /**
+   * Get connected cameras using given device apis.
+   *
+   * Note that device apis might cache and control against already emitted cameras,
+   * so if you&#x27;re using one that already has emitted a connected camera it might not get emitted again.
+   * @param discoveryApi Camera apis to use for discovery
+   * @param excludeDevices Device exclusion list. Default is the Huddly poe-to-usb device
+   * @returns A list of devices
+   */
+  static async getConnectedCameras(
+    deviceApis: IHuddlyDeviceAPI[],
+    excludeDevices: HuddlyHex[] &#x3D; [HuddlyHex.BASE_PID]
+  ): Promise&lt;any[]&gt; {
+    return Promise.all(
+      deviceApis.map(async (api: any) &#x3D;&gt; {
+        const cams &#x3D; await api.deviceDiscoveryManager.deviceList(false, true);
+        return cams.filter((device) &#x3D;&gt; !excludeDevices.includes(device.productId));
+      })
+    );
+  }
 }
 
 export { CameraEvents, Api };
@@ -1247,14 +1388,15 @@ export default HuddlySdk;
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -1266,6 +1408,15 @@ export default HuddlySdk;
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -1274,9 +1425,9 @@ export default HuddlySdk;
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,28 +41,36 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>UpgradeStatus</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >UpgradeStatus</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/upgrader/upgradeStatus.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -74,13 +83,8 @@ consisted of steps and total upgrade weight.</p>
 
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -94,15 +98,15 @@ consisted of steps and total upgrade weight.</p>
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#_statusString">_statusString</a>
+                                <a href="#_statusString" >_statusString</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#_steps">_steps</a>
+                                <a href="#_steps" >_steps</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#_weights">_weights</a>
+                                <a href="#_weights" >_weights</a>
                             </li>
                         </ul>
                     </td>
@@ -117,7 +121,7 @@ consisted of steps and total upgrade weight.</p>
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#getStatus">getStatus</a>
+                                <a href="#getStatus" >getStatus</a>
                             </li>
                         </ul>
                     </td>
@@ -136,7 +140,7 @@ consisted of steps and total upgrade weight.</p>
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#statusString">statusString</a>
+                                    <a href="#statusString" >statusString</a>
                                 </li>
                             </ul>
                         </td>
@@ -145,7 +149,7 @@ consisted of steps and total upgrade weight.</p>
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
@@ -194,131 +198,128 @@ consisted of steps and total upgrade weight.</p>
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-properties">
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_statusString"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_statusString</b></span>
+                        <a href="#_statusString"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_statusString"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                            _statusString</b>
-                            <a href="#_statusString"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Not Started&#x27;</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
+                                <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:87</a></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;Not Started&#x27;</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="87" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:87</a></div>
-                            </td>
-                        </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>A string describing the upgrade status state.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A string describing the upgrade status state.</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_steps"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_steps</b></span>
+                        <a href="#_steps"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_steps"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                            _steps</b>
-                            <a href="#_steps"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>Array&lt;UpgradeStatusStep&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>    <code>Array&lt;UpgradeStatusStep&gt;</code>
-
+                                <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:95</a></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>[]</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="95" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:95</a></div>
-                            </td>
-                        </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>A list of upgrade steps that will be carried out during the upgrade process.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A list of upgrade steps that will be carried out during the upgrade process.</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_weights"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>_weights</b></span>
+                        <a href="#_weights"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_weights"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                            _weights</b>
-                            <a href="#_weights"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>0</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
+                                <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:103</a></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>0</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="103" class="link-to-prism">src/components/upgrader/upgradeStatus.ts:103</a></div>
-                            </td>
-                        </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>A number representing the total weight of the upgrade process.</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>A number representing the total weight of the upgrade process.</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -329,9 +330,7 @@ consisted of steps and total upgrade weight.</p>
                 <td class="col-md-4">
                     <a name="getStatus"></a>
                     <span class="name">
-                        <b>
-                            getStatus
-                        </b>
+                        <span ><b>getStatus</b></span>
                         <a href="#getStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -354,12 +353,13 @@ consisted of steps and total upgrade weight.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Calculates the status so far during the upgrade process.</p>
+<p>steps involved in the upgrade process.</p>
 </div>
 
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{ status: string; progress: any; steps: any; }</code>
+                        <b>Returns : </b>    <code>{ status: string; progress: any; steps: Array&lt;UpgradeStatusStep&gt;; }</code>
 
                     </div>
                     <div class="io-description">
@@ -377,7 +377,7 @@ steps involved in the upgrade process.</p>
 
 
 
-            <section>
+            <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>
@@ -446,7 +446,7 @@ steps involved in the upgrade process.</p>
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export class UpgradeStatusStep {
   /**
    * Name of the upgrade step. Something descriptive and easy to understand.
@@ -586,14 +586,15 @@ export default class UpgradeStatus {
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -605,6 +606,15 @@ export default class UpgradeStatus {
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -613,9 +623,9 @@ export default class UpgradeStatus {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

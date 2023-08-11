@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,28 +41,36 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>Ace</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >Ace</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/device/ace.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -79,13 +88,8 @@
             </p>
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -98,30 +102,27 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#productName">productName</a>
+                                <a href="#productName" >productName</a>
                             </li>
                             <li>
-                                <a href="#discoveryEmitter">discoveryEmitter</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Private</span>
-                                    <span class="modifier">Readonly</span>
-                                <a href="#GPRC_CONNECT_TIMEOUT">GPRC_CONNECT_TIMEOUT</a>
+                                <a href="#discoveryEmitter" >discoveryEmitter</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Readonly</span>
-                                <a href="#GRPC_PORT">GRPC_PORT</a>
+                                <a href="#GPRC_CONNECT_TIMEOUT" >GPRC_CONNECT_TIMEOUT</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#huddlyGrpcClient">huddlyGrpcClient</a>
+                                    <span class="modifier">Readonly</span>
+                                <a href="#GRPC_PORT" >GRPC_PORT</a>
                             </li>
                             <li>
-                                <a href="#productName">productName</a>
+                                    <span class="modifier">Private</span>
+                                <a href="#huddlyGrpcClient" >huddlyGrpcClient</a>
                             </li>
                             <li>
-                                <a href="#wsdDevice">wsdDevice</a>
+                                <a href="#wsdDevice" >wsdDevice</a>
                             </li>
                         </ul>
                     </td>
@@ -136,102 +137,116 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#getDetector">getDetector</a>
+                                <a href="#getDetector" >getDetector</a>
                             </li>
                             <li>
-                                <a href="#getUpgrader">getUpgrader</a>
+                                <a href="#getUpgrader" >getUpgrader</a>
                             </li>
                             <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#closeConnection">closeConnection</a>
+                                <a href="#_addOptionCertificate" >_addOptionCertificate</a>
                             </li>
                             <li>
-                                <a href="#equals">equals</a>
+                                <a href="#_getOptionCertificates" >_getOptionCertificates</a>
                             </li>
                             <li>
-                                <a href="#eraseErrorLog">eraseErrorLog</a>
-                            </li>
-                            <li>
-                                <a href="#getAutozoomControl">getAutozoomControl</a>
-                            </li>
-                            <li>
-                                <a href="#getBrightness">getBrightness</a>
-                            </li>
-                            <li>
-                                <a href="#getCnnFeatureStatus">getCnnFeatureStatus</a>
-                            </li>
-                            <li>
-                                <a href="#getDetector">getDetector</a>
-                            </li>
-                            <li>
-                                <a href="#getErrorLog">getErrorLog</a>
-                            </li>
-                            <li>
-                                <a href="#getFaceBasedExposureControl">getFaceBasedExposureControl</a>
-                            </li>
-                            <li>
-                                <a href="#getInfo">getInfo</a>
-                            </li>
-                            <li>
-                                <a href="#getPanTilt">getPanTilt</a>
-                            </li>
-                            <li>
-                                <a href="#getPanTiltZoom">getPanTiltZoom</a>
-                            </li>
-                            <li>
-                                <a href="#getSaturation">getSaturation</a>
-                            </li>
-                            <li>
-                                <a href="#getSetting">getSetting</a>
-                            </li>
-                            <li>
-                                <a href="#getSettings">getSettings</a>
-                            </li>
-                            <li>
-                                <a href="#getSlot">getSlot</a>
-                            </li>
-                            <li>
-                                <a href="#getState">getState</a>
-                            </li>
-                            <li>
-                                <a href="#getSupportedSettings">getSupportedSettings</a>
-                            </li>
-                            <li>
-                                <a href="#getTemperature">getTemperature</a>
-                            </li>
-                            <li>
-                                <a href="#getTemperatures">getTemperatures</a>
+                                <a href="#_writeContentToGrpcStream" >_writeContentToGrpcStream</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#initialize">initialize</a>
+                                <a href="#addOptionCertificate" >addOptionCertificate</a>
                             </li>
                             <li>
-                                <a href="#reboot">reboot</a>
+                                    <span class="modifier">Async</span>
+                                <a href="#closeConnection" >closeConnection</a>
                             </li>
                             <li>
-                                <a href="#resetSettings">resetSettings</a>
+                                <a href="#equals" >equals</a>
                             </li>
                             <li>
-                                <a href="#setBrightness">setBrightness</a>
+                                <a href="#eraseErrorLog" >eraseErrorLog</a>
                             </li>
                             <li>
-                                <a href="#setPanTilt">setPanTilt</a>
+                                <a href="#getAutozoomControl" >getAutozoomControl</a>
                             </li>
                             <li>
-                                <a href="#setPanTiltZoom">setPanTiltZoom</a>
+                                <a href="#getBrightness" >getBrightness</a>
                             </li>
                             <li>
-                                <a href="#setSaturation">setSaturation</a>
+                                <a href="#getCnnFeatureStatus" >getCnnFeatureStatus</a>
                             </li>
                             <li>
-                                <a href="#setSettingValue">setSettingValue</a>
+                                <a href="#getErrorLog" >getErrorLog</a>
                             </li>
                             <li>
-                                <a href="#upgrade">upgrade</a>
+                                <a href="#getFaceBasedExposureControl" >getFaceBasedExposureControl</a>
                             </li>
                             <li>
-                                <a href="#uptime">uptime</a>
+                                <a href="#getInfo" >getInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getOptionCertificates" >getOptionCertificates</a>
+                            </li>
+                            <li>
+                                <a href="#getPanTilt" >getPanTilt</a>
+                            </li>
+                            <li>
+                                <a href="#getPanTiltZoom" >getPanTiltZoom</a>
+                            </li>
+                            <li>
+                                <a href="#getSaturation" >getSaturation</a>
+                            </li>
+                            <li>
+                                <a href="#getSetting" >getSetting</a>
+                            </li>
+                            <li>
+                                <a href="#getSettings" >getSettings</a>
+                            </li>
+                            <li>
+                                <a href="#getSlot" >getSlot</a>
+                            </li>
+                            <li>
+                                <a href="#getState" >getState</a>
+                            </li>
+                            <li>
+                                <a href="#getSupportedSettings" >getSupportedSettings</a>
+                            </li>
+                            <li>
+                                <a href="#getTemperature" >getTemperature</a>
+                            </li>
+                            <li>
+                                <a href="#getTemperatures" >getTemperatures</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#initialize" >initialize</a>
+                            </li>
+                            <li>
+                                <a href="#reboot" >reboot</a>
+                            </li>
+                            <li>
+                                <a href="#resetSettings" >resetSettings</a>
+                            </li>
+                            <li>
+                                <a href="#setBrightness" >setBrightness</a>
+                            </li>
+                            <li>
+                                <a href="#setPanTilt" >setPanTilt</a>
+                            </li>
+                            <li>
+                                <a href="#setPanTiltZoom" >setPanTiltZoom</a>
+                            </li>
+                            <li>
+                                <a href="#setSaturation" >setSaturation</a>
+                            </li>
+                            <li>
+                                <a href="#setSettingValue" >setSettingValue</a>
+                            </li>
+                            <li>
+                                <a href="#upgrade" >upgrade</a>
+                            </li>
+                            <li>
+                                <a href="#uptime" >uptime</a>
                             </li>
                         </ul>
                     </td>
@@ -245,13 +260,13 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(wsdDevice: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, transport: IGrpcTransport, cameraDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+<code>constructor(wsdDevice: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, transport: IGrpcTransport, cameraDiscoveryEmitter: EventEmitter)</code>
                     </td>
                 </tr>
                         <tr>
@@ -288,8 +303,8 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>The wsdd device instance retrieved during discovery.</p>
-</code>
+                                                                <p>The wsdd device instance retrieved during discovery.</p>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
@@ -304,15 +319,15 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Grpc transport instance.</p>
-</code>
+                                                                <p>Grpc transport instance.</p>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
                                                         <td>cameraDiscoveryEmitter</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                                    <code>EventEmitter</code>
                                                         </td>
                                                   
                                                     <td>
@@ -320,8 +335,8 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Emitter instance sending attach &amp; detach events for Huddly L1 cameras.</p>
-</code>
+                                                                <p>Emitter instance sending attach &amp; detach events for Huddly L1 cameras.</p>
+
                                                         </td>
                                                 </tr>
                                         </tbody>
@@ -333,313 +348,269 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-properties">
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="productName"></a>
+                    <span class="name">
+                        <span ><b>productName</b></span>
+                        <a href="#productName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="productName"></a>
-                        <span class="name">
-                            <b>
-                            productName</b>
-                            <a href="#productName"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;Huddly L1&#x27;</code>
-                        </td>
-                    </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Huddly L1&#x27;</code>
+                    </td>
+                </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/ace.ts:24</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Comercial product name for this controller class.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="discoveryEmitter"></a>
-                        <span class="name">
-                            <b>
-                            discoveryEmitter</b>
-                            <a href="#discoveryEmitter"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
-
-                        </td>
-                    </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:81</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
 </div>
                             </td>
                         </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Event emitter instance emitting attach and detach events for Huddly Cameras.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="GPRC_CONNECT_TIMEOUT"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                                <span class="modifier">Readonly</span>
-                            GPRC_CONNECT_TIMEOUT</b>
-                            <a href="#GPRC_CONNECT_TIMEOUT"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>1</code>
-                        </td>
-                    </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:24</a></code>
 </div>
-                                </td>
-                            </tr>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Comercial product name for this controller class.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveryEmitter"></a>
+                    <span class="name">
+                        <span ><b>discoveryEmitter</b></span>
+                        <a href="#discoveryEmitter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:98</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
 </div>
                             </td>
                         </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Number representing the connection timeout when connecting to grpc server on the network device</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="GRPC_PORT"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                                <span class="modifier">Readonly</span>
-                            GRPC_PORT</b>
-                            <a href="#GRPC_PORT"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>50051</code>
-                        </td>
-                    </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:81</a></code>
 </div>
-                                </td>
-                            </tr>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Event emitter instance emitting attach and detach events for Huddly Cameras.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GPRC_CONNECT_TIMEOUT"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>GPRC_CONNECT_TIMEOUT</b></span>
+                        <a href="#GPRC_CONNECT_TIMEOUT"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>1</code>
+                    </td>
+                </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:106</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
 </div>
                             </td>
                         </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Port number for connecting to grpc server on the network device</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="huddlyGrpcClient"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                            huddlyGrpcClient</b>
-                            <a href="#huddlyGrpcClient"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>    <code>HuddlyServiceClient</code>
-
+                                <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:98</a></code>
+</div>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Number representing the connection timeout when connecting to grpc server on the network device</p>
 </div>
-                                </td>
-                            </tr>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="GRPC_PORT"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>GRPC_PORT</b></span>
+                        <a href="#GRPC_PORT"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>50051</code>
+                    </td>
+                </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:114</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
 </div>
                             </td>
                         </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Grpc client instance for communicating with the grpc server running on the network device</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="productName"></a>
-                        <span class="name">
-                            <b>
-                            productName</b>
-                            <a href="#productName"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;Huddly L1&#x27;</code>
-                        </td>
-                    </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+                                <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:106</a></code>
 </div>
-                                </td>
-                            </tr>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Port number for connecting to grpc server on the network device</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="huddlyGrpcClient"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>huddlyGrpcClient</b></span>
+                        <a href="#huddlyGrpcClient"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="../classes/HuddlyGrpcTunnelClient.html" target="_self" >HuddlyServiceClient | HuddlyGrpcTunnelClient</a></code>
+
+                    </td>
+                </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:73</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
 </div>
                             </td>
                         </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Comercial product name for this controller class.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="wsdDevice"></a>
-                        <span class="name">
-                            <b>
-                            wsdDevice</b>
-                            <a href="#wsdDevice"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
+                                <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:114</a></code>
+</div>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Grpc client instance for communicating with the grpc server running on the network device</p>
 </div>
-                                </td>
-                            </tr>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="wsdDevice"></a>
+                    <span class="name">
+                        <span ><b>wsdDevice</b></span>
+                        <a href="#wsdDevice"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:89</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
 </div>
                             </td>
                         </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:89</a></code>
+</div>
+                        </td>
+                    </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Device instance retrieved from doing WSDD probing. Take a look at the NetworkDevice
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Device instance retrieved from doing WSDD probing. Take a look at the NetworkDevice
 class on device-api-ip module.</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -650,24 +621,28 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getDetector"></a>
                     <span class="name">
-                        <b>
-                            getDetector
-                        </b>
+                        <span ><b>getDetector</b></span>
                         <a href="#getDetector"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getDetector(opts: <a href="../classes/Detector.html">IDetectorOpts</a>)</code>
+<code>getDetector(opts: <a href="../classes/Detector.html" target="_self">IDetectorOpts</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="54"
-                            class="link-to-prism">src/components/device/ace.ts:54</a></div>
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:54</a></code>
+</div>
                 </td>
             </tr>
 
@@ -679,6 +654,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -728,9 +704,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getUpgrader"></a>
                     <span class="name">
-                        <b>
-                            getUpgrader
-                        </b>
+                        <span ><b>getUpgrader</b></span>
                         <a href="#getUpgrader"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -773,12 +747,295 @@ class on device-api-ip module.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="_addOptionCertificate"></a>
+                    <span class="name">
+                        <span ><b>_addOptionCertificate</b></span>
+                        <a href="#_addOptionCertificate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>_addOptionCertificate(optionCertificate: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1225</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>optionCertificate</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;huddly.DeviceStatus&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_getOptionCertificates"></a>
+                    <span class="name">
+                        <span ><b>_getOptionCertificates</b></span>
+                        <a href="#_getOptionCertificates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>_getOptionCertificates()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1192</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;huddly.OptionCertificates&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_writeContentToGrpcStream"></a>
+                    <span class="name">
+                        <span ><b>_writeContentToGrpcStream</b></span>
+                        <a href="#_writeContentToGrpcStream"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>_writeContentToGrpcStream(content: Uint8Array | string, grpcStream: grpc.ClientWritableStream<any>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1240</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>content</td>
+                                    <td>
+                                            <code>Uint8Array | string</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>grpcStream</td>
+                                    <td>
+                                            <code>grpc.ClientWritableStream&lt;any&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="addOptionCertificate"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>addOptionCertificate</b></span>
+                        <a href="#addOptionCertificate"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>addOptionCertificate(optionCertificate: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1214</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Adds an option certificate to the camera</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>optionCertificate</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;string&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Device status</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="closeConnection"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            closeConnection
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>closeConnection</b></span>
                         <a href="#closeConnection"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -830,9 +1087,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="equals"></a>
                     <span class="name">
-                        <b>
-                            equals
-                        </b>
+                        <span ><b>equals</b></span>
                         <a href="#equals"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -852,7 +1107,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1167</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1166</a></code>
 </div>
                 </td>
             </tr>
@@ -865,6 +1120,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -914,9 +1170,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="eraseErrorLog"></a>
                     <span class="name">
-                        <b>
-                            eraseErrorLog
-                        </b>
+                        <span ><b>eraseErrorLog</b></span>
                         <a href="#eraseErrorLog"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -949,6 +1203,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -998,16 +1253,14 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getAutozoomControl"></a>
                     <span class="name">
-                        <b>
-                            getAutozoomControl
-                        </b>
+                        <span ><b>getAutozoomControl</b></span>
                         <a href="#getAutozoomControl"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getAutozoomControl(opts: <a href="../classes/AutozoomControl.html">IAutozoomControlOpts</a>)</code>
+<code>getAutozoomControl(opts: <a href="../classes/AutozoomControl.html" target="_self">IAutozoomControlOpts</a>)</code>
                 </td>
             </tr>
 
@@ -1033,6 +1286,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1082,9 +1336,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getBrightness"></a>
                     <span class="name">
-                        <b>
-                            getBrightness
-                        </b>
+                        <span ><b>getBrightness</b></span>
                         <a href="#getBrightness"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1104,7 +1356,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:871</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:870</a></code>
 </div>
                 </td>
             </tr>
@@ -1135,9 +1387,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getCnnFeatureStatus"></a>
                     <span class="name">
-                        <b>
-                            getCnnFeatureStatus
-                        </b>
+                        <span ><b>getCnnFeatureStatus</b></span>
                         <a href="#getCnnFeatureStatus"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1157,7 +1407,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:487</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:486</a></code>
 </div>
                 </td>
             </tr>
@@ -1170,6 +1420,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1217,95 +1468,9 @@ class on device-api-ip module.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="getDetector"></a>
-                    <span class="name">
-                        <b>
-                            getDetector
-                        </b>
-                        <a href="#getDetector"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>getDetector(opts: <a href="../classes/Detector.html">IDetectorOpts</a>)</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
-</div>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:442</a></code>
-</div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Get detector control class instance.</p>
-</div>
-
-                    <div class="io-description">
-                        <b>Parameters :</b>
-                        <table class="params">
-                            <thead>
-                                <tr>
-                                    <td>Name</td>
-                                    <td>Type</td>
-                                    <td>Optional</td>
-                                    <td>Description</td>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>opts</td>
-                                    <td>
-                                                <code><a href="../classes/Detector.html" target="_self" >IDetectorOpts</a></code>
-                                    </td>
-
-                                    <td>
-                                        No
-                                    </td>
-
-
-                                    <td>
-                                        <p>Detector control options.</p>
-
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>        <code><a href="../classes/Detector.html" target="_self" >IDetector</a></code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>{IDetector} The instance of the detector control class.</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
                     <a name="getErrorLog"></a>
                     <span class="name">
-                        <b>
-                            getErrorLog
-                        </b>
+                        <span ><b>getErrorLog</b></span>
                         <a href="#getErrorLog"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1338,6 +1503,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1387,9 +1553,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getFaceBasedExposureControl"></a>
                     <span class="name">
-                        <b>
-                            getFaceBasedExposureControl
-                        </b>
+                        <span ><b>getFaceBasedExposureControl</b></span>
                         <a href="#getFaceBasedExposureControl"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1440,9 +1604,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getInfo"></a>
                     <span class="name">
-                        <b>
-                            getInfo
-                        </b>
+                        <span ><b>getInfo</b></span>
                         <a href="#getInfo"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1491,11 +1653,62 @@ class on device-api-ip module.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getOptionCertificates"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getOptionCertificates</b></span>
+                        <a href="#getOptionCertificates"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getOptionCertificates()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpBaseDevice.html" target="_self" >IpBaseDevice</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1181</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Gets option certificates from camera</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Option certificates on camera</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getPanTilt"></a>
                     <span class="name">
-                        <b>
-                            getPanTilt
-                        </b>
+                        <span ><b>getPanTilt</b></span>
                         <a href="#getPanTilt"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1515,7 +1728,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1055</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1054</a></code>
 </div>
                 </td>
             </tr>
@@ -1546,9 +1759,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getPanTiltZoom"></a>
                     <span class="name">
-                        <b>
-                            getPanTiltZoom
-                        </b>
+                        <span ><b>getPanTiltZoom</b></span>
                         <a href="#getPanTiltZoom"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1568,7 +1779,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1014</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1013</a></code>
 </div>
                 </td>
             </tr>
@@ -1599,9 +1810,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getSaturation"></a>
                     <span class="name">
-                        <b>
-                            getSaturation
-                        </b>
+                        <span ><b>getSaturation</b></span>
                         <a href="#getSaturation"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1621,7 +1830,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:802</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:801</a></code>
 </div>
                 </td>
             </tr>
@@ -1652,9 +1861,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getSetting"></a>
                     <span class="name">
-                        <b>
-                            getSetting
-                        </b>
+                        <span ><b>getSetting</b></span>
                         <a href="#getSetting"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1674,7 +1881,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:672</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:671</a></code>
 </div>
                 </td>
             </tr>
@@ -1687,6 +1894,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1752,9 +1960,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getSettings"></a>
                     <span class="name">
-                        <b>
-                            getSettings
-                        </b>
+                        <span ><b>getSettings</b></span>
                         <a href="#getSettings"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1774,7 +1980,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:756</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:755</a></code>
 </div>
                 </td>
             </tr>
@@ -1787,6 +1993,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1836,9 +2043,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getSlot"></a>
                     <span class="name">
-                        <b>
-                            getSlot
-                        </b>
+                        <span ><b>getSlot</b></span>
                         <a href="#getSlot"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1858,7 +2063,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:591</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:590</a></code>
 </div>
                 </td>
             </tr>
@@ -1889,9 +2094,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getState"></a>
                     <span class="name">
-                        <b>
-                            getState
-                        </b>
+                        <span ><b>getState</b></span>
                         <a href="#getState"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1942,9 +2145,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getSupportedSettings"></a>
                     <span class="name">
-                        <b>
-                            getSupportedSettings
-                        </b>
+                        <span ><b>getSupportedSettings</b></span>
                         <a href="#getSupportedSettings"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1964,7 +2165,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:657</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:656</a></code>
 </div>
                 </td>
             </tr>
@@ -1995,9 +2196,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getTemperature"></a>
                     <span class="name">
-                        <b>
-                            getTemperature
-                        </b>
+                        <span ><b>getTemperature</b></span>
                         <a href="#getTemperature"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2017,7 +2216,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:516</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:515</a></code>
 </div>
                 </td>
             </tr>
@@ -2030,6 +2229,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2079,9 +2279,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="getTemperatures"></a>
                     <span class="name">
-                        <b>
-                            getTemperatures
-                        </b>
+                        <span ><b>getTemperatures</b></span>
                         <a href="#getTemperatures"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2101,7 +2299,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:562</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:561</a></code>
 </div>
                 </td>
             </tr>
@@ -2132,10 +2330,8 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="initialize"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            initialize
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>initialize</b></span>
                         <a href="#initialize"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2187,9 +2383,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="reboot"></a>
                     <span class="name">
-                        <b>
-                            reboot
-                        </b>
+                        <span ><b>reboot</b></span>
                         <a href="#reboot"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2222,6 +2416,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2271,9 +2466,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="resetSettings"></a>
                     <span class="name">
-                        <b>
-                            resetSettings
-                        </b>
+                        <span ><b>resetSettings</b></span>
                         <a href="#resetSettings"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2293,7 +2486,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:918</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:917</a></code>
 </div>
                 </td>
             </tr>
@@ -2306,6 +2499,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2359,9 +2553,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="setBrightness"></a>
                     <span class="name">
-                        <b>
-                            setBrightness
-                        </b>
+                        <span ><b>setBrightness</b></span>
                         <a href="#setBrightness"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2381,7 +2573,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:896</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:895</a></code>
 </div>
                 </td>
             </tr>
@@ -2394,6 +2586,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2443,9 +2636,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="setPanTilt"></a>
                     <span class="name">
-                        <b>
-                            setPanTilt
-                        </b>
+                        <span ><b>setPanTilt</b></span>
                         <a href="#setPanTilt"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2465,7 +2656,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1077</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1076</a></code>
 </div>
                 </td>
             </tr>
@@ -2478,6 +2669,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2527,9 +2719,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="setPanTiltZoom"></a>
                     <span class="name">
-                        <b>
-                            setPanTiltZoom
-                        </b>
+                        <span ><b>setPanTiltZoom</b></span>
                         <a href="#setPanTiltZoom"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2549,7 +2739,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1096</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:1095</a></code>
 </div>
                 </td>
             </tr>
@@ -2562,6 +2752,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2611,9 +2802,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="setSaturation"></a>
                     <span class="name">
-                        <b>
-                            setSaturation
-                        </b>
+                        <span ><b>setSaturation</b></span>
                         <a href="#setSaturation"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2633,7 +2822,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:827</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:826</a></code>
 </div>
                 </td>
             </tr>
@@ -2646,6 +2835,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2695,9 +2885,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="setSettingValue"></a>
                     <span class="name">
-                        <b>
-                            setSettingValue
-                        </b>
+                        <span ><b>setSettingValue</b></span>
                         <a href="#setSettingValue"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2717,7 +2905,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:712</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:711</a></code>
 </div>
                 </td>
             </tr>
@@ -2730,6 +2918,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2795,9 +2984,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="upgrade"></a>
                     <span class="name">
-                        <b>
-                            upgrade
-                        </b>
+                        <span ><b>upgrade</b></span>
                         <a href="#upgrade"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2830,6 +3017,7 @@ class on device-api-ip module.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2879,9 +3067,7 @@ class on device-api-ip module.</p>
                 <td class="col-md-4">
                     <a name="uptime"></a>
                     <span class="name">
-                        <b>
-                            uptime
-                        </b>
+                        <span ><b>uptime</b></span>
                         <a href="#uptime"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2901,7 +3087,7 @@ class on device-api-ip module.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:612</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpBaseDevice.html#source" target="_self" >IpBaseDevice:611</a></code>
 </div>
                 </td>
             </tr>
@@ -2935,7 +3121,7 @@ class on device-api-ip module.</p>
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
 import IDetectorOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts&#x27;;
 import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
@@ -2999,14 +3185,15 @@ export default class Ace extends IpBaseDevice {
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -3018,6 +3205,15 @@ export default class Ace extends IpBaseDevice {
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -3026,9 +3222,9 @@ export default class Ace extends IpBaseDevice {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,31 +41,42 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>HPKUpgrader</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >HPKUpgrader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        <li class="nav-item">
+            <a href="#readme" 
+                class="nav-link"
+                
+                role="tab" id="readme-tab" data-bs-toggle="tab" data-link="readme">README</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/upgrader/hpkUpgrader.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -78,7 +90,7 @@
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                    <code>EventEmitter</code>
             </p>
 
             <p class="comment">
@@ -88,13 +100,8 @@
                         <code>IDeviceUpgrader</code>
             </p>
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -109,22 +116,22 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#doUpgrade">doUpgrade</a>
+                                <a href="#doUpgrade" >doUpgrade</a>
                             </li>
                             <li>
-                                <a href="#init">init</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#runHPKScript">runHPKScript</a>
+                                <a href="#init" >init</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#start">start</a>
+                                <a href="#runHPKScript" >runHPKScript</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#upgradeIsValid">upgradeIsValid</a>
+                                <a href="#start" >start</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#upgradeIsValid" >upgradeIsValid</a>
                             </li>
                         </ul>
                     </td>
@@ -138,18 +145,18 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+<code>constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="42" class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:42</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="47" class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:47</a></div>
                             </td>
                         </tr>
 
@@ -182,7 +189,7 @@
                                                         <td>sdkDeviceDiscoveryEmitter</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                                    <code>EventEmitter</code>
                                                         </td>
                                                   
                                                     <td>
@@ -200,7 +207,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -211,10 +218,8 @@
                 <td class="col-md-4">
                     <a name="doUpgrade"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            doUpgrade
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>doUpgrade</b></span>
                         <a href="#doUpgrade"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -222,15 +227,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>doUpgrade(uploadStatusStep: <a href="../classes/UpgradeStatusStep.html">UpgradeStatusStep</a>, runStatusStep: <a href="../classes/UpgradeStatusStep.html">UpgradeStatusStep</a>, completionStatusStep: <a href="../classes/UpgradeStatusStep.html">UpgradeStatusStep</a>, rebootStatusStep: <a href="../classes/UpgradeStatusStep.html">UpgradeStatusStep</a>)</code>
+                    <code>doUpgrade(uploadStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>, runStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>, completionStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>, rebootStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="413"
-                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:413</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="428"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:428</a></div>
                 </td>
             </tr>
 
@@ -242,6 +247,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -339,9 +345,7 @@
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            init
-                        </b>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -355,8 +359,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="56"
-                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:56</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="61"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:61</a></div>
                 </td>
             </tr>
 
@@ -368,6 +372,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -416,10 +421,8 @@
                 <td class="col-md-4">
                     <a name="runHPKScript"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            runHPKScript
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>runHPKScript</b></span>
                         <a href="#runHPKScript"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -427,15 +430,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>runHPKScript(runStatusStep: <a href="../classes/UpgradeStatusStep.html">UpgradeStatusStep</a>)</code>
+                    <code>runHPKScript(runStatusStep: <a href="../classes/UpgradeStatusStep.html" target="_self">UpgradeStatusStep</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="376"
-                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:376</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="391"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:391</a></div>
                 </td>
             </tr>
 
@@ -447,6 +450,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -496,10 +500,8 @@
                 <td class="col-md-4">
                     <a name="start"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            start
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
                         <a href="#start"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -514,8 +516,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="181"
-                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:181</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="196"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:196</a></div>
                 </td>
             </tr>
 
@@ -546,10 +548,8 @@ using events.</p>
                 <td class="col-md-4">
                     <a name="upgradeIsValid"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            upgradeIsValid
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>upgradeIsValid</b></span>
                         <a href="#upgradeIsValid"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -564,8 +564,8 @@ using events.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="446"
-                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:446</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="461"
+                            class="link-to-prism">src/components/upgrader/hpkUpgrader.ts:461</a></div>
                 </td>
             </tr>
 
@@ -598,8 +598,8 @@ booting with the new update firmware.</p>
 
     </div>
 
-    <div class="tab-pane fade " id="c-readme">
-        <p><h2 id="upgrader-usage">Upgrader Usage</h2>
+    <div class="tab-pane fade " id="readme">
+        <p><h2>Upgrader Usage</h2>
 <p>In order to perform a software upgarde on the camera, this interface should be used. Please note that there is a convenience function in the <code>IDeviceManager</code> for performing the upgrade, but if you want to implement your own handler then this documentation needs to be reviewed.</p>
 <p>Each upgrader class (BoxfishUpgrader, HuddlyGoUpgrader, AceUPgrader) requires some options that should be provided when initializing it:</p>
 <div><pre class="line-numbers"><code class="language-javascript">const upgrader = cameraManager.getUpgrader();
@@ -687,7 +687,7 @@ upgrader.on(&#39;UPGRADE_PROGRESS&#39;, onUpgradeProgressHandler);
 upgrader.start();</code></pre></div></p>
     </div>
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
 
 import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
@@ -703,9 +703,10 @@ import BoxfishHpk from &#x27;./boxfishhpk&#x27;;
 import UpgradeStatus, { UpgradeStatusStep } from &#x27;./upgradeStatus&#x27;;
 import ErrorCodes from &#x27;./../../error/errorCodes&#x27;;
 import HPKUpgradeError from &#x27;./../../error/hpkUpgradeError&#x27;;
+import Smartbase from &#x27;../device/smartbase&#x27;;
+import SmartbaseCamera from &#x27;../device/smartbaseCamera&#x27;;
 
 const MAX_UPLOAD_ATTEMPTS &#x3D; 5;
-const REBOOT_TIMEOUT &#x3D; 20000;
 
 /**
  * Controller class for instrumenting the upgrade process on Huddly IQ camera.
@@ -729,7 +730,11 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   /** @ignore */
   _production_upgrade: boolean;
   /** @ignore */
-  private _statusMessageTimeout: number &#x3D; 10000;
+  _bootTimeout: number &#x3D; 60000;
+  /** @ignore */
+  _bufferWriteTimeout: number &#x3D; 60000;
+  /** @ignore */
+  private _statusMessageTimeout: number &#x3D; 60000;
 
   constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter) {
     super();
@@ -754,6 +759,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       this._production_upgrade &#x3D; opts.production_upgrade;
     }
 
+    if (opts.bootTimeout) {
+      this._bootTimeout &#x3D; opts.bootTimeout;
+    }
+
+    if (opts.bufferWriteTimeout) {
+      this._bufferWriteTimeout &#x3D; opts.bufferWriteTimeout;
+    }
+
     this._fileBuffer &#x3D; opts.file;
     this.registerHotPlugEvents();
   }
@@ -769,8 +782,10 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   onAttach &#x3D; (devManager: IDeviceManager) &#x3D;&gt; {
     if (
       devManager &amp;&amp;
-      devManager instanceof Boxfish &amp;&amp;
-      this._cameraManager[&#x27;serialNumber&#x27;] &#x3D;&#x3D;&#x3D; devManager[&#x27;serialNumber&#x27;]
+      (devManager instanceof Boxfish ||
+        devManager instanceof Smartbase ||
+        devManager instanceof SmartbaseCamera) &amp;&amp;
+      this._cameraManager[&#x27;serialNumber&#x27;].includes(devManager[&#x27;serialNumber&#x27;])
     ) {
       this._cameraManager &#x3D; devManager;
       this.emit(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;);
@@ -839,7 +854,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
             send: &#x27;hcp/write&#x27;,
             receive: &#x27;hcp/write_reply&#x27;,
           },
-          10000
+          this._bufferWriteTimeout
         );
         const { status } &#x3D; m;
         if (status !&#x3D;&#x3D; 0) {
@@ -852,7 +867,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         this.emitProgressStatus();
         tryAgain &#x3D; false;
       } catch (e) {
-        Logger.error(&#x60;Failed uploading hpk file ${e} attemt ${attempt}&#x60;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+        Logger.error(&#x60;Failed uploading hpk file ${e} attemt ${attempt}&#x60;, e, HPKUpgrader.name);
         attempt +&#x3D; 1;
       }
     }
@@ -890,15 +905,15 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       runningHpkVerificationStep,
     ]);
     this.emitProgressStatus(&#x27;Starting upgrade&#x27;);
-    Logger.debug(&#x27;Starting Upgrade&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+    Logger.debug(&#x27;Starting Upgrade&#x27;, HPKUpgrader.name);
     this.emit(CameraEvents.UPGRADE_START);
     let upgradeTimoutId: NodeJS.Timer;
     this.once(&#x27;UPGRADE_REBOOT_COMPLETE&#x27;, async () &#x3D;&gt; {
-      Logger.debug(&#x27;Camera successfully booted after upgrade&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+      Logger.debug(&#x27;Camera successfully booted after upgrade&#x27;, HPKUpgrader.name);
       rebootStep.progress &#x3D; 100;
       global.clearTimeout(upgradeTimoutId);
       try {
-        Logger.debug(&#x27;Verifying new software&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        Logger.debug(&#x27;Verifying new software&#x27;, HPKUpgrader.name);
         this.emitProgressStatus(&#x27;Verifying new software&#x27;);
         // Wait two seconds to allow drivers to attach properly to the USB endpoint
         await new Promise((resolve) &#x3D;&gt; setTimeout(resolve, 2000));
@@ -908,7 +923,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
           runningHpkVerificationStep,
           rebootStep
         );
-        Logger.debug(&#x27;Upgrade Completed&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        Logger.debug(&#x27;Upgrade Completed&#x27;, HPKUpgrader.name);
         this.emitProgressStatus(&#x27;Upgrade complete&#x27;);
         await this.deRegisterHotPlugEvents();
         this.emit(CameraEvents.UPGRADE_COMPLETE);
@@ -920,7 +935,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     });
 
     try {
-      Logger.debug(&#x27;Loading new sw to the camera&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+      Logger.debug(&#x27;Loading new sw to the camera&#x27;, HPKUpgrader.name);
       this.emitProgressStatus(&#x27;Loading new software to camera&#x27;);
       const rebooted &#x3D; await this.doUpgrade(
         firstUploadStatusStep,
@@ -934,14 +949,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
             CameraEvents.UPGRADE_FAILED,
             new HPKUpgradeError(&#x27;Did not come back after reboot&#x27;, ErrorCodes.UPGRADE_REBOOT_FAILED)
           ),
-        REBOOT_TIMEOUT
+        this._bootTimeout
       );
       if (!rebooted) {
         clearTimeout(upgradeTimoutId);
         this.emit(CameraEvents.UPGRADE_COMPLETE);
       }
     } catch (e) {
-      Logger.error(&#x27;Upgrade failed&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+      Logger.error(&#x27;Upgrade failed&#x27;, e, HPKUpgrader.name);
       this.emit(CameraEvents.UPGRADE_FAILED, e);
       throw e;
     }
@@ -982,7 +997,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
             return setTimeout(() &#x3D;&gt; {
               Logger.debug(
                 &#x60;Upgrade failure: no status message within ${this._statusMessageTimeout}&#x60;,
-                &#x27;Boxfish HPK Upgrader&#x27;
+                HPKUpgrader.name
               );
               reject(
                 new HPKUpgradeError(
@@ -1027,7 +1042,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
                 &#x60;Upgrading HPK: Status: ${Math.round(progressPercentage)}% step ${
                   statusMessage.operation
                 }\r&#x60;,
-                &#x27;Boxfish HPK Upgrader&#x27;
+                HPKUpgrader.name
               );
             }
             lastOperation &#x3D; statusMessage.operation;
@@ -1042,14 +1057,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     );
 
     if (reboot) {
-      Logger.debug(&#x27;Rebooting camera after upgrade&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+      Logger.debug(&#x27;Rebooting camera after upgrade&#x27;, HPKUpgrader.name);
       rebootStatusStep.progress &#x3D; 1;
       rebootStatusStep.operation &#x3D; &#x27;Issuing reboot command&#x27;;
       await this._cameraManager.reboot();
       try {
         await this._cameraManager.transport.close();
       } catch (e) {
-        Logger.error(&#x27;Failed while closing the device on reboot&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+        Logger.error(&#x27;Failed while closing the device on reboot&#x27;, e, HPKUpgrader.name);
       }
     }
 
@@ -1076,16 +1091,16 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
         15000
       );
       if (runMessage.string &#x3D;&#x3D;&#x3D; &#x27;Success&#x27;) {
-        Logger.debug(&#x27;RUN hpk complete&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        Logger.debug(&#x27;RUN hpk complete&#x27;, HPKUpgrader.name);
         runStatusStep.progress &#x3D; 100;
         this.emitProgressStatus();
         return;
       } else {
-        Logger.error(&#x60;HPK run failed ${JSON.stringify(runMessage)}&#x60;, &#x27;&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+        Logger.error(&#x60;HPK run failed ${JSON.stringify(runMessage)}&#x60;, &#x27;&#x27;, HPKUpgrader.name);
         throw new HPKUpgradeError(&#x60;run failed ${runMessage}&#x60;, ErrorCodes.UPGRADE_RUN_FAILED);
       }
     } catch (e) {
-      Logger.error(&#x27;Unable to run the hpk script&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+      Logger.error(&#x27;Unable to run the hpk script&#x27;, e, HPKUpgrader.name);
       throw new HPKUpgradeError(&#x60;Could not run hpk ${e}&#x60;, ErrorCodes.UPGRADE_RUN_FAILED);
     }
   }
@@ -1106,7 +1121,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
     completionStatusStep: UpgradeStatusStep,
     rebootStatusStep: UpgradeStatusStep
   ): Promise&lt;boolean&gt; {
-    Logger.info(&#x27;Upgrading HPK&#x27;, &#x27;Boxfish HPK Upgrader&#x27;);
+    Logger.info(&#x27;Upgrading HPK&#x27;, HPKUpgrader.name);
     const hpkBuffer &#x3D; this._fileBuffer;
     try {
       if (!BoxfishHpk.isHpk(this._fileBuffer)) {
@@ -1120,7 +1135,7 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       await this.runHPKScript(runStatusStep);
       return await completedPromise;
     } catch (e) {
-      Logger.error(&#x27;Failed performing hpk upgrade on boxfish device&#x27;, e, &#x27;Boxfish HPK Upgrader&#x27;);
+      Logger.error(&#x27;Failed performing hpk upgrade on boxfish device&#x27;, e, HPKUpgrader.name);
       this.deRegisterHotPlugEvents();
       throw e;
     }
@@ -1136,14 +1151,15 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
   async upgradeIsValid(): Promise&lt;boolean&gt; {
     // Quick fix for not calling getState on dartfish, which throws an error.
     // This needs to be properly fixed in the future.
-    if ((this._cameraManager as any).productId &#x3D;&#x3D;&#x3D; HuddlyHEX.DARTFISH_PID) {
+    const prodId &#x3D; this._cameraManager[&#x27;productId&#x27;];
+    if ([HuddlyHEX.DARTFISH_PID, HuddlyHEX.SMARTBASE_PID].includes(prodId)) {
       return true;
     }
 
     try {
       const response &#x3D; await this._cameraManager.getState();
 
-      Logger.info(&#x60;Upgrade status ${response.string}&#x60;, &#x27;Boxfish HPK Upgrader&#x27;);
+      Logger.info(&#x60;Upgrade status ${response.string}&#x60;, HPKUpgrader.name);
       if (response.status &#x3D;&#x3D;&#x3D; 10) {
         // EMMC is not ready lets wait and try again
         await new Promise((resolve) &#x3D;&gt; setTimeout(resolve, 1000));
@@ -1166,14 +1182,15 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -1185,6 +1202,15 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -1193,9 +1219,9 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

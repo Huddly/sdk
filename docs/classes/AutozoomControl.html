@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,31 +41,42 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>AutozoomControl</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >AutozoomControl</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#readme" role="tab" id="readme-tab" data-toggle="tab" data-link="readme">README</a>
+        <li class="nav-item">
+            <a href="#readme" 
+                class="nav-link"
+                
+                role="tab" id="readme-tab" data-bs-toggle="tab" data-link="readme">README</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/autozoomControl.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -79,16 +91,11 @@
                 <h3>Implements</h3>
             </p>
             <p class="comment">
-                        <code>ICnnControl</code>
+                            <code><a href="../classes/AutozoomControl.html" target="_self" >IAutozoomControl</a></code>
             </p>
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -103,7 +110,7 @@
                             <li>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Readonly</span>
-                                <a href="#_defaultOpts">_defaultOpts</a>
+                                <a href="#_defaultOpts" >_defaultOpts</a>
                             </li>
                         </ul>
                     </td>
@@ -120,43 +127,50 @@
                             <li>
                                     <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
-                                <a href="#_setMode">_setMode</a>
+                                <a href="#_setMode" >_setMode</a>
                             </li>
                             <li>
                                     <span class="modifier">Private</span>
-                                <a href="#_validateOptions">_validateOptions</a>
+                                <a href="#_validateOptions" >_validateOptions</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#disable">disable</a>
+                                <a href="#disable" >disable</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#enable">enable</a>
+                                <a href="#enable" >enable</a>
+                            </li>
+                            <li>
+                                <a href="#getSupportedFramingModes" >getSupportedFramingModes</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#init">init</a>
+                                <a href="#init" >init</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#isEnabled">isEnabled</a>
+                                <a href="#isEnabled" >isEnabled</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#isRunning">isRunning</a>
+                                <a href="#isRunning" >isRunning</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#start">start</a>
+                                <a href="#setFramingMode" >setFramingMode</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#stop">stop</a>
+                                <a href="#start" >start</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#updateOpts">updateOpts</a>
+                                <a href="#stop" >stop</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#updateOpts" >updateOpts</a>
                             </li>
                         </ul>
                     </td>
@@ -170,18 +184,18 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IDeviceManager, options?: <a href="../classes/AutozoomControl.html">AutozoomControlOpts</a>)</code>
+<code>constructor(manager: IDeviceManager, options?: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/components/autozoomControl.ts:25</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="28" class="link-to-prism">src/components/autozoomControl.ts:28</a></div>
                             </td>
                         </tr>
 
@@ -231,51 +245,50 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-properties">
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_defaultOpts"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                            <span class="modifier">Readonly</span>
+                        <span ><b>_defaultOpts</b></span>
+                        <a href="#_defaultOpts"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_defaultOpts"></a>
-                        <span class="name">
-                            <b>
-                                <span class="modifier">Private</span>
-                                <span class="modifier">Readonly</span>
-                            _defaultOpts</b>
-                            <a href="#_defaultOpts"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="../classes/AutozoomControl.html" target="_self" >AutozoomControlOpts</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>{
+    shouldAutoFrame: true,
+    mode: AutozoomModes.NORMAL,
+  }</code>
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="../classes/AutozoomControl.html" target="_self" >AutozoomControlOpts</a></code>
-
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/components/autozoomControl.ts:25</a></div>
                         </td>
                     </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>{
-    shouldAutoFrame: true,
-    mode: AutozoomModes.NORMAL,
-  }</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/components/autozoomControl.ts:22</a></div>
-                            </td>
-                        </tr>
 
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -286,11 +299,9 @@
                 <td class="col-md-4">
                     <a name="_setMode"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Private</span>
-                            <span class="modifier">Async</span>
-                            _setMode
-                        </b>
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>_setMode</b></span>
                         <a href="#_setMode"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -298,15 +309,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>_setMode(mode: AutozoomModes)</code>
+                    <code>_setMode(mode: AutozoomModes, enable: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="302"
-                            class="link-to-prism">src/components/autozoomControl.ts:302</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="309"
+                            class="link-to-prism">src/components/autozoomControl.ts:309</a></div>
                 </td>
             </tr>
 
@@ -316,12 +327,14 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
                                     <td>Name</td>
                                     <td>Type</td>
                                     <td>Optional</td>
+                                    <td>Default value</td>
                                 </tr>
                             </thead>
                             <tbody>
@@ -335,6 +348,23 @@
                                         No
                                     </td>
 
+                                    <td>
+                                    </td>
+
+                                </tr>
+                                <tr>
+                                    <td>enable</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>false</code>
+                                    </td>
 
                                 </tr>
                             </tbody>
@@ -343,7 +373,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
@@ -359,10 +389,8 @@
                 <td class="col-md-4">
                     <a name="_validateOptions"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Private</span>
-                            _validateOptions
-                        </b>
+                        <span class="modifier">Private</span>
+                        <span ><b>_validateOptions</b></span>
                         <a href="#_validateOptions"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -370,15 +398,15 @@
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>_validateOptions(options: <a href="../classes/AutozoomControl.html">AutozoomControlOpts</a>)</code>
+                    <code>_validateOptions(options: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="99"
-                            class="link-to-prism">src/components/autozoomControl.ts:99</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="106"
+                            class="link-to-prism">src/components/autozoomControl.ts:106</a></div>
                 </td>
             </tr>
 
@@ -388,6 +416,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -431,10 +460,8 @@
                 <td class="col-md-4">
                     <a name="disable"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            disable
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>disable</b></span>
                         <a href="#disable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -449,8 +476,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="167"
-                            class="link-to-prism">src/components/autozoomControl.ts:167</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="174"
+                            class="link-to-prism">src/components/autozoomControl.ts:174</a></div>
                 </td>
             </tr>
 
@@ -462,6 +489,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -515,10 +543,8 @@
                 <td class="col-md-4">
                     <a name="enable"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            enable
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>enable</b></span>
                         <a href="#enable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -533,8 +559,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="123"
-                            class="link-to-prism">src/components/autozoomControl.ts:123</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/components/autozoomControl.ts:130</a></div>
                 </td>
             </tr>
 
@@ -546,6 +572,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -597,12 +624,47 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getSupportedFramingModes"></a>
+                    <span class="name">
+                        <span ><b>getSupportedFramingModes</b></span>
+                        <a href="#getSupportedFramingModes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSupportedFramingModes()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="37"
+                            class="link-to-prism">src/components/autozoomControl.ts:37</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;FramingModes[]&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            init
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -617,8 +679,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="41"
-                            class="link-to-prism">src/components/autozoomControl.ts:41</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="48"
+                            class="link-to-prism">src/components/autozoomControl.ts:48</a></div>
                 </td>
             </tr>
 
@@ -649,10 +711,8 @@ Should be called before any other methods.</p>
                 <td class="col-md-4">
                     <a name="isEnabled"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            isEnabled
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>isEnabled</b></span>
                         <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -667,8 +727,8 @@ Should be called before any other methods.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="210"
-                            class="link-to-prism">src/components/autozoomControl.ts:210</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="217"
+                            class="link-to-prism">src/components/autozoomControl.ts:217</a></div>
                 </td>
             </tr>
 
@@ -698,10 +758,8 @@ Should be called before any other methods.</p>
                 <td class="col-md-4">
                     <a name="isRunning"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            isRunning
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>isRunning</b></span>
                         <a href="#isRunning"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -716,8 +774,8 @@ Should be called before any other methods.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="271"
-                            class="link-to-prism">src/components/autozoomControl.ts:271</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="278"
+                            class="link-to-prism">src/components/autozoomControl.ts:278</a></div>
                 </td>
             </tr>
 
@@ -725,6 +783,7 @@ Should be called before any other methods.</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Checks if autozoom is running on the camera. Returns true if yes, false otherwise.</p>
+<p>or not.</p>
 </div>
 
                     <div>
@@ -746,12 +805,89 @@ or not.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="setFramingMode"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>setFramingMode</b></span>
+                        <a href="#setFramingMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setFramingMode(framingMode: FramingModes)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="399"
+                            class="link-to-prism">src/components/autozoomControl.ts:399</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Sets autozoom framing mode on the camera</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>framingMode</td>
+                                    <td>
+                                            <code>FramingModes</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Autozoom mode to set</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>Resolves when successful otherwise rejects</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="start"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            start
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
                         <a href="#start"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -766,8 +902,8 @@ or not.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="225"
-                            class="link-to-prism">src/components/autozoomControl.ts:225</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="232"
+                            class="link-to-prism">src/components/autozoomControl.ts:232</a></div>
                 </td>
             </tr>
 
@@ -800,10 +936,8 @@ need to call the <code>enable</code> method.</p>
                 <td class="col-md-4">
                     <a name="stop"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            stop
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>stop</b></span>
                         <a href="#stop"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -818,8 +952,8 @@ need to call the <code>enable</code> method.</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="249"
-                            class="link-to-prism">src/components/autozoomControl.ts:249</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="256"
+                            class="link-to-prism">src/components/autozoomControl.ts:256</a></div>
                 </td>
             </tr>
 
@@ -851,10 +985,8 @@ need to call the <code>disable</code> method.</p>
                 <td class="col-md-4">
                     <a name="updateOpts"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            updateOpts
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>updateOpts</b></span>
                         <a href="#updateOpts"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -862,15 +994,15 @@ need to call the <code>disable</code> method.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>updateOpts(newOpts: <a href="../classes/AutozoomControl.html">AutozoomControlOpts</a>)</code>
+                    <code>updateOpts(newOpts: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="79"
-                            class="link-to-prism">src/components/autozoomControl.ts:79</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="86"
+                            class="link-to-prism">src/components/autozoomControl.ts:86</a></div>
                 </td>
             </tr>
 
@@ -883,6 +1015,7 @@ instantiating the Detector class.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -929,8 +1062,8 @@ instantiating the Detector class.</p>
 
     </div>
 
-    <div class="tab-pane fade " id="c-readme">
-        <p><h1 id="genius-framing-controller">Genius Framing Controller</h1>
+    <div class="tab-pane fade " id="readme">
+        <p><h1>Genius Framing Controller</h1>
 <p>Below you can find an example on how to get started with Genius Framing (GF) on Huddly cameras that support the feature. Follow the steps below to enable or disable GF:</p>
 <div><pre class="line-numbers"><code class="language-javascript">...
 // We assume the sdk has been initialized and camera manager instance acquired
@@ -958,12 +1091,13 @@ await autozoomCtrl.disable();</code></pre></div><p><strong>NOTE</strong>: For su
 </p>
     </div>
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import AutozoomControlOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts&#x27;;
-import ICnnControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/ICnnControl&#x27;;
 import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
 import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
 import AutozoomModes from &#x27;@huddly/sdk-interfaces/lib/enums/AutozoomModes&#x27;;
+import IAutozoomControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/IAutozoomControl&#x27;;
+import FramingModes from &#x27;@huddly/sdk-interfaces/lib/enums/FramingModes&#x27;;
 
 import Api from &#x27;./api&#x27;;
 
@@ -974,11 +1108,13 @@ import Api from &#x27;./api&#x27;;
  * @class AutozoomControl
  * @implements {ICnnControl}
  */
-export default class AutozoomControl implements ICnnControl {
+export default class AutozoomControl implements IAutozoomControl {
   /** @ignore */
   _deviceManager: IDeviceManager;
   /** @ignore */
   _options: AutozoomControlOpts;
+  /** @ignore */
+  _supportedModes: Array&lt;FramingModes&gt; &#x3D; [FramingModes.NORMAL, FramingModes.GALLERY_VIEW];
 
   private readonly _defaultOpts: AutozoomControlOpts &#x3D; {
     shouldAutoFrame: true,
@@ -990,6 +1126,10 @@ export default class AutozoomControl implements ICnnControl {
     this._options &#x3D; { ...this._defaultOpts, ...options };
 
     this._validateOptions(this._options);
+  }
+
+  getSupportedFramingModes(): Promise&lt;FramingModes[]&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
   }
 
   /**
@@ -1260,7 +1400,7 @@ export default class AutozoomControl implements ICnnControl {
     }
   }
 
-  private async _setMode(mode: AutozoomModes) {
+  private async _setMode(mode: AutozoomModes, enable: boolean &#x3D; false) {
     const azStatus &#x3D; await this._deviceManager.api.getAutozoomStatus();
     // Default to NORMAL for cameras without autozoom-mode support.
     const currentMode &#x3D; azStatus[&#x27;autozoom-mode&#x27;] || AutozoomModes.NORMAL;
@@ -1292,6 +1432,11 @@ export default class AutozoomControl implements ICnnControl {
         &#x60;Could not set autozoomMode &#x27;${mode}&#x27;: Target replied with mode &#x27;${response[&#x27;autozoom-mode&#x27;]}&#x27;&#x60;
       );
     }
+
+    if (!response[&#x27;autozoom-active&#x27;] &amp;&amp; enable) {
+      this.enable();
+    }
+
     return response[&#x27;autozoom-mode&#x27;];
   }
 
@@ -1337,6 +1482,32 @@ export default class AutozoomControl implements ICnnControl {
     );
     Logger.debug(&#x27;New framing config uploaded on the camera.&#x27;, &#x27;Autozoom Control&#x27;);
   }
+
+  /**
+   * Sets autozoom framing mode on the camera
+   *
+   * @param {FramingModes} framingMode Autozoom mode to set
+   * @returns {Promise&lt;any&gt;} Resolves when successful otherwise rejects
+   * @memberof AutozoomControl
+   */
+  async setFramingMode(framingMode: FramingModes): Promise&lt;any&gt; {
+    if (framingMode &#x3D;&#x3D;&#x3D; FramingModes.OFF) {
+      return await this.disable();
+    }
+
+    const featureMapping &#x3D; {
+      [FramingModes.NORMAL]: &#x27;normal&#x27;,
+      [FramingModes.GALLERY_VIEW]: &#x27;plaza&#x27;,
+    };
+
+    if (!this._supportedModes.includes(framingMode)) {
+      throw new Error(
+        &#x60;Provided mode ${framingMode} is not supported. Supported modes: ${this._supportedModes.toString()}&#x60;
+      );
+    }
+
+    return await this._setMode(featureMapping[framingMode], true);
+  }
 }
 </code></pre>
     </div>
@@ -1344,14 +1515,15 @@ export default class AutozoomControl implements ICnnControl {
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -1363,6 +1535,15 @@ export default class AutozoomControl implements ICnnControl {
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -1371,9 +1552,9 @@ export default class AutozoomControl implements ICnnControl {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

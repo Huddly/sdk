@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >FaseBasedExposureControl</li>
+  <li class="breadcrumb-item" >ClientWritableStreamEmulator</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -53,12 +53,6 @@
                 class="nav-link"
                 class="nav-link active"
                 role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
-        </li>
-        <li class="nav-item">
-            <a href="#readme" 
-                class="nav-link"
-                
-                role="tab" id="readme-tab" data-bs-toggle="tab" data-link="readme">README</a>
         </li>
         <li class="nav-item">
             <a href="#source" 
@@ -74,7 +68,7 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/components/faceBasedExposureControl.ts</code>
+            <code>src/utilitis/clientWritableStreamEmulator.ts</code>
         </p>
 
 
@@ -82,17 +76,15 @@
                 <h3>Description</h3>
             </p>
             <p class="comment">
-                <p>Control class for configuring the Portrait Lighting feature of the camera.</p>
+                <p>Emulates the behaviour of the grpc.ClientWritableStream to make it easier to have
+a uniform approach for both the old and new cpio format to run the verify step.</p>
+<p>The need for this based on the old verify method returning a stream for writing to
+where we with the new method are supposed to pass the verification data through when
+invoking the method.</p>
 
             </p>
 
 
-            <p class="comment">
-                <h3>Implements</h3>
-            </p>
-            <p class="comment">
-                        <code>ICnnControl</code>
-            </p>
 
 
             <section data-compodoc="block-index">
@@ -108,7 +100,12 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#_deviceManager" >_deviceManager</a>
+                                    <span class="modifier">Private</span>
+                                <a href="#data" >data</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Private</span>
+                                <a href="#endCallback" >endCallback</a>
                             </li>
                         </ul>
                     </td>
@@ -123,19 +120,14 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#disable" >disable</a>
+                                    <span class="modifier">Private</span>
+                                <a href="#_concatenateData" >_concatenateData</a>
                             </li>
                             <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#enable" >enable</a>
+                                <a href="#end" >end</a>
                             </li>
                             <li>
-                                <a href="#init" >init</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#isEnabled" >isEnabled</a>
+                                <a href="#write" >write</a>
                             </li>
                         </ul>
                     </td>
@@ -155,12 +147,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IDeviceManager)</code>
+<code>constructor(endCallback: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank">Function</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/components/faceBasedExposureControl.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/utilitis/clientWritableStreamEmulator.ts:14</a></div>
                             </td>
                         </tr>
 
@@ -178,10 +170,10 @@
                                         </thead>
                                         <tbody>
                                                 <tr>
-                                                        <td>manager</td>
+                                                        <td>endCallback</td>
                                                   
                                                         <td>
-                                                                    <code>IDeviceManager</code>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank" >Function</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -207,31 +199,58 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="_deviceManager"></a>
+                    <a name="data"></a>
                     <span class="name">
-                        <span ><b>_deviceManager</b></span>
-                        <a href="#_deviceManager"><span class="icon ion-ios-link"></span></a>
+                            <span class="modifier">Private</span>
+                        <span ><b>data</b></span>
+                        <a href="#data"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>    <code>IDeviceManager</code>
+                        <i>Type : </i>    <code>Array&lt;string | Uint8Array&gt;</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>[]</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/utilitis/clientWritableStreamEmulator.ts:13</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="endCallback"></a>
+                    <span class="name">
+                            <span class="modifier">Private</span>
+                        <span ><b>endCallback</b></span>
+                        <a href="#endCallback"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Function" target="_blank" >Function</a></code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/components/faceBasedExposureControl.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="14" class="link-to-prism">src/utilitis/clientWritableStreamEmulator.ts:14</a></div>
                         </td>
                     </tr>
 
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Represents an instance of an ip device manager (ex. Boxfish).</p>
-</div>
-                </td>
-            </tr>
 
         </tbody>
     </table>
@@ -246,43 +265,104 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="disable"></a>
+                    <a name="_concatenateData"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>disable</b></span>
-                        <a href="#disable"><span class="icon ion-ios-link"></span></a>
+                        <span class="modifier">Private</span>
+                        <span ><b>_concatenateData</b></span>
+                        <a href="#_concatenateData"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>disable()</code>
+                    <code>_concatenateData(arr: Array<Uint8Array | string>)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/components/faceBasedExposureControl.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="29"
+                            class="link-to-prism">src/utilitis/clientWritableStreamEmulator.ts:29</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Disables the cnn feature persistently. The disabled state is persistent on camera reboot/power cycle.</p>
-</div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>arr</td>
+                                    <td>
+                                            <code>Array&lt;Uint8Array | string&gt;</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+                        <b>Returns : </b>    <code>Uint8Array | string</code>
 
                     </div>
                     <div class="io-description">
-                        <p>{Promise<void>} Resolves when feature is successfully disabled.</p>
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="end"></a>
+                    <span class="name">
+                        <span ><b>end</b></span>
+                        <a href="#end"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>end()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="24"
+                            class="link-to-prism">src/utilitis/clientWritableStreamEmulator.ts:24</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                     </div>
                 </td>
@@ -293,137 +373,66 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
-                    <a name="enable"></a>
+                    <a name="write"></a>
                     <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>enable</b></span>
-                        <a href="#enable"><span class="icon ion-ios-link"></span></a>
+                        <span ><b>write</b></span>
+                        <a href="#write"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>enable()</code>
+<code>write(huddlyChunk: huddly.Chunk)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="42"
-                            class="link-to-prism">src/components/faceBasedExposureControl.ts:42</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="20"
+                            class="link-to-prism">src/utilitis/clientWritableStreamEmulator.ts:20</a></div>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-description"><p>Enables the cnn feature persistently. The enable state is persistent on camera reboot/power cycle.</p>
-</div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>huddlyChunk</td>
+                                    <td>
+                                            <code>huddly.Chunk</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
 
                     </div>
                     <div class="io-description">
-                        <p>{Promise<void>} Resolves when feature is successfully enabled.</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="init"></a>
-                    <span class="name">
-                        <span ><b>init</b></span>
-                        <a href="#init"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-<code>init()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="32"
-                            class="link-to-prism">src/components/faceBasedExposureControl.ts:32</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Convenience function for setting up the camera for starting/stopping cnn feature.
-Should be called before any other methods.</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>{Promise<any>} Resolves when the initialisation is completed.</p>
-
-                    </div>
-                </td>
-            </tr>
-        </tbody>
-    </table>
-    <table class="table table-sm table-bordered">
-        <tbody>
-            <tr>
-                <td class="col-md-4">
-                    <a name="isEnabled"></a>
-                    <span class="name">
-                        <span class="modifier">Async</span>
-                        <span ><b>isEnabled</b></span>
-                        <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
-                    </span>
-                </td>
-            </tr>
-            <tr>
-                <td class="col-md-4">
-                    <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>isEnabled()</code>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="74"
-                            class="link-to-prism">src/components/faceBasedExposureControl.ts:74</a></div>
-                </td>
-            </tr>
-
-
-            <tr>
-                <td class="col-md-4">
-                    <div class="io-description"><p>Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.</p>
-</div>
-
-                    <div>
-                    </div>
-                    <div class="io-description">
-                        <b>Returns : </b>    <code>Promise&lt;Boolean&gt;</code>
-
-                    </div>
-                    <div class="io-description">
-                        <p>{Promise<Boolean>} Resolves to true if cnn features is enabled</p>
-
+                        
                     </div>
                 </td>
             </tr>
@@ -437,113 +446,52 @@ Should be called before any other methods.</p>
 
     </div>
 
-    <div class="tab-pane fade " id="readme">
-        <p><h1>Portrait Lightning Controller</h1>
-<p>In a similar way to Genius Framing controller, Portrait Lightning also implements ICnnController and can be used to toggle the feature as needed. Below is a code snippet on how to do it.</p>
-<div><pre class="line-numbers"><code class="language-javascript">const portraitLightningCtrl = cameraManager.getFaceBasedExposureControl();
-
-// Always call init before doing anything
-await portraitLightningCtrl.init();
-
-/* Enable Portrait Lightning cnn feature on the camera (persistent across camera booting) */
-await portraitLightningCtrl.enable();
-
-...
-// Your code goes here
-...
-
-/* Disable Portrait Lightning cnn feature on the camera (persistent across camera booting) */
-await portraitLightningCtrl.disable();</code></pre></div></p>
-    </div>
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ICnnControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/ICnnControl&#x27;;
-import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
-import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
 
 /**
- * Control class for configuring the Portrait Lighting feature of the camera.
+ * Emulates the behaviour of the grpc.ClientWritableStream to make it easier to have
+ * a uniform approach for both the old and new cpio format to run the verify step.
  *
- * @export
- * @class FaseBasedExposureControl
- * @implements {ICnnControl}
+ * The need for this based on the old verify method returning a stream for writing to
+ * where we with the new method are supposed to pass the verification data through when
+ * invoking the method.
+ *
  */
-export default class FaseBasedExposureControl implements ICnnControl {
-  /**
-   * Represents an instance of an ip device manager (ex. Boxfish).
-   *
-   * @type {IDeviceManager}
-   * @memberof FaseBasedExposureControl
-   */
-  _deviceManager: IDeviceManager;
+export default class ClientWritableStreamEmulator {
+  private data: Array&lt;string | Uint8Array&gt; &#x3D; [];
+  private endCallback: Function;
 
-  constructor(manager: IDeviceManager) {
-    this._deviceManager &#x3D; manager;
+  constructor(endCallback: Function) {
+    this.endCallback &#x3D; endCallback;
   }
 
-  /**
-   * Convenience function for setting up the camera for starting/stopping cnn feature.
-   * Should be called before any other methods.
-   *
-   * @return {*}  {Promise&lt;any&gt;} Resolves when the initialisation is completed.
-   * @memberof FaseBasedExposureControl
-   */
-  init(): Promise&lt;any&gt; {
-    return Promise.resolve();
+  write(huddlyChunk: huddly.Chunk) {
+    this.data.push(huddlyChunk.getContent());
   }
 
-  /**
-   * Enables the cnn feature persistently. The enable state is persistent on camera reboot/power cycle.
-   *
-   * @return {*}  {Promise&lt;void&gt;} Resolves when feature is successfully enabled.
-   * @memberof FaseBasedExposureControl
-   */
-  async enable(): Promise&lt;void&gt; {
-    try {
-      const r &#x3D; await this._deviceManager.api.transport.write(&#x27;face-based-exposure/enable&#x27;);
-      return r;
-    } catch (e) {
-      Logger.error(&#x27;Could enable face based exposure&#x27;, e.message);
-      throw new Error(&#x27;Could not enable face based exposure&#x27;);
+  end() {
+    const callbackData &#x3D; this._concatenateData(this.data);
+    this.endCallback(callbackData);
+  }
+
+  private _concatenateData(arr: Array&lt;Uint8Array | string&gt;): Uint8Array | string {
+    if (arr.length &#x3D;&#x3D;&#x3D; 0) {
+      return &#x27;&#x27;; // Empty list, return an empty string
     }
-  }
 
-  /**
-   * Disables the cnn feature persistently. The disabled state is persistent on camera reboot/power cycle.
-   *
-   * @return {*}  {Promise&lt;void&gt;} Resolves when feature is successfully disabled.
-   * @memberof FaseBasedExposureControl
-   */
-  async disable(): Promise&lt;void&gt; {
-    try {
-      const r &#x3D; await this._deviceManager.api.transport.write(&#x27;face-based-exposure/disable&#x27;);
-      return r;
-    } catch (e) {
-      Logger.error(&#x27;Could disable face based exposure&#x27;, e.message);
-      throw new Error(&#x27;Could not disable face based exposure&#x27;);
-    }
-  }
-
-  /**
-   * Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.
-   *
-   * @return {*}  {Promise&lt;Boolean&gt;} Resolves to true if cnn features is enabled
-   * @memberof FaseBasedExposureControl
-   */
-  async isEnabled(): Promise&lt;Boolean&gt; {
-    try {
-      const message &#x3D; await this._deviceManager.api.sendAndReceiveMessagePack(
-        &#x27;&#x27;,
-        {
-          send: &#x27;face-based-exposure/status&#x27;,
-          receive: &#x27;face-based-exposure/status_reply&#x27;,
-        },
-        3000
-      );
-      return message[&#x27;fbe-enabled&#x27;];
-    } catch (e) {
-      Logger.error(&#x27;Could disable face based exposure&#x27;, e.message);
-      throw new Error(&#x27;Could not get face based exposure status&#x27;);
+    if (arr[0] instanceof Uint8Array) {
+      // If the first element is Uint8Array, concatenate Uint8Array elements
+      return arr.reduce((accumulator: Uint8Array, current: Uint8Array) &#x3D;&gt; {
+        const newUint8Array &#x3D; new Uint8Array(accumulator.length + current.length);
+        newUint8Array.set(accumulator, 0);
+        newUint8Array.set(current, accumulator.length);
+        return newUint8Array;
+      });
+    } else {
+      // If the first element is a string, concatenate string elements
+      return arr.join(&#x27;&#x27;);
     }
   }
 }
@@ -585,7 +533,7 @@ export default class FaseBasedExposureControl implements ICnnControl {
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'FaseBasedExposureControl.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'ClientWritableStreamEmulator.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

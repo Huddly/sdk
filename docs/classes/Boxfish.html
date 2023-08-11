@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,28 +41,36 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>Boxfish</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >Boxfish</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/device/boxfish.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -85,13 +94,8 @@
                         <code>IDeviceManager</code>
             </p>
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -104,22 +108,19 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#_api">_api</a>
+                                <a href="#_api" >_api</a>
                             </li>
                             <li>
-                                <a href="#discoveryEmitter">discoveryEmitter</a>
+                                <a href="#discoveryEmitter" >discoveryEmitter</a>
                             </li>
                             <li>
-                                <a href="#productName">productName</a>
+                                <a href="#productName" >productName</a>
                             </li>
                             <li>
-                                <a href="#transport">transport</a>
+                                <a href="#transport" >transport</a>
                             </li>
                             <li>
-                                <a href="#uvcControlInterface">uvcControlInterface</a>
-                            </li>
-                            <li>
-                                <a href="#uvcControlInterface">uvcControlInterface</a>
+                                <a href="#uvcControlInterface" >uvcControlInterface</a>
                             </li>
                         </ul>
                     </td>
@@ -135,118 +136,118 @@
                         <ul class="index-list">
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#closeConnection">closeConnection</a>
+                                <a href="#closeConnection" >closeConnection</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#ensureAppMode">ensureAppMode</a>
+                                <a href="#ensureAppMode" >ensureAppMode</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#eraseErrorLog">eraseErrorLog</a>
+                                <a href="#eraseErrorLog" >eraseErrorLog</a>
                             </li>
                             <li>
-                                <a href="#getAutozoomControl">getAutozoomControl</a>
+                                <a href="#getAutozoomControl" >getAutozoomControl</a>
                             </li>
                             <li>
-                                <a href="#getDetector">getDetector</a>
-                            </li>
-                            <li>
-                                    <span class="modifier">Async</span>
-                                <a href="#getDiagnostics">getDiagnostics</a>
+                                <a href="#getDetector" >getDetector</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getErrorLog">getErrorLog</a>
-                            </li>
-                            <li>
-                                <a href="#getFaceBasedExposureControl">getFaceBasedExposureControl</a>
+                                <a href="#getDiagnostics" >getDiagnostics</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getInfo">getInfo</a>
+                                <a href="#getErrorLog" >getErrorLog</a>
+                            </li>
+                            <li>
+                                <a href="#getFaceBasedExposureControl" >getFaceBasedExposureControl</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getInterpolationParams">getInterpolationParams</a>
+                                <a href="#getInfo" >getInfo</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getPowerUsage">getPowerUsage</a>
+                                <a href="#getInterpolationParams" >getInterpolationParams</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getState">getState</a>
+                                <a href="#getPowerUsage" >getPowerUsage</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getTemperature">getTemperature</a>
+                                <a href="#getState" >getState</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getUpgrader">getUpgrader</a>
+                                <a href="#getTemperature" >getTemperature</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#initialize">initialize</a>
+                                <a href="#getUpgrader" >getUpgrader</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#reboot">reboot</a>
+                                <a href="#initialize" >initialize</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#setInterpolationParams">setInterpolationParams</a>
+                                <a href="#reboot" >reboot</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#upgrade">upgrade</a>
+                                <a href="#setInterpolationParams" >setInterpolationParams</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#uptime">uptime</a>
-                            </li>
-                            <li>
-                                <a href="#getPanTilt">getPanTilt</a>
-                            </li>
-                            <li>
-                                <a href="#getSetting">getSetting</a>
-                            </li>
-                            <li>
-                                <a href="#getSettings">getSettings</a>
-                            </li>
-                            <li>
-                                <a href="#getSupportedSettings">getSupportedSettings</a>
-                            </li>
-                            <li>
-                                <a href="#getUVCParam">getUVCParam</a>
+                                <a href="#upgrade" >upgrade</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#getXUControl">getXUControl</a>
+                                <a href="#uptime" >uptime</a>
                             </li>
                             <li>
-                                <a href="#isAlive">isAlive</a>
+                                <a href="#getPanTilt" >getPanTilt</a>
                             </li>
                             <li>
-                                <a href="#resetSettings">resetSettings</a>
+                                <a href="#getSetting" >getSetting</a>
+                            </li>
+                            <li>
+                                <a href="#getSettings" >getSettings</a>
+                            </li>
+                            <li>
+                                <a href="#getSupportedSettings" >getSupportedSettings</a>
+                            </li>
+                            <li>
+                                <a href="#getUVCParam" >getUVCParam</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#setPanTilt">setPanTilt</a>
+                                <a href="#getXUControl" >getXUControl</a>
                             </li>
                             <li>
-                                <a href="#setSettingValue">setSettingValue</a>
+                                <a href="#isAlive" >isAlive</a>
                             </li>
                             <li>
-                                <a href="#setUVCParam">setUVCParam</a>
+                                <a href="#resetSettings" >resetSettings</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#setXUControl">setXUControl</a>
+                                <a href="#setPanTilt" >setPanTilt</a>
                             </li>
                             <li>
-                                <a href="#usbReEnumerate">usbReEnumerate</a>
+                                <a href="#setSettingValue" >setSettingValue</a>
+                            </li>
+                            <li>
+                                <a href="#setUVCParam" >setUVCParam</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setXUControl" >setXUControl</a>
+                            </li>
+                            <li>
+                                <a href="#usbReEnumerate" >usbReEnumerate</a>
                             </li>
                         </ul>
                     </td>
@@ -265,7 +266,7 @@
                         <td class="col-md-4">
                             <ul class="index-list">
                                 <li>
-                                    <a href="#api">api</a>
+                                    <a href="#api" >api</a>
                                 </li>
                             </ul>
                         </td>
@@ -274,13 +275,13 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(uvcCameraInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, transport: IUsbTransport, uvcControlInterface: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+<code>constructor(uvcCameraInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, transport: IUsbTransport, uvcControlInterface: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscoveryEmitter: EventEmitter)</code>
                     </td>
                 </tr>
                         <tr>
@@ -317,8 +318,8 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Uvc camera instance acquired from device-api-uvc discovery manager.</p>
-</code>
+                                                                <p>Uvc camera instance acquired from device-api-uvc discovery manager.</p>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
@@ -333,8 +334,8 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>The transport instance for communicating with the camera.</p>
-</code>
+                                                                <p>The transport instance for communicating with the camera.</p>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
@@ -349,15 +350,15 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Uvc control interface for performing standard uvc control commands.</p>
-</code>
+                                                                <p>Uvc control interface for performing standard uvc control commands.</p>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
                                                         <td>cameraDiscoveryEmitter</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                                    <code>EventEmitter</code>
                                                         </td>
                                                   
                                                     <td>
@@ -365,8 +366,8 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Emitter instance sending attach &amp; detach events for Huddly cameras.</p>
-</code>
+                                                                <p>Emitter instance sending attach &amp; detach events for Huddly cameras.</p>
+
                                                         </td>
                                                 </tr>
                                         </tbody>
@@ -378,224 +379,186 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-properties">
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_api"></a>
+                    <span class="name">
+                        <span ><b>_api</b></span>
+                        <a href="#_api"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="_api"></a>
-                        <span class="name">
-                            <b>
-                            _api</b>
-                            <a href="#_api"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>Api</code>
+
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>    <code>Api</code>
-
+                                <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/components/device/boxfish.ts:52</a></div>
                         </td>
                     </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Common Api wrapper class for invoking common functionality across device controller classes.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveryEmitter"></a>
+                    <span class="name">
+                        <span ><b>discoveryEmitter</b></span>
+                        <a href="#discoveryEmitter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/components/device/boxfish.ts:68</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Event emitter instance emitting attach and detach events for Huddly Cameras.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="productName"></a>
+                    <span class="name">
+                        <span ><b>productName</b></span>
+                        <a href="#productName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Huddly IQ&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/components/device/boxfish.ts:75</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Comercial product name for this controller class.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transport"></a>
+                    <span class="name">
+                        <span ><b>transport</b></span>
+                        <a href="#transport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>IUsbTransport</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/components/device/boxfish.ts:45</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Transport instance for communicating with cameras (sending command and reading data)</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="uvcControlInterface"></a>
+                    <span class="name">
+                        <span ><b>uvcControlInterface</b></span>
+                        <a href="#uvcControlInterface"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="52" class="link-to-prism">src/components/device/boxfish.ts:52</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Common Api wrapper class for invoking common functionality across device controller classes.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="discoveryEmitter"></a>
-                        <span class="name">
-                            <b>
-                            discoveryEmitter</b>
-                            <a href="#discoveryEmitter"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="68" class="link-to-prism">src/components/device/boxfish.ts:68</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Event emitter instance emitting attach and detach events for Huddly Cameras.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="productName"></a>
-                        <span class="name">
-                            <b>
-                            productName</b>
-                            <a href="#productName"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;Huddly IQ&#x27;</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="75" class="link-to-prism">src/components/device/boxfish.ts:75</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Comercial product name for this controller class.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="transport"></a>
-                        <span class="name">
-                            <b>
-                            transport</b>
-                            <a href="#transport"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>    <code>IUsbTransport</code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="45" class="link-to-prism">src/components/device/boxfish.ts:45</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>Transport instance for communicating with cameras (sending command and reading data)</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="uvcControlInterface"></a>
-                        <span class="name">
-                            <b>
-                            uvcControlInterface</b>
-                            <a href="#uvcControlInterface"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="59" class="link-to-prism">src/components/device/boxfish.ts:59</a></div>
-                            </td>
-                        </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>The uvc control interface for sending standard uvc commands to camera.</p>
-</div>
-                    </td>
-                </tr>
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="uvcControlInterface"></a>
-                        <span class="name">
-                            <b>
-                            uvcControlInterface</b>
-                            <a href="#uvcControlInterface"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
-
-                        </td>
-                    </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/UvcBaseDevice.html" target="_self" >UvcBaseDevice</a></code>
-</div>
-                                </td>
-                            </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/UvcBaseDevice.html#source" target="_self" >UvcBaseDevice:17</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/UvcBaseDevice.html" target="_self" >UvcBaseDevice</a></code>
 </div>
                             </td>
                         </tr>
-
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>The uvc control instance where uvc commands can be directly targeted to.</p>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/UvcBaseDevice.html#source" target="_self" >UvcBaseDevice:59</a></code>
 </div>
-                    </td>
-                </tr>
+                        </td>
+                    </tr>
 
-            </tbody>
-        </table>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The uvc control interface for sending standard uvc commands to camera.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -606,10 +569,8 @@
                 <td class="col-md-4">
                     <a name="closeConnection"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            closeConnection
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>closeConnection</b></span>
                         <a href="#closeConnection"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -655,10 +616,8 @@
                 <td class="col-md-4">
                     <a name="ensureAppMode"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            ensureAppMode
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>ensureAppMode</b></span>
                         <a href="#ensureAppMode"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -686,6 +645,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -732,7 +692,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
@@ -749,10 +709,8 @@
                 <td class="col-md-4">
                     <a name="eraseErrorLog"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            eraseErrorLog
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>eraseErrorLog</b></span>
                         <a href="#eraseErrorLog"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -780,6 +738,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -833,16 +792,14 @@
                 <td class="col-md-4">
                     <a name="getAutozoomControl"></a>
                     <span class="name">
-                        <b>
-                            getAutozoomControl
-                        </b>
+                        <span ><b>getAutozoomControl</b></span>
                         <a href="#getAutozoomControl"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getAutozoomControl(opts: <a href="../classes/AutozoomControl.html">AutozoomControlOpts</a>)</code>
+<code>getAutozoomControl(opts: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
                 </td>
             </tr>
 
@@ -862,6 +819,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -911,16 +869,14 @@
                 <td class="col-md-4">
                     <a name="getDetector"></a>
                     <span class="name">
-                        <b>
-                            getDetector
-                        </b>
+                        <span ><b>getDetector</b></span>
                         <a href="#getDetector"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>getDetector(opts?: <a href="../classes/Detector.html">DetectorOpts</a>)</code>
+<code>getDetector(opts?: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
                 </td>
             </tr>
 
@@ -940,6 +896,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -989,10 +946,8 @@
                 <td class="col-md-4">
                     <a name="getDiagnostics"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getDiagnostics
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getDiagnostics</b></span>
                         <a href="#getDiagnostics"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1038,10 +993,8 @@
                 <td class="col-md-4">
                     <a name="getErrorLog"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getErrorLog
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getErrorLog</b></span>
                         <a href="#getErrorLog"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1069,6 +1022,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1160,9 +1114,7 @@
                 <td class="col-md-4">
                     <a name="getFaceBasedExposureControl"></a>
                     <span class="name">
-                        <b>
-                            getFaceBasedExposureControl
-                        </b>
+                        <span ><b>getFaceBasedExposureControl</b></span>
                         <a href="#getFaceBasedExposureControl"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1207,10 +1159,8 @@
                 <td class="col-md-4">
                     <a name="getInfo"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getInfo
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getInfo</b></span>
                         <a href="#getInfo"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1256,10 +1206,8 @@
                 <td class="col-md-4">
                     <a name="getInterpolationParams"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getInterpolationParams
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getInterpolationParams</b></span>
                         <a href="#getInterpolationParams"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1305,10 +1253,8 @@
                 <td class="col-md-4">
                     <a name="getPowerUsage"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getPowerUsage
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getPowerUsage</b></span>
                         <a href="#getPowerUsage"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1354,10 +1300,8 @@
                 <td class="col-md-4">
                     <a name="getState"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getState
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getState</b></span>
                         <a href="#getState"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1403,10 +1347,8 @@
                 <td class="col-md-4">
                     <a name="getTemperature"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getTemperature
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getTemperature</b></span>
                         <a href="#getTemperature"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1452,10 +1394,8 @@
                 <td class="col-md-4">
                     <a name="getUpgrader"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getUpgrader
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getUpgrader</b></span>
                         <a href="#getUpgrader"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1501,10 +1441,8 @@
                 <td class="col-md-4">
                     <a name="initialize"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            initialize
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>initialize</b></span>
                         <a href="#initialize"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1550,10 +1488,8 @@
                 <td class="col-md-4">
                     <a name="reboot"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            reboot
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>reboot</b></span>
                         <a href="#reboot"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1581,6 +1517,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1634,10 +1571,8 @@
                 <td class="col-md-4">
                     <a name="setInterpolationParams"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            setInterpolationParams
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>setInterpolationParams</b></span>
                         <a href="#setInterpolationParams"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1665,6 +1600,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1714,10 +1650,8 @@
                 <td class="col-md-4">
                     <a name="upgrade"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            upgrade
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>upgrade</b></span>
                         <a href="#upgrade"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1745,6 +1679,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1794,10 +1729,8 @@
                 <td class="col-md-4">
                     <a name="uptime"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            uptime
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>uptime</b></span>
                         <a href="#uptime"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1826,7 +1759,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
@@ -1843,9 +1776,7 @@
                 <td class="col-md-4">
                     <a name="getPanTilt"></a>
                     <span class="name">
-                        <b>
-                            getPanTilt
-                        </b>
+                        <span ><b>getPanTilt</b></span>
                         <a href="#getPanTilt"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1896,9 +1827,7 @@
                 <td class="col-md-4">
                     <a name="getSetting"></a>
                     <span class="name">
-                        <b>
-                            getSetting
-                        </b>
+                        <span ><b>getSetting</b></span>
                         <a href="#getSetting"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -1931,6 +1860,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -1995,9 +1925,7 @@
                 <td class="col-md-4">
                     <a name="getSettings"></a>
                     <span class="name">
-                        <b>
-                            getSettings
-                        </b>
+                        <span ><b>getSettings</b></span>
                         <a href="#getSettings"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2030,6 +1958,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2079,9 +2008,7 @@
                 <td class="col-md-4">
                     <a name="getSupportedSettings"></a>
                     <span class="name">
-                        <b>
-                            getSupportedSettings
-                        </b>
+                        <span ><b>getSupportedSettings</b></span>
                         <a href="#getSupportedSettings"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2132,9 +2059,7 @@
                 <td class="col-md-4">
                     <a name="getUVCParam"></a>
                     <span class="name">
-                        <b>
-                            getUVCParam
-                        </b>
+                        <span ><b>getUVCParam</b></span>
                         <a href="#getUVCParam"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2167,6 +2092,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2212,10 +2138,8 @@
                 <td class="col-md-4">
                     <a name="getXUControl"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            getXUControl
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>getXUControl</b></span>
                         <a href="#getXUControl"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2249,6 +2173,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2298,9 +2223,7 @@
                 <td class="col-md-4">
                     <a name="isAlive"></a>
                     <span class="name">
-                        <b>
-                            isAlive
-                        </b>
+                        <span ><b>isAlive</b></span>
                         <a href="#isAlive"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2351,9 +2274,7 @@
                 <td class="col-md-4">
                     <a name="resetSettings"></a>
                     <span class="name">
-                        <b>
-                            resetSettings
-                        </b>
+                        <span ><b>resetSettings</b></span>
                         <a href="#resetSettings"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2386,6 +2307,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2439,10 +2361,8 @@
                 <td class="col-md-4">
                     <a name="setPanTilt"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            setPanTilt
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>setPanTilt</b></span>
                         <a href="#setPanTilt"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2476,6 +2396,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2508,7 +2429,7 @@
                     <div>
                     </div>
                     <div class="io-description">
-                        <b>Returns : </b>    <code>{}</code>
+                        <b>Returns : </b>    <code>unknown</code>
 
                     </div>
                     <div class="io-description">
@@ -2525,9 +2446,7 @@
                 <td class="col-md-4">
                     <a name="setSettingValue"></a>
                     <span class="name">
-                        <b>
-                            setSettingValue
-                        </b>
+                        <span ><b>setSettingValue</b></span>
                         <a href="#setSettingValue"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2560,6 +2479,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2618,9 +2538,7 @@
                 <td class="col-md-4">
                     <a name="setUVCParam"></a>
                     <span class="name">
-                        <b>
-                            setUVCParam
-                        </b>
+                        <span ><b>setUVCParam</b></span>
                         <a href="#setUVCParam"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2653,6 +2571,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2711,10 +2630,8 @@
                 <td class="col-md-4">
                     <a name="setXUControl"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            setXUControl
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>setXUControl</b></span>
                         <a href="#setXUControl"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2748,6 +2665,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -2813,9 +2731,7 @@
                 <td class="col-md-4">
                     <a name="usbReEnumerate"></a>
                     <span class="name">
-                        <b>
-                            usbReEnumerate
-                        </b>
+                        <span ><b>usbReEnumerate</b></span>
                         <a href="#usbReEnumerate"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -2866,7 +2782,7 @@
 
 
 
-            <section>
+            <section data-compodoc="block-accessors">
     <h3 id="accessors">
         Accessors
     </h3>
@@ -2896,7 +2812,7 @@
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
 
 import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
@@ -3443,14 +3359,15 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -3462,6 +3379,15 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -3470,9 +3396,9 @@ export default class Boxfish extends UvcBaseDevice implements IDeviceManager {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

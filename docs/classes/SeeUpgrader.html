@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,28 +41,36 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>SeeUpgrader</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >SeeUpgrader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/upgrader/seeUpgrader.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -79,13 +88,8 @@
             </p>
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -98,16 +102,13 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#className">className</a>
+                                <a href="#className" >className</a>
                             </li>
                             <li>
-                                <a href="#bootTimeout">bootTimeout</a>
+                                <a href="#bootTimeout" >bootTimeout</a>
                             </li>
                             <li>
-                                <a href="#className">className</a>
-                            </li>
-                            <li>
-                                <a href="#options">options</a>
+                                <a href="#options" >options</a>
                             </li>
                         </ul>
                     </td>
@@ -122,26 +123,36 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#doUpgrade">doUpgrade</a>
+                                <a href="#doUpgrade" >doUpgrade</a>
                             </li>
                             <li>
-                                <a href="#getVersion">getVersion</a>
+                                <a href="#getUpgradeMethodsAndFileNames" >getUpgradeMethodsAndFileNames</a>
                             </li>
                             <li>
-                                <a href="#getVersionState">getVersionState</a>
+                                <a href="#getVersion" >getVersion</a>
                             </li>
                             <li>
-                                <a href="#init">init</a>
+                                <a href="#getVersionState" >getVersionState</a>
                             </li>
                             <li>
-                                <a href="#performUpgradeStep">performUpgradeStep</a>
+                                <a href="#hasVerificationFile" >hasVerificationFile</a>
                             </li>
                             <li>
-                                <a href="#registerHotPlugEvents">registerHotPlugEvents</a>
+                                <a href="#init" >init</a>
+                            </li>
+                            <li>
+                                <a href="#performUpgradeStep" >performUpgradeStep</a>
+                            </li>
+                            <li>
+                                <a href="#registerHotPlugEvents" >registerHotPlugEvents</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#start">start</a>
+                                <a href="#shouldUseLegacy" >shouldUseLegacy</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#start" >start</a>
                             </li>
                         </ul>
                     </td>
@@ -155,13 +166,13 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+<code>constructor(manager: IDeviceManager, sdkDeviceDiscoveryEmitter: EventEmitter)</code>
                     </td>
                 </tr>
                         <tr>
@@ -198,15 +209,15 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>An instance of IDeviceManager setup for an See/S1 device.</p>
-</code>
+                                                                <p>An instance of IDeviceManager setup for an See/S1 device.</p>
+
                                                         </td>
                                                 </tr>
                                                 <tr>
                                                         <td>sdkDeviceDiscoveryEmitter</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                                    <code>EventEmitter</code>
                                                         </td>
                                                   
                                                     <td>
@@ -214,8 +225,8 @@
                                                     </td>
                                                     
                                                         <td>
-                                                                <code><p>Event emitter object that emits ATTACH &amp; DETACH events for See/S1 devices on the network</p>
-</code>
+                                                                <p>Event emitter object that emits ATTACH &amp; DETACH events for See/S1 devices on the network</p>
+
                                                         </td>
                                                 </tr>
                                         </tbody>
@@ -227,171 +238,136 @@
         </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-properties">
     
-        <h3 id="inputs">
-            Properties
-        </h3>
-        <table class="table table-sm table-bordered">
-            <tbody>
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="className"></a>
+                    <span class="name">
+                        <span ><b>className</b></span>
+                        <a href="#className"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="className"></a>
-                        <span class="name">
-                            <b>
-                            className</b>
-                            <a href="#className"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;SeeUpgrader&#x27;</code>
-                        </td>
-                    </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in <a href="" data-line="13" class="link-to-prism">src/components/upgrader/seeUpgrader.ts:13</a></div>
-                            </td>
-                        </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
                 <tr>
                     <td class="col-md-4">
-                        <a name="bootTimeout"></a>
-                        <span class="name">
-                            <b>
-                            bootTimeout</b>
-                            <a href="#bootTimeout"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Default value : </i><code>&#x27;SeeUpgrader&#x27;</code>
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>30 * 1000</code>
-                        </td>
-                    </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:75</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
 </div>
                             </td>
                         </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:13</a></code>
+</div>
+                        </td>
+                    </tr>
 
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="bootTimeout"></a>
+                    <span class="name">
+                        <span ><b>bootTimeout</b></span>
+                        <a href="#bootTimeout"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <div class="io-description"><p>Defines the maximum amount of time (in seconds) that the camera is allowed to use for
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>30 * 1000</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
+</div>
+                            </td>
+                        </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:81</a></code>
+</div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Defines the maximum amount of time (in seconds) that the camera is allowed to use for
 booting after firmware upgrade.</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="options"></a>
+                    <span class="name">
+                        <span ><b>options</b></span>
+                        <a href="#options"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
                 <tr>
                     <td class="col-md-4">
-                        <a name="className"></a>
-                        <span class="name">
-                            <b>
-                            className</b>
-                            <a href="#className"><span class="icon ion-ios-link"></span></a>
-                        </span>
+                        <i>Type : </i>    <code>IUpgradeOpts</code>
+
                     </td>
                 </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
-
-                        </td>
-                    </tr>
-                    <tr>
-                        <td class="col-md-4">
-                            <i>Default value : </i><code>&#x27;IpCameraUpgrader&#x27;</code>
-                        </td>
-                    </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                                </td>
-                            </tr>
                         <tr>
                             <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:41</a></code>
+                                <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
 </div>
                             </td>
                         </tr>
-
-
-            </tbody>
-        </table>
-        <table class="table table-sm table-bordered">
-            <tbody>
-                <tr>
-                    <td class="col-md-4">
-                        <a name="options"></a>
-                        <span class="name">
-                            <b>
-                            options</b>
-                            <a href="#options"><span class="icon ion-ios-link"></span></a>
-                        </span>
-                    </td>
-                </tr>
                     <tr>
                         <td class="col-md-4">
-                            <i>Type : </i>    <code>IUpgradeOpts</code>
-
+                                <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:72</a></code>
+</div>
                         </td>
                     </tr>
-                            <tr>
-                                <td class="col-md-4">
-                                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
-</div>
-                                </td>
-                            </tr>
-                        <tr>
-                            <td class="col-md-4">
-                                    <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:66</a></code>
-</div>
-                            </td>
-                        </tr>
 
-                <tr>
-                    <td class="col-md-4">
-                        <div class="io-description"><p>The upgrader options necessary to perform the firmware upgrade</p>
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>The upgrader options necessary to perform the firmware upgrade</p>
 </div>
-                    </td>
-                </tr>
+                </td>
+            </tr>
 
-            </tbody>
-        </table>
+        </tbody>
+    </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -402,9 +378,7 @@ booting after firmware upgrade.</p>
                 <td class="col-md-4">
                     <a name="doUpgrade"></a>
                     <span class="name">
-                        <b>
-                            doUpgrade
-                        </b>
+                        <span ><b>doUpgrade</b></span>
                         <a href="#doUpgrade"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -424,7 +398,7 @@ booting after firmware upgrade.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:567</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:649</a></code>
 </div>
                 </td>
             </tr>
@@ -453,11 +427,52 @@ booting after firmware upgrade.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getUpgradeMethodsAndFileNames"></a>
+                    <span class="name">
+                        <span ><b>getUpgradeMethodsAndFileNames</b></span>
+                        <a href="#getUpgradeMethodsAndFileNames"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUpgradeMethodsAndFileNames()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:187</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/ClientWritableStreamEmulator.html" target="_self" >{ flash: (upgradeStepCompleteCb: any) &#x3D;&gt; any; verify: (upgradeStepCompleteCb: any) &#x3D;&gt; any; imageFileName: string; verificationDataFileName?: undefined; } | { flash: (upgradeStepCompleteCb: any) &#x3D;&gt; any; verify: (upgradeStepCompleteCb: any) &#x3D;&gt; ClientWritableStreamEmulator; imageFileName: string; verificationDataFileNa...</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="getVersion"></a>
                     <span class="name">
-                        <b>
-                            getVersion
-                        </b>
+                        <span ><b>getVersion</b></span>
                         <a href="#getVersion"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -477,7 +492,7 @@ booting after firmware upgrade.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:404</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:460</a></code>
 </div>
                 </td>
             </tr>
@@ -508,9 +523,7 @@ booting after firmware upgrade.</p>
                 <td class="col-md-4">
                     <a name="getVersionState"></a>
                     <span class="name">
-                        <b>
-                            getVersionState
-                        </b>
+                        <span ><b>getVersionState</b></span>
                         <a href="#getVersionState"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -530,7 +543,7 @@ booting after firmware upgrade.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:379</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:435</a></code>
 </div>
                 </td>
             </tr>
@@ -559,11 +572,52 @@ booting after firmware upgrade.</p>
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="hasVerificationFile"></a>
+                    <span class="name">
+                        <span ><b>hasVerificationFile</b></span>
+                        <a href="#hasVerificationFile"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>hasVerificationFile()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:479</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;boolean&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            init
-                        </b>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -583,7 +637,7 @@ booting after firmware upgrade.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:119</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:139</a></code>
 </div>
                 </td>
             </tr>
@@ -596,6 +650,7 @@ booting after firmware upgrade.</p>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -644,16 +699,14 @@ booting after firmware upgrade.</p>
                 <td class="col-md-4">
                     <a name="performUpgradeStep"></a>
                     <span class="name">
-                        <b>
-                            performUpgradeStep
-                        </b>
+                        <span ><b>performUpgradeStep</b></span>
                         <a href="#performUpgradeStep"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
             </tr>
             <tr>
                 <td class="col-md-4">
-<code>performUpgradeStep(step: <a href="../undefineds/UpgradeSteps.html">UpgradeSteps</a>, stepName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+<code>performUpgradeStep(step: <a href="../undefineds/UpgradeSteps.html" target="_self">UpgradeSteps</a>, stepName: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
                 </td>
             </tr>
 
@@ -666,7 +719,7 @@ booting after firmware upgrade.</p>
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:432</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:507</a></code>
 </div>
                 </td>
             </tr>
@@ -680,6 +733,7 @@ reading the cpio file and sending the data over to the camera using grpc streams
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -745,9 +799,7 @@ reading the cpio file and sending the data over to the camera using grpc streams
                 <td class="col-md-4">
                     <a name="registerHotPlugEvents"></a>
                     <span class="name">
-                        <b>
-                            registerHotPlugEvents
-                        </b>
+                        <span ><b>registerHotPlugEvents</b></span>
                         <a href="#registerHotPlugEvents"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -767,7 +819,7 @@ reading the cpio file and sending the data over to the camera using grpc streams
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:136</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:156</a></code>
 </div>
                 </td>
             </tr>
@@ -792,12 +844,55 @@ booted camera comes up so that the upgrade process can continue to completion.</
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="shouldUseLegacy"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>shouldUseLegacy</b></span>
+                        <a href="#shouldUseLegacy"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>shouldUseLegacy()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Inherited from         <code><a href="../classes/IpCameraUpgrader.html" target="_self" >IpCameraUpgrader</a></code>
+</div>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:215</a></code>
+</div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="start"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            start
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
                         <a href="#start"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -818,7 +913,7 @@ booted camera comes up so that the upgrade process can continue to completion.</
             </tr>
             <tr>
                 <td class="col-md-4">
-                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:173</a></code>
+                        <div class="io-line">Defined in         <code><a href="../classes/IpCameraUpgrader.html#source" target="_self" >IpCameraUpgrader:227</a></code>
 </div>
                 </td>
             </tr>
@@ -852,7 +947,7 @@ booted camera comes up so that the upgrade process can continue to completion.</
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
 import { EventEmitter } from &#x27;stream&#x27;;
 import IpCameraUpgrader from &#x27;./ipUpgrader&#x27;;
@@ -883,14 +978,15 @@ export default class SeeUpgrader extends IpCameraUpgrader {
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -902,6 +998,15 @@ export default class SeeUpgrader extends IpCameraUpgrader {
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -910,9 +1015,9 @@ export default class SeeUpgrader extends IpCameraUpgrader {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

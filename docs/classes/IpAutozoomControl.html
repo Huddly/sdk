@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,28 +41,36 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>IpAutozoomControl</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >IpAutozoomControl</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/ipAutozoomControl.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -76,16 +85,11 @@
                 <h3>Implements</h3>
             </p>
             <p class="comment">
-                        <code>ICnnControl</code>
+                            <code><a href="../classes/AutozoomControl.html" target="_self" >IAutozoomControl</a></code>
             </p>
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -99,20 +103,36 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
+                                    <span class="modifier">Private</span>
                                     <span class="modifier">Async</span>
-                                <a href="#disable">disable</a>
+                                <a href="#_setCnnFeature" >_setCnnFeature</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#enable">enable</a>
+                                <a href="#_setMode" >_setMode</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#init">init</a>
+                                <a href="#disable" >disable</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#isEnabled">isEnabled</a>
+                                <a href="#enable" >enable</a>
+                            </li>
+                            <li>
+                                <a href="#getSupportedFramingModes" >getSupportedFramingModes</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#init" >init</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#isEnabled" >isEnabled</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#setFramingMode" >setFramingMode</a>
                             </li>
                         </ul>
                     </td>
@@ -126,18 +146,18 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(manager: IIpDeviceManager, options?: <a href="../classes/AutozoomControl.html">AutozoomControlOpts</a>)</code>
+<code>constructor(manager: IIpDeviceManager, options?: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="19" class="link-to-prism">src/components/ipAutozoomControl.ts:19</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/ipAutozoomControl.ts:24</a></div>
                             </td>
                         </tr>
 
@@ -188,7 +208,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -197,12 +217,177 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="_setCnnFeature"></a>
+                    <span class="name">
+                        <span class="modifier">Private</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>_setCnnFeature</b></span>
+                        <a href="#_setCnnFeature"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_setCnnFeature(feature: huddly.Feature, mode: huddly.Mode)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="155"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:155</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Sets a cnn feature to given mode</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>feature</td>
+                                    <td>
+                                            <code>huddly.Feature</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Feature to set</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>mode</td>
+                                    <td>
+                                            <code>huddly.Mode</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Set mode START/STOP</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>}</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_setMode"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>_setMode</b></span>
+                        <a href="#_setMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>_setMode(autozoomMode: AutozoomModes)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="96"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:96</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>autozoomMode</td>
+                                    <td>
+                                            <code>AutozoomModes</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="disable"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            disable
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>disable</b></span>
                         <a href="#disable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -217,8 +402,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="93"
-                            class="link-to-prism">src/components/ipAutozoomControl.ts:93</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="78"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:78</a></div>
                 </td>
             </tr>
 
@@ -230,6 +415,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -279,10 +465,8 @@
                 <td class="col-md-4">
                     <a name="enable"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            enable
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>enable</b></span>
                         <a href="#enable"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -297,8 +481,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="58"
-                            class="link-to-prism">src/components/ipAutozoomControl.ts:58</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="66"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:66</a></div>
                 </td>
             </tr>
 
@@ -310,6 +494,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -357,12 +542,47 @@
         <tbody>
             <tr>
                 <td class="col-md-4">
+                    <a name="getSupportedFramingModes"></a>
+                    <span class="name">
+                        <span ><b>getSupportedFramingModes</b></span>
+                        <a href="#getSupportedFramingModes"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getSupportedFramingModes()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="32"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:32</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;FramingModes[]&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            init
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -377,8 +597,8 @@
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="35"
-                            class="link-to-prism">src/components/ipAutozoomControl.ts:35</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="43"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:43</a></div>
                 </td>
             </tr>
 
@@ -409,10 +629,8 @@ Should be called before any other methods.</p>
                 <td class="col-md-4">
                     <a name="isEnabled"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            isEnabled
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>isEnabled</b></span>
                         <a href="#isEnabled"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -420,15 +638,15 @@ Should be called before any other methods.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>isEnabled()</code>
+                    <code>isEnabled(feature: huddly.Feature)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="127"
-                            class="link-to-prism">src/components/ipAutozoomControl.ts:127</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="89"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:89</a></div>
                 </td>
             </tr>
 
@@ -438,6 +656,37 @@ Should be called before any other methods.</p>
                     <div class="io-description"><p>Checks if cnn feature is enabled on the camera. Returns true if yes, false otherwise.</p>
 </div>
 
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>feature</td>
+                                    <td>
+                                            <code>huddly.Feature</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>huddly.Feature.AUTOZOOM</code>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                     <div>
                     </div>
                     <div class="io-description">
@@ -452,6 +701,84 @@ Should be called before any other methods.</p>
             </tr>
         </tbody>
     </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="setFramingMode"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>setFramingMode</b></span>
+                        <a href="#setFramingMode"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>setFramingMode(framingMode: FramingModes)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="118"
+                            class="link-to-prism">src/components/ipAutozoomControl.ts:118</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Sets autozoom feature on the camera.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>framingMode</td>
+                                    <td>
+                                            <code>FramingModes</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                    <td>
+                                        <p>Autozoom mode to set on camera</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
 </section>
 
 
@@ -461,13 +788,16 @@ Should be called before any other methods.</p>
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ICnnControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/ICnnControl&#x27;;
 import AutozoomControlOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts&#x27;;
 import IIpDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager&#x27;;
 import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
 
 import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
+import IAutozoomControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/IAutozoomControl&#x27;;
+import FramingModes from &#x27;@huddly/sdk-interfaces/lib/enums/FramingModes&#x27;;
+import AutozoomModes from &#x27;@huddly/sdk-interfaces/lib/enums/AutozoomModes&#x27;;
 
 /**
  * Control class for configuring the Genius Framing feature of the camera.
@@ -476,17 +806,22 @@ import * as huddly from &#x27;@huddly/camera-proto/lib/api/huddly_pb&#x27;;
  * @class IpAutozoomControl
  * @implements {ICnnControl}
  */
-export default class IpAutozoomControl implements ICnnControl {
+export default class IpAutozoomControl implements IAutozoomControl {
   /** @ignore */
   _deviceManager: IIpDeviceManager;
   /** @ignore */
   _options: AutozoomControlOpts;
+  /** @ignore */
+  _supportedModes: Array&lt;FramingModes&gt; &#x3D; [FramingModes.NORMAL, FramingModes.SPEAKER_FRAMING];
 
   constructor(manager: IIpDeviceManager, options?: AutozoomControlOpts) {
     this._deviceManager &#x3D; manager;
     this._options &#x3D; options || {
       shouldAutoFrame: true,
     };
+  }
+  getSupportedFramingModes(): Promise&lt;FramingModes[]&gt; {
+    throw new Error(&#x27;Method not implemented.&#x27;);
   }
 
   /**
@@ -520,31 +855,8 @@ export default class IpAutozoomControl implements ICnnControl {
    * @memberof IpAutozoomControl
    */
   async enable(idleTimeMs?: number): Promise&lt;void&gt; {
-    if (!(await this.isEnabled())) {
-      // Only stop if az is running
-      return new Promise((resolve, reject) &#x3D;&gt; {
-        Logger.debug(&#x27;Enabling Autozoom&#x27;, &#x27;Autozoom Control&#x27;);
-        const cnnFeature &#x3D; new huddly.CnnFeature();
-        cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
-        cnnFeature.setMode(0);
-        this._deviceManager.grpcClient.setCnnFeature(
-          cnnFeature,
-          (err, status: huddly.DeviceStatus) &#x3D;&gt; {
-            if (err !&#x3D; undefined) {
-              Logger.error(
-                &#x27;Unable to enable autozoom&#x27;,
-                err.stack ? err.stack : &#x27;&#x27;,
-                IpAutozoomControl.name
-              );
-              reject(err.message);
-              return;
-            }
-            Logger.info(status.toString());
-            resolve();
-          }
-        );
-      });
-    }
+    Logger.debug(&#x27;Starting Autozoom&#x27;, IpAutozoomControl.name);
+    return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.START);
   }
 
   /**
@@ -555,31 +867,8 @@ export default class IpAutozoomControl implements ICnnControl {
    * @memberof IpAutozoomControl
    */
   async disable(idleTimeMs?: number): Promise&lt;void&gt; {
-    if (await this.isEnabled()) {
-      // Only stop if az is running
-      return new Promise((resolve, reject) &#x3D;&gt; {
-        Logger.debug(&#x27;Stopping Autozoom&#x27;, &#x27;Autozoom Control&#x27;);
-        const cnnFeature &#x3D; new huddly.CnnFeature();
-        cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
-        cnnFeature.setMode(1);
-        this._deviceManager.grpcClient.setCnnFeature(
-          cnnFeature,
-          (err, status: huddly.DeviceStatus) &#x3D;&gt; {
-            if (err !&#x3D; undefined) {
-              Logger.error(
-                &#x27;Unable to disable autozoom&#x27;,
-                err.stack ? err.stack : console.trace(),
-                IpAutozoomControl.name
-              );
-              reject(err.message);
-              return;
-            }
-            Logger.info(status.toString());
-            resolve();
-          }
-        );
-      });
-    }
+    Logger.debug(&#x27;Stopping Autozoom&#x27;, IpAutozoomControl.name);
+    return this._setCnnFeature(huddly.Feature.AUTOZOOM, huddly.Mode.STOP);
   }
 
   /**
@@ -588,11 +877,99 @@ export default class IpAutozoomControl implements ICnnControl {
    * @return {*}  {Promise&lt;Boolean&gt;} Resolves to true if cnn features is enabled
    * @memberof IpAutozoomControl
    */
-  async isEnabled(): Promise&lt;Boolean&gt; {
+  async isEnabled(feature: huddly.Feature &#x3D; huddly.Feature.AUTOZOOM): Promise&lt;Boolean&gt; {
     const cnnFeature &#x3D; new huddly.CnnFeature();
-    cnnFeature.setFeature(huddly.Feature.AUTOZOOM);
+    cnnFeature.setFeature(feature);
     const azStatus &#x3D; await this._deviceManager.getCnnFeatureStatus(cnnFeature);
     return azStatus.getAzStatus().getAzEnabled();
+  }
+
+  async _setMode(autozoomMode: AutozoomModes): Promise&lt;any&gt; {
+    const supportedAutozoomModes &#x3D; [AutozoomModes.NORMAL, AutozoomModes.SPEAKER_FRAMING];
+    if (!supportedAutozoomModes.includes(autozoomMode)) {
+      throw new Error(
+        &#x60;Provided mode ${autozoomMode} is not supported. Supported modes: ${supportedAutozoomModes.toString()}&#x60;
+      );
+    }
+    const framingMode &#x3D; {
+      [AutozoomModes.NORMAL]: FramingModes.NORMAL,
+      [AutozoomModes.SPEAKER_FRAMING]: FramingModes.SPEAKER_FRAMING,
+    }[autozoomMode];
+
+    await this.setFramingMode(framingMode);
+  }
+
+  /**
+   * Sets autozoom feature on the camera.
+   *
+   * @param {FramingModes} [framingMode] Autozoom mode to set on camera
+   * @return {Promise&lt;void | Error&gt;}
+   * @memberof IpAutozoomControl
+   */
+  async setFramingMode(framingMode: FramingModes): Promise&lt;any&gt; {
+    const featureMapping &#x3D; {
+      [FramingModes.NORMAL]: huddly.Feature.AUTOZOOM,
+      [FramingModes.SPEAKER_FRAMING]: huddly.Feature.SPEAKERFRAMING,
+    };
+
+    if (framingMode &#x3D;&#x3D;&#x3D; FramingModes.OFF) {
+      this._supportedModes.forEach((feat) &#x3D;&gt; {
+        this._setCnnFeature(featureMapping[feat], huddly.Mode.STOP);
+      });
+      return;
+    }
+
+    if (!this._supportedModes.includes(framingMode)) {
+      throw new Error(
+        &#x60;Provided mode ${framingMode} is not supported. Supported modes: ${this._supportedModes.toString()}&#x60;
+      );
+    }
+
+    // The following section is a bit confusing due to different naming conventions
+    // for the different camera types.
+
+    // Feature is the gRPC type for framing type and is to IP cameras what mode is to USB cameras
+    const feature &#x3D; featureMapping[framingMode];
+
+    // The camera should handle turning other framing features off
+    await this._setCnnFeature(feature, huddly.Mode.START);
+  }
+
+  /**
+   * Sets a cnn feature to given mode
+   *
+   * @param {huddly.Feature} [feature] Feature to set
+   * @param {huddly.Mode} [mode] Set mode START/STOP
+   * @return {*} {Promise&lt;void&gt;}
+   * @memberof IpAutozoomControl
+   */
+  private async _setCnnFeature(feature: huddly.Feature, mode: huddly.Mode): Promise&lt;void&gt; {
+    return new Promise((resolve, reject) &#x3D;&gt; {
+      const cnnFeature &#x3D; new huddly.CnnFeature();
+      cnnFeature.setFeature(feature);
+      cnnFeature.setMode(mode);
+
+      const featureString &#x3D; Object.keys(huddly.Feature)[feature];
+      const modeString &#x3D; Object.keys(huddly.Mode)[mode];
+
+      Logger.debug(&#x60;Setting cnn feature: ${modeString} ${featureString}&#x60;, IpAutozoomControl.name);
+      this._deviceManager.grpcClient.setCnnFeature(
+        cnnFeature,
+        (err, status: huddly.DeviceStatus) &#x3D;&gt; {
+          if (err !&#x3D; undefined) {
+            Logger.error(
+              &#x60;Unable to ${modeString} ${featureString}&#x60;,
+              err.stack ? err.stack : &#x27;&#x27;,
+              IpAutozoomControl.name
+            );
+            reject(err.message);
+            return;
+          }
+          Logger.info(status.toString());
+          resolve();
+        }
+      );
+    });
   }
 
   /**
@@ -631,14 +1008,15 @@ export default class IpAutozoomControl implements ICnnControl {
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -650,6 +1028,15 @@ export default class IpAutozoomControl implements ICnnControl {
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -658,9 +1045,9 @@ export default class IpAutozoomControl implements ICnnControl {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

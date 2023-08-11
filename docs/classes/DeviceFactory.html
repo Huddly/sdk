@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,28 +41,36 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>DeviceFactory</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >DeviceFactory</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/device/factory.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -74,13 +83,8 @@ device VendorID and ProductID.</p>
 
 
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -96,22 +100,22 @@ device VendorID and ProductID.</p>
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getDevice">getDevice</a>
+                                <a href="#getDevice" >getDevice</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getHIDInterface">getHIDInterface</a>
+                                <a href="#getHIDInterface" >getHIDInterface</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getTransportImplementation">getTransportImplementation</a>
+                                <a href="#getTransportImplementation" >getTransportImplementation</a>
                             </li>
                             <li>
                                     <span class="modifier">Static</span>
                                     <span class="modifier">Async</span>
-                                <a href="#getUVCControlInterface">getUVCControlInterface</a>
+                                <a href="#getUVCControlInterface" >getUVCControlInterface</a>
                             </li>
                         </ul>
                     </td>
@@ -127,7 +131,7 @@ device VendorID and ProductID.</p>
 
 
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -138,11 +142,9 @@ device VendorID and ProductID.</p>
                 <td class="col-md-4">
                     <a name="getDevice"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Static</span>
-                            <span class="modifier">Async</span>
-                            getDevice
-                        </b>
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getDevice</b></span>
                         <a href="#getDevice"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -150,15 +152,15 @@ device VendorID and ProductID.</p>
             <tr>
                 <td class="col-md-4">
                     <span class="modifier-icon icon ion-ios-reset"></span>
-                    <code>getDevice(productId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, preferredDeviceApi: IHuddlyDeviceAPI, secondaryDeviceApis: Array<IHuddlyDeviceAPI>, devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscoveryEmitter: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>)</code>
+                    <code>getDevice(productId: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, preferredDeviceApi: IHuddlyDeviceAPI, secondaryDeviceApis: Array<IHuddlyDeviceAPI>, devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscoveryEmitter: EventEmitter)</code>
                 </td>
             </tr>
 
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="160"
-                            class="link-to-prism">src/components/device/factory.ts:160</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="164"
+                            class="link-to-prism">src/components/device/factory.ts:164</a></div>
                 </td>
             </tr>
 
@@ -167,10 +169,14 @@ device VendorID and ProductID.</p>
                 <td class="col-md-4">
                     <div class="io-description"><p>Function that selects the appropriate transport implementation and uvc control interface
 and returns a concrete implementation of the IDeviceManager</p>
+<p>with the camera
+main interface does not work
+on the concrete implementation of the IHuddlyDeviceApi</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -251,7 +257,7 @@ on the concrete implementation of the IHuddlyDeviceApi</p>
                                 <tr>
                                     <td>cameraDiscoveryEmitter</td>
                                     <td>
-                                                <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                            <code>EventEmitter</code>
                                     </td>
 
                                     <td>
@@ -285,11 +291,9 @@ on the concrete implementation of the IHuddlyDeviceApi</p>
                 <td class="col-md-4">
                     <a name="getHIDInterface"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Static</span>
-                            <span class="modifier">Async</span>
-                            getHIDInterface
-                        </b>
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getHIDInterface</b></span>
                         <a href="#getHIDInterface"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -304,8 +308,8 @@ on the concrete implementation of the IHuddlyDeviceApi</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="124"
-                            class="link-to-prism">src/components/device/factory.ts:124</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="128"
+                            class="link-to-prism">src/components/device/factory.ts:128</a></div>
                 </td>
             </tr>
 
@@ -313,10 +317,14 @@ on the concrete implementation of the IHuddlyDeviceApi</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Get a HID api implementation for the device</p>
+<p>on the concrete implementation of the IHuddlyDeviceApi
+with the camera
+main interface does not work</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -401,11 +409,9 @@ main interface does not work</p>
                 <td class="col-md-4">
                     <a name="getTransportImplementation"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Static</span>
-                            <span class="modifier">Async</span>
-                            getTransportImplementation
-                        </b>
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getTransportImplementation</b></span>
                         <a href="#getTransportImplementation"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -420,8 +426,8 @@ main interface does not work</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="47"
-                            class="link-to-prism">src/components/device/factory.ts:47</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/components/device/factory.ts:51</a></div>
                 </td>
             </tr>
 
@@ -429,10 +435,15 @@ main interface does not work</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Get a concrete transport implementation on the IHuddlyDeviceAPI</p>
+<p>on the concrete implementation of the IHuddlyDeviceAPI
+with the camera
+main interface does not work
+to the device</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -518,11 +529,9 @@ to the device</p>
                 <td class="col-md-4">
                     <a name="getUVCControlInterface"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Static</span>
-                            <span class="modifier">Async</span>
-                            getUVCControlInterface
-                        </b>
+                        <span class="modifier">Static</span>
+                        <span class="modifier">Async</span>
+                        <span ><b>getUVCControlInterface</b></span>
                         <a href="#getUVCControlInterface"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -537,8 +546,8 @@ to the device</p>
 
             <tr>
                 <td class="col-md-4">
-                    <div class="io-line">Defined in <a href="" data-line="86"
-                            class="link-to-prism">src/components/device/factory.ts:86</a></div>
+                    <div class="io-line">Defined in <a href="" data-line="90"
+                            class="link-to-prism">src/components/device/factory.ts:90</a></div>
                 </td>
             </tr>
 
@@ -546,10 +555,14 @@ to the device</p>
             <tr>
                 <td class="col-md-4">
                     <div class="io-description"><p>Get an instance of the device which can be used to issue standard UVC control commands</p>
+<p>on the concrete implementation of the IHuddlyDeviceApi
+with the camera
+main interface does not work</p>
 </div>
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -637,7 +650,7 @@ main interface does not work</p>
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import ITransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/ITransport&#x27;;
 import IUsbTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUsbTransport&#x27;;
 import IHuddlyDeviceAPI from &#x27;@huddly/sdk-interfaces/lib/interfaces/IHuddlyDeviceAPI&#x27;;
@@ -655,8 +668,12 @@ import Clownfish from &#x27;./clownfish&#x27;;
 import DartFish from &#x27;./dartfish&#x27;;
 import Ace from &#x27;./ace&#x27;;
 import See from &#x27;./see&#x27;;
+import Smartbase from &#x27;./smartbase&#x27;;
 
 import { EventEmitter } from &#x27;events&#x27;;
+import SmartbaseAce from &#x27;./smartbaseAce&#x27;;
+import SmartbaseSee from &#x27;./smartbaseSee&#x27;;
+import Crew from &#x27;./crew&#x27;;
 
 export function createFactory(): IDeviceFactory {
   return DeviceFactory;
@@ -870,6 +887,18 @@ export default class DeviceFactory {
       case HuddlyHEX.S1_PID:
         device &#x3D; new See(devInstance, &lt;IGrpcTransport&gt;transport, cameraDiscoveryEmitter);
         break;
+      case HuddlyHEX.SMARTBASE_PID:
+        device &#x3D; new Smartbase(devInstance, &lt;IUsbTransport&gt;transport, cameraDiscoveryEmitter);
+        break;
+      case HuddlyHEX.SMARTBASE_S1_PID:
+        device &#x3D; new SmartbaseSee(devInstance, &lt;IUsbTransport&gt;transport, cameraDiscoveryEmitter);
+        break;
+      case HuddlyHEX.SMARTBASE_L1_PID:
+        device &#x3D; new SmartbaseAce(devInstance, &lt;IUsbTransport&gt;transport, cameraDiscoveryEmitter);
+        break;
+      case HuddlyHEX.SMARTBASE_CREW_PID:
+        device &#x3D; new Crew(devInstance, &lt;IUsbTransport&gt;transport, cameraDiscoveryEmitter);
+        break;
       default:
         throw new Error(&#x60;Unsupported Device. USB ProductId: ${productId}&#x60;);
     }
@@ -882,14 +911,15 @@ export default class DeviceFactory {
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -901,6 +931,15 @@ export default class DeviceFactory {
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -909,9 +948,9 @@ export default class DeviceFactory {
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

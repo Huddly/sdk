@@ -1,0 +1,1889 @@
+<!doctype html>
+<html class="no-js" lang="">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="x-ua-compatible" content="ie=edge">
+        <title>huddly-sdk</title>
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+
+        <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
+    </head>
+    <body>
+
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
+            <a href="../" class="navbar-brand">huddly-sdk</a>
+            <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
+        </div>
+
+        <div class="xs-menu menu" id="mobile-menu">
+            <compodoc-menu></compodoc-menu>
+        </div>
+
+        <div class="container-fluid main">
+           <div class="row main">
+               <div class="hidden-xs menu">
+                   <compodoc-menu mode="normal"></compodoc-menu>
+               </div>
+               <!-- START CONTENT -->
+               <div class="content class">
+                   <div class="content-data">
+
+
+
+
+
+
+
+
+
+
+
+
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >Smartbase</li>
+</ol>
+
+<ul class="nav nav-tabs" role="tablist">
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
+        </li>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
+        </li>
+</ul>
+
+<div class="tab-content">
+    <div class="tab-pane fade active in" id="info">
+        <p class="comment">
+            <h3>File</h3>
+        </p>
+        <p class="comment">
+            <code>src/components/device/smartbase.ts</code>
+        </p>
+
+
+
+
+            <p class="comment">
+                <h3>Implements</h3>
+            </p>
+            <p class="comment">
+                        <code>IDeviceManager</code>
+            </p>
+
+
+            <section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Properties</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#_api" >_api</a>
+                            </li>
+                            <li>
+                                <a href="#deviceInstance" >deviceInstance</a>
+                            </li>
+                            <li>
+                                <a href="#discoveryEmitter" >discoveryEmitter</a>
+                            </li>
+                            <li>
+                                <a href="#locksmith" >locksmith</a>
+                            </li>
+                            <li>
+                                <a href="#productName" >productName</a>
+                            </li>
+                            <li>
+                                <a href="#transport" >transport</a>
+                            </li>
+                            <li>
+                                <a href="#uvcControlInterface" >uvcControlInterface</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <h6><b>Methods</b></h6>
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <ul class="index-list">
+                            <li>
+                                <a href="#assignProductInfo" >assignProductInfo</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#closeConnection" >closeConnection</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#createAndRunUpgrade" >createAndRunUpgrade</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#eraseErrorLog" >eraseErrorLog</a>
+                            </li>
+                            <li>
+                                <a href="#getAutozoomControl" >getAutozoomControl</a>
+                            </li>
+                            <li>
+                                <a href="#getDetector" >getDetector</a>
+                            </li>
+                            <li>
+                                <a href="#getDiagnostics" >getDiagnostics</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getErrorLog" >getErrorLog</a>
+                            </li>
+                            <li>
+                                <a href="#getFaceBasedExposureControl" >getFaceBasedExposureControl</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#getInfo" >getInfo</a>
+                            </li>
+                            <li>
+                                <a href="#getLatestFirmwareUrl" >getLatestFirmwareUrl</a>
+                            </li>
+                            <li>
+                                <a href="#getPowerUsage" >getPowerUsage</a>
+                            </li>
+                            <li>
+                                <a href="#getState" >getState</a>
+                            </li>
+                            <li>
+                                <a href="#getTemperature" >getTemperature</a>
+                            </li>
+                            <li>
+                                <a href="#getUpgrader" >getUpgrader</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#initialize" >initialize</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#reboot" >reboot</a>
+                            </li>
+                            <li>
+                                <a href="#upgrade" >upgrade</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Async</span>
+                                <a href="#uptime" >uptime</a>
+                            </li>
+                        </ul>
+                    </td>
+                </tr>
+
+
+
+
+
+                    <tr>
+                        <td class="col-md-4">
+                            <h6><b>Accessors</b></h6>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td class="col-md-4">
+                            <ul class="index-list">
+                                <li>
+                                    <a href="#api" >api</a>
+                                </li>
+                            </ul>
+                        </td>
+                    </tr>
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-constructor">
+    <h3 id="constructor">Constructor</h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+<code>constructor(deviceInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, transport: IUsbTransport, cameraDiscoveryEmitter: EventEmitter)</code>
+                    </td>
+                </tr>
+                        <tr>
+                            <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/components/device/smartbase.ts:34</a></div>
+                            </td>
+                        </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                            <div class="io-description"><p>Creates an instance of Smartbase.</p>
+</div>
+                            <div>
+                                    <b>Parameters :</b>
+                                    <table class="params">
+                                        <thead>
+                                            <tr>
+                                                <td>Name</td>
+                                                    <td>Type</td>
+                                                <td>Optional</td>
+                                                    <td>Description</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                                <tr>
+                                                        <td>deviceInstance</td>
+                                                  
+                                                        <td>
+                                                                        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>transport</td>
+                                                  
+                                                        <td>
+                                                                    <code>IUsbTransport</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>The transport instance for communicating with the camera.</p>
+
+                                                        </td>
+                                                </tr>
+                                                <tr>
+                                                        <td>cameraDiscoveryEmitter</td>
+                                                  
+                                                        <td>
+                                                                    <code>EventEmitter</code>
+                                                        </td>
+                                                  
+                                                    <td>
+                                                            No
+                                                    </td>
+                                                    
+                                                        <td>
+                                                                <p>Emitter instance sending attach &amp; detach events for Huddly cameras.</p>
+
+                                                        </td>
+                                                </tr>
+                                        </tbody>
+                                    </table>
+                            </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+</section>
+
+            <section data-compodoc="block-properties">
+    
+    <h3 id="inputs">
+        Properties
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="_api"></a>
+                    <span class="name">
+                        <span ><b>_api</b></span>
+                        <a href="#_api"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Api</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="27" class="link-to-prism">src/components/device/smartbase.ts:27</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="deviceInstance"></a>
+                    <span class="name">
+                        <span ><b>deviceInstance</b></span>
+                        <a href="#deviceInstance"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="24" class="link-to-prism">src/components/device/smartbase.ts:24</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="discoveryEmitter"></a>
+                    <span class="name">
+                        <span ><b>discoveryEmitter</b></span>
+                        <a href="#discoveryEmitter"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>EventEmitter</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="34" class="link-to-prism">src/components/device/smartbase.ts:34</a></div>
+                        </td>
+                    </tr>
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Event emitter instance emitting attach and detach events for Huddly Cameras.</p>
+</div>
+                </td>
+            </tr>
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="locksmith"></a>
+                    <span class="name">
+                        <span ><b>locksmith</b></span>
+                        <a href="#locksmith"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>Locksmith</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="23" class="link-to-prism">src/components/device/smartbase.ts:23</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="productName"></a>
+                    <span class="name">
+                        <span ><b>productName</b></span>
+                        <a href="#productName"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;Huddly Smartbase&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="26" class="link-to-prism">src/components/device/smartbase.ts:26</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="transport"></a>
+                    <span class="name">
+                        <span ><b>transport</b></span>
+                        <a href="#transport"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>IUsbTransport</code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="22" class="link-to-prism">src/components/device/smartbase.ts:22</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="uvcControlInterface"></a>
+                    <span class="name">
+                        <span ><b>uvcControlInterface</b></span>
+                        <a href="#uvcControlInterface"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >any</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="25" class="link-to-prism">src/components/device/smartbase.ts:25</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+</section>
+
+            <section data-compodoc="block-methods">
+    
+    <h3 id="methods">
+        Methods
+    </h3>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="assignProductInfo"></a>
+                    <span class="name">
+                        <span ><b>assignProductInfo</b></span>
+                        <a href="#assignProductInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>assignProductInfo()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="51"
+                            class="link-to-prism">src/components/device/smartbase.ts:51</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="closeConnection"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>closeConnection</b></span>
+                        <a href="#closeConnection"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>closeConnection()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="77"
+                            class="link-to-prism">src/components/device/smartbase.ts:77</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="createAndRunUpgrade"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>createAndRunUpgrade</b></span>
+                        <a href="#createAndRunUpgrade"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>createAndRunUpgrade(opts: UpgradeOpts, deviceManager: IDeviceManager, createNewUpgrader: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank">boolean</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="163"
+                            class="link-to-prism">src/components/device/smartbase.ts:163</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                            <code>UpgradeOpts</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>deviceManager</td>
+                                    <td>
+                                            <code>IDeviceManager</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                                <tr>
+                                    <td>createNewUpgrader</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/boolean" target="_blank" >boolean</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="eraseErrorLog"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>eraseErrorLog</b></span>
+                        <a href="#eraseErrorLog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>eraseErrorLog(timeout: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="115"
+                            class="link-to-prism">src/components/device/smartbase.ts:115</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>timeout</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>60000</code>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getAutozoomControl"></a>
+                    <span class="name">
+                        <span ><b>getAutozoomControl</b></span>
+                        <a href="#getAutozoomControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getAutozoomControl(opts: <a href="../classes/AutozoomControl.html" target="_self">AutozoomControlOpts</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="198"
+                            class="link-to-prism">src/components/device/smartbase.ts:198</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                                <code><a href="../classes/AutozoomControl.html" target="_self" >AutozoomControlOpts</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>ICnnControl</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDetector"></a>
+                    <span class="name">
+                        <span ><b>getDetector</b></span>
+                        <a href="#getDetector"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDetector(opts?: <a href="../classes/Detector.html" target="_self">DetectorOpts</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="206"
+                            class="link-to-prism">src/components/device/smartbase.ts:206</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                                <code><a href="../classes/Detector.html" target="_self" >DetectorOpts</a></code>
+                                    </td>
+
+                                    <td>
+                                        Yes
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="../classes/Detector.html" target="_self" >IDetector</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getDiagnostics"></a>
+                    <span class="name">
+                        <span ><b>getDiagnostics</b></span>
+                        <a href="#getDiagnostics"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getDiagnostics()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="210"
+                            class="link-to-prism">src/components/device/smartbase.ts:210</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;DiagnosticsMessage[]&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getErrorLog"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getErrorLog</b></span>
+                        <a href="#getErrorLog"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getErrorLog(timeout: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>, retry: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="111"
+                            class="link-to-prism">src/components/device/smartbase.ts:111</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Get application log.</p>
+</div>
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                    <td>Description</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>timeout</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>60000</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Maximum allowed time (in milliseconds) for fetching the log.</p>
+
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td>retry</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>1</code>
+                                    </td>
+
+                                    <td>
+                                        <p>Number of retries to perform in case something goes wrong.</p>
+
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<any>} A promise which when completed contains the camera application log.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getFaceBasedExposureControl"></a>
+                    <span class="name">
+                        <span ><b>getFaceBasedExposureControl</b></span>
+                        <a href="#getFaceBasedExposureControl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getFaceBasedExposureControl()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="202"
+                            class="link-to-prism">src/components/device/smartbase.ts:202</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>ICnnControl</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getInfo"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>getInfo</b></span>
+                        <a href="#getInfo"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>getInfo()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="81"
+                            class="link-to-prism">src/components/device/smartbase.ts:81</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getLatestFirmwareUrl"></a>
+                    <span class="name">
+                        <span ><b>getLatestFirmwareUrl</b></span>
+                        <a href="#getLatestFirmwareUrl"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getLatestFirmwareUrl(releaseChannel: ReleaseChannel)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="226"
+                            class="link-to-prism">src/components/device/smartbase.ts:226</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>releaseChannel</td>
+                                    <td>
+                                            <code>ReleaseChannel</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>        <code><a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank" >void</a></code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getPowerUsage"></a>
+                    <span class="name">
+                        <span ><b>getPowerUsage</b></span>
+                        <a href="#getPowerUsage"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getPowerUsage()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="218"
+                            class="link-to-prism">src/components/device/smartbase.ts:218</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getState"></a>
+                    <span class="name">
+                        <span ><b>getState</b></span>
+                        <a href="#getState"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getState()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="214"
+                            class="link-to-prism">src/components/device/smartbase.ts:214</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getTemperature"></a>
+                    <span class="name">
+                        <span ><b>getTemperature</b></span>
+                        <a href="#getTemperature"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getTemperature()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="222"
+                            class="link-to-prism">src/components/device/smartbase.ts:222</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="getUpgrader"></a>
+                    <span class="name">
+                        <span ><b>getUpgrader</b></span>
+                        <a href="#getUpgrader"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>getUpgrader()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="130"
+                            class="link-to-prism">src/components/device/smartbase.ts:130</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;IDeviceUpgrader&gt;</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="initialize"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>initialize</b></span>
+                        <a href="#initialize"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>initialize()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="67"
+                            class="link-to-prism">src/components/device/smartbase.ts:67</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-description"><p>Initializes the controller class. Must be called before any other commands.</p>
+</div>
+
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        <p>{Promise<void>} Void function. Use <code>await</code> when calling this method.</p>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="reboot"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>reboot</b></span>
+                        <a href="#reboot"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>reboot(mode: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="119"
+                            class="link-to-prism">src/components/device/smartbase.ts:119</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                    <td>Default value</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>mode</td>
+                                    <td>
+                                                <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+                                    <td>
+                                        <code>&#x27;app&#x27;</code>
+                                    </td>
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;void&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="upgrade"></a>
+                    <span class="name">
+                        <span ><b>upgrade</b></span>
+                        <a href="#upgrade"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+<code>upgrade(opts: UpgradeOpts)</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="138"
+                            class="link-to-prism">src/components/device/smartbase.ts:138</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Parameters :</b>
+                        
+                        <table class="params">
+                            <thead>
+                                <tr>
+                                    <td>Name</td>
+                                    <td>Type</td>
+                                    <td>Optional</td>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>opts</td>
+                                    <td>
+                                            <code>UpgradeOpts</code>
+                                    </td>
+
+                                    <td>
+                                        No
+                                    </td>
+
+
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <div>
+                    </div>
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>Promise&lt;any&gt;</code>
+
+                    </div>
+                    <div class="io-description">
+                        
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="uptime"></a>
+                    <span class="name">
+                        <span class="modifier">Async</span>
+                        <span ><b>uptime</b></span>
+                        <a href="#uptime"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <span class="modifier-icon icon ion-ios-reset"></span>
+                    <code>uptime()</code>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+                    <div class="io-line">Defined in <a href="" data-line="134"
+                            class="link-to-prism">src/components/device/smartbase.ts:134</a></div>
+                </td>
+            </tr>
+
+
+            <tr>
+                <td class="col-md-4">
+
+                    <div class="io-description">
+                        <b>Returns : </b>    <code>unknown</code>
+
+                    </div>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
+
+
+
+
+
+            <section data-compodoc="block-accessors">
+    <h3 id="accessors">
+        Accessors
+    </h3>
+        <table class="table table-sm table-bordered">
+            <tbody>
+                <tr>
+                    <td class="col-md-4">
+                        <a name="api"></a>
+                        <span class="name"><b>api</b><a href="#api"><span class="icon ion-ios-link"></span></a></span>
+                    </td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-4">
+                        <span class="accessor"><b>get</b><code>api()</code></span>
+                    </td>
+                </tr>
+                            <tr>
+                                <td class="col-md-4">
+                                    <div class="io-line">Defined in <a href="" data-line="57" class="link-to-prism">src/components/device/smartbase.ts:57</a></div>
+                                </td>
+                            </tr>
+
+            </tbody>
+        </table>
+</section>
+    </div>
+
+
+    <div class="tab-pane fade  tab-source-code" id="source">
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import DiagnosticsMessage from &#x27;@huddly/sdk-interfaces/lib/abstract_classes/DiagnosticsMessage&#x27;;
+import ReleaseChannel from &#x27;@huddly/sdk-interfaces/lib/enums/ReleaseChannel&#x27;;
+import AutozoomControlOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts&#x27;;
+import ICnnControl from &#x27;@huddly/sdk-interfaces/lib/interfaces/ICnnControl&#x27;;
+import IDetector from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetector&#x27;;
+import DetectorOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts&#x27;;
+import IDeviceManager from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceManager&#x27;;
+import IDeviceUpgrader from &#x27;@huddly/sdk-interfaces/lib/interfaces/IDeviceUpgrader&#x27;;
+import UpgradeOpts from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUpgradeOpts&#x27;;
+import { createBoxfishUpgrader } from &#x27;../upgrader/boxfishUpgraderFactory&#x27;;
+import CameraEvents from &#x27;../../utilitis/events&#x27;;
+import Logger from &#x27;@huddly/sdk-interfaces/lib/statics/Logger&#x27;;
+import EventEmitter from &#x27;events&#x27;;
+import IUsbTransport from &#x27;@huddly/sdk-interfaces/lib/interfaces/IUsbTransport&#x27;;
+import Api from &#x27;../api&#x27;;
+import Locksmith from &#x27;../locksmith&#x27;;
+import HuddlyHEX from &#x27;@huddly/sdk-interfaces/lib/enums/HuddlyHex&#x27;;
+
+const MAX_UPGRADE_ATTEMPT &#x3D; 3;
+
+export default class Smartbase implements IDeviceManager {
+  transport: IUsbTransport;
+  locksmith: Locksmith;
+  deviceInstance: any;
+  uvcControlInterface: any;
+  productName: string &#x3D; &#x27;Huddly Smartbase&#x27;;
+  _api: Api;
+  /**
+   * Event emitter instance emitting attach and detach events for Huddly Cameras.
+   *
+   * @type {EventEmitter}
+   * @memberof Smartbase
+   */
+  discoveryEmitter: EventEmitter;
+
+  /**
+   * Creates an instance of Smartbase.
+   * @param {IUsbTransport} transport The transport instance for communicating with the camera.
+   * @param {EventEmitter} cameraDiscoveryEmitter Emitter instance sending attach &amp; detach events for Huddly cameras.
+   * @memberof Smartbase
+   */
+  constructor(deviceInstance: any, transport: IUsbTransport, cameraDiscoveryEmitter: EventEmitter) {
+    this.transport &#x3D; transport;
+    this.locksmith &#x3D; new Locksmith();
+    this.discoveryEmitter &#x3D; cameraDiscoveryEmitter;
+    this.deviceInstance &#x3D; deviceInstance;
+    this.uvcControlInterface &#x3D; {};
+    this.assignProductInfo();
+  }
+
+  assignProductInfo() {
+    this[&#x27;id&#x27;] &#x3D; this.deviceInstance[&#x27;id&#x27;];
+    this[&#x27;serialNumber&#x27;] &#x3D; this.deviceInstance[&#x27;serialNumber&#x27;];
+    this[&#x27;productId&#x27;] &#x3D; this.deviceInstance[&#x27;productId&#x27;];
+  }
+
+  get api(): Api {
+    return this._api;
+  }
+
+  /**
+   * Initializes the controller class. Must be called before any other commands.
+   *
+   * @return {*}  {Promise&lt;void&gt;} Void function. Use &#x60;await&#x60; when calling this method.
+   * @memberof Boxfish
+   */
+  async initialize(): Promise&lt;void&gt; {
+    this._api &#x3D; new Api(this.transport, this.locksmith);
+    this.transport.init();
+    try {
+      this.transport.initEventLoop();
+    } catch (e) {
+      Logger.error(&#x27;Failed to init event loop when transport reset&#x27;, e, &#x27;Smartbase API&#x27;);
+    }
+  }
+
+  async closeConnection(): Promise&lt;any&gt; {
+    return this.transport.close();
+  }
+
+  async getInfo(): Promise&lt;any&gt; {
+    const info &#x3D; await this.api.getCameraInfo();
+    const status &#x3D; {
+      id: this[&#x27;id&#x27;],
+      serialNumber: this[&#x27;serialNumber&#x27;],
+      vendorId: this[&#x27;vendorId&#x27;] || HuddlyHEX.VID,
+      productId: this[&#x27;productId&#x27;],
+      version: this.extractSemanticSoftwareVersion(info.softwareVersion),
+      location: this[&#x27;location&#x27;],
+      name: this.productName,
+      ...info,
+    };
+    if (this[&#x27;pathName&#x27;] !&#x3D;&#x3D; undefined) {
+      status.pathName &#x3D; this[&#x27;pathName&#x27;];
+    }
+    return status;
+  }
+  /** @ignore */
+  extractSemanticSoftwareVersion(appVer: string) {
+    return appVer.replace(/\D+-/, &#x27;&#x27;);
+  }
+
+  /**
+   * Get application log.
+   *
+   * @param {number} [timeout&#x3D;60000] Maximum allowed time (in milliseconds) for fetching the log.
+   * @param {number} [retry&#x3D;1] Number of retries to perform in case something goes wrong.
+   * @return {*}  {Promise&lt;any&gt;} A promise which when completed contains the camera application log.
+   * @memberof Smartbase
+   */
+  async getErrorLog(timeout: number &#x3D; 60000, retry: number &#x3D; 1): Promise&lt;any&gt; {
+    return this.api.getErrorLog(timeout, retry);
+  }
+
+  async eraseErrorLog(timeout: number &#x3D; 60000): Promise&lt;void&gt; {
+    await this.api.eraseErrorLog(timeout);
+  }
+
+  async reboot(mode: string &#x3D; &#x27;app&#x27;): Promise&lt;void&gt; {
+    await this.locksmith.executeAsyncFunction(async () &#x3D;&gt; {
+      await this.transport.clear();
+      if (mode &#x3D;&#x3D;&#x3D; &#x27;mvusb&#x27;) {
+        this.transport.write(&#x27;upgrader/mv_usb&#x27;, Api.encode({}));
+      } else {
+        await this.transport.write(&#x27;camctrl/reboot&#x27;);
+      }
+    });
+  }
+
+  getUpgrader(): Promise&lt;IDeviceUpgrader&gt; {
+    return createBoxfishUpgrader(this, this.discoveryEmitter);
+  }
+
+  async uptime() {
+    return this.api.getUptime();
+  }
+
+  upgrade(opts: UpgradeOpts): Promise&lt;any&gt; {
+    let upgradeAttempts &#x3D; 0;
+    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+      const tryRunAgainOnFailure &#x3D; async (deviceManager: IDeviceManager) &#x3D;&gt; {
+        try {
+          await this.createAndRunUpgrade(opts, deviceManager, upgradeAttempts &gt; 0);
+          resolve();
+        } catch (e) {
+          if (e.runAgain &amp;&amp; upgradeAttempts &lt; MAX_UPGRADE_ATTEMPT) {
+            upgradeAttempts +&#x3D; 1;
+            Logger.warn(
+              &#x60;Upgrade failure! Retrying upgrade process nr ${upgradeAttempts}&#x60;,
+              &#x27;Smartbase API&#x27;
+            );
+            tryRunAgainOnFailure(e.deviceManager);
+          } else {
+            Logger.error(&#x27;Failed performing a camera upgrade&#x27;, e, &#x27;Smartbase API&#x27;);
+            reject(e);
+          }
+        }
+      };
+      tryRunAgainOnFailure(this);
+    });
+  }
+
+  async createAndRunUpgrade(
+    opts: UpgradeOpts,
+    deviceManager: IDeviceManager,
+    createNewUpgrader: boolean
+  ) {
+    let upgrader: IDeviceUpgrader &#x3D; opts.upgrader;
+    if (!upgrader || createNewUpgrader) {
+      upgrader &#x3D; await createBoxfishUpgrader(deviceManager, this.discoveryEmitter);
+    }
+    upgrader.init(opts);
+    upgrader.start();
+    return new Promise&lt;void&gt;((resolve, reject) &#x3D;&gt; {
+      upgrader.once(CameraEvents.UPGRADE_COMPLETE, async (deviceManager) &#x3D;&gt; {
+        const upgradeIsOk &#x3D; await upgrader.upgradeIsValid();
+        if (upgradeIsOk) {
+          resolve();
+        } else {
+          reject({
+            message: &#x27;Upgrade status is not ok, run again&#x27;,
+            runAgain: true,
+            deviceManager,
+          });
+        }
+      });
+      upgrader.once(CameraEvents.UPGRADE_FAILED, (reason) &#x3D;&gt; {
+        Logger.error(&#x27;Upgrade Failed&#x27;, reason, &#x27;Boxfish API&#x27;);
+        reject(reason);
+      });
+      upgrader.once(CameraEvents.TIMEOUT, (reason) &#x3D;&gt; {
+        Logger.error(&#x27;Upgrader returned a timeout event&#x27;, reason, &#x27;Boxfish API&#x27;);
+        reject(reason);
+      });
+    });
+  }
+
+  getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+
+  getFaceBasedExposureControl(): ICnnControl {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+
+  getDetector(opts?: DetectorOpts): IDetector {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+
+  getDiagnostics(): Promise&lt;DiagnosticsMessage[]&gt; {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+
+  getState(): Promise&lt;any&gt; {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+
+  getPowerUsage(): Promise&lt;any&gt; {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+
+  getTemperature(): Promise&lt;any&gt; {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+
+  getLatestFirmwareUrl(releaseChannel: ReleaseChannel) {
+    throw new Error(&#x27;Not supported for Smartbase.&#x27;);
+  }
+}
+</code></pre>
+    </div>
+</div>
+
+
+
+
+
+
+
+
+
+                   </div><div class="search-results">
+    <div class="has-results">
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
+        <ul class="search-results-list"></ul>
+    </div>
+    <div class="no-results">
+        <h1 class="search-results-title">No results matching "<span class='search-query'></span>"</h1>
+    </div>
+</div>
+</div>
+               <!-- END CONTENT -->
+           </div>
+       </div>
+
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
+       <script>
+            var COMPODOC_CURRENT_PAGE_DEPTH = 1;
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
+            var COMPODOC_CURRENT_PAGE_URL = 'Smartbase.html';
+       </script>
+
+       <script src="../js/libs/custom-elements.min.js"></script>
+       <script src="../js/libs/lit-html.js"></script>
+
+       <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
+
+       <script src="../js/libs/bootstrap-native.js"></script>
+
+       <script src="../js/libs/es6-shim.min.js"></script>
+       <script src="../js/libs/EventDispatcher.js"></script>
+       <script src="../js/libs/promise.min.js"></script>
+       <script src="../js/libs/zepto.min.js"></script>
+
+       <script src="../js/compodoc.js"></script>
+
+       <script src="../js/tabs.js"></script>
+       <script src="../js/menu.js"></script>
+       <script src="../js/libs/clipboard.min.js"></script>
+       <script src="../js/libs/prism.js"></script>
+       <script src="../js/sourceCode.js"></script>
+       <script src="../js/lazy-load-graphs.js"></script>
+
+
+    </body>
+</html>

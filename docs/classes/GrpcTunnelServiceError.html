@@ -44,7 +44,7 @@
 
 <ol class="breadcrumb">
   <li class="breadcrumb-item">Classes</li>
-  <li class="breadcrumb-item" >AttachError</li>
+  <li class="breadcrumb-item" >GrpcTunnelServiceError</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
@@ -68,25 +68,19 @@
             <h3>File</h3>
         </p>
         <p class="comment">
-            <code>src/error/AttachError.ts</code>
+            <code>src/error/GrpcTunnelServiceError.ts</code>
         </p>
 
 
-            <p class="comment">
-                <h3>Description</h3>
-            </p>
-            <p class="comment">
-                <p>Error/Exception class used for reporting problems during device attach/discovery.</p>
 
-            </p>
 
             <p class="comment">
-                <h3>Extends</h3>
+                <h3>Implements</h3>
             </p>
             <p class="comment">
-                    <code>Error</code>
+                        <code></code>
+                        <code>Error</code>
             </p>
-
 
 
             <section data-compodoc="block-index">
@@ -103,6 +97,22 @@
                         <ul class="index-list">
                             <li>
                                 <a href="#code" >code</a>
+                            </li>
+                            <li>
+                                <a href="#details" >details</a>
+                            </li>
+                            <li>
+                                <a href="#message" >message</a>
+                            </li>
+                            <li>
+                                <a href="#metadata" >metadata</a>
+                            </li>
+                            <li>
+                                <a href="#name" >name</a>
+                            </li>
+                            <li>
+                                    <span class="modifier">Optional</span>
+                                <a href="#stack" >stack</a>
                             </li>
                         </ul>
                     </td>
@@ -123,12 +133,12 @@
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, code: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank">Number</a>)</code>
+<code>constructor(message: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank">string</a>, code: <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank">number</a>)</code>
                     </td>
                 </tr>
                         <tr>
                             <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/error/AttachError.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/error/GrpcTunnelServiceError.ts:9</a></div>
                             </td>
                         </tr>
 
@@ -161,7 +171,7 @@
                                                         <td>code</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" >Number</a></code>
+                                                                        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/number" target="_blank" >number</a></code>
                                                         </td>
                                                   
                                                     <td>
@@ -196,13 +206,154 @@
             </tr>
                 <tr>
                     <td class="col-md-4">
-                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Number" target="_blank" >Number</a></code>
+                        <i>Type : </i>    <code>grpc.status | number</code>
 
                     </td>
                 </tr>
                     <tr>
                         <td class="col-md-4">
-                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/error/AttachError.ts:9</a></div>
+                                <div class="io-line">Defined in <a href="" data-line="7" class="link-to-prism">src/error/GrpcTunnelServiceError.ts:7</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="details"></a>
+                    <span class="name">
+                        <span ><b>details</b></span>
+                        <a href="#details"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>&#x27;&#x27;</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="8" class="link-to-prism">src/error/GrpcTunnelServiceError.ts:8</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="message"></a>
+                    <span class="name">
+                        <span ><b>message</b></span>
+                        <a href="#message"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="5" class="link-to-prism">src/error/GrpcTunnelServiceError.ts:5</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="metadata"></a>
+                    <span class="name">
+                        <span ><b>metadata</b></span>
+                        <a href="#metadata"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>    <code>grpc.Metadata</code>
+
+                    </td>
+                </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Default value : </i><code>new grpc.Metadata()</code>
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="9" class="link-to-prism">src/error/GrpcTunnelServiceError.ts:9</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="name"></a>
+                    <span class="name">
+                        <span ><b>name</b></span>
+                        <a href="#name"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="4" class="link-to-prism">src/error/GrpcTunnelServiceError.ts:4</a></div>
+                        </td>
+                    </tr>
+
+
+        </tbody>
+    </table>
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="stack"></a>
+                    <span class="name">
+                            <span class="modifier">Optional</span>
+                        <span ><b>stack</b></span>
+                        <a href="#stack"><span class="icon ion-ios-link"></span></a>
+                    </span>
+                </td>
+            </tr>
+                <tr>
+                    <td class="col-md-4">
+                        <i>Type : </i>        <code><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/string" target="_blank" >string</a></code>
+
+                    </td>
+                </tr>
+                    <tr>
+                        <td class="col-md-4">
+                                <div class="io-line">Defined in <a href="" data-line="6" class="link-to-prism">src/error/GrpcTunnelServiceError.ts:6</a></div>
                         </td>
                     </tr>
 
@@ -221,11 +372,40 @@
 
 
     <div class="tab-pane fade  tab-source-code" id="source">
-        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">export default class AttachError extends Error {
-  code: Number;
-  constructor(message: string, code: Number) {
-    super(message);
+        <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import * as grpc from &#x27;@grpc/grpc-js&#x27;;
+
+export default class GrpcTunnelServiceError implements grpc.StatusObject, Error {
+  name: string;
+  message: string;
+  stack?: string;
+  code: grpc.status | number;
+  details: string &#x3D; &#x27;&#x27;;
+  metadata: grpc.Metadata &#x3D; new grpc.Metadata();
+
+  constructor(message: string, code: number) {
+    this.name &#x3D; {
+      1: &#x27;CANCELLED&#x27;,
+      2: &#x27;UNKNOWN&#x27;,
+      3: &#x27;INVALID_ARGUMENT&#x27;,
+      4: &#x27;DEADLINE_EXCEEDED&#x27;,
+      5: &#x27;NOT_FOUND&#x27;,
+      6: &#x27;ALREADY_EXISTS&#x27;,
+      7: &#x27;PERMISSION_DENIED&#x27;,
+      8: &#x27;RESOURCE_EXHAUSTED&#x27;,
+      9: &#x27;FAILED_PRECONDITION&#x27;,
+      10: &#x27;ABORTED&#x27;,
+      11: &#x27;OUT_OF_RANGE&#x27;,
+      12: &#x27;UNIMPLEMENTED&#x27;,
+      13: &#x27;INTERNAL&#x27;,
+      14: &#x27;UNAVAILABLE&#x27;,
+      15: &#x27;DATA_LOSS&#x27;,
+      16: &#x27;UNAUTHENTICATED&#x27;,
+      100: &#x27;GRPC_STATUS_CALL_FAILED&#x27;,
+      101: &#x27;GRPC_STATUS_NO_CAMERA&#x27;,
+    }[code];
+
     this.code &#x3D; code;
+    this.message &#x3D; message;
   }
 }
 </code></pre>
@@ -266,7 +446,7 @@
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
-            var COMPODOC_CURRENT_PAGE_URL = 'AttachError.html';
+            var COMPODOC_CURRENT_PAGE_URL = 'GrpcTunnelServiceError.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>

@@ -8,11 +8,12 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
 
         <link rel="icon" type="image/x-icon" href="../images/favicon.ico">
-	      <link rel="stylesheet" href="../styles/style.css">
+	   <link rel="stylesheet" href="../styles/style.css">
+        <link rel="stylesheet" href="../styles/dark.css">
     </head>
     <body>
 
-        <div class="navbar navbar-default navbar-fixed-top visible-xs">
+        <div class="navbar navbar-default navbar-fixed-top d-block d-sm-none">
             <a href="../" class="navbar-brand">huddly-sdk</a>
             <button type="button" class="btn btn-default btn-menu ion-ios-menu" id="btn-menu"></button>
         </div>
@@ -40,28 +41,36 @@
 
 
 
+
 <ol class="breadcrumb">
-  <li>Classes</li>
-  <li>HuddlyGoUpgrader</li>
+  <li class="breadcrumb-item">Classes</li>
+  <li class="breadcrumb-item" >HuddlyGoUpgrader</li>
 </ol>
 
 <ul class="nav nav-tabs" role="tablist">
-        <li class="active">
-            <a href="#info" role="tab" id="info-tab" data-toggle="tab" data-link="info">Info</a>
+        <li class="nav-item">
+            <a href="#info" 
+                class="nav-link"
+                class="nav-link active"
+                role="tab" id="info-tab" data-bs-toggle="tab" data-link="info">Info</a>
         </li>
-        <li >
-            <a href="#source" role="tab" id="source-tab" data-toggle="tab" data-link="source">Source</a>
+        <li class="nav-item">
+            <a href="#source" 
+                class="nav-link"
+                
+                role="tab" id="source-tab" data-bs-toggle="tab" data-link="source">Source</a>
         </li>
 </ul>
 
 <div class="tab-content">
-    <div class="tab-pane fade active in" id="c-info">
+    <div class="tab-pane fade active in" id="info">
         <p class="comment">
             <h3>File</h3>
         </p>
         <p class="comment">
             <code>src/components/upgrader/huddlygoUpgrader.ts</code>
         </p>
+
 
             <p class="comment">
                 <h3>Description</h3>
@@ -75,7 +84,7 @@
                 <h3>Extends</h3>
             </p>
             <p class="comment">
-                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                    <code>EventEmitter</code>
             </p>
 
             <p class="comment">
@@ -85,13 +94,8 @@
                         <code>IDeviceUpgrader</code>
             </p>
 
-            <p class="comment">
-                <h3>Example</h3>
-            </p>
-            <div class="io-description">
-            </div>
 
-            <section>
+            <section data-compodoc="block-index">
     <h3 id="index">Index</h3>
     <table class="table table-sm table-bordered index-table">
         <tbody>
@@ -105,19 +109,19 @@
                     <td class="col-md-4">
                         <ul class="index-list">
                             <li>
-                                <a href="#init">init</a>
+                                <a href="#init" >init</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#postUpgrade">postUpgrade</a>
+                                <a href="#postUpgrade" >postUpgrade</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#start">start</a>
+                                <a href="#start" >start</a>
                             </li>
                             <li>
                                     <span class="modifier">Async</span>
-                                <a href="#upgradeIsValid">upgradeIsValid</a>
+                                <a href="#upgradeIsValid" >upgradeIsValid</a>
                             </li>
                         </ul>
                     </td>
@@ -131,13 +135,13 @@
     </table>
 </section>
 
-            <section>
+            <section data-compodoc="block-constructor">
     <h3 id="constructor">Constructor</h3>
         <table class="table table-sm table-bordered">
             <tbody>
                 <tr>
                     <td class="col-md-4">
-<code>constructor(devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscovery: <a href="https://angular.io/api/core/EventEmitter" target="_blank">EventEmitter</a>, hidAPI: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
+<code>constructor(devInstance: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>, cameraDiscovery: EventEmitter, hidAPI: <a href="https://www.typescriptlang.org/docs/handbook/basic-types.html" target="_blank">any</a>)</code>
                     </td>
                 </tr>
                         <tr>
@@ -175,7 +179,7 @@
                                                         <td>cameraDiscovery</td>
                                                   
                                                         <td>
-                                                                        <code><a href="https://angular.io/api/core/EventEmitter" target="_blank" >EventEmitter</a></code>
+                                                                    <code>EventEmitter</code>
                                                         </td>
                                                   
                                                     <td>
@@ -205,7 +209,7 @@
 </section>
 
 
-            <section>
+            <section data-compodoc="block-methods">
     
     <h3 id="methods">
         Methods
@@ -216,9 +220,7 @@
                 <td class="col-md-4">
                     <a name="init"></a>
                     <span class="name">
-                        <b>
-                            init
-                        </b>
+                        <span ><b>init</b></span>
                         <a href="#init"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -245,6 +247,7 @@
 
                     <div class="io-description">
                         <b>Parameters :</b>
+                        
                         <table class="params">
                             <thead>
                                 <tr>
@@ -293,10 +296,8 @@
                 <td class="col-md-4">
                     <a name="postUpgrade"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            postUpgrade
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>postUpgrade</b></span>
                         <a href="#postUpgrade"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -334,10 +335,8 @@
                 <td class="col-md-4">
                     <a name="start"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            start
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>start</b></span>
                         <a href="#start"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -384,10 +383,8 @@ using events.</p>
                 <td class="col-md-4">
                     <a name="upgradeIsValid"></a>
                     <span class="name">
-                        <b>
-                            <span class="modifier">Async</span>
-                            upgradeIsValid
-                        </b>
+                        <span class="modifier">Async</span>
+                        <span ><b>upgradeIsValid</b></span>
                         <a href="#upgradeIsValid"><span class="icon ion-ios-link"></span></a>
                     </span>
                 </td>
@@ -428,7 +425,7 @@ using events.</p>
     </div>
 
 
-    <div class="tab-pane fade  tab-source-code" id="c-source">
+    <div class="tab-pane fade  tab-source-code" id="source">
         <pre class="line-numbers compodoc-sourcecode"><code class="language-typescript">import { EventEmitter } from &#x27;events&#x27;;
 import JSZip from &#x27;jszip&#x27;;
 
@@ -614,14 +611,15 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
 
 
 
-                   
+
+
 
 
 
 
                    </div><div class="search-results">
     <div class="has-results">
-        <h1 class="search-results-title"><span class='search-results-count'></span> result-matching "<span class='search-query'></span>"</h1>
+        <h1 class="search-results-title"><span class='search-results-count'></span> results matching "<span class='search-query'></span>"</h1>
         <ul class="search-results-list"></ul>
     </div>
     <div class="no-results">
@@ -633,6 +631,15 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
            </div>
        </div>
 
+          <label class="dark-mode-switch">
+               <input type="checkbox">
+               <span class="slider">
+                    <svg class="slider-icon" viewBox="0 0 24 24" fill="none" height="20" stroke="#000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" width="20" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79z"></path>
+                    </svg>
+               </span>
+          </label>
+
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
             var COMPODOC_CURRENT_PAGE_CONTEXT = 'class';
@@ -641,9 +648,9 @@ export default class HuddlyGoUpgrader extends EventEmitter implements IDeviceUpg
 
        <script src="../js/libs/custom-elements.min.js"></script>
        <script src="../js/libs/lit-html.js"></script>
-       <!-- Required to polyfill modern browsers as code is ES5 for IE... -->
-       <script src="../js/libs/custom-elements-es5-adapter.js" charset="utf-8" defer></script>
+
        <script src="../js/menu-wc.js" defer></script>
+       <script nomodule src="../js/menu-wc_es5.js" defer></script>
 
        <script src="../js/libs/bootstrap-native.js"></script>
 

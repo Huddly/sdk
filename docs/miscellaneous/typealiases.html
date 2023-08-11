@@ -28,7 +28,7 @@
                    <compodoc-menu mode="normal"></compodoc-menu>
                </div>
                <!-- START CONTENT -->
-               <div class="content additional-page">
+               <div class="content miscellaneous-typealiases">
                    <div class="content-data">
 
 
@@ -48,64 +48,48 @@
 
 
 
+<ol class="breadcrumb">
+  <li class="breadcrumb-item">Miscellaneous</li>
+  <li class="breadcrumb-item">Type aliases</li>
+</ol>
 
+<section data-compodoc="block-index">
+    <h3 id="index">Index</h3>
+    <table class="table table-sm table-bordered index-table">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <ul class="index-list">
+                        <li>
+                            <a href="#NormalRPCResponse" title="src/components/device/huddlyGrpcTunnelClient.ts" ><b>NormalRPCResponse</b>&nbsp;&nbsp;&nbsp;(src/.../huddlyGrpcTunnelClient.ts)</a>
+                        </li>
+                    </ul>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
 
+    <h3>src/components/device/huddlyGrpcTunnelClient.ts</h3>
+    <section data-compodoc="block-typealias">
+    <table class="table table-sm table-bordered">
+        <tbody>
+            <tr>
+                <td class="col-md-4">
+                    <a name="NormalRPCResponse"></a>
+                    <span class="name "><b>NormalRPCResponse</b><a href="#NormalRPCResponse"><span class="icon ion-ios-link"></span></a></span>
+                </td>
+            </tr>
+            <tr>
+                <td class="col-md-4">
+                    <code>    <code>literal type</code>
+</code>
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</section>
 
-<h1>Detector</h1>
-<h2>Current detector</h2>
-<ul>
-<li><strong>Name</strong>: az_v20</li>
-<li><strong>Released</strong>: 20. Aug 2019</li>
-</ul>
-<h2>Changes</h2>
-<ul>
-<li>Significantly better at correctly detecting all labels.</li>
-<li>More specialized towards use case. Only outputs person, head and chair label.</li>
-<li>Slightly higher probability of detecting relfections.</li>
-</ul>
-<h2>Limitations</h2>
-<p>The detector is optimized to the cameras primary use case, and is therefore trained specifically towards small to medium sized conference rooms.
-This means that it is particulary good a detections up to approximately 5 meters, but less reliable outside of this range.</p>
-<h2>Output</h2>
-<h4>Labels</h4>
-<p>Current labels the detector will output data for.</p>
-<ul>
-<li><strong>Person</strong></li>
-<li><strong>Head</strong></li>
-<li><strong>Chair</strong></li>
-</ul>
-<h4>Sample output</h4>
-<div><pre class="line-numbers"><code class="language-json">{
-    &quot;detections&quot;: [
-        {
-            &quot;id&quot;: 0,
-            &quot;label&quot;: &quot;person&quot;,
-            &quot;confidence&quot;: 0.40885019302368164,
-            &quot;bbox&quot;: {
-                &quot;x&quot;: 7,
-                &quot;y&quot;: 77,
-                &quot;width&quot;: 218,
-                &quot;height&quot;: 136
-            }
-        },
-        {
-            &quot;id&quot;: 1,
-            &quot;label&quot;: &quot;chair&quot;,
-            &quot;confidence&quot;: 0.3582177758216858,
-            &quot;bbox&quot;: {
-                &quot;x&quot;: 94,
-                &quot;y&quot;: 162,
-                &quot;width&quot;: 340,
-                &quot;height&quot;: 212
-            }
-        }
-    ]
-}</code></pre></div><h2>REST Api references</h2>
-<ul>
-<li><a href="rest-api/detector-start.html">Start autozoom (genius framing) and detector</a> : <code>PUT /detector/start</code></li>
-<li><a href="rest-api/detector-stop.html">Stop autozoom (genius framing) and detector</a> : <code>PUT /detector/stop</code></li>
-<li><a href="rest-api/get-detections.html">Get detections</a> : <code>GET /detector/detections</code></li>
-</ul>
 
                    </div><div class="search-results">
     <div class="has-results">
@@ -132,8 +116,8 @@ This means that it is particulary good a detections up to approximately 5 meters
 
        <script>
             var COMPODOC_CURRENT_PAGE_DEPTH = 1;
-            var COMPODOC_CURRENT_PAGE_CONTEXT = 'additional-page';
-            var COMPODOC_CURRENT_PAGE_URL = 'detector.html';
+            var COMPODOC_CURRENT_PAGE_CONTEXT = 'miscellaneous-typealiases';
+            var COMPODOC_CURRENT_PAGE_URL = 'typealiases.html';
        </script>
 
        <script src="../js/libs/custom-elements.min.js"></script>
