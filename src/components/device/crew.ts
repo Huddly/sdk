@@ -80,7 +80,13 @@ export default class Crew implements IDeviceManager {
   }
 
   async getInfo(): Promise<any> {
-    const info = await this.api.getCameraInfo();
+    const prodInfo = await this.api.getProductInfo();
+    const uptime = await this.api.getUptime();
+    const info = {
+      softwareVersion: prodInfo['camera-version'],
+      uptime: Math.round(uptime * 100) / 100, // 2 floating point decimals
+      ...prodInfo,
+    };
     const status = {
       id: this['id'],
       serialNumber: this['serialNumber'],
