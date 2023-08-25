@@ -459,10 +459,18 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
    * @memberof HPKUpgrader
    */
   async upgradeIsValid(): Promise<boolean> {
-    // Quick fix for not calling getState on dartfish, which throws an error.
+    // Quick fix for not calling getState on dartfish and smartbase devices, which throws an error.
     // This needs to be properly fixed in the future.
     const prodId = this._cameraManager['productId'];
-    if ([HuddlyHEX.DARTFISH_PID, HuddlyHEX.SMARTBASE_PID].includes(prodId)) {
+    if (
+      [
+        HuddlyHEX.DARTFISH_PID,
+        HuddlyHEX.SMARTBASE_PID,
+        HuddlyHEX.SMARTBASE_L1_PID,
+        HuddlyHEX.SMARTBASE_S1_PID,
+        HuddlyHEX.SMARTBASE_CREW_PID,
+      ].includes(prodId)
+    ) {
       return true;
     }
 
