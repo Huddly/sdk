@@ -90,12 +90,14 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
    * @memberof HPKUpgrader
    */
   onAttach = (devManager: IDeviceManager) => {
+    const currentSerialWithoutDelimiter = devManager['serialNumber'].replace(/[_-]/g, '');
+    const prevSerialWithoutDelimiter = this._cameraManager['serialNumber'].replace(/[_-]/g, '');
     if (
       devManager &&
       (devManager instanceof Boxfish ||
         devManager instanceof Smartbase ||
         devManager instanceof SmartbaseCamera) &&
-      this._cameraManager['serialNumber'].includes(devManager['serialNumber'])
+      prevSerialWithoutDelimiter.includes(currentSerialWithoutDelimiter)
     ) {
       this._cameraManager = devManager;
       this.emit('UPGRADE_REBOOT_COMPLETE');
