@@ -148,7 +148,7 @@ class HuddlySdk extends EventEmitter {
   constructor(
     deviceDiscoveryApi: IHuddlyDeviceDiscoveryAPI | Array<IHuddlyDeviceDiscoveryAPI>,
     deviceApis?: Array<IHuddlyDeviceAPI>,
-    opts?: SDKOpts
+    opts?: any
   ) {
     super();
     if (!deviceDiscoveryApi) {
@@ -191,7 +191,7 @@ class HuddlySdk extends EventEmitter {
     this._deviceFactory = options.createFactory();
     this.devMode = options.developmentMode;
 
-    this.setupDeviceDiscoveryListeners();
+    this.setupDeviceDiscoveryListeners(options.deadline);
     this._deviceDiscoveryApi.registerForHotplugEvents(this.deviceDiscovery);
   }
 
@@ -202,7 +202,7 @@ class HuddlySdk extends EventEmitter {
    * Will emit the device serial number when a DETACH event occurs.
    * @memberof HuddlySdk
    */
-  setupDeviceDiscoveryListeners(): void {
+  setupDeviceDiscoveryListeners(deadline): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async (device) => {
       if (device && (!this.targetSerial || this.targetSerial === device.serialNumber)) {
         await this.locksmith.executeAsyncFunction(
@@ -216,7 +216,8 @@ class HuddlySdk extends EventEmitter {
                   device,
                   this.emitter
                 );
-                await cameraManager.initialize(this.devMode);
+
+                await cameraManager.initialize(deadline);
                 this.emitter.emit(CameraEvents.ATTACH, cameraManager);
                 resolve();
               } catch (error) {

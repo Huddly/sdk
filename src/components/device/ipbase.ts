@@ -167,9 +167,9 @@ export default class IpBaseDevice implements IIpDeviceManager, IUVCControls {
    * @return {*}  {Promise<void>} Void function. Use `await` when calling this method.
    * @memberof IpBaseDevice
    */
-  async initialize(): Promise<void> {
+  async initialize(grpc_timeout?): Promise<void> {
     const deadline = new Date();
-    deadline.setSeconds(deadline.getSeconds() + this.GPRC_CONNECT_TIMEOUT);
+    deadline.setSeconds(deadline.getSeconds() + grpc_timeout);
     this.huddlyGrpcClient = new HuddlyServiceClient(
       `${this.wsdDevice.ip}:${this.GRPC_PORT}`,
       grpc.ChannelCredentials.createInsecure()
