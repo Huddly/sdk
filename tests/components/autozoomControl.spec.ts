@@ -72,12 +72,12 @@ describe('AutozoomControl', () => {
 
     it('should throw exception for bad combination of opts', () => {
       const opts: AutozoomControlOpts = {
-        mode: AutozoomModes.PLAZA,
+        mode: AutozoomModes.SPEAKER_FRAMING,
         shouldAutoFrame: false,
       };
       const badFn = () => new AutozoomControl(deviceManager, opts);
       expect(badFn).to.throw(
-        "AutozoomMode 'plaza' does not support option 'shouldAutoFrame' set to false!"
+        "AutozoomMode 'speaker_framing' does not support option 'shouldAutoFrame' set to false!"
       );
     });
   });
@@ -246,12 +246,12 @@ describe('AutozoomControl', () => {
       });
       it('should throw exception for bad combination of opts', () => {
         const opts: AutozoomControlOpts = {
-          mode: AutozoomModes.PLAZA,
+          mode: AutozoomModes.SPEAKER_FRAMING,
           shouldAutoFrame: false,
         };
         return expect(autozoomControl.updateOpts(opts)).to.be.rejectedWith(
           Error,
-          "AutozoomMode 'plaza' does not support option 'shouldAutoFrame' set to false!"
+          "AutozoomMode 'speaker_framing' does not support option 'shouldAutoFrame' set to false!"
         );
       });
       it('should throw exception for undefined|null shouldAutoFrame option', () => {

@@ -13,6 +13,9 @@ import CameraEvents from './../utilitis/events';
 import semver from 'semver';
 import TypeHelper from './../utilitis/typehelper';
 import DetectionsConverter from './../utilitis/detectionsConverter';
+import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
+import MsgBusSubscriber from './msgBusSubscriber';
+import { MsgBusSubscriberOptions } from '@huddly/sdk-interfaces/lib/interfaces/IMsgBusSubscriber';
 
 const PREVIEW_IMAGE_SIZE = { width: 640, height: 480 };
 const LATEST_WITHOUT_PEOPLE_COUNT = '1.3.14';
@@ -46,6 +49,15 @@ export default class Detector extends EventEmitter implements IDetector {
   _previewStreamStarted: boolean = false;
   /** @ignore */
   _usePeopleCount: boolean = false;
+  /** @ignore */
+  _detectionSubscriber: MsgBusSubscriber;
+  /** @ignore */
+  _framingSubscriber: MsgBusSubscriber;
+  /** @ignore */
+  _supportedFramingSubscriptions: Array<FramingModes> = [
+    FramingModes.NORMAL,
+    FramingModes.GALLERY_VIEW,
+  ];
 
   constructor(manager: IDeviceManager, options?: DetectorOpts) {
     super();
@@ -53,6 +65,14 @@ export default class Detector extends EventEmitter implements IDetector {
     this._options = {};
     this._validateOptions(options);
     this.setMaxListeners(50);
+    this._detectionSubscriber = new MsgBusSubscriber(
+      manager.transport as IUsbTransport,
+      this._detectionHandler
+    );
+    this._framingSubscriber = new MsgBusSubscriber(
+      manager.transport as IUsbTransport,
+      this._framingHandler
+    );
   }
 
   /**
@@ -85,6 +105,13 @@ export default class Detector extends EventEmitter implements IDetector {
       return <IUsbTransport>this._deviceManager.transport;
     }
     throw new Error('Unable to talk to device. Tarnsport must be UsbTransport compatible');
+  }
+
+  framingSubscriptionCommandMap(framing: FramingModes): string {
+    return {
+      [FramingModes.NORMAL]: 'autozoom/framing',
+      [FramingModes.GALLERY_VIEW]: 'autozoom/plaza/framing',
+    }[framing];
   }
 
   /**
@@ -240,24 +267,24 @@ export default class Detector extends EventEmitter implements IDetector {
     listenerConfigOpts: any = {
       detectionListener: true,
       framingListener: true,
+      framingMode: FramingModes.NORMAL,
     }
   ) {
     try {
+      const { detectionListener, framingListener } = listenerConfigOpts;
+      const framingMode = listenerConfigOpts.framingMode
+        ? listenerConfigOpts.framingMode
+        : FramingModes.NORMAL;
       // Detection listener setup
-      if (!this._subscriptionsSetup && listenerConfigOpts.detectionListener) {
-        await this.transport.subscribe('autozoom/predictions');
-        this.transport.on('autozoom/predictions', this._detectionHandler);
+      if (!this._subscriptionsSetup && detectionListener) {
+        await this._detectionSubscriber.subscribe({ msgBusCmd: 'autozoom/predictions' });
       }
       // Framing listener setup
-      if (!this._subscriptionsSetup && listenerConfigOpts.framingListener) {
-        await this.transport.subscribe('autozoom/framing');
-        this.transport.on('autozoom/framing', this._framingHandler);
+      if (!this._subscriptionsSetup && framingListener) {
+        await this.updateFramingSubscriber(framingMode, this._framingHandler);
       }
       this._subscriptionsSetup = true;
     } catch (e) {
-      await this.transport.unsubscribe('autozoom/predictions');
-      await this.transport.unsubscribe('autozoom/framing');
-      Logger.error('Something went wrong getting predictions!', e, 'IQ Detector');
       this._subscriptionsSetup = false;
     }
   }
@@ -282,14 +309,12 @@ export default class Detector extends EventEmitter implements IDetector {
   ) {
     // Detection listener teardown
     if (this._subscriptionsSetup && listenerConfigOpts.detectionListener) {
-      await this.transport.unsubscribe('autozoom/predictions');
-      this.transport.removeListener('autozoom/predictions', this._detectionHandler);
+      await this._detectionSubscriber.unsubscribe();
     }
 
     // Framing listener teardown
     if (this._subscriptionsSetup && listenerConfigOpts.framingListener) {
-      await this.transport.unsubscribe('autozoom/framing');
-      this.transport.removeListener('autozoom/framing', this._framingHandler);
+      this._framingSubscriber.unsubscribe();
     }
     this._subscriptionsSetup = false;
   }
@@ -309,5 +334,29 @@ export default class Detector extends EventEmitter implements IDetector {
       ...opts,
     };
     return new DetectionsConverter(detections, converterOpts).convert();
+  }
+
+  /**
+   * Update framing subscriber with new framing mode and/or subscription handler
+   *
+   * @param framingMode New framing mode to listen to
+   * @param subscriptionHandler New function for handling the incoming frame buffer
+   */
+  async updateFramingSubscriber(framingMode: FramingModes, subscriptionHandler?: Function) {
+    if (!this._supportedFramingSubscriptions.includes(framingMode)) {
+      throw new Error(
+        `Framing mode ${framingMode} does not have support for framing subscriptions`
+      );
+    }
+
+    const framingSubscriberOptions: MsgBusSubscriberOptions = {
+      msgBusCmd:
+        framingMode !== undefined
+          ? this.framingSubscriptionCommandMap(framingMode)
+          : this._framingSubscriber.currentSubscription,
+      subscriptionHandler,
+    };
+
+    await this._framingSubscriber.subscribe(framingSubscriberOptions);
   }
 }

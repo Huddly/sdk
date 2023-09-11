@@ -1,11 +1,14 @@
 import sinon from 'sinon';
 import { expect } from 'chai';
 import IDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IDeviceManager';
-import DetectorOpts, { DetectionConvertion } from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
+import DetectorOpts, {
+  DetectionConvertion,
+} from '@huddly/sdk-interfaces/lib/interfaces/IDetectorOpts';
 
 import Detector from './../../src/components/detector';
 import DeviceManagerMock from './../mocks/devicemanager.mock';
 import * as msgpack from 'msgpack-lite';
+import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
 
 describe('Detector', () => {
   let detector: Detector;
@@ -226,21 +229,21 @@ describe('Detector', () => {
   });
 
   describe('detection/framing subscription listener setup/teardown', () => {
-    let transportOnStub;
-    let transportSubscribeStub;
-    let transportUnsubscribeStub;
-    let transportRemoveListenerStub;
+    let detectorSubscribeStub;
+    let detectorUnsubscribeStub;
+    let framingSubscribeStub;
+    let framingUnsubscribeStub;
     beforeEach(() => {
-      transportOnStub = sinon.stub(deviceManager.transport, 'on');
-      transportSubscribeStub = sinon.stub(deviceManager.transport, 'subscribe');
-      transportUnsubscribeStub = sinon.stub(deviceManager.transport, 'unsubscribe');
-      transportRemoveListenerStub = sinon.stub(deviceManager.transport, 'removeListener');
+      detectorSubscribeStub = sinon.stub(detector._detectionSubscriber, 'subscribe');
+      detectorUnsubscribeStub = sinon.stub(detector._detectionSubscriber, 'unsubscribe');
+      framingSubscribeStub = sinon.stub(detector._framingSubscriber, 'subscribe');
+      framingUnsubscribeStub = sinon.stub(detector._framingSubscriber, 'unsubscribe');
     });
     afterEach(() => {
-      transportOnStub.restore();
-      transportSubscribeStub.restore();
-      transportUnsubscribeStub.restore();
-      transportRemoveListenerStub.restore();
+      detectorSubscribeStub.restore();
+      detectorUnsubscribeStub.restore();
+      framingSubscribeStub.restore();
+      framingUnsubscribeStub.restore();
     });
 
     describe('on detection setup', () => {
@@ -250,10 +253,7 @@ describe('Detector', () => {
             detectionListener: true,
             framingListener: false,
           });
-          expect(transportSubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-          expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-          expect(transportSubscribeStub.callCount).to.equals(1);
-          expect(transportOnStub.callCount).to.equals(1);
+          expect(detectorSubscribeStub.callCount).to.equals(1);
           expect(detector._subscriptionsSetup).to.equals(true);
         });
         it('should setup framing event listeners only', async () => {
@@ -261,22 +261,26 @@ describe('Detector', () => {
             detectionListener: false,
             framingListener: true,
           });
-          expect(transportSubscribeStub.getCall(0).args[0]).to.equals('autozoom/framing');
-          expect(transportOnStub.getCall(0).args[0]).to.equals('autozoom/framing');
-          expect(transportSubscribeStub.callCount).to.equals(1);
-          expect(transportOnStub.callCount).to.equals(1);
+          expect(framingSubscribeStub.callCount).to.equals(1);
           expect(detector._subscriptionsSetup).to.equals(true);
         });
       });
 
-      describe('on subscription failure', () => {
+      describe('on detector subscription failure', () => {
         beforeEach(() => {
-          transportSubscribeStub.rejects('Something went wrong');
+          detectorSubscribeStub.rejects('Something went wrong');
         });
-        it('should unsubscribe to detection and framing events', async () => {
+        it('should set _subscriptionsSetup to false', async () => {
           await detector.setupDetectorSubscriptions();
-          expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-          expect(transportUnsubscribeStub.getCall(1).args[0]).to.equals('autozoom/framing');
+          expect(detector._subscriptionsSetup).to.equals(false);
+        });
+      });
+      describe('on framing subscription failure', () => {
+        beforeEach(() => {
+          framingSubscribeStub.rejects('Something went wrong');
+        });
+        it('should set _subscriptionsSetup to false', async () => {
+          await detector.setupDetectorSubscriptions();
           expect(detector._subscriptionsSetup).to.equals(false);
         });
       });
@@ -289,10 +293,7 @@ describe('Detector', () => {
           detectionListener: true,
           framingListener: false,
         });
-        expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-        expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/predictions');
-        expect(transportUnsubscribeStub.callCount).to.equals(1);
-        expect(transportRemoveListenerStub.callCount).to.equals(1);
+        expect(detectorUnsubscribeStub.callCount).to.equals(1);
         expect(detector._subscriptionsSetup).to.equals(false);
       });
       it('should unsubscribe to framing events and remove detection listener', async () => {
@@ -301,11 +302,42 @@ describe('Detector', () => {
           detectionListener: false,
           framingListener: true,
         });
-        expect(transportUnsubscribeStub.getCall(0).args[0]).to.equals('autozoom/framing');
-        expect(transportRemoveListenerStub.getCall(0).args[0]).to.equals('autozoom/framing');
-        expect(transportUnsubscribeStub.callCount).to.equals(1);
-        expect(transportRemoveListenerStub.callCount).to.equals(1);
+        expect(framingUnsubscribeStub.callCount).to.equals(1);
         expect(detector._subscriptionsSetup).to.equals(false);
+      });
+    });
+  });
+
+  describe('#updateFramingSubsciber', () => {
+    let framingSubscribeStub;
+    beforeEach(() => {
+      framingSubscribeStub = sinon.stub(detector._framingSubscriber, 'subscribe');
+    });
+    afterEach(() => {
+      framingSubscribeStub.restore();
+    });
+    describe('new framing mode is supported', () => {
+      it('should pass new msg bus command and undefined subscription handler when given just framing mode', async () => {
+        await detector.updateFramingSubscriber(FramingModes.GALLERY_VIEW);
+        expect(framingSubscribeStub.getCall(0).args[0].msgBusCmd).equals('autozoom/plaza/framing');
+        expect(framingSubscribeStub.getCall(0).args[0].subscriptionHandler).equals(undefined);
+      });
+      it('should pass new msg bus command and undefined subscription handler when given', async () => {
+        const handler = () => {
+          return 'pass';
+        };
+        await detector.updateFramingSubscriber(FramingModes.GALLERY_VIEW, handler);
+        expect(framingSubscribeStub.getCall(0).args[0].msgBusCmd).equals('autozoom/plaza/framing');
+        expect(framingSubscribeStub.getCall(0).args[0].subscriptionHandler()).equals(handler());
+      });
+    });
+    describe('new framing mode is not supported', () => {
+      it('should throw an error', async () => {
+        let error = undefined;
+        await detector
+          .updateFramingSubscriber(FramingModes.SPEAKER_FRAMING)
+          .catch((err) => (error = err))
+          .finally(() => expect(error).not.to.equal(undefined));
       });
     });
   });
