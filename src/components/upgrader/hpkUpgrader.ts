@@ -15,6 +15,7 @@ import ErrorCodes from './../../error/errorCodes';
 import HPKUpgradeError from './../../error/hpkUpgradeError';
 import Smartbase from '../device/smartbase';
 import SmartbaseCamera from '../device/smartbaseCamera';
+import Crew from '../device/crew';
 
 const MAX_UPLOAD_ATTEMPTS = 5;
 
@@ -96,7 +97,8 @@ export default class HPKUpgrader extends EventEmitter implements IDeviceUpgrader
       devManager &&
       (devManager instanceof Boxfish ||
         devManager instanceof Smartbase ||
-        devManager instanceof SmartbaseCamera) &&
+        devManager instanceof SmartbaseCamera ||
+        devManager instanceof Crew) &&
       prevSerialWithoutDelimiter.includes(currentSerialWithoutDelimiter)
     ) {
       this._cameraManager = devManager;
