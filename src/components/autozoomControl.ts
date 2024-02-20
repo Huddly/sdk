@@ -20,7 +20,7 @@ export default class AutozoomControl implements IAutozoomControl {
   /** @ignore */
   _options: AutozoomControlOpts;
   /** @ignore */
-  _supportedModes: Array<FramingModes> = [FramingModes.NORMAL, FramingModes.GALLERY_VIEW];
+  _supportedModes: Array<FramingModes> = [FramingModes.NORMAL, FramingModes.GALLERY_VIEW, FramingModes.FOCUS];
 
   private readonly _defaultOpts: AutozoomControlOpts = {
     shouldAutoFrame: true,
