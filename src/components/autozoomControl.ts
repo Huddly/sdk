@@ -404,6 +404,7 @@ export default class AutozoomControl implements IAutozoomControl {
     const featureMapping = {
       [FramingModes.NORMAL]: 'normal',
       [FramingModes.GALLERY_VIEW]: 'plaza',
+      [FramingModes.FOCUS]: 'focus',
     };
 
     if (!this._supportedModes.includes(framingMode)) {
