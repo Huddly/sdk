@@ -13,7 +13,7 @@ import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import Locksmith from '../locksmith';
 import EventEmitter from 'events';
 import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
-import DirectorMode from '@huddly/sdk-interfaces/lib/enums/DirectorModes.ts';
+import DirectorModes from '@huddly/sdk-interfaces/lib/enums/DirectorModes.ts';
 import CameraEvents from '../../utilitis/events';
 import { createBoxfishUpgrader } from '../upgrader/boxfishUpgraderFactory';
 import HuddlyGrpcTunnelClient from './huddlyGrpcTunnelClient';
@@ -21,16 +21,6 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
 const MAX_UPGRADE_ATTEMPT = 3;
-
-const DirectorModeToStringMap = {
-  [DirectorMode.Speaker]: 'speaker-centric',
-  [DirectorMode.Collaboration]: 'default',
-};
-
-const ModeStringToDirectorMode = {
-  'speaker-centric': DirectorMode.Speaker,
-  default: DirectorMode.Collaboration,
-};
 
 export default class Crew implements IDeviceManager {
   transport: IUsbTransport;
@@ -222,7 +212,7 @@ export default class Crew implements IDeviceManager {
    * @returns
    */
 
-  async getSupportedDirectorModes(): Promise<DirectorMode[]> {
+  async getSupportedDirectorModes(): Promise<DirectorModes[]> {
     const reply = await this._grpcTunnel.normalRPC(
       'GetSupportedDirectorModes',
       new Empty().serializeBinary()
@@ -232,10 +222,14 @@ export default class Crew implements IDeviceManager {
       throw new Error(`Encountered issue getting supported director modes: ${error.message}`);
     }
     const modesList = huddly.DirectorModes.deserializeBinary(reply.response).getModesList();
-    return modesList.map((directorMode) => ModeStringToDirectorMode[directorMode.getMode()]);
+    const test = Object.values(DirectorModes);
+
+    return modesList.map(
+      (directorMode) => DirectorModes[directorMode.getMode() as keyof typeof DirectorModes]
+    );
   }
 
-  async getDirectorMode(): Promise<DirectorMode> {
+  async getDirectorMode(): Promise<DirectorModes> {
     const reply = await this._grpcTunnel.normalRPC(
       'GetDirectorMode',
       new Empty().serializeBinary()
@@ -245,14 +239,12 @@ export default class Crew implements IDeviceManager {
       throw new Error(`Encountered issue getting director mode: ${error.message}`);
     }
     const mode = huddly.DirectorMode.deserializeBinary(reply.response).getMode();
-    return ModeStringToDirectorMode[mode];
+    return DirectorModes[mode as keyof typeof DirectorModes];
   }
 
-  async setDirectorMode(mode: DirectorMode) {
-    const directorModeString = DirectorModeToStringMap[mode];
-
+  async setDirectorMode(mode: DirectorModes) {
     const directorModeGrpc = new huddly.DirectorMode();
-    directorModeGrpc.setMode(directorModeString);
+    directorModeGrpc.setMode(mode.toString());
 
     const reply = await this._grpcTunnel.normalRPC(
       'SetDirectorMode',
