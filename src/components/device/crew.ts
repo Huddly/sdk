@@ -28,8 +28,8 @@ const DirectorModeToStringMap = {
 };
 
 const ModeStringToDirectorMode = {
-  'speaker-centric': [DirectorMode.Speaker],
-  default: [DirectorMode.Collaboration],
+  'speaker-centric': DirectorMode.Speaker,
+  default: DirectorMode.Collaboration,
 };
 
 export default class Crew implements IDeviceManager {
