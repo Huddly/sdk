@@ -13,10 +13,18 @@ import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import Locksmith from '../locksmith';
 import EventEmitter from 'events';
 import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
+import DirectorModes from '@huddly/sdk-interfaces/lib/enums/DirectorModes';
 import CameraEvents from '../../utilitis/events';
 import { createBoxfishUpgrader } from '../upgrader/boxfishUpgraderFactory';
+import HuddlyGrpcTunnelClient from './huddlyGrpcTunnelClient';
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
 const MAX_UPGRADE_ATTEMPT = 3;
+const modeStringToDirectorModes = {
+  'speaker-centric': DirectorModes.Speaker,
+  default: DirectorModes.Collaboration,
+};
 
 export default class Crew implements IDeviceManager {
   transport: IUsbTransport;
@@ -24,6 +32,7 @@ export default class Crew implements IDeviceManager {
   deviceInstance: any;
   uvcControlInterface: any;
   productName: string = 'Huddly Crew';
+  _grpcTunnel: HuddlyGrpcTunnelClient;
   _api: Api;
 
   /**
@@ -47,6 +56,7 @@ export default class Crew implements IDeviceManager {
     this.deviceInstance = deviceInstance;
     this.uvcControlInterface = {};
     this.assignProductInfo();
+    this._grpcTunnel = new HuddlyGrpcTunnelClient(transport, this.locksmith);
   }
 
   assignProductInfo() {
@@ -199,6 +209,56 @@ export default class Crew implements IDeviceManager {
         reject(reason);
       });
     });
+  }
+
+  /**
+   * Gets supported director modes as a list
+   * @returns
+   */
+
+  async getSupportedDirectorModes(): Promise<DirectorModes[]> {
+    const reply = await this._grpcTunnel.normalRPC(
+      'GetSupportedDirectorModes',
+      new Empty().serializeBinary()
+    );
+    const error = this._grpcTunnel.getError(reply);
+    if (error) {
+      throw new Error(
+        `Encountered issue getting supported director modes: ${error.message.toString()}`
+      );
+    }
+    const modesList = huddly.DirectorModes.deserializeBinary(reply.response).getModesList();
+
+    return modesList.map((directorMode) => {
+      return modeStringToDirectorModes[directorMode.getMode()];
+    });
+  }
+
+  async getDirectorMode(): Promise<DirectorModes> {
+    const reply = await this._grpcTunnel.normalRPC(
+      'GetDirectorMode',
+      new Empty().serializeBinary()
+    );
+    const error = this._grpcTunnel.getError(reply);
+    if (error) {
+      throw new Error(`Encountered issue getting director mode: ${error}`);
+    }
+    const mode = huddly.DirectorMode.deserializeBinary(reply.response).getMode();
+    return modeStringToDirectorModes[mode];
+  }
+
+  async setDirectorMode(mode: DirectorModes) {
+    const directorModeGrpc = new huddly.DirectorMode();
+    directorModeGrpc.setMode(mode.toString());
+    const reply = await this._grpcTunnel.normalRPC(
+      'SetDirectorMode',
+      directorModeGrpc.serializeBinary()
+    );
+    const error = this._grpcTunnel.getError(reply);
+    if (error) {
+      throw new Error(`Encountered issue setting director mode: ${error.message}`);
+    }
+    return huddly.DeviceStatus.deserializeBinary(reply.response).toObject();
   }
 
   getAutozoomControl(opts: AutozoomControlOpts): ICnnControl {
