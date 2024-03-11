@@ -97,7 +97,7 @@
     "@grpc/grpc-js": "1.8.0",
     "@huddly/camera-proto": "^1.4.0",
     "@huddly/camera-switch-proto": "0.0.6",
-    "@huddly/sdk-interfaces": "github:Huddly/Sdk-interfaces#crew-modes",
+    "@huddly/sdk-interfaces": "^0.2.10",
     "@msgpack/msgpack": "^3.0.0-beta2",
     "chalk": "^4.1.2",
     "cpio-stream": "^1.4.3",

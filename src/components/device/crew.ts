@@ -13,7 +13,7 @@ import IUsbTransport from '@huddly/sdk-interfaces/lib/interfaces/IUsbTransport';
 import Locksmith from '../locksmith';
 import EventEmitter from 'events';
 import HuddlyHEX from '@huddly/sdk-interfaces/lib/enums/HuddlyHex';
-import DirectorModes from '@huddly/sdk-interfaces/lib/enums/DirectorModes.ts';
+import DirectorModes from '@huddly/sdk-interfaces/lib/enums/DirectorModes';
 import CameraEvents from '../../utilitis/events';
 import { createBoxfishUpgrader } from '../upgrader/boxfishUpgraderFactory';
 import HuddlyGrpcTunnelClient from './huddlyGrpcTunnelClient';
@@ -21,6 +21,10 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 
 const MAX_UPGRADE_ATTEMPT = 3;
+const modeStringToDirectorModes = {
+  'speaker-centric': DirectorModes.Speaker,
+  default: DirectorModes.Collaboration,
+};
 
 export default class Crew implements IDeviceManager {
   transport: IUsbTransport;
@@ -219,14 +223,15 @@ export default class Crew implements IDeviceManager {
     );
     const error = this._grpcTunnel.getError(reply);
     if (error) {
-      throw new Error(`Encountered issue getting supported director modes: ${error.message}`);
+      throw new Error(
+        `Encountered issue getting supported director modes: ${error.message.toString()}`
+      );
     }
     const modesList = huddly.DirectorModes.deserializeBinary(reply.response).getModesList();
-    const test = Object.values(DirectorModes);
 
-    return modesList.map(
-      (directorMode) => DirectorModes[directorMode.getMode() as keyof typeof DirectorModes]
-    );
+    return modesList.map((directorMode) => {
+      return modeStringToDirectorModes[directorMode.getMode()];
+    });
   }
 
   async getDirectorMode(): Promise<DirectorModes> {
@@ -236,23 +241,22 @@ export default class Crew implements IDeviceManager {
     );
     const error = this._grpcTunnel.getError(reply);
     if (error) {
-      throw new Error(`Encountered issue getting director mode: ${error.message}`);
+      throw new Error(`Encountered issue getting director mode: ${error}`);
     }
     const mode = huddly.DirectorMode.deserializeBinary(reply.response).getMode();
-    return DirectorModes[mode as keyof typeof DirectorModes];
+    return modeStringToDirectorModes[mode];
   }
 
   async setDirectorMode(mode: DirectorModes) {
     const directorModeGrpc = new huddly.DirectorMode();
     directorModeGrpc.setMode(mode.toString());
-
     const reply = await this._grpcTunnel.normalRPC(
       'SetDirectorMode',
       directorModeGrpc.serializeBinary()
     );
     const error = this._grpcTunnel.getError(reply);
     if (error) {
-      throw new Error(`Encountered issue getting director mode: ${error.message}`);
+      throw new Error(`Encountered issue setting director mode: ${error.message}`);
     }
     return huddly.DeviceStatus.deserializeBinary(reply.response).toObject();
   }
