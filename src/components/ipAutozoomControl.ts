@@ -21,7 +21,11 @@ export default class IpAutozoomControl implements IAutozoomControl {
   /** @ignore */
   _options: AutozoomControlOpts;
   /** @ignore */
-  _supportedModes: Array<FramingModes> = [FramingModes.NORMAL, FramingModes.SPEAKER_FRAMING];
+  _supportedModes: Array<FramingModes> = [
+    FramingModes.NORMAL,
+    FramingModes.SPEAKER_FRAMING,
+    FramingModes.GALLERY_VIEW,
+  ];
 
   constructor(manager: IIpDeviceManager, options?: AutozoomControlOpts) {
     this._deviceManager = manager;
