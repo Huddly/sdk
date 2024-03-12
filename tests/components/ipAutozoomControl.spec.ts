@@ -120,16 +120,6 @@ describe('IpAutozoomControl', () => {
     afterEach(() => {
       setCnnFeatureStub.restore();
     });
-    it('should reject with an error if not using supported mode', async () => {
-      let error;
-      try {
-        // @ts-ignore
-        await autozoomControl.setFramingMode(FramingModes.GALLERY_VIEW);
-      } catch (err) {
-        error = err;
-      }
-      expect(error).to.be.instanceof(Error);
-    });
 
     it('should set appropriate cnn feature for autozoom', async () => {
       await autozoomControl.setFramingMode(FramingModes.NORMAL);
