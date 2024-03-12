@@ -30,7 +30,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
     };
   }
   getSupportedFramingModes(): Promise<FramingModes[]> {
-    throw new Error('Method not implemented.');
+    return Promise.resolve(this._supportedModes);
   }
 
   /**
@@ -103,6 +103,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
     const framingMode = {
       [AutozoomModes.NORMAL]: FramingModes.NORMAL,
       [AutozoomModes.SPEAKER_FRAMING]: FramingModes.SPEAKER_FRAMING,
+      [AutozoomModes.PLAZA]: FramingModes.GALLERY_VIEW,
     }[autozoomMode];
 
     await this.setFramingMode(framingMode);
@@ -119,6 +120,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
     const featureMapping = {
       [FramingModes.NORMAL]: huddly.Feature.AUTOZOOM,
       [FramingModes.SPEAKER_FRAMING]: huddly.Feature.SPEAKERFRAMING,
+      [FramingModes.GALLERY_VIEW]: huddly.Feature.GALLERYVIEW,
     };
 
     if (framingMode === FramingModes.OFF) {
