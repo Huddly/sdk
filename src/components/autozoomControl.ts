@@ -112,7 +112,10 @@ export default class AutozoomControl implements IAutozoomControl {
       throw Error(`Option 'shouldAutoFrame' cannot not be set to ${options.shouldAutoFrame}`);
     }
 
-    if (!options.shouldAutoFrame && options.mode !== AutozoomModes.NORMAL) {
+    if (
+      !options.shouldAutoFrame &&
+      ![AutozoomModes.NORMAL, AutozoomModes.PLAZA].includes(options.mode)
+    ) {
       const modeName = options.mode;
       throw Error(
         `AutozoomMode '${modeName}' does not support option 'shouldAutoFrame' set to ${options.shouldAutoFrame}!`
