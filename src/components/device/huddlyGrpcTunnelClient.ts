@@ -294,6 +294,15 @@ class HuddlyGrpcTunnelClient {
     );
   }
 
+  setDirectorMode(request: huddly.DirectorMode, callback: Function) {
+    this.runRPCCommand(
+      'SetDirectorMode',
+      request.serializeBinary(),
+      callback,
+      huddly.DeviceStatus.deserializeBinary
+    );
+  }
+
   upgradeDevice() {
     throw new Error();
     return {} as grpc.ClientWritableStream<huddly.Chunk>;
