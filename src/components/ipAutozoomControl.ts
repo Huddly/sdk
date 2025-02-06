@@ -7,6 +7,8 @@ import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
 import IAutozoomControl from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControl';
 import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
 import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
+import DirectorModes from '@huddly/sdk-interfaces/lib/enums/DirectorModes';
+import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
 
 /**
  * Control class for configuring the Genius Framing feature of the camera.
@@ -25,6 +27,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
     FramingModes.NORMAL,
     FramingModes.SPEAKER_FRAMING,
     FramingModes.GALLERY_VIEW,
+    FramingModes.SPEAKER_CENTRIC_FRAMING,
   ];
 
   constructor(manager: IIpDeviceManager, options?: AutozoomControlOpts) {
@@ -108,6 +111,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
       [AutozoomModes.NORMAL]: FramingModes.NORMAL,
       [AutozoomModes.SPEAKER_FRAMING]: FramingModes.SPEAKER_FRAMING,
       [AutozoomModes.PLAZA]: FramingModes.GALLERY_VIEW,
+      [AutozoomModes.SPEAKER_CENTRIC_FRAMING]: FramingModes.SPEAKER_CENTRIC_FRAMING,
     }[autozoomMode];
 
     await this.setFramingMode(framingMode);
@@ -125,6 +129,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
       [FramingModes.NORMAL]: huddly.Feature.AUTOZOOM,
       [FramingModes.SPEAKER_FRAMING]: huddly.Feature.SPEAKERFRAMING,
       [FramingModes.GALLERY_VIEW]: huddly.Feature.GALLERYVIEW,
+      [FramingModes.SPEAKER_CENTRIC_FRAMING]: huddly.Feature.SPEAKERFRAMING,
     };
 
     if (framingMode === FramingModes.OFF) {
@@ -140,6 +145,12 @@ export default class IpAutozoomControl implements IAutozoomControl {
       );
     }
 
+    if (
+      [FramingModes.SPEAKER_FRAMING, FramingModes.SPEAKER_CENTRIC_FRAMING].includes(framingMode)
+    ) {
+      this._setDirectorMode(framingMode);
+    }
+
     // The following section is a bit confusing due to different naming conventions
     // for the different camera types.
 
@@ -148,6 +159,31 @@ export default class IpAutozoomControl implements IAutozoomControl {
 
     // The camera should handle turning other framing features off
     await this._setCnnFeature(feature, huddly.Mode.START);
+  }
+
+  private async _setDirectorMode(framingMode: FramingModes): Promise<void> {
+    const toDirectorString = {
+      [FramingModes.SPEAKER_FRAMING]: 'default',
+      [FramingModes.SPEAKER_CENTRIC_FRAMING]: 'speaker-centric',
+    };
+
+    const directorMode = new huddly.DirectorMode();
+    directorMode.setMode(toDirectorString[framingMode]);
+
+    return new Promise((resolve, reject) => {
+      this._deviceManager.grpcClient.setDirectorMode(
+        directorMode,
+        (err, status: huddly.DeviceStatus) => {
+          if (err != undefined) {
+            // We want to use this optimisticly, so only warn here
+            Logger.warn(err.message);
+            return;
+          }
+          Logger.info(status.toString());
+          resolve();
+        }
+      );
+    });
   }
 
   /**
@@ -182,6 +218,22 @@ export default class IpAutozoomControl implements IAutozoomControl {
           }
           Logger.info(status.toString());
           resolve();
+        }
+      );
+    });
+  }
+
+  private async _getSupportedDirectorModes(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._deviceManager.grpcClient.getSupportedDirectorModes(
+        new Empty(),
+        (err, directorModes: huddly.DirectorModes) => {
+          if (err != undefined) {
+            // We want to use this optimisticly, so only warn here
+            Logger.warn(err.message);
+            resolve(undefined);
+          }
+          resolve(directorModes.toObject());
         }
       );
     });
