@@ -223,7 +223,7 @@ export default class IpAutozoomControl implements IAutozoomControl {
     });
   }
 
-  private async _getSupportedDirectorModes(): Promise<any> {
+  async getSupportedDirectorModes(): Promise<any> {
     return new Promise((resolve, reject) => {
       this._deviceManager.grpcClient.getSupportedDirectorModes(
         new Empty(),
