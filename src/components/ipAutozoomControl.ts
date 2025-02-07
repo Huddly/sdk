@@ -239,6 +239,22 @@ export default class IpAutozoomControl implements IAutozoomControl {
     });
   }
 
+  async getDirectorMode(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      this._deviceManager.grpcClient.getDirectorMode(
+        new Empty(),
+        (err, directorModes: huddly.DirectorMode) => {
+          if (err != undefined) {
+            // We want to use this optimisticly, so only warn here
+            Logger.warn(err.message);
+            resolve(undefined);
+          }
+          resolve(directorModes.getMode());
+        }
+      );
+    });
+  }
+
   /**
    * @deprecated
    * @ignore

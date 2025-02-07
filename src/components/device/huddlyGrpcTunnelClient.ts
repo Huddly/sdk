@@ -303,6 +303,24 @@ class HuddlyGrpcTunnelClient {
     );
   }
 
+  getDirectorMode(request: Empty, callback: Function) {
+    this.runRPCCommand(
+      'GetDirectorMode',
+      request.serializeBinary(),
+      callback,
+      huddly.DirectorMode.deserializeBinary
+    );
+  }
+
+  getSupporterDirectorModes(request: Empty, callback: Function) {
+    this.runRPCCommand(
+      'GetSupportedDirectorModes',
+      request.serializeBinary(),
+      callback,
+      huddly.DirectorModes.deserializeBinary
+    );
+  }
+
   upgradeDevice() {
     throw new Error();
     return {} as grpc.ClientWritableStream<huddly.Chunk>;
