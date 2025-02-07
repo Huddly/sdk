@@ -312,7 +312,7 @@ class HuddlyGrpcTunnelClient {
     );
   }
 
-  getSupporterDirectorModes(request: Empty, callback: Function) {
+  getSupportedDirectorModes(request: Empty, callback: Function) {
     this.runRPCCommand(
       'GetSupportedDirectorModes',
       request.serializeBinary(),
