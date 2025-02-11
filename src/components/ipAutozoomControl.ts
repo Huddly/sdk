@@ -1,14 +1,12 @@
-import ICnnControl from '@huddly/sdk-interfaces/lib/interfaces/ICnnControl';
 import AutozoomControlOpts from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControlOpts';
 import IIpDeviceManager from '@huddly/sdk-interfaces/lib/interfaces/IIpDeviceManager';
 import Logger from '@huddly/sdk-interfaces/lib/statics/Logger';
 
 import * as huddly from '@huddly/camera-proto/lib/api/huddly_pb';
-import IAutozoomControl from '@huddly/sdk-interfaces/lib/interfaces/IAutozoomControl';
 import FramingModes from '@huddly/sdk-interfaces/lib/enums/FramingModes';
 import AutozoomModes from '@huddly/sdk-interfaces/lib/enums/AutozoomModes';
-import DirectorModes from '@huddly/sdk-interfaces/lib/enums/DirectorModes';
 import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
+import IIpAutozoomControl from './IIpAutozoomControl';
 
 /**
  * Control class for configuring the Genius Framing feature of the camera.
@@ -17,7 +15,7 @@ import { Empty } from 'google-protobuf/google/protobuf/empty_pb';
  * @class IpAutozoomControl
  * @implements {ICnnControl}
  */
-export default class IpAutozoomControl implements IAutozoomControl {
+export default class IpAutozoomControl implements IIpAutozoomControl {
   /** @ignore */
   _deviceManager: IIpDeviceManager;
   /** @ignore */
