@@ -204,7 +204,11 @@ class HuddlySdk extends EventEmitter {
    */
   setupDeviceDiscoveryListeners(): void {
     this.deviceDiscovery.on(CameraEvents.ATTACH, async (device) => {
-      if (device && (!this.targetSerial || this.targetSerial === device.serialNumber)) {
+      if (
+        device &&
+        (!this.targetSerial || this.targetSerial === device.serialNumber) &&
+        device.productId == HuddlyHex.GO_PID
+      ) {
         await this.locksmith.executeAsyncFunction(
           () =>
             new Promise<void>(async (resolve) => {

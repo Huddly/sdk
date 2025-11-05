@@ -120,24 +120,26 @@ describe('HuddlySDK', () => {
 
     });
 
-    it('should emit ATTACH event with Boxfish instance when attached device is boxfish', (done) => {
+    it('should not emit ATTACH event with Boxfish instance when attached device is boxfish', (done) => {
       initSdk();
-      otherEmitter.on('ATTACH', (d) => {
-        expect(d).to.be.instanceof(Boxfish);
-        expect(d.serialNumber).to.equals(deviceSerial);
-        done();
-      });
+      const attachSpy = sinon.spy();
+      otherEmitter.on('ATTACH', (d) => attachSpy);
       discoveryEmitter.emit('ATTACH', dummyIQ);
+
+      setTimeout(() => {
+        expect(attachSpy.callCount).to.equals(0);
+        done();
+      }, 50);
     });
-    it('should emit ATTACH event with Boxfish instance when attached device is boxfish and targetSerial match', (done) => {
+    it('should emit ATTACH event with GO instance when attached device is GO and targetSerial match', (done) => {
       const dummyTargetSerial = deviceSerial;
       initSdk(dummyTargetSerial);
       otherEmitter.on('ATTACH', (d) => {
-        expect(d).to.be.instanceof(Boxfish);
+        expect(d).to.be.instanceof(HuddlyGo);
         expect(d.serialNumber).to.equals(dummyTargetSerial);
         done();
       });
-      discoveryEmitter.emit('ATTACH', dummyIQ);
+      discoveryEmitter.emit('ATTACH', dummyGO);
     });
 
     it('should not emit ATTACH event when device api emits attach with serialNumber not matching targetSerial', (done) => {
@@ -145,23 +147,23 @@ describe('HuddlySDK', () => {
       initSdk(dummyTargetSerial);
       const attachSpy = sinon.spy();
       otherEmitter.on('ATTACH', attachSpy);
-      discoveryEmitter.emit('ATTACH', dummyIQ);
+      discoveryEmitter.emit('ATTACH', dummyGO);
 
       setTimeout(() => {
         expect(attachSpy.callCount).to.equals(0);
         done();
       }
-      , 50);
+        , 50);
     });
 
     it('should emit ATTACH event with empty targetSerial', (done) => {
       const dummyTargetSerial = '';
       initSdk(dummyTargetSerial);
       otherEmitter.on('ATTACH', (d) => {
-        expect(d).to.be.instanceof(Boxfish);
+        expect(d).to.be.instanceof(HuddlyGo);
         done();
       });
-      discoveryEmitter.emit('ATTACH', dummyIQ);
+      discoveryEmitter.emit('ATTACH', dummyGO);
     });
 
 
@@ -184,16 +186,16 @@ describe('HuddlySDK', () => {
         expect(attachSpy.callCount).to.equals(0);
         done();
       }
-      , 50);
+        , 50);
     });
 
     it('should emit DETACH event when device discovery api emits DETACH for a huddly device', (done) => {
       initSdk();
       otherEmitter.on('DETACH', (d) => {
-        expect(d).to.deep.equals(dummyIQ);
+        expect(d).to.deep.equals(dummyGO);
         done();
       });
-      discoveryEmitter.emit('DETACH', dummyIQ);
+      discoveryEmitter.emit('DETACH', dummyGO);
     });
 
     it('should not emit DETACH event when device api emits detach with undefined device instance', (done) => {
@@ -206,7 +208,7 @@ describe('HuddlySDK', () => {
         expect(detachSpy.callCount).to.equals(0);
         done();
       }
-      , 50);
+        , 50);
     });
 
     describe('on error', () => {
@@ -224,28 +226,19 @@ describe('HuddlySDK', () => {
           expect(e.error).to.be.instanceof(Error);
           done();
         });
-        discoveryEmitter.emit('ATTACH', dummyIQ);
-      });
-      it('should emit error and resolve if BASE is discovered', (done) => {
-        initSdk();
-        otherEmitter.on('ERROR', (e) => {
-          expect(e.error).to.be.instanceof(Error);
-          expect(e.error.message).to.equal(`No transport implementation supported for {"productId":47710,"serialNumber":"1241234541234"}`);
-          done();
-        });
-        discoveryEmitter.emit('ATTACH', dummyBase);
+        discoveryEmitter.emit('ATTACH', dummyGO);
       });
     });
     describe('combined', () => {
-      it('should should resolve IQ when non supported Huddly device gets discovered first', (done) => {
+      it('should should resolve Huddly GO when non supported Huddly device gets discovered first', (done) => {
         initSdk();
         otherEmitter.on('ATTACH', (d) => {
-          expect(d).to.be.instanceof(Boxfish);
+          expect(d).to.be.instanceof(HuddlyGo);
           expect(d.serialNumber).to.equals(deviceSerial);
           done();
         });
         discoveryEmitter.emit('ATTACH', dummyBase);
-        discoveryEmitter.emit('ATTACH', dummyIQ);
+        discoveryEmitter.emit('ATTACH', dummyGO);
       });
     });
   });
